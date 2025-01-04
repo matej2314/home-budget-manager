@@ -6,9 +6,7 @@ COPY package*.json  .
 
 COPY . .
 
-RUN rm -rf node_modules && npm install 
-
-EXPOSE 5051
+EXPOSE 5053
 
 CMD [ "node", "server.js" ] 
 
