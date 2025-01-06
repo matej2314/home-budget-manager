@@ -21,6 +21,15 @@ app.use(cors());
 //     res.status(200).end();
 // });
 
+const authRouter = require('./routes/authRoutes.js');
+const householdRouter = require('./routes/householdRoutes.js');
+const transactionRouter = require('./routes/transactionsRoutes.js');
+
+
+app.use('/auth', authRouter);
+app.use('/house', householdRouter);
+app.use('/action', transactionRouter);
+
 try {
     app.listen(port, () => {
         logger.info(`BACKEND SERVER RUNNING. PORT ${port}`);
