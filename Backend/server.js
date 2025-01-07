@@ -8,10 +8,24 @@ const app = express();
 
 const port = process.env.SERV_PORT || 5053;
 
-app.use(express.urlencoded({ limit: '5mb', extended: true }));
-app.use(express.json({ limit: '5mb' }));
+const allowedOrigins = ['http://localhost'];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+}));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+
+
 
 // app.options('*', (req, res) => {
 //     res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');
@@ -22,11 +36,13 @@ app.use(cors());
 // });
 
 const authRouter = require('./routes/authRoutes.js');
+const usersRouter = require('./routes/usersRoutes.js');
 const householdRouter = require('./routes/householdRoutes.js');
 const transactionRouter = require('./routes/transactionsRoutes.js');
 
 
 app.use('/auth', authRouter);
+app.use('/users', usersRouter);
 app.use('/house', householdRouter);
 app.use('/action', transactionRouter);
 

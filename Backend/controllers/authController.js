@@ -23,14 +23,14 @@ exports.registerUser = async (req, res) => {
         for (const validation of validations) {
             if (!validation.isValid) {
                 logger.error(validation.message);
-                return res.status(400).json({ message: validation.message });
+                return res.status(400).json({status: 'error', message: validation.message });
             }
         }
 
         if (role === 'admin') {
             const [rows] = await pool.query(queries.registerAdminCheck);
             if (rows.length > 0) {
-                return res.status(400).json({ message: 'Konto administratora już istnieje' });
+                return res.status(400).json({status: 'error', message: 'Konto administratora już istnieje' });
             };
         };
 
@@ -53,15 +53,15 @@ exports.registerUser = async (req, res) => {
                 maxAge: 60 * 60 * 1000,
             });
 
-            return res.status(200).json({ status: 200, message: 'Użytkownik zarejestrowany. Możesz się zalogować' });
+            return res.status(200).json({ status: 'success', message: 'Użytkownik zarejestrowany. Możesz się zalogować' });
         } catch (error) {
             logger.error('Błąd podczas rejestracji użytkownika', error);
-            return res.status(500).json({ message: 'Błąd serwera.' });
+            return res.status(500).json({status: 'error', message: 'Błąd serwera.' });
         }
 
     } catch (error) {
         logger.error(error.message);
-        return res.status(500).json({ message: 'Błąd podczas rejestracji użytkownika.' });
+        return res.status(500).json({status: 'error', message: 'Błąd podczas rejestracji użytkownika.' });
     }
 };
 
@@ -77,7 +77,7 @@ exports.loginUser = async (req, res) => {
         for (const validation of validations) {
             if (!validation.isValid) {
                 logger.error(validation.message);
-                return res.status(400).json({ message: validation.message });
+                return res.status(400).json({ status: 'error', message: validation.message });
             }
         }
 
@@ -85,22 +85,21 @@ exports.loginUser = async (req, res) => {
 
         if (rows.length === 0) {
             logger.error('Nieprawidłowy adres e-mail.');
-            return res.status(401).json({ message: 'Nieprawidłowe dane logowania.' });
+            return res.status(401).json({status: 'error', message: 'Nieprawidłowe dane logowania.' });
         }
 
         const user = rows[0];
-
         const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!isValidPassword) {
             logger.error('Nieprawidłowe hasło.');
-            return res.status(401).json({ message: 'Nieprawidłowe dane logowania.' });
+            return res.status(401).json({status: 'error', message: 'Nieprawidłowe dane logowania.' });
         }
 
         const houseHold = user.household_id !== null ? user.household_id :  null;
 
         const token = jwt.sign(
-            { id: user.id, role: user.role, userName: user.name, houseHold },
+            { Id: user.id, role: user.role, userName: user.name, houseHold: houseHold },
             JWT_SECRET,
             { expiresIn: '24h' }
         );
@@ -113,13 +112,15 @@ exports.loginUser = async (req, res) => {
         logger.info(`Użytkownik ${user.name} zalogowany pomyślnie.`);
 
         return res.status(200).json({
+            status: 'success',
             message: 'Użytkownik zalogowany pomyślnie.',
             userName: user.name,
             role: user.role,
         });
+        
     } catch (error) {
         logger.error(`Błąd podczas logowania użytkownika: ${error.message}`);
-        return res.status(500).json({ message: 'Błąd serwera.' });
+        return res.status(500).json({status: 'error', message: 'Błąd serwera.' });
     }
 };
 
@@ -130,5 +131,5 @@ exports.logoutUser = async (req, res) => {
         secure: false,
         sameSite: 'lax',
     });
-    res.status(200).json({ message: 'Wylogowano pomyślnie.' });
+    res.status(200).json({status: 'success', message: 'Wylogowano pomyślnie.' });
 }

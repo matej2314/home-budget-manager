@@ -1,6 +1,130 @@
 const express = require('express');
 const router = express.Router();
+const { v4: uuidv4 } = require('uuid');
 const pool = require('../database/db');
 const logger = require('../configs/logger');
-const verifyJWT = require('../controllers/verifyJWT');
-const verifyAdmin = require('../controllers/verifyAdmin');
+const verifyJWT = require('../middlewares/verifyJWT');
+const verifyAdmin = require('../middlewares/verifyAdmin');
+
+//dla poj. gospodarstwa
+router.post('/new', verifyJWT, async (req, res) => {
+    const { type, value } = req.body;
+    const transactionId = uuidv4();
+    const householdId = req.house;
+    const userId = req.userId;
+
+    if (!type || !value || !transactionId || !householdId || !userId) {
+        logger.error('Brak danych do usunięcia transakcji.');
+        return res.status(404).json({
+            status: 'error',
+            message: 'Prześlij poprawne dane.'
+        });
+    }
+
+    const newitemQuery = 'INSERT INTO transactions WHERE (transactionId, userId, householdId, type, value) VALUES (?, ?, ?, ?, ?)';
+
+    try {
+        const response = await pool.query(newitemQuery, [transactionId, userId, householdId, type, value]);
+        logger.info('Transakcja dodana poprawnie.');
+        return res.status(200).json({ status: 'success', message: 'Transakcja dodana poprawnie' });
+    } catch (error) {
+        logger.error(`Nie udało się dodać transakcji dla gospodarstwa ${householdId}`);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Nie udało się dodać transakcji.',
+        });
+    };
+});
+
+router.get('/all', async (req, res) => {
+    try {
+        const allQuery = 'SELECT * FROM transactions ORDER BY transactionId';
+        const [rows] = await pool.query(allQuery);
+
+        if (rows.length == 0) {
+            logger.info('Brak transakcji.');
+            return res.status(404).json({
+                status: 'error',
+                message: 'Brak transakcji',
+            });
+        };
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Transakcje pobrane poprawnie',
+            actions: rows,
+        });
+
+    } catch (error) {
+        logger.error(`Bląd podczas pobierania transakcji: ${error.message}`);
+        return res.status(500).json({ status: 'error', message: 'Błąd podczas pobierania transakcji.' });
+    }
+});
+
+//pojedynczy get/dla pojedynczego gospodarstwa
+router.get('/', verifyJWT, async (req, res) => {
+    const owner_id = req.userId;
+    const householdId = req.house;
+
+    const getQuery = 'SELECT * FROM transactions WHERE userId=? AND householdId=?';
+
+    try {
+        const [rows] = await pool.query(getQuery, [owner_id, householdId]);
+
+        if (rows.length == 0) {
+            logger.error(`Brak transakcji dla gospodarstwa ${householdId}`);
+            return res.status(404).json({ status: 'error', message: 'Brak transakcji dla gospodarstwa,' });
+        };
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Transakcje dla gospodarstwa pobrane poprawnie',
+            actions: rows,
+        });
+
+    } catch (error) {
+        logger.error(`Błąd podczas pobierania transakcji gospodarstwa ${householdId}: ${error.message}`);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Błąd podczas pobierania transakcji dla gospodarstwa.',
+        });
+    };
+});
+
+router.delete('/', verifyJWT, async (req, res) => {
+    const { transactionId } = req.body;
+    const householdId = req.house;
+    const userId = req.userId;
+
+    if (!transactionId) {
+        logger.error('Brak ID transakcji, którą chcesz usunąć.');
+        return res.status(400).json({
+            status: 'error',
+            message: 'Brak ID transakcji, którą chcesz usunąć',
+        });
+    };
+
+    const deleteQuery = 'DELETE FROM transactions WHERE userId=? AND transactionId=?';
+
+    try {
+        const [result] = await pool.query(deleteQuery, [userId, householdId]);
+
+        if (result.affectedRows == 0) {
+            logger.error('Nie znaleziono gospodarstwa');
+            return res.status(404).json({status: 'error', message: 'Nie znaleziono gospodarstwa.'})
+        };
+
+        return res.status(200).json({
+            status: 'success',
+            message: `Gospodarstwo ${householdId} usunięte.`
+        });
+    } catch (error) {
+        logger.error('Nie udało się usunąć gospodarstwa.');
+        return res.status(500).json({
+            status: 'error',
+            message: 'Gospodarstwo usunięte poprawnie.',
+        });
+    };
+});
+
+module.exports = router;
