@@ -408,7 +408,7 @@ router.delete('/delete', verifyJWT(), async (req, res) => {
 
         if (ownership.length === 0 || ownership[0].ownerId !== userId) {
             logger.error('Brak uprawnień do usunięcia gospodarstwa.');
-            await connection.rollback(); // Cofnięcie transakcji w przypadku błędu
+            await connection.rollback();
             return res.status(403).json({ status: 'error', message: 'Brak uprawnień do usunięcia gospodarstwa.' });
         }
 
@@ -429,10 +429,10 @@ router.delete('/delete', verifyJWT(), async (req, res) => {
         });
     } catch (error) {
         logger.error(`Błąd podczas usuwania gospodarstwa: ${error.message}`);
-        await connection.rollback(); // Cofnięcie transakcji w przypadku błędu
+        await connection.rollback();
         return res.status(500).json({ status: 'error', message: 'Nie udało się usunąć gospodarstwa.' });
     } finally {
-        connection.release(); // Zwalnianie połączenia
+        connection.release();
     }
 });
 

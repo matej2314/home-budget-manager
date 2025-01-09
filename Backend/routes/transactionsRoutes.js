@@ -23,10 +23,10 @@ router.post('/new', verifyJWT(), async (req, res) => {
     }
 
     const newitemQuery = 'INSERT INTO transactions (transactionId, userId, householdId, type, value) VALUES (?, ?, ?, ?, ?)';
-    const connection = await pool.getConnection(); // Pobranie połączenia
+    const connection = await pool.getConnection(); 
 
     try {
-        await connection.beginTransaction(); // Rozpoczęcie transakcji
+        await connection.beginTransaction();
 
         const [response] = await connection.query(newitemQuery, [transactionId, userId, householdId, type, value]);
         logger.info('Transakcja dodana poprawnie.');
