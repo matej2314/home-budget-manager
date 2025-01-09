@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('./configs/logger.js');
 const express = require('express');
+const swaggerDocs = require('./configs/swaggerConfig.js');
 const app = express();
 
 const port = process.env.SERV_PORT || 5053;
@@ -25,8 +26,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-
-
 // app.options('*', (req, res) => {
 //     res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');
 //     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -34,6 +33,8 @@ app.use(cookieParser());
 //     res.header('Access-Control-Allow-Credentials', 'true');
 //     res.status(200).end();
 // });
+
+swaggerDocs(app);
 
 const authRouter = require('./routes/authRoutes.js');
 const usersRouter = require('./routes/usersRoutes.js');

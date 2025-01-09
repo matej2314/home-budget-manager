@@ -6,14 +6,15 @@ const logger = require('../configs/logger');
 const verifyJWT = require('../middlewares/verifyJWT');
 const verifyAdmin = require('../middlewares/verifyAdmin');
 
-//dla poj. gospodarstwa
-router.post('/new', verifyJWT, async (req, res) => {
+router.post('/new', verifyJWT(), async (req, res) => {
     const { type, value } = req.body;
     const transactionId = uuidv4();
     const householdId = req.house;
     const userId = req.userId;
 
-    if (!type || !value || !transactionId || !householdId || !userId) {
+    const types = ['income', 'cost'];
+    
+    if (!type || !types.includes(type) || !value || !transactionId || !householdId || !userId) {
         logger.error('Brak danych do usunięcia transakcji.');
         return res.status(404).json({
             status: 'error',
@@ -21,12 +22,16 @@ router.post('/new', verifyJWT, async (req, res) => {
         });
     }
 
-    const newitemQuery = 'INSERT INTO transactions WHERE (transactionId, userId, householdId, type, value) VALUES (?, ?, ?, ?, ?)';
+    const newitemQuery = 'INSERT INTO transactions (transactionId, userId, householdId, type, value) VALUES (?, ?, ?, ?, ?)';
 
     try {
         const response = await pool.query(newitemQuery, [transactionId, userId, householdId, type, value]);
         logger.info('Transakcja dodana poprawnie.');
-        return res.status(200).json({ status: 'success', message: 'Transakcja dodana poprawnie' });
+        return res.status(200).json({
+            status: 'success',
+            message: 'Transakcja dodana poprawnie',
+            transactionId
+        });
     } catch (error) {
         logger.error(`Nie udało się dodać transakcji dla gospodarstwa ${householdId}`);
         return res.status(500).json({
@@ -61,8 +66,7 @@ router.get('/all', async (req, res) => {
     }
 });
 
-//pojedynczy get/dla pojedynczego gospodarstwa
-router.get('/', verifyJWT, async (req, res) => {
+router.get('/my', verifyJWT(), async (req, res) => {
     const owner_id = req.userId;
     const householdId = req.house;
 
@@ -91,7 +95,7 @@ router.get('/', verifyJWT, async (req, res) => {
     };
 });
 
-router.delete('/', verifyJWT, async (req, res) => {
+router.delete('/', verifyJWT(), async (req, res) => {
     const { transactionId } = req.body;
     const householdId = req.house;
     const userId = req.userId;
@@ -104,25 +108,25 @@ router.delete('/', verifyJWT, async (req, res) => {
         });
     };
 
-    const deleteQuery = 'DELETE FROM transactions WHERE userId=? AND transactionId=?';
+    const deleteQuery = 'DELETE FROM transactions WHERE userId=? AND householdId=? AND transactionId=?';
 
     try {
-        const [result] = await pool.query(deleteQuery, [userId, householdId]);
+        const [result] = await pool.query(deleteQuery, [userId, householdId, transactionId]);
 
         if (result.affectedRows == 0) {
-            logger.error('Nie znaleziono gospodarstwa');
-            return res.status(404).json({status: 'error', message: 'Nie znaleziono gospodarstwa.'})
+            logger.error('Nie znaleziono transakcji');
+            return res.status(404).json({status: 'error', message: 'Nie znaleziono transakcji.'})
         };
 
         return res.status(200).json({
             status: 'success',
-            message: `Gospodarstwo ${householdId} usunięte.`
+            message: `Transakcja ${transactionId} usunięta.`
         });
     } catch (error) {
-        logger.error('Nie udało się usunąć gospodarstwa.');
+        logger.error('Nie udało się usunąć transakcji.');
         return res.status(500).json({
             status: 'error',
-            message: 'Gospodarstwo usunięte poprawnie.',
+            message: 'Nie udało się usunąć transakcji.',
         });
     };
 });

@@ -94,12 +94,16 @@ exports.loginUser = async (req, res) => {
         if (!isValidPassword) {
             logger.error('Nieprawidłowe hasło.');
             return res.status(401).json({status: 'error', message: 'Nieprawidłowe dane logowania.' });
-        }
+        };
+        
+        let houseToToken;
+        const houseHold = user.household_id !== null ? user.household_id : null;
+        const inhabitant = user.inhabitant !== null ? user.inhabitant : null;
 
-        const houseHold = user.household_id !== null ? user.household_id :  null;
+        houseToToken = houseHold || inhabitant;
 
         const token = jwt.sign(
-            { Id: user.id, role: user.role, userName: user.name, houseHold: houseHold },
+            { Id: user.id, role: user.role, userName: user.name, houseHold: houseToToken },
             JWT_SECRET,
             { expiresIn: '24h' }
         );
