@@ -81,7 +81,7 @@ const jwtCookieOptions = require('../configs/jwtCookieOptions.js');
 
 router.post('/new', verifyJWT(), async (req, res) => {
     const userId = req.userId;
-    const {houseName}  = req.body;
+    const { houseName } = req.body;
 
     if (!userId || !houseName) {
         logger.error('Brak danych: userId lub houseName są puste.');
@@ -91,54 +91,67 @@ router.post('/new', verifyJWT(), async (req, res) => {
     const houseId = uuidv4();
     const checkQuery = 'SELECT * FROM households WHERE houseName = ?';
     const addQuery = 'INSERT INTO households (houseId, ownerId, houseName) VALUES (?, ?, ?)';
-    const mateQuery = 'UPDATE users SET inhabitant=? WHERE id=?';
+    const mateQuery = 'UPDATE users SET inhabitant = ? WHERE id = ?';
     let houseToToken = houseId;
 
+    const connection = await pool.getConnection();
+
     try {
-        const [results] = await pool.query(checkQuery, [houseName]);
+        await connection.beginTransaction();
+
+        const [results] = await connection.query(checkQuery, [houseName]);
 
         if (results.length > 0) {
             const existingHouseId = results[0].houseId;
-            try {
-                await pool.query(mateQuery, [existingHouseId, userId]);
-                logger.info(`Gospodarstwo ${houseName} już istnieje. Dodano domownika.`);
-                houseToToken = existingHouseId;
-            } catch (error) {
-                logger.error(`Błąd podczas dodawania domownika: ${error}`);
-                return res.status(500).json({
-                    status: 'error',
-                    message: 'Nie udało się dodać domownika do istniejącego gospodarstwa.',
-                });
-            }
-        } else if (results.length == 0) {
-            await pool.query(addQuery, [houseId, userId, houseName]);
+
+            await connection.query(mateQuery, [existingHouseId, userId]);
+            logger.info(`Gospodarstwo ${houseName} już istnieje. Dodano domownika.`);
+            houseToToken = existingHouseId;
+        } else {
+           
+            await connection.query(addQuery, [houseId, userId, houseName]);
             logger.info(`Gospodarstwo ${houseName} dodane poprawnie.`);
         }
-    
-        const token = jwt.sign({
-            id: userId,
-            role: req.role,
-            userName: req.userName,
-            houseHold: houseToToken,
-        }, JWT_SECRET, { expiresIn: '24h' });
-    
+
+        await connection.commit();
+
+        const token = jwt.sign(
+            {
+                id: userId,
+                role: req.role,
+                userName: req.userName,
+                houseHold: houseToToken,
+            },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
         res.cookie('SESSID', token, {
             ...jwtCookieOptions,
             maxAge: 86400000,
         });
-    
+
         return res.status(200).json({
             status: 'success',
-            message: houseToToken === houseId
-                ? `Gospodarstwo ${houseName} dodane poprawnie.`
-                : `Gospodarstwo ${houseName} już istnieje. Dodano domownika.`,
-            houseId: houseToToken, 
+            message:
+                houseToToken === houseId
+                    ? `Gospodarstwo ${houseName} dodane poprawnie.`
+                    : `Gospodarstwo ${houseName} już istnieje. Dodano domownika.`,
+            houseId: houseToToken,
         });
     } catch (error) {
+        await connection.rollback();
+
         logger.error(`Błąd podczas przetwarzania żądania: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd podczas przetwarzania żądania.' });
+        return res.status(500).json({
+            status: 'error',
+            message: 'Błąd podczas przetwarzania żądania.',
+        });
+    } finally {
+        connection.release();
     }
 });
+
 
 
 /**
@@ -214,63 +227,64 @@ router.post('/new', verifyJWT(), async (req, res) => {
  *                   example: Błąd podczas pobierania gospodarstw.
  */
 
+// Endpoint pobierający wszystkie gospodarstwa
 router.get('/all', verifyJWT(), async (req, res) => {
     const query = 'SELECT houseId, houseName, ownerId FROM households ORDER BY houseId';
-    
+    const connection = await pool.getConnection();
+
     try {
-        const [result] = await pool.query(query);
+        const [result] = await connection.query(query);
 
         if (result.length === 0) {
             logger.info('Brak gospodarstw.');
             return res.status(404).json({ status: 'error', message: 'Brak gospodarstw.' });
         }
 
-        logger.info('Gospodarstwa pobrane poprawnie');
+        logger.info('Gospodarstwa pobrane poprawnie.');
         return res.status(200).json({
             status: 'success',
-            message: 'Gospodarstwa pobrane poprawnie',
+            message: 'Gospodarstwa pobrane poprawnie.',
             houses: result,
         });
     } catch (error) {
         logger.error(`Błąd podczas pobierania gospodarstw: ${error.stack}`);
-        return res.status(500).json({status: 'error', message: 'Błąd podczas pobierania gospodarstw.' });
+        return res.status(500).json({ status: 'error', message: 'Błąd podczas pobierania gospodarstw.' });
+    } finally {
+        connection.release();
     }
 });
 
-
 router.get('/info', verifyJWT(), async (req, res) => {
+    const userId = req.userId;
+    const householdId = req.house;
+
+    if (!userId || !householdId) {
+        logger.error('Brak danych do pobrania informacji o gospodarstwie.');
+        return res.status(400).json({ status: 'error', message: 'Brak poprawnych informacji.' });
+    }
+
+    const dataQuery = 'SELECT * FROM households WHERE houseId=? AND ownerId=?';
+    const connection = await pool.getConnection();
+
     try {
-        const userId = req.userId;
-        const householdId = req.house;
+        const [result] = await connection.query(dataQuery, [householdId, userId]);
 
-        if (!userId || !householdId) {
-            logger.error('Brak danych do pobrania informacji o gospodarstwie.');
-            return res.status(400).json({status: 'error', message: 'Brak poprawnych informacji.' });
+        if (result.length === 0) {
+            logger.error('Nie znaleziono gospodarstwa.');
+            return res.status(404).json({ status: 'error', message: 'Nie znaleziono gospodarstwa.' });
         }
 
-        const dataQuery = 'SELECT * FROM households WHERE houseId=? AND ownerId=?';
-
-        try {
-            const [result] = await pool.query(dataQuery, [householdId, userId]);
-
-            if (result.length === 0) {
-                logger.error('Nie znaleziono gospodarstwa.');
-                return res.status(404).json({status: 'error', message: 'Nie znaleziono gospodarstwa.' });
-            }
-
-            logger.info(`Informacje o gospodarstwie ${householdId} pobrane poprawnie.`);
-            return res.status(200).json({
-                status: 'success',
-                message: 'Informacje o gospodarstwie pobrane poprawnie',
-                info: result,
-            });
-        } catch (error) {
-            logger.error(`Nie udało się pobrać informacji o gospodarstwie: ${error.stack}`);
-            return res.status(500).json({status: 'error', message: 'Nie udało się pobrać danych o gospodarstwie.' });
-        }
+        logger.info(`Informacje o gospodarstwie ${householdId} pobrane poprawnie.`);
+        return res.status(200).json({
+            status: 'success',
+            message: 'Informacje o gospodarstwie pobrane poprawnie.',
+            info: result,
+        });
     } catch (error) {
-        logger.error(`Błąd podczas pobierania informacji: ${error.stack}`);
-        return res.status(500).json({status: 'error', message: 'Błąd podczas pobierania gospodarstw.' });
+        logger.error(`Błąd podczas pobierania informacji o gospodarstwie: ${error.stack}`);
+        return res.status(500).json({ status: 'error', message: 'Nie udało się pobrać danych o gospodarstwie.' });
+    } finally {
+        connection.release();
     }
 });
 
@@ -378,46 +392,49 @@ router.delete('/delete', verifyJWT(), async (req, res) => {
     const houseId = req.house;
     const userId = req.userId;
     const { houseName } = req.body;
-    console.log(`houseId: ${houseId}, userId: ${userId}, houseName: ${houseName}`);
+
     if (!houseId || !userId || !houseName) {
         logger.error('Podaj prawidłowe dane do usunięcia gospodarstwa.');
         return res.status(400).json({ status: 'error', message: 'Podaj prawidłowe dane do usunięcia gospodarstwa.' });
     };
 
+    const connection = await pool.getConnection();
+
     try {
+        await connection.beginTransaction();
 
         const ownershipQuery = 'SELECT ownerId FROM households WHERE houseId=?';
+        const [ownership] = await connection.query(ownershipQuery, [houseId]);
 
-        const [ownership] = await pool.query(ownershipQuery, [houseId]);
-
-        if (ownership[0].ownerId !== userId) {
+        if (ownership.length === 0 || ownership[0].ownerId !== userId) {
             logger.error('Brak uprawnień do usunięcia gospodarstwa.');
-            return res.status(403).json({ status: 'error',message: 'Brak uprawnień do usunięcia gospodarstwa.' });
+            await connection.rollback(); // Cofnięcie transakcji w przypadku błędu
+            return res.status(403).json({ status: 'error', message: 'Brak uprawnień do usunięcia gospodarstwa.' });
         }
 
         const deleteQuery = 'DELETE FROM households WHERE houseId=? AND ownerId=?';
+        const [result] = await connection.query(deleteQuery, [houseId, userId]);
 
-        try {
-            const [result] = await pool.query(deleteQuery, [houseId, userId]);
-
-            if (result.affectedRows == 0) {
-                logger.info('Nie znaleziono gospodarstwa.');
-                return res.status(404).json({status: 'error', message: 'Nie znaleziono gospodarstwa.' });
-            };
-
-            return res.status(200).json({
-                status: 'success',
-                message: `Gospodarstwo ${houseName} usunięte.`,
-            });
-
-        } catch (error) {
-            logger.error(`Nie udało się usunąć gospodarstwa ${error.message}`);
-            return res.status(500).json({status: 'error', message: 'Nie udało się usunąć gospodarstwa.' });
+        if (result.affectedRows == 0) {
+            logger.info('Nie znaleziono gospodarstwa.');
+            await connection.rollback();
+            return res.status(404).json({ status: 'error', message: 'Nie znaleziono gospodarstwa.' });
         }
+
+        await connection.commit();
+
+        return res.status(200).json({
+            status: 'success',
+            message: `Gospodarstwo ${houseName} usunięte.`,
+        });
     } catch (error) {
-        logger.error(`Błąd podczas usuwania gospodarstwa: ${error}`);
-        return res.status(500).json({status: 'error', message: 'Błąd podczas usuwania gospodarstwa.' });
-    };
+        logger.error(`Błąd podczas usuwania gospodarstwa: ${error.message}`);
+        await connection.rollback(); // Cofnięcie transakcji w przypadku błędu
+        return res.status(500).json({ status: 'error', message: 'Nie udało się usunąć gospodarstwa.' });
+    } finally {
+        connection.release(); // Zwalnianie połączenia
+    }
 });
+
 
 module.exports = router;

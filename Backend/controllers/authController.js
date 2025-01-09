@@ -9,71 +9,19 @@ const jwtCookieOptions = require('../configs/jwtCookieOptions');
 const queries = require('../database/authQueries');
 
 exports.registerUser = async (req, res) => {
-    try {
     const { reg_username, reg_email, reg_password, role } = req.body;
-        const allowedRoles = ['admin', 'user'];
-        
+    const allowedRoles = ['admin', 'user'];
+
     const validations = [
         { isValid: !!reg_username && isValidUsername(reg_username), message: 'Podaj prawidłowe dane użytkownika.' },
-        { isValid: !!reg_email && isValidEmail(reg_email), message: 'Podaj prawidłowe dane użytkownika.' },
-        { isValid: !!reg_password && isValidPassword(reg_password), message: 'Podaj prawidłowe dane użytkownika.' },
+        { isValid: !!reg_email && isValidEmail(reg_email), message: 'Podaj prawidłowy adres e-mail.' },
+        { isValid: !!reg_password && isValidPassword(reg_password), message: 'Podaj prawidłowe hasło.' },
         { isValid: allowedRoles.includes(role), message: 'Nieprawidłowa rola użytkownika!' },
-        ];
-        
-        for (const validation of validations) {
-            if (!validation.isValid) {
-                logger.error(validation.message);
-                return res.status(400).json({status: 'error', message: validation.message });
-            }
-        }
+    ];
 
-        if (role === 'admin') {
-            const [rows] = await pool.query(queries.registerAdminCheck);
-            if (rows.length > 0) {
-                return res.status(400).json({status: 'error', message: 'Konto administratora już istnieje' });
-            };
-        };
+    const connection = await pool.getConnection();
 
-        const hashedPassword = await bcrypt.hash(reg_password, 10);
-        const userId = uuidv4();
-
-        try {
-            await pool.query(queries.register, {
-                id: userId,
-                role,
-                name: reg_username,
-                password: hashedPassword,
-                email: reg_email,
-            });
-
-            const token = jwt.sign({ id: userId, role, }, JWT_SECRET, { expiresIn: '1h' });
-
-            res.cookie('SESSID', token, {
-                ...jwtCookieOptions,
-                maxAge: 60 * 60 * 1000,
-            });
-
-            return res.status(200).json({ status: 'success', message: 'Użytkownik zarejestrowany. Możesz się zalogować' });
-        } catch (error) {
-            logger.error('Błąd podczas rejestracji użytkownika', error);
-            return res.status(500).json({status: 'error', message: 'Błąd serwera.' });
-        }
-
-    } catch (error) {
-        logger.error(error.message);
-        return res.status(500).json({status: 'error', message: 'Błąd podczas rejestracji użytkownika.' });
-    }
-};
-
-exports.loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
-
-        const validations = [
-            { isValid: email && email.trim() !== '', message: 'Podaj prawidłowy adres e-mail.' },
-            { isValid: password && password.trim() !== '', message: 'Podaj prawidłowe hasło.' },
-        ];
-
         for (const validation of validations) {
             if (!validation.isValid) {
                 logger.error(validation.message);
@@ -81,7 +29,59 @@ exports.loginUser = async (req, res) => {
             }
         }
 
-        const [rows] = await pool.query(queries.login, [email]);
+        if (role === 'admin') {
+            const [rows] = await connection.query(queries.registerAdminCheck);
+            if (rows.length > 0) {
+                return res.status(400).json({ status: 'error', message: 'Konto administratora już istnieje' });
+            }
+        }
+
+        const hashedPassword = await bcrypt.hash(reg_password, 10);
+        const userId = uuidv4();
+
+        await connection.query(queries.register, {
+            id: userId,
+            role,
+            name: reg_username,
+            password: hashedPassword,
+            email: reg_email,
+        });
+
+        const token = jwt.sign({ id: userId, role }, JWT_SECRET, { expiresIn: '1h' });
+
+        res.cookie('SESSID', token, {
+            ...jwtCookieOptions,
+            maxAge: 60 * 60 * 1000,
+        });
+
+        return res.status(200).json({ status: 'success', message: 'Użytkownik zarejestrowany. Możesz się zalogować' });
+
+    } catch (error) {
+        logger.error('Błąd podczas rejestracji użytkownika: ', error);
+        return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
+    } finally {
+        connection.release();
+    }
+};
+
+exports.loginUser = async (req, res) => {
+    const { email, password } = req.body;
+        const connection = await pool.getConnection();
+
+        const validations = [
+            { isValid: email && email.trim() !== '', message: 'Podaj prawidłowy adres e-mail.' },
+            { isValid: password && password.trim() !== '', message: 'Podaj prawidłowe hasło.' },
+        ];
+
+    try {
+        for (const validation of validations) {
+            if (!validation.isValid) {
+                logger.error(validation.message);
+                return res.status(400).json({ status: 'error', message: validation.message });
+            }
+        };
+        
+        const [rows] = await connection.query(queries.login, [email]);
 
         if (rows.length === 0) {
             logger.error('Nieprawidłowy adres e-mail.');
@@ -125,9 +125,10 @@ exports.loginUser = async (req, res) => {
     } catch (error) {
         logger.error(`Błąd podczas logowania użytkownika: ${error.message}`);
         return res.status(500).json({status: 'error', message: 'Błąd serwera.' });
+    } finally {
+        connection.release();
     }
 };
-
 
 exports.logoutUser = async (req, res) => {
     res.clearCookie('SESSID', {

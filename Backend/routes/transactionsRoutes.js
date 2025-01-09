@@ -16,35 +16,46 @@ router.post('/new', verifyJWT(), async (req, res) => {
     
     if (!type || !types.includes(type) || !value || !transactionId || !householdId || !userId) {
         logger.error('Brak danych do usunięcia transakcji.');
-        return res.status(404).json({
+        return res.status(400).json({
             status: 'error',
             message: 'Prześlij poprawne dane.'
         });
     }
 
     const newitemQuery = 'INSERT INTO transactions (transactionId, userId, householdId, type, value) VALUES (?, ?, ?, ?, ?)';
+    const connection = await pool.getConnection(); // Pobranie połączenia
 
     try {
-        const response = await pool.query(newitemQuery, [transactionId, userId, householdId, type, value]);
+        await connection.beginTransaction(); // Rozpoczęcie transakcji
+
+        const [response] = await connection.query(newitemQuery, [transactionId, userId, householdId, type, value]);
         logger.info('Transakcja dodana poprawnie.');
+        await connection.commit();
+
         return res.status(200).json({
             status: 'success',
             message: 'Transakcja dodana poprawnie',
             transactionId
         });
     } catch (error) {
+        await connection.rollback(); 
         logger.error(`Nie udało się dodać transakcji dla gospodarstwa ${householdId}`);
         return res.status(500).json({
             status: 'error',
             message: 'Nie udało się dodać transakcji.',
         });
+    } finally {
+        await connection.release();
     };
 });
 
+
 router.get('/all', async (req, res) => {
+    const allQuery = 'SELECT * FROM transactions ORDER BY transactionId';
+    const connection = await pool.getConnection();
+
     try {
-        const allQuery = 'SELECT * FROM transactions ORDER BY transactionId';
-        const [rows] = await pool.query(allQuery);
+        const [rows] = await connection.query(allQuery);
 
         if (rows.length == 0) {
             logger.info('Brak transakcji.');
@@ -59,11 +70,12 @@ router.get('/all', async (req, res) => {
             message: 'Transakcje pobrane poprawnie',
             actions: rows,
         });
-
     } catch (error) {
         logger.error(`Bląd podczas pobierania transakcji: ${error.message}`);
         return res.status(500).json({ status: 'error', message: 'Błąd podczas pobierania transakcji.' });
-    }
+    } finally {
+        await connection.release();
+    };
 });
 
 router.get('/my', verifyJWT(), async (req, res) => {
@@ -71,13 +83,14 @@ router.get('/my', verifyJWT(), async (req, res) => {
     const householdId = req.house;
 
     const getQuery = 'SELECT * FROM transactions WHERE userId=? AND householdId=?';
+    const connection = await pool.getConnection();
 
     try {
-        const [rows] = await pool.query(getQuery, [owner_id, householdId]);
+        const [rows] = await connection.query(getQuery, [owner_id, householdId]);
 
         if (rows.length == 0) {
             logger.error(`Brak transakcji dla gospodarstwa ${householdId}`);
-            return res.status(404).json({ status: 'error', message: 'Brak transakcji dla gospodarstwa,' });
+            return res.status(404).json({ status: 'error', message: 'Brak transakcji dla gospodarstwa.' });
         };
 
         return res.status(200).json({
@@ -92,7 +105,9 @@ router.get('/my', verifyJWT(), async (req, res) => {
             status: 'error',
             message: 'Błąd podczas pobierania transakcji dla gospodarstwa.',
         });
-    };
+    } finally {
+        connection.release();
+    }
 });
 
 router.delete('/', verifyJWT(), async (req, res) => {
@@ -109,9 +124,10 @@ router.delete('/', verifyJWT(), async (req, res) => {
     };
 
     const deleteQuery = 'DELETE FROM transactions WHERE userId=? AND householdId=? AND transactionId=?';
+    const connection = await pool.getConnection();
 
     try {
-        const [result] = await pool.query(deleteQuery, [userId, householdId, transactionId]);
+        const [result] = await connection.query(deleteQuery, [userId, householdId, transactionId]);
 
         if (result.affectedRows == 0) {
             logger.error('Nie znaleziono transakcji');
@@ -128,7 +144,9 @@ router.delete('/', verifyJWT(), async (req, res) => {
             status: 'error',
             message: 'Nie udało się usunąć transakcji.',
         });
-    };
+    } finally {
+        connection.release();
+    }
 });
 
 module.exports = router;
