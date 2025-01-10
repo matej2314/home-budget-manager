@@ -5,148 +5,335 @@ const pool = require('../database/db');
 const logger = require('../configs/logger');
 const verifyJWT = require('../middlewares/verifyJWT');
 const verifyAdmin = require('../middlewares/verifyAdmin');
+const actionsController = require('../controllers/transactionsController');
 
-router.post('/new', verifyJWT(), async (req, res) => {
-    const { type, value } = req.body;
-    const transactionId = uuidv4();
-    const householdId = req.house;
-    const userId = req.userId;
+/**
+ * @swagger
+ * /action/new:
+ *   post:
+ *     summary: Adding new transaction
+ *     description: This endpoint allows to add new transaction to db.
+ *     tags:
+ *       - Transactions
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 description: type of transaction
+ *                 example: cost
+ *               value:
+ *                 type: string
+ *                 description: Value of transaction
+ *                 example: 5000
+ *     responses:
+ *       201:
+ *         description: Household created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status of the response
+ *                   example: 'success'
+ *                 message:
+ *                   type: string
+ *                   description: Message about response.
+ *                   example: Gospodarstwo My Flat dodane poprawnie.
+ *       400:
+ *         description: Nieprawidłowe dane wejściowe
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                    type: string
+ *                    description: status of the response
+ *                    example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Error description
+ *                   example: Prześlij poprawne dane
+ *       500:
+ *         description: Błąd wewnętrzny serwera
+ *         content: 
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                    type: string
+ *                    description: Status of the response
+ *                    example: 'error'
+ *                 message:
+ *                    type: string
+ *                    description: Description of error
+ *                    example: Nie udało się dodać transakcji
+ *                    
+ * 
+ */
 
-    const types = ['income', 'cost'];
-    
-    if (!type || !types.includes(type) || !value || !transactionId || !householdId || !userId) {
-        logger.error('Brak danych do usunięcia transakcji.');
-        return res.status(400).json({
-            status: 'error',
-            message: 'Prześlij poprawne dane.'
-        });
-    }
+router.post('/new', verifyJWT(), actionsController.addNewAction);
 
-    const newitemQuery = 'INSERT INTO transactions (transactionId, userId, householdId, type, value) VALUES (?, ?, ?, ?, ?)';
-    const connection = await pool.getConnection(); 
+/**
+ * @swagger
+ * /action/all:
+ *   get:
+ *     summary: Pobierz wszystkie transakcje
+ *     description: Zwraca listę wszystkich transakcji w bazie danych uporządkowaną według ID transakcji.
+ *     tags:
+ *       - Transactions
+ *     responses:
+ *       200:
+ *         description: Transakcje pobrane poprawnie.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'success'
+ *                 message:
+ *                   type: string
+ *                   description: Wiadomość o sukcesie
+ *                   example: Transakcje pobrane poprawnie
+ *                 actions:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       transactionId:
+ *                         type: string
+ *                         description: Unikalny identyfikator transakcji
+ *                         example: '123e4567-e89b-12d3-a456-426614174000'
+ *                       userId:
+ *                         type: string
+ *                         description: ID użytkownika, który dodał transakcję
+ *                         example: '123e4567-e89b-12d3-a456-426614174000'
+ *                       householdId:
+ *                         type: string
+ *                         description: Identyfikator gospodarstwa, którego dotyczy transakcja.
+ *                         example: '456e7890-b12c-34f5-d678-526314184001'
+ *                       type:
+ *                         type: string
+ *                         description: Typ transakcji
+ *                         example: 'cost'
+ *                       value:
+ *                         type: string
+ *                         description: Wartość danej transakcji.
+ *                         example: '200'
+ *       404:
+ *         description: Brak transakcji.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Wiadomość o braku danych
+ *                   example: Brak transakcji.
+ *       500:
+ *         description: Błąd serwera
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Opis błędu
+ *                   example: Błąd podczas pobierania transakcji.
+ */
 
-    try {
-        await connection.beginTransaction();
+router.get('/all', actionsController.getAllActions);
 
-        const [response] = await connection.query(newitemQuery, [transactionId, userId, householdId, type, value]);
-        logger.info('Transakcja dodana poprawnie.');
-        await connection.commit();
+/**
+ * @swagger
+ * /action/my:
+ *   get:
+ *     summary: Pobierz transakcje dot. wskazanego gospodarstwa
+ *     description: Zwraca listę wszystkich transakcji dot. gospodarstwa w bazie danych uporządkowaną według ID transakcji
+ *     tags:
+ *       - Transactions
+ *     responses:
+ *       200:
+ *         description: Transakcje dla gospodarstwa pobrane poprawnie.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'success'
+ *                 message:
+ *                   type: string
+ *                   description: Wiadomość o sukcesie
+ *                   example: Transakcje dla gospodarstwa pobrane poprawnie
+ *                 actions:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       transactionId:
+ *                         type: string
+ *                         description: Unikalny identyfikator transakcji
+ *                         example: '123e4567-e89b-12d3-a456-426614174000'
+ *                       userId:
+ *                         type: string
+ *                         description: ID użytkownika, który dodał transakcję
+ *                         example: '123e4567-e89b-12d3-a456-426614174000'
+ *                       householdId:
+ *                         type: string
+ *                         description: Identyfikator gospodarstwa, którego dotyczy transakcja.
+ *                         example: '456e7890-b12c-34f5-d678-526314184001'
+ *                       type:
+ *                         type: string
+ *                         description: Typ transakcji
+ *                         example: 'cost'
+ *                       value:
+ *                         type: string
+ *                         description: Wartość danej transakcji.
+ *                         example: '200'
+ *       404:
+ *         description: Brak transakcji dla gospodarstwa.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Wiadomość o braku danych
+ *                   example: Brak transakcji dla gospodarstwa.
+ *       500:
+ *         description: Błąd serwera
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Opis błędu
+ *                   example: Błąd podczas pobierania transakcji dla gospodarstwa.
+ */
 
-        return res.status(200).json({
-            status: 'success',
-            message: 'Transakcja dodana poprawnie',
-            transactionId
-        });
-    } catch (error) {
-        await connection.rollback(); 
-        logger.error(`Nie udało się dodać transakcji dla gospodarstwa ${householdId}`);
-        return res.status(500).json({
-            status: 'error',
-            message: 'Nie udało się dodać transakcji.',
-        });
-    } finally {
-        await connection.release();
-    };
-});
+router.get('/my', verifyJWT(), actionsController.getHouseActions);
 
+/**
+ * @swagger
+ * /actions:
+ *   delete:
+ *     summary: Usuń wybraną transakcję
+ *     description: Usuwa transakcję, jeśli użytkownik jest właścicielem lub domownikiem i podał wszystkie wymagane dane.
+ *     tags:
+ *       - Transactions
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               transactionId:
+ *                 type: string
+ *                 description: ID transakcji przeznaczonej do usunięcia.
+ *                 example: '123e4567-e89b-12d3-a456-426614174000'
+ *     responses:
+ *       200:
+ *         description: Transakcja usunięta pomyślnie
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'success'
+ *                 message:
+ *                   type: string
+ *                   description: Wiadomość o sukcesie
+ *                   example: Transakcja '123e4567-e89b-12d3-a456-426614174000' usunięta.
+ *       400:
+ *         description: Brak wymaganych danych do usunięcia gospodarstwa
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Opis błędu
+ *                   example: Brak ID transakcji, którą chcesz usunąć.
+ *       404:
+ *         description: Gospodarstwo nie zostało znalezione
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Opis błędu
+ *                   example: Nie znaleziono transakcji.
+ *       500:
+ *         description: Błąd serwera
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Opis błędu
+ *                   example: Nie udało się usunąć transakcji.
+ */
 
-router.get('/all', async (req, res) => {
-    const allQuery = 'SELECT * FROM transactions ORDER BY transactionId';
-    const connection = await pool.getConnection();
-
-    try {
-        const [rows] = await connection.query(allQuery);
-
-        if (rows.length == 0) {
-            logger.info('Brak transakcji.');
-            return res.status(404).json({
-                status: 'error',
-                message: 'Brak transakcji',
-            });
-        };
-
-        return res.status(200).json({
-            status: 'success',
-            message: 'Transakcje pobrane poprawnie',
-            actions: rows,
-        });
-    } catch (error) {
-        logger.error(`Bląd podczas pobierania transakcji: ${error.message}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd podczas pobierania transakcji.' });
-    } finally {
-        await connection.release();
-    };
-});
-
-router.get('/my', verifyJWT(), async (req, res) => {
-    const owner_id = req.userId;
-    const householdId = req.house;
-
-    const getQuery = 'SELECT * FROM transactions WHERE userId=? AND householdId=?';
-    const connection = await pool.getConnection();
-
-    try {
-        const [rows] = await connection.query(getQuery, [owner_id, householdId]);
-
-        if (rows.length == 0) {
-            logger.error(`Brak transakcji dla gospodarstwa ${householdId}`);
-            return res.status(404).json({ status: 'error', message: 'Brak transakcji dla gospodarstwa.' });
-        };
-
-        return res.status(200).json({
-            status: 'success',
-            message: 'Transakcje dla gospodarstwa pobrane poprawnie',
-            actions: rows,
-        });
-
-    } catch (error) {
-        logger.error(`Błąd podczas pobierania transakcji gospodarstwa ${householdId}: ${error.message}`);
-        return res.status(500).json({
-            status: 'error',
-            message: 'Błąd podczas pobierania transakcji dla gospodarstwa.',
-        });
-    } finally {
-        connection.release();
-    }
-});
-
-router.delete('/', verifyJWT(), async (req, res) => {
-    const { transactionId } = req.body;
-    const householdId = req.house;
-    const userId = req.userId;
-
-    if (!transactionId) {
-        logger.error('Brak ID transakcji, którą chcesz usunąć.');
-        return res.status(400).json({
-            status: 'error',
-            message: 'Brak ID transakcji, którą chcesz usunąć',
-        });
-    };
-
-    const deleteQuery = 'DELETE FROM transactions WHERE userId=? AND householdId=? AND transactionId=?';
-    const connection = await pool.getConnection();
-
-    try {
-        const [result] = await connection.query(deleteQuery, [userId, householdId, transactionId]);
-
-        if (result.affectedRows == 0) {
-            logger.error('Nie znaleziono transakcji');
-            return res.status(404).json({status: 'error', message: 'Nie znaleziono transakcji.'})
-        };
-
-        return res.status(200).json({
-            status: 'success',
-            message: `Transakcja ${transactionId} usunięta.`
-        });
-    } catch (error) {
-        logger.error('Nie udało się usunąć transakcji.');
-        return res.status(500).json({
-            status: 'error',
-            message: 'Nie udało się usunąć transakcji.',
-        });
-    } finally {
-        connection.release();
-    }
-});
+router.delete('/', verifyJWT(), actionsController.deleteAction);
 
 module.exports = router;

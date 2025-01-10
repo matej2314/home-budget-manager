@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const verifyJWT = (requiredRole) => {
+const verifyJWT = () => {
     
     return (req, res, next) => {
+       
         const token = req.cookies.SESSID;
 
         if (!token) {
@@ -15,12 +16,8 @@ const verifyJWT = (requiredRole) => {
             req.userId = decoded.Id;
             req.role = decoded.role;
             req.userName = decoded.userName;
-            req.house = decoded.houseHold;
-
-            if (requiredRole && decoded.role !== requiredRole) {
-                return res.status(403).json({ message: 'Brak uprawnień' });
-            };
-
+            req.house = decoded.house;
+            
             next();
         } catch (error) {
             return res.status(401).json({ message: 'Zaloguj się, aby zobaczyć zasoby.' });
