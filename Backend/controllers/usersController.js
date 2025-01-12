@@ -102,16 +102,16 @@ exports.deleteInhabitant = async (req, res) => {
             return res.status(404).json({ status: 'error', message: 'Użytkownik nie jest domownikiem.' });
         }
 
-        const { inhabitant } = checkInhabitant[0];
+        const { inhabitantIdValue } = checkInhabitant[0];
 
-        if (inhabitant !== house) {
+        if (inhabitantIdValue !== houseId) {
             await connection.rollback();
             logger.info(`Użytkownik ${inhabitantId} nie należy do gospodarstwa ${house}.`);
             return res.status(403).json({
                 status: 'error',
                 message: 'Nie masz uprawnień do usunięcia tego użytkownika.',
             });
-        }
+        };
 
         await connection.query(usersQueries.deleteQuery, [inhabitantId]);
         await connection.commit();

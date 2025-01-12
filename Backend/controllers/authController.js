@@ -10,7 +10,7 @@ const queries = require('../database/authQueries');
 
 exports.registerUser = async (req, res) => {
     const { reg_username, reg_email, reg_password, role } = req.body;
-    const allowedRoles = ['admin', 'user'];
+    const allowedRoles = ['superadmin','host', 'inmate', 'user'];
 
     const validations = [
         { isValid: !!reg_username && isValidUsername(reg_username), message: 'Podaj prawidłowe dane użytkownika.' },
@@ -29,24 +29,35 @@ exports.registerUser = async (req, res) => {
             }
         }
 
-        if (role === 'admin') {
+        if (role === 'superadmin') {
             const [rows] = await connection.query(queries.registerAdminCheck);
             if (rows.length > 0) {
-                return res.status(400).json({ status: 'error', message: 'Konto administratora już istnieje' });
+                return res.status(400).json({ status: 'error', message: 'Konto superadmina już istnieje' });
             }
         }
 
         const hashedPassword = await bcrypt.hash(reg_password, 10);
         const userId = uuidv4();
 
-        await connection.query(queries.register, {
+        const [result] = await connection.query(queries.register, {
             id: userId,
             role,
             name: reg_username,
             password: hashedPassword,
             email: reg_email,
         });
-
+        
+        
+        if (result.affectedRows === 1) {
+            await connection.query(queries.houseUsers, {
+                id: uuidv4(),
+                userId: userId,
+                userName: reg_username,
+                houseId: 0,
+                role: role,
+            });
+        };
+        
         const token = jwt.sign({ id: userId, role }, JWT_SECRET, { expiresIn: '1h' });
 
         res.cookie('SESSID', token, {
@@ -96,11 +107,8 @@ exports.loginUser = async (req, res) => {
             return res.status(401).json({status: 'error', message: 'Nieprawidłowe dane logowania.' });
         };
         
-        const houseHold = user.household_id !== null ? user.household_id : null;
-        const inhabitant = user.inhabitant !== null ? user.inhabitant : null;
-
         const token = jwt.sign(
-            { Id: user.id, role: user.role, userName: user.name, house: houseHold, inhabitant: inhabitant },
+            { id: user.id, role: user.role, userName: user.name, host: user.host, inmate: user.inmate },
             JWT_SECRET,
             { expiresIn: '24h' }
         );

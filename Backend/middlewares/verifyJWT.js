@@ -8,19 +8,19 @@ const verifyJWT = () => {
         const token = req.cookies.SESSID;
 
         if (!token) {
-            return res.status(401).json({ message: 'Zaloguj się, aby zobaczyć zasoby.' });
+            return res.status(401).json({status: 'error', message: 'Zaloguj się, aby zobaczyć zasoby.' });
         }
 
         try {
             const decoded = jwt.verify(token, JWT_SECRET);
-            req.userId = decoded.Id;
+            req.userId = decoded.id;
             req.role = decoded.role;
             req.userName = decoded.userName;
-            req.house = decoded.house;
-            
+            req.host = decoded.host;
+            req.inmate = decoded.inmate;
             next();
         } catch (error) {
-            return res.status(401).json({ message: 'Zaloguj się, aby zobaczyć zasoby.' });
+            return res.status(401).json({status: 'error', message: 'Zaloguj się, aby zobaczyć zasoby.' });
         };
     };
 };
