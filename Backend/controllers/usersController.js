@@ -2,6 +2,13 @@ const pool = require('../database/db');
 const logger = require('../configs/logger');
 const usersQueries = require('../database/usersQueries');
 
+exports.addUserToHouse = async (req, res) => {
+    const { userName } = req.body;
+
+    const connection = await pool.getConnection();
+
+}
+
 exports.getAllUsers = async (req, res) => {
 
     const connection = await pool.getConnection();
