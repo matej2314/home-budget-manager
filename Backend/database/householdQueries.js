@@ -10,4 +10,5 @@ module.exports = {
     getAllHousesQuery: 'SELECT h.houseId, h.houseName, h.userId, hu.userName, hu.role FROM households h JOIN householdUsers hu ON h.houseId = hu.houseId ORDER BY h.houseId;',
     updatehouseIdHu: 'UPDATE householdUsers SET houseId = ? WHERE userId = ?',
     selectInmates: 'SELECT userId FROM householdUsers WHERE houseId=?',
+    deleteHouseActions: 'DELETE FROM transactions WHERE houseId=?',
 };

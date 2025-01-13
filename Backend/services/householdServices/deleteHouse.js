@@ -33,6 +33,9 @@ exports.deleteHouse = async (userId, houseName) => {
                 const userId = inmate.userId;
                 await resetInmatesProps(userId, connection);
             };
+
+            await connection.query(houseQueries.deleteHouseActions, [houseId]);
+            logger.info(`Gospodarstwo ${houseName} w pełni usunięte.`);
         };
 
         await connection.commit();
