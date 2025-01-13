@@ -317,7 +317,9 @@ router.post('/delete/:userId', verifyJWT(), usersController.deleteUser);
  *                   example: 'Nie udało się usunąć domownika.'
  */
 
-router.delete('/delete/inhabitant', verifyJWT(), usersController.deleteInhabitant);
+router.post('/invite',verifyJWT(), verifyRole('host'), usersController.addUserToHouse);
+
+router.delete('/delete/inhabitant', verifyJWT(), verifyRole('host'), usersController.deleteInhabitant);
 
 
 module.exports = router;

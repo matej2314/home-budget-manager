@@ -11,4 +11,5 @@ module.exports = {
     updatehouseIdHu: 'UPDATE householdUsers SET houseId = ? WHERE userId = ?',
     selectInmates: 'SELECT userId FROM householdUsers WHERE houseId=?',
     deleteHouseActions: 'DELETE FROM transactions WHERE houseId=?',
+   
 };

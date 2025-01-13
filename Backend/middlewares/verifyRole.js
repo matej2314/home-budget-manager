@@ -1,7 +1,7 @@
 const verifyRole = (reqRole) => {
     return (req, res, next) => {
         const userRole = req.role;
-        
+       
         if (!userRole) return res.status(403).json({ status: 'error', message: 'Użytkownik nie ma przypisanej roli.' });
         
         const permissions = {
