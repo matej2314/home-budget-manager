@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { v4: uuidv4 } = require('uuid');
-const pool = require('../database/db');
-const logger = require('../configs/logger');
 const verifyJWT = require('../middlewares/verifyJWT');
-const verifyAdmin = require('../middlewares/verifyAdmin');
+const verifyRole = require('../middlewares/verifyRole');
 const actionsController = require('../controllers/transactionsController');
 
 /**
@@ -82,7 +79,7 @@ const actionsController = require('../controllers/transactionsController');
  * 
  */
 
-router.post('/new', verifyJWT(), actionsController.addNewAction);
+router.post('/new', verifyJWT(), verifyRole('mates'), actionsController.addNewAction);
 
 /**
  * @swagger
@@ -165,7 +162,7 @@ router.post('/new', verifyJWT(), actionsController.addNewAction);
  *                   example: Błąd podczas pobierania transakcji.
  */
 
-router.get('/all', actionsController.getAllActions);
+router.get('/all', verifyRole('superadmin'), actionsController.getAllActions);
 
 /**
  * @swagger
@@ -248,7 +245,7 @@ router.get('/all', actionsController.getAllActions);
  *                   example: Błąd podczas pobierania transakcji dla gospodarstwa.
  */
 
-router.get('/my', verifyJWT(), actionsController.getHouseActions);
+router.get('/my', verifyJWT(), verifyRole('mates'), actionsController.getHouseActions);
 
 /**
  * @swagger
@@ -334,6 +331,6 @@ router.get('/my', verifyJWT(), actionsController.getHouseActions);
  *                   example: Nie udało się usunąć transakcji.
  */
 
-router.delete('/', verifyJWT(), actionsController.deleteAction);
+router.delete('/', verifyJWT(), verifyRole('mates'), actionsController.deleteAction);
 
 module.exports = router;

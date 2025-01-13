@@ -1,28 +1,47 @@
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET;
-
 const verifyRole = (reqRole) => {
     return (req, res, next) => {
-        const token = req.cookies.SESSID;
-
-        if (!token) {
-            return res.status(403).json({ status: 'error', message: 'Błąd autoryzacji.' });
+        const userRole = req.role;
+        
+        if (!userRole) return res.status(403).json({ status: 'error', message: 'Użytkownik nie ma przypisanej roli.' });
+        
+        const permissions = {
+            mates: ['host', 'inmate'],
+            host: ['host'],
+            inmate: ['inmate'],
+            superadmin: ['superadmin'],
+            user: ['user'],
         };
 
-        try {
-            const decoded = jwt.verify(token, JWT_SECRET);
-            const role = decoded.role;
-            const userId = decoded.id;
+        if (permissions[reqRole] && permissions[reqRole].includes(userRole)) return next();
 
-            if (role !== reqRole) {
-                logger.error(`Użytkownik ${userId} nie ma uprawnień dostępu.`);
-                return res.status(403).json({ status: 'error', message: 'Nie masz uprawnień dostępu.' });
-            } else {
-                next();
-            }
-        } catch (error) {
-            return res.status(401).json({ status: 'error', message: 'Błąd autoryzacji' });
+        const customMessages = {
+            mates: {
+                user: 'Nie masz uprawnień. Czynność tylko dla domowników lub gospodarzy.',
+                superadmin: 'Nie masz uprawnień. Tylko gospodarze i domownicy mogą wykonać akcję',
+            },
+            host: {
+                inmate: 'Czynność zarezerwowana dla gospodarzy. Skontaktuj się ze swoim gospodarzem.',
+                user: 'Załóż gospodarstwo, aby wykonać tę akcję.',
+                superadmin: 'Załóż gospodarstwo, aby wykonać tę akcję',
+            },
+            inmate: {
+                host: 'Akcja tylko dla domowników. Nie masz uprawnień.',
+                user: 'Nie masz wystarczających uprawnień. Załóż gospodarstwo lub zapisz się do wybranego.',
+            },
+            user: {
+                host: 'Akcja tylko dla nowych użytkowników.',
+                inmate: 'Akcja tylko dla nowych użytkowników.',
+            },
+            superadmin: {
+                host: 'Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.',
+                inmate: 'Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.',
+                user: 'Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.',
+            },
         };
+
+        const message = customMessages[reqRole]?.[userRole] || 'Brak uprawnień do wykonania akcji';
+
+        return res.status(403).json({ status: 'error', message });
     };
 };
 

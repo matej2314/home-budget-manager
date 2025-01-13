@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const pool = require('../database/db');
-const logger = require('../configs/logger');
-const { v4: uuidv4 } = require('uuid');
 const verifyJWT = require('../middlewares/verifyJWT.js');
-const JWT_SECRET = process.env.JWT_SECRET;
-const jwtCookieOptions = require('../configs/jwtCookieOptions.js');
+const verifyRole = require('../middlewares/verifyRole.js');
 const householdController = require('../controllers/householdController.js');
 
 /**
@@ -80,7 +75,7 @@ const householdController = require('../controllers/householdController.js');
  * 
  */
 
-router.post('/new', verifyJWT(), householdController.addNewHouse);
+router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewHouse);
 
 /**
  * @swagger
@@ -155,7 +150,7 @@ router.post('/new', verifyJWT(), householdController.addNewHouse);
  *                   example: Błąd podczas pobierania gospodarstw.
  */
 
-router.get('/all', verifyJWT(), householdController.getAllHouses);
+router.get('/all', verifyJWT(),verifyRole('superadmin'), householdController.getAllHouses);
 
 /**
  * @swagger
@@ -243,7 +238,7 @@ router.get('/all', verifyJWT(), householdController.getAllHouses);
  *                   example: Nie udało się pobrać danych o gospodarstwie.
  */
 
-router.get('/info', verifyJWT(), householdController.getHouseInfo);
+router.get('/info', verifyJWT(), verifyRole('mates'), householdController.getHouseInfo);
 
 /**
  * @swagger
@@ -344,7 +339,7 @@ router.get('/info', verifyJWT(), householdController.getHouseInfo);
  *                   example: Nie udało się usunąć gospodarstwa.
  */
 
-router.delete('/delete', verifyJWT(), householdController.deleteHouse);
+router.delete('/delete', verifyJWT(),verifyRole('host'), householdController.deleteHouse);
 
 
 module.exports = router;

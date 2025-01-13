@@ -4,11 +4,10 @@ const { resetHostProps, resetInmatesProps, setHostProps, setInmateProps } = requ
 const logger = require('../../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
-const addNewHouse = async (userId, userName, houseName) => {
+const addNewHouse = async (userId, userName, houseName, initBudget) => {
     const houseId = uuidv4();
-    
     const connection = await pool.getConnection();
-
+    
     try {
         await connection.beginTransaction();
 
@@ -26,22 +25,30 @@ const addNewHouse = async (userId, userName, houseName) => {
             logger.info(`Gospodarstwo ${houseName} istnieje. Użytkownik dodany jako domownik.`);
 
             await connection.commit();
-            return { status: 'success', message: `Użytkownik został dodany do gospodarstwa ${houseName}.` };
+            return { 
+                status: 'success', 
+                message: `Użytkownik został dodany do gospodarstwa ${houseName}.`, 
+                newRole: 'inmate',
+            };
 
         } else {
-            const [addHouse] = await connection.query(houseQueries.addQuery, [houseId, userId, userName, houseName]);
+            const [addHouse] = await connection.query(houseQueries.addQuery, [houseId, userId, userName, houseName, initBudget]);
 
             if (addHouse.affectedRows === 1) {
                 const [addHost] = await connection.query(houseQueries.hostQuery, [1, 'host', userId]);
 
                 if (addHost.affectedRows === 1) {
-                    await setHostProps( userId, houseId, connection);
+                    await setHostProps(userId, houseId, connection);
                 }
             }
 
             await connection.commit();
             logger.info(`Nowe gospodarstwo ${houseName} zostało utworzone.`);
-            return { status: 'success', message: `Gospodarstwo ${houseName} zostało utworzone.` };
+            return { 
+                status: 'success', 
+                message: `Gospodarstwo ${houseName} zostało utworzone.`, 
+                newRole: 'host',
+            };
         }
     } catch (error) {
         await connection.rollback();
@@ -51,5 +58,6 @@ const addNewHouse = async (userId, userName, houseName) => {
         connection.release();
     }
 };
+
 
 module.exports = { addNewHouse };

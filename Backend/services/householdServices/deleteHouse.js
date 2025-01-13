@@ -40,6 +40,7 @@ exports.deleteHouse = async (userId, houseName) => {
         return {
             status: 'success',
             message: `Gospodarstwo ${houseName} usunięte.`,
+            newRole: 'user'
         };
     } catch (error) {
         logger.error(`Błąd podczas usuwania gospodarstwa: ${error.message}`);
