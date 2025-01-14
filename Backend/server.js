@@ -5,6 +5,7 @@ const cors = require('cors');
 const logger = require('./configs/logger.js');
 const express = require('express');
 const swaggerDocs = require('./configs/swaggerConfig.js');
+const balanceHouseActions = require('./tasks/balanceHouseTransactions.js');
 const app = express();
 
 const port = process.env.SERV_PORT || 5053;
@@ -51,6 +52,8 @@ try {
     app.listen(port, () => {
         logger.info(`BACKEND SERVER RUNNING. PORT ${port}`);
         console.log(`SERVER RUNNING ON PORT ${port}`);
+
+        balanceHouseActions();
     });
 } catch (error) {
     logger.error(`Nie udało się uruchomić serwera : ${error} `);

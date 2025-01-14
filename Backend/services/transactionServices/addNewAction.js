@@ -7,7 +7,7 @@ const logger = require('../../configs/logger');
 const addNewAction = async (userId, type, value) => {
     const transactionId = uuidv4();
     
-    const validTypes = ['income', 'cost'];
+    const validTypes = ['income', 'expense'];
 
     if (!type || !validTypes.includes(type) ) {
         logger.error('Nieprawidłowe dane wejściowe do dodania transakcji.');
