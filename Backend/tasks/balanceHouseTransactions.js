@@ -5,10 +5,12 @@ const { formatDateToSQL } = require('../utils/formatDateToSQL');
 
 const balanceHouseActions = () => {
     cron.schedule('0 2 * * *', async () => {
+        const connection = await pool.getConnection();
         try {
+            await connection.beginTransaction();
             logger.info('Bilansowanie rozpoczęte.');
-            const [households] = await pool.query('SELECT * FROM households');
 
+            const [households] = await connection.query('SELECT * FROM households');
             logger.info(`Znaleziono ${households.length} gospodarstw w bazie.`);
 
             if (households.length === 0) {
@@ -30,7 +32,7 @@ const balanceHouseActions = () => {
 
                     logger.info(`Sprawdzamy transakcje dla gospodarstwa ${houseId} od ${formattedDateLimit}.`);
 
-                    const [transactions] = await pool.query(
+                    const [transactions] = await connection.query(
                         `SELECT * FROM transactions WHERE houseId = ? AND addedAt > ?`,
                         [houseId, formattedDateLimit]
                     );
@@ -46,12 +48,12 @@ const balanceHouseActions = () => {
                             newBalance += ts.type === 'income' ? ts.value : -ts.value;
                         });
 
-                        await pool.query(
+                        await connection.query(
                             `UPDATE households SET balance = ?, balanceDate = NOW() WHERE houseId = ?`,
                             [newBalance, houseId]
                         );
 
-                        await pool.query(
+                        await connection.query(
                             `DELETE FROM transactions WHERE houseId = ? AND addedAt > ?`,
                             [houseId, formattedDateLimit]
                         );
@@ -62,8 +64,13 @@ const balanceHouseActions = () => {
                     logger.info(`Gospodarstwo ${houseId} nie wymaga bilansowania przed ${nextBalanceDate.toLocaleString()}.`);
                 }
             }
+
+            await connection.commit();
         } catch (error) {
+            await connection.rollback();
             logger.error(`Błąd podczas bilansowania gospodarstw: ${error}`);
+        } finally {
+            connection.release();
         }
     });
 };
