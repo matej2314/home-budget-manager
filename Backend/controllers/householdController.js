@@ -25,7 +25,7 @@ exports.addNewHouse = async (req, res) => {
             res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
             return res.status(200).json(result);
         } else {
-            return res.status(500).json(result);
+            return res.status(500).json({status: 'error', message: result.message});
         }
 
     } catch (error) {
@@ -40,7 +40,7 @@ exports.getAllHouses = async (req, res) => {
         const result = await getHousesCollection();
 
         if (result.status === 'error') {
-            return res.status(404).json(result);
+            return res.status(404).json({status: 'error', message: result.message});
         } else if (result.status === 'success') {
             return res.status(200).json(result);
         };
@@ -84,7 +84,7 @@ exports.deleteHouse = async (req, res) => {
         if (result.status === 'error') {
             return res.status(400).json(result);
         } else if (result.status === 'noperm') {
-            return res.status(403).json(result);
+            return res.status(403).json({status: 'error', message: result.message});
         };
         const token = jwt.sign({ id: userId, userName: req.userName, role: result.newRole }, JWT_SECRET, { expiresIn: '24h' });
         res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });

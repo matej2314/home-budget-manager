@@ -1,6 +1,7 @@
 const pool = require('../database/db');
 const checkUserHouse = require('../utils/checkUserHouse');
 const logger = require('../configs/logger');
+const dashboardQueries = require('../database/dashboardQueries');
 
 const getBoardData = async (userId) => {
     const connection = await pool.getConnection();
@@ -16,10 +17,8 @@ const getBoardData = async (userId) => {
         }
         const userHouseId = userHouse.houseId;
 
-        const [householdData] = await connection.query(
-            'SELECT houseName, userName, balance, balanceDate FROM households WHERE houseId = ?',
-            [userHouseId]
-        );
+        const [householdData] = await connection.query(dashboardQueries.householdData, [userHouseId]);
+        
         if (!householdData) {
             return {status: 'notfound', message: 'Brak informacji o gospodarstwie.'};
         }
@@ -31,16 +30,12 @@ const getBoardData = async (userId) => {
             balanceDate: householdData[0].balanceDate,
         };
        
-        const [matesData] = await connection.query(
-            'SELECT userName, role FROM householdUsers WHERE houseId = ? ORDER BY id',
-            [userHouseId]
-        );
+        const [matesData] = await connection.query(dashboardQueries.matesData,[userHouseId]);
 
         const houseMates = matesData;
 
-        const [transactionsData] = await connection.query('SELECT t.transactionId AS transaction_id, t.value, t.addedAt, t.houseId, t.catId, c.name AS category_name FROM transactions t JOIN actionCategories c ON t.catId = c.id WHERE t.houseId = ?;',
-            [userHouseId]
-        );
+        const [transactionsData] = await connection.query(dashboardQueries.transactionsData, [userHouseId]);
+        
         const actionsData = transactionsData;
 
         await connection.commit();

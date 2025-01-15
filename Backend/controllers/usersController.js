@@ -13,11 +13,11 @@ exports.addUserToHouse = async (req, res) => {
         const response = await addUserToHouse(userId, userName);
 
         if (response.status === 'badreq') {
-            return res.status(404).json(response);
+            return res.status(404).json({status: 'error', message: response.message});
         } else if (response.status === 'error') {
             return res.status(500).json(response);
         } else if (response.status === 'inmate') {
-            return res.status(400).json(response);
+            return res.status(400).json({status: 'error', message: response.message});
         } if (response.status === 'success') {
             return res.status(200).json(response);
         };
@@ -81,7 +81,7 @@ exports.deleteInhabitant = async (req, res) => {
         const response = await deleteInhabitant(inhabitantId);
 
         if (response.status === 'badreq') {
-            return res.status(400).json(response);
+            return res.status(400).json({status: 'error', message: response.message});
         } else if (response.status === 'success') {
             return res.status(200).json(response);
         }
