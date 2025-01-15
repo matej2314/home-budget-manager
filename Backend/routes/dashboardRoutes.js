@@ -14,7 +14,7 @@ router.get('/data', verifyJWT(), verifyRole('mates'), async (req, res) => {
         const response = await getBoardData(userId);
 
         if (response.status == 'notfound') {
-            return res.status(404).json(response);
+            return res.status(404).json({status: 'error', message: response.message});
         } else if (response.status === 'success') {
             return res.status(200).json(response);
         } else if (response.status === 'error') {
