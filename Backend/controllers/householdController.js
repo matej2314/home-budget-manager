@@ -1,6 +1,6 @@
 const logger = require('../configs/logger');
 const { addNewHouse } = require('../services/householdServices/addNewHouse');
-const { getAllHouses } = require('../services/householdServices/getAllHouses');
+const { getHousesCollection } = require('../services/householdServices/getHousesCollection');
 const { getHouseInfo } = require('../services/householdServices/getHouseinfo');
 const { deleteHouse } = require('../services/householdServices/deleteHouse');
 const jwt = require('jsonwebtoken');
@@ -37,7 +37,7 @@ exports.addNewHouse = async (req, res) => {
 
 exports.getAllHouses = async (req, res) => {
     try {
-        const result = await getAllHouses();
+        const result = await getHousesCollection();
 
         if (result.status === 'error') {
             return res.status(404).json(result);

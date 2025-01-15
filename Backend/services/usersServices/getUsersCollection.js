@@ -1,7 +1,7 @@
 const pool = require('../../database/db');
 const usersQueries = require('../../database/usersQueries');
 
-const getAllUsers = async () => {
+const getUsersCollection = async () => {
     const connection = await pool.getConnection();
     try {
         const [rows] = await pool.query(usersQueries.allUsersQuery);
@@ -20,4 +20,4 @@ const getAllUsers = async () => {
     }
 };
 
-module.exports = { getAllUsers };
+module.exports = { getUsersCollection };

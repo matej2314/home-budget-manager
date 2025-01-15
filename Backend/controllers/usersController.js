@@ -1,6 +1,6 @@
 const logger = require('../configs/logger');
 const { addUserToHouse } = require('../services/usersServices/addUserToHouse');
-const { getAllUsers } = require('../services/usersServices/getAllUsers');
+const { getUsersCollection } = require('../services/usersServices/getUsersCollection');
 const { getInhabitants } = require('../services/usersServices/getInhabitants');
 const { deleteUser } = require('../services/usersServices/deleteUser');
 const { deleteInhabitant } = require('../services/usersServices/deleteInhabitant');
@@ -32,7 +32,7 @@ exports.addUserToHouse = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
 
     try {
-        const response = await getAllUsers();
+        const response = await getUsersCollection();
 
         if (response.status === 'success') {
             return res.status(200).json(response);

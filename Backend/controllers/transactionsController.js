@@ -1,7 +1,7 @@
 const logger = require('../configs/logger');
 const { addNewAction } = require('../services/transactionServices/addNewAction');
 const { deleteAction } = require('../services/transactionServices/deleteAction');
-const { getAllActions } = require('../services/transactionServices/getAllActions');
+const {getActionsCollection } = require('../services/transactionServices/getActionsCollection');
 const { getHouseActions } = require('../services/transactionServices/getHouseActions');
 
 exports.addNewAction = async (req, res) => {
@@ -27,7 +27,7 @@ exports.addNewAction = async (req, res) => {
 
 exports.getAllActions = async (req, res) => {
     try {
-        const result = await getAllActions();
+        const result = await getActionsCollection();
 
         if (result.status === 'notfound') {
             return res.status(404).json(result);

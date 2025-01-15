@@ -2,7 +2,7 @@ const pool = require('../../database/db');
 const actionQueries = require('../../database/transactionsQueries');
 const logger = require('../../configs/logger');
 
-const getAllActions = async () => {
+const getActionsCollection = async () => {
     
     const connection = await pool.getConnection();
 
@@ -31,4 +31,4 @@ const getAllActions = async () => {
     };
 };
 
-module.exports = { getAllActions };
+module.exports = { getActionsCollection };
