@@ -16,7 +16,7 @@ const getAllUsers = async () => {
         logger.error(`Błąd podczas pobierania listy użytkowników: ${error}`);
         return { status: 'error', mesage: 'Bląd pobierania listy użytkowników' };
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 };
 

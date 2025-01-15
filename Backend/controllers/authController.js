@@ -27,14 +27,14 @@ exports.registerUser = async (req, res) => {
                 logger.error(validation.message);
                 return res.status(400).json({ status: 'error', message: validation.message });
             }
-        }
+        };
 
         if (role === 'superadmin') {
             const [rows] = await connection.query(queries.registerAdminCheck);
             if (rows.length > 0) {
                 return res.status(400).json({ status: 'error', message: 'Konto superadmina już istnieje' });
             }
-        }
+        };
 
         const hashedPassword = await bcrypt.hash(reg_password, 10);
         const userId = uuidv4();
@@ -77,21 +77,21 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
-        const connection = await pool.getConnection();
-
+    const connection = await pool.getConnection();
+    
         const validations = [
             { isValid: email && email.trim() !== '', message: 'Podaj prawidłowy adres e-mail.' },
             { isValid: password && password.trim() !== '', message: 'Podaj prawidłowe hasło.' },
-        ];
+    ];
+    
+    for (const validation of validations) {
+        if (!validation.isValid) {
+            logger.error(validation.message);
+            return res.status(400).json({ status: 'error', message: validation.message });
+        }
+    };
 
     try {
-        for (const validation of validations) {
-            if (!validation.isValid) {
-                logger.error(validation.message);
-                return res.status(400).json({ status: 'error', message: validation.message });
-            }
-        };
-        
         const [rows] = await connection.query(queries.login, [email]);
 
         if (rows.length === 0) {
@@ -141,5 +141,5 @@ exports.logoutUser = async (req, res) => {
         secure: false,
         sameSite: 'lax',
     });
-    res.status(200).json({status: 'success', message: 'Wylogowano pomyślnie.' });
-}
+    res.status(200).json({ status: 'success', message: 'Wylogowano pomyślnie.' });
+};

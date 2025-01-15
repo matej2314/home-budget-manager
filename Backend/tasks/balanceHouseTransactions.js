@@ -14,7 +14,6 @@ const balanceHouseActions = () => {
             logger.info(`Znaleziono ${households.length} gospodarstw w bazie.`);
 
             if (households.length === 0) {
-                logger.info('Brak gospodarstwa w bazie danych.');
                 return;
             }
 
@@ -24,6 +23,7 @@ const balanceHouseActions = () => {
                 const dateLimit = balanceDate || createdAt;
                 const nextBalanceDate = new Date(dateLimit);
                 nextBalanceDate.setMonth(nextBalanceDate.getMonth() + 1);
+                // nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
 
                 const now = new Date();
 
@@ -70,7 +70,7 @@ const balanceHouseActions = () => {
             await connection.rollback();
             logger.error(`Błąd podczas bilansowania gospodarstw: ${error}`);
         } finally {
-            connection.release();
+            if (connection) connection.release();
         }
     });
 };

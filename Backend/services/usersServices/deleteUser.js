@@ -33,7 +33,7 @@ const deleteUser = async (userId) => {
         return { status: 'error', message: 'Błąd serwera.' };
 
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 };
 

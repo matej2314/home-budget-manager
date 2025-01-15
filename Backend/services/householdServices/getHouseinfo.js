@@ -38,6 +38,6 @@ exports.getHouseInfo = async (userId) => {
         logger.error(`Błąd podczas pobierania informacji o gospodarstwie: ${error.stack}`);
         return res.status(500).json({ status: 'error', message: 'Nie udało się pobrać danych o gospodarstwie.' });
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 }

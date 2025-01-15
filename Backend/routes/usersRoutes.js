@@ -10,7 +10,7 @@ const usersController = require('../controllers/usersController.js');
  * @swagger
  * /users/all:
  *   get:
- *     summary: Pobierz wszystkich uzytkowników aplikacji.
+ *     summary: Pobierz wszystkich użytkowników aplikacji.
  *     description: Zwraca listę wszystkich użytkowników w bazie danych uporządkowaną według ID użytkownika.
  *     tags:
  *       - Users
@@ -29,7 +29,7 @@ const usersController = require('../controllers/usersController.js');
  *                 message:
  *                   type: string
  *                   description: Wiadomość o sukcesie
- *                   example: Lista wszystkich użytkowników pobrana poprawnie
+ *                   example: 'Lista wszystkich użytkowników pobrana poprawnie.'
  *                 users:
  *                   type: array
  *                   items:
@@ -41,7 +41,7 @@ const usersController = require('../controllers/usersController.js');
  *                         example: '123e4567-e89b-12d3-a456-426614174000'
  *                       role:
  *                         type: string
- *                         description: rola użytkownika w systemie
+ *                         description: Rola użytkownika w systemie
  *                         example: 'user'
  *                       name:
  *                         type: string
@@ -57,14 +57,14 @@ const usersController = require('../controllers/usersController.js');
  *                         example: 'email@email.pl'
  *                       household_id:
  *                         type: string
- *                         description: Id gospodarstwa domowego, którego użytkownika jest założycielem/właścicielem
- *                         example: 42bfc32f-0bd2-4aff-9ebd-6da002ea790e
+ *                         description: ID gospodarstwa domowego, którego użytkownik jest założycielem/właścicielem
+ *                         example: '42bfc32f-0bd2-4aff-9ebd-6da002ea790e'
  *                       inhabitant:
  *                         type: string
- *                         description: Jeżeli użytkownik jest tylko domownikiem, ID gospodarstwa, do którego należy.
- *                         example: 42bfc32f-0bd2-4aff-9ebd-6da002ea790e
+ *                         description: ID gospodarstwa, do którego należy użytkownik, jeśli jest tylko domownikiem.
+ *                         example: '42bfc32f-0bd2-4aff-9ebd-6da002ea790e'
  *       500:
- *         description: Błąd serwera
+ *         description: Błąd serwera.
  *         content:
  *           application/json:
  *             schema:
@@ -77,7 +77,7 @@ const usersController = require('../controllers/usersController.js');
  *                 message:
  *                   type: string
  *                   description: Opis błędu
- *                   example: Błąd pobierania listy użytkowników.
+ *                   example: 'Błąd pobierania listy użytkowników.'
  */
 
 router.get('/all', verifyJWT(), usersController.getAllUsers);
@@ -86,10 +86,18 @@ router.get('/all', verifyJWT(), usersController.getAllUsers);
  * @swagger
  * /users/house:
  *   get:
- *     summary: Pobierz wszystkich uzytkowników, którzy przynależą do wskazanego gospodarstwa.
- *     description: Zwraca listę wszystkich domowników gospodarstwa uporządkowaną według ID użytkownika.
+ *     summary: Pobierz wszystkich użytkowników, którzy przynależą do wskazanego gospodarstwa.
+ *     description: Zwraca listę wszystkich domowników gospodarstwa, uporządkowaną według ID użytkownika.
  *     tags:
  *       - Users
+ *     parameters:
+ *       - name: houseId
+ *         in: query
+ *         description: Unikalny identyfikator gospodarstwa, którego domowników chcesz pobrać.
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: '123e4567-e89b-12d3-a456-426614174000'
  *     responses:
  *       200:
  *         description: Lista wszystkich domowników wskazanego gospodarstwa.
@@ -105,7 +113,7 @@ router.get('/all', verifyJWT(), usersController.getAllUsers);
  *                 message:
  *                   type: string
  *                   description: Wiadomość o sukcesie
- *                   example: Lista domowników gospodarstwa 123e4567-e89b-12d3-a456-426614174000 pobrana poprawnie
+ *                   example: 'Lista domowników gospodarstwa 123e4567-e89b-12d3-a456-426614174000 pobrana poprawnie.'
  *                 users:
  *                   type: array
  *                   items:
@@ -117,7 +125,7 @@ router.get('/all', verifyJWT(), usersController.getAllUsers);
  *                         example: '123e4567-e89b-12d3-a456-426614174000'
  *                       role:
  *                         type: string
- *                         description: rola użytkownika w systemie
+ *                         description: Rola użytkownika w systemie
  *                         example: 'user'
  *                       name:
  *                         type: string
@@ -125,7 +133,7 @@ router.get('/all', verifyJWT(), usersController.getAllUsers);
  *                         example: 'test1234'
  *                       email:
  *                         type: string
- *                         description: Adres e-mail użytkownika.
+ *                         description: Adres e-mail użytkownika
  *                         example: 'email@email.pl'
  *       500:
  *         description: Błąd serwera
@@ -141,7 +149,7 @@ router.get('/all', verifyJWT(), usersController.getAllUsers);
  *                 message:
  *                   type: string
  *                   description: Opis błędu
- *                   example: Nie udało się pobrać listy domowników gospodarstwa.
+ *                   example: 'Nie udało się pobrać listy domowników gospodarstwa.'
  */
 
 router.get('/house', verifyJWT(), usersController.getInhabitants);
@@ -151,7 +159,7 @@ router.get('/house', verifyJWT(), usersController.getInhabitants);
  * /users/delete/{userId}:
  *   post:
  *     summary: Usuń użytkownika
- *     description: Usuwa użytkownika oraz przypisane do niego gospodarstwo (jeśli istnieje) z systemu.
+ *     description: Usuwa użytkownika z systemu. Jeśli użytkownik jest właścicielem gospodarstwa, gospodarstwo również zostaje usunięte.
  *     tags:
  *       - Users
  *     security:
@@ -162,14 +170,14 @@ router.get('/house', verifyJWT(), usersController.getInhabitants);
  *         required: true
  *         description: ID użytkownika do usunięcia.
  *         schema:
- *           type: integer
- *           example: 123
+ *           type: string
+ *           example: '123e4567-e89b-12d3-a456-426614174000'
  *     requestBody:
- *       description: Nie jest wymagane.
+ *       description: Brak dodatkowych danych w ciele żądania.
  *       required: false
  *     responses:
  *       200:
- *         description: Użytkownik i gospodarstwo usunięte pomyślnie.
+ *         description: Użytkownik usunięty pomyślnie.
  *         content:
  *           application/json:
  *             schema:
@@ -199,7 +207,7 @@ router.get('/house', verifyJWT(), usersController.getInhabitants);
  *                   description: Opis błędu.
  *                   example: Nie masz uprawnień do usunięcia użytkownika.
  *       404:
- *         description: Użytkownik lub gospodarstwo nie zostało znalezione.
+ *         description: Użytkownik nie został znaleziony.
  *         content:
  *           application/json:
  *             schema:
@@ -212,9 +220,9 @@ router.get('/house', verifyJWT(), usersController.getInhabitants);
  *                 message:
  *                   type: string
  *                   description: Opis błędu.
- *                   example: Nie znaleziono użytkownika lub gospodarstwa.
+ *                   example: Nie znaleziono użytkownika.
  *       500:
- *         description: Wystąpił błąd serwera podczas usuwania użytkownika lub gospodarstwa.
+ *         description: Wystąpił błąd serwera podczas usuwania użytkownika.
  *         content:
  *           application/json:
  *             schema:
@@ -227,9 +235,8 @@ router.get('/house', verifyJWT(), usersController.getInhabitants);
  *                 message:
  *                   type: string
  *                   description: Opis błędu.
- *                   example: Błąd serwera.
+ *                   example: Błąd podczas usuwania użytkownika.
  */
-
 
 router.post('/delete/:userId', verifyJWT(), usersController.deleteUser);
 
@@ -251,9 +258,9 @@ router.post('/delete/:userId', verifyJWT(), usersController.deleteUser);
  *             type: object
  *             properties:
  *               inhabitantId:
- *                 type: integer
+ *                 type: string
  *                 description: ID domownika do usunięcia.
- *                 example: 456
+ *                 example: '456e4567-e89b-12d3-a456-426614174000'
  *     responses:
  *       200:
  *         description: Domownik został pomyślnie usunięty.
@@ -269,9 +276,9 @@ router.post('/delete/:userId', verifyJWT(), usersController.deleteUser);
  *                 message:
  *                   type: string
  *                   description: Wiadomość o sukcesie.
- *                   example: 'Domownik 456 został usunięty poprawnie.'
- *       403:
- *         description: Użytkownik nie należy do gospodarstwa lub brak uprawnień.
+ *                   example: 'Domownik 456e4567-e89b-12d3-a456-426614174000 został usunięty poprawnie.'
+ *       400:
+ *         description: Złe żądanie (np. brak uprawnień lub błędne dane).
  *         content:
  *           application/json:
  *             schema:
@@ -286,7 +293,7 @@ router.post('/delete/:userId', verifyJWT(), usersController.deleteUser);
  *                   description: Opis błędu.
  *                   example: 'Nie masz uprawnień do usunięcia tego użytkownika.'
  *       404:
- *         description: Nie znaleziono użytkownika do usunięcia.
+ *         description: Nie znaleziono domownika do usunięcia.
  *         content:
  *           application/json:
  *             schema:
@@ -299,9 +306,9 @@ router.post('/delete/:userId', verifyJWT(), usersController.deleteUser);
  *                 message:
  *                   type: string
  *                   description: Opis błędu.
- *                   example: 'Użytkownik nie jest domownikiem.'
+ *                   example: 'Domownik o podanym ID nie istnieje.'
  *       500:
- *         description: Wystąpił błąd serwera podczas usuwania użytkownika.
+ *         description: Wystąpił błąd serwera podczas usuwania domownika.
  *         content:
  *           application/json:
  *             schema:
@@ -317,9 +324,92 @@ router.post('/delete/:userId', verifyJWT(), usersController.deleteUser);
  *                   example: 'Nie udało się usunąć domownika.'
  */
 
-router.post('/invite',verifyJWT(), verifyRole('host'), usersController.addUserToHouse);
-
 router.delete('/delete/inhabitant', verifyJWT(), verifyRole('host'), usersController.deleteInhabitant);
 
+/**
+ * @swagger
+ * /users/invite:
+ *   post:
+ *     summary: Dodaj użytkownika do gospodarstwa
+ *     description: Dodaje użytkownika do gospodarstwa, jeśli spełnia odpowiednie warunki (np. nie jest już domownikiem).
+ *     tags:
+ *       - Users
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userName:
+ *                 type: string
+ *                 description: Nazwa użytkownika, który ma zostać dodany do gospodarstwa.
+ *                 example: "john_doe"
+ *     responses:
+ *       200:
+ *         description: Użytkownik pomyślnie dodany do gospodarstwa.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi.
+ *                   example: 'success'
+ *                 message:
+ *                   type: string
+ *                   description: Wiadomość o sukcesie.
+ *                   example: 'Użytkownik john_doe został dodany do gospodarstwa.'
+ *       400:
+ *         description: Użytkownik już należy do gospodarstwa lub wystąpił inny błąd.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi.
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Opis błędu.
+ *                   example: 'Użytkownik jest już domownikiem.'
+ *       404:
+ *         description: Nie znaleziono gospodarstwa lub użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi.
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Opis błędu.
+ *                   example: 'Nie znaleziono gospodarstwa dla tego użytkownika.'
+ *       500:
+ *         description: Wystąpił błąd serwera podczas przetwarzania żądania.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status odpowiedzi.
+ *                   example: 'error'
+ *                 message:
+ *                   type: string
+ *                   description: Opis błędu.
+ *                   example: 'Błąd przetwarzania żądania.'
+ */
+
+router.post('/invite', verifyJWT(), verifyRole('host'), usersController.addUserToHouse);
 
 module.exports = router;

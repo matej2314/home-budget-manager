@@ -5,11 +5,11 @@ const { getAllActions } = require('../services/transactionServices/getAllActions
 const { getHouseActions } = require('../services/transactionServices/getHouseActions');
 
 exports.addNewAction = async (req, res) => {
-    const { type, value } = req.body;
+    const { type, value, catId } = req.body;
     const userId = req.userId;
 
     try {
-        const response = await addNewAction(userId, type, value);
+        const response = await addNewAction(userId, type, value, catId);
 
         if (response.status === 'success') {
             return res.status(200).json(response);

@@ -58,7 +58,7 @@ const addUserToHouse = async (userId, userName) => {
         logger.error(`Error w inviteUser: ${error}`);
         return { status: 'error', message: 'Błąd przetwarzania żądania.' };
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 };
 

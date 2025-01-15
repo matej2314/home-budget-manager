@@ -23,6 +23,6 @@ exports.getAllHouses = async () => {
         logger.error(`Błąd podczas pobierania gospodarstw: ${error.stack}`);
         return { status: 'error', message: 'Błąd podczas pobierania gospodarstw.' };
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 };

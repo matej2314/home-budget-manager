@@ -27,7 +27,7 @@ const getAllActions = async () => {
         logger.error(`Błąd w getAllActions: ${error}`);
         return { status: 'error', message: 'Błąd podczas pobierania transakcji.' };
     } finally {
-        await connection.release();
+        if (connection) connection.release();
     };
 };
 

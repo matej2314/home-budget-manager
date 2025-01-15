@@ -39,7 +39,7 @@ const getHouseActions = async (userId) => {
             message: 'Błąd podczas pobierania transakcji dla gospodarstwa.',
         });
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 };
 

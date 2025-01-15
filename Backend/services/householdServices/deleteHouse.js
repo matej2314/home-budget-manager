@@ -50,6 +50,6 @@ exports.deleteHouse = async (userId, houseName) => {
         await connection.rollback();
         return { status: 'error', message: 'Nie udało się usunąć gospodarstwa.' };
     } finally {
-        connection.release();
+        if (connection) connection.release();
     };
 };

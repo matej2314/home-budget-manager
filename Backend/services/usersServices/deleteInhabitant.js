@@ -53,7 +53,7 @@ const deleteInhabitant = async (inhabitantId) => {
             message: 'Nie udało się usunąć domownika.',
         };
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 };
 

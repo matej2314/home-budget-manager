@@ -41,12 +41,16 @@ const authRouter = require('./routes/authRoutes.js');
 const usersRouter = require('./routes/usersRoutes.js');
 const householdRouter = require('./routes/householdRoutes.js');
 const transactionRouter = require('./routes/transactionsRoutes.js');
+const dashboardRouter = require('./routes/dashboardRoutes.js');
+const actionCatRouter = require('./routes/actionCatRoutes.js');
 
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/house', householdRouter);
 app.use('/action', transactionRouter);
+app.use('/board', dashboardRouter);
+app.use('/actioncat', actionCatRouter);
 
 try {
     app.listen(port, () => {
