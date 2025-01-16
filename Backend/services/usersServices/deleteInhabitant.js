@@ -1,6 +1,6 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
-const houseQueries = require('../../database/householdQueries');
+const usersQueries = require('../../database/usersQueries');
 
 const deleteInhabitant = async (inhabitantId) => {
 
@@ -17,25 +17,27 @@ const deleteInhabitant = async (inhabitantId) => {
         await connection.beginTransaction();
 
         const [deleteHouseIdHu] = await connection.query(
-            houseQueries.updatehouseIdHu,
+            usersQueries.updatehouseIdHu,
             [0, inhabitantId]
         );
 
-        if (deleteHouseIdHu.affectedRows !== 1) {
-            logger.error(`Nie udało się zaktualizować houseId użytkownika: ${inhabitantId}`);
-        }
+        if (deleteHouseIdHu.affectedRows !== 1) logger.error(`Nie udało się zaktualizować houseId użytkownika: ${inhabitantId}`);
+        
+
+        const [delUserActions] = await connection.query(usersQueries.delUsersActions, [inhabitantId]);
+
+        if (delUserActions.affectedRows == 0) logger.error(`Nie udało się usunąć transakcji użytkownika: ${inhabitantId}`);
 
         const [changeRoleHu] = await connection.query(
-            houseQueries.updateroleHu,
+            usersQueries.updateroleHu,
             ['user', inhabitantId]
         );
 
-        if (changeRoleHu.affectedRows !== 1) {
-            logger.error(`Nie udało się zmienić roli użytkownika: ${inhabitantId}`);
-        }
+        if (changeRoleHu.affectedRows !== 1) logger.error(`Nie udało się zmienić roli użytkownika: ${inhabitantId}`);
+        
 
         await connection.query(
-            houseQueries.mateQuery,
+            usersQueries.mateQuery,
             [0, 'user', inhabitantId]
         );
 

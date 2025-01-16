@@ -30,7 +30,7 @@ const deleteActionCat = async (catName) => {
         logger.error(`Błąd w /actioncat/delete: ${error}`);
         return {
             status: 'error',
-            message: `Błąd przetwarzania żądania.`,
+            message: `Nie udało się usunąć kategorii.`,
         };
     } finally {
         if (connection) connection.release();

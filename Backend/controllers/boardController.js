@@ -38,6 +38,8 @@ const getBoardData = async (userId) => {
         
         const actionsData = transactionsData;
 
+        const [actionsCatData] = await connection.query(dashboardQueries.actionCatData);
+
         await connection.commit();
 
         return {
@@ -47,6 +49,7 @@ const getBoardData = async (userId) => {
                 houseData,
                 houseMates,
                 actionsData,
+                actionsCatData,
             },
         };
 

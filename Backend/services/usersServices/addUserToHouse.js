@@ -2,7 +2,6 @@ const pool = require('../../database/db');
 const logger = require('../../configs/logger');
 const checkUserHouse = require('../../utils/checkUserHouse');
 const usersQueries = require('../../database/usersQueries');
-const houseQueries = require('../../database/householdQueries');
 
 const addUserToHouse = async (userId, userName) => {
     const connection = await pool.getConnection();
@@ -21,13 +20,13 @@ const addUserToHouse = async (userId, userName) => {
             const invitedUserId = invitedUser.id;
 
             if (invitedUser.inmate == 0 && invitedUser.host == 0) {
-                const [addMate] = await connection.query(houseQueries.mateQuery, [1, 'inmate', invitedUser.id]);
+                const [addMate] = await connection.query(usersQueries.mateQuery, [1, 'inmate', invitedUser.id]);
                 if (addMate.affectedRows == 1) {
                     
-                    const [updateHouseId] = await connection.query(houseQueries.updatehouseIdHu, [hostHouseId, invitedUserId]);
+                    const [updateHouseId] = await connection.query(usersQueries.updatehouseIdHu, [hostHouseId, invitedUserId]);
                     
                     if (updateHouseId.affectedRows == 1) {
-                        await connection.query(houseQueries.updateroleHu, ['inmate', invitedUser.id]);
+                        await connection.query(usersQueries.updateroleHu, ['inmate', invitedUser.id]);
                     }
                 };
 

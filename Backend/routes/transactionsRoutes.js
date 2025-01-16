@@ -29,6 +29,10 @@ const actionsController = require('../controllers/transactionsController');
  *                 type: string
  *                 description: Value of the transaction.
  *                 example: 5000
+ *               catId:
+ *                 type: string
+ *                 description: ID of the transaction category
+ *                 example: 123e4567-e89b-12d3-a456-426614174000
  *     responses:
  *       201:
  *         description: Transaction added successfully.
@@ -100,7 +104,7 @@ router.post('/new', verifyJWT(), verifyRole('mates'), actionsController.addNewAc
 
 /**
  * @swagger
- * /action/all:
+ * /action/collection:
  *   get:
  *     summary: Pobierz wszystkie transakcje
  *     description: Zwraca listę wszystkich transakcji w bazie danych uporządkowaną według ID transakcji.
@@ -135,9 +139,13 @@ router.post('/new', verifyJWT(), verifyRole('mates'), actionsController.addNewAc
  *                         type: string
  *                         description: ID użytkownika, który dodał transakcję
  *                         example: 123e4567-e89b-12d3-a456-426614174000
- *                       householdId:
+ *                       houseId:
  *                         type: string
  *                         description: Identyfikator gospodarstwa, którego dotyczy transakcja
+ *                         example: 456e7890-b12c-34f5-d678-526314184001
+ *                       catId:
+ *                         type: string
+ *                         description: ID of transaction category
  *                         example: 456e7890-b12c-34f5-d678-526314184001
  *                       type:
  *                         type: string
@@ -147,6 +155,9 @@ router.post('/new', verifyJWT(), verifyRole('mates'), actionsController.addNewAc
  *                         type: string
  *                         description: Wartość danej transakcji
  *                         example: 200
+ *                       addedAt:
+ *                         type: datetime
+ *                         description: date and time of adding transaction
  *       404:
  *         description: Brak transakcji.
  *         content:
@@ -180,7 +191,7 @@ router.post('/new', verifyJWT(), verifyRole('mates'), actionsController.addNewAc
  */
 
 
-router.get('/all', verifyRole('superadmin'), actionsController.getAllActions);
+router.get('/collection', verifyRole('superadmin'), actionsController.getAllActions);
 
 /**
  * @swagger
@@ -227,9 +238,13 @@ router.get('/all', verifyRole('superadmin'), actionsController.getAllActions);
  *                         type: string
  *                         description: ID użytkownika, który dodał transakcję
  *                         example: '123e4567-e89b-12d3-a456-426614174000'
- *                       householdId:
+ *                       houseId:
  *                         type: string
  *                         description: Identyfikator gospodarstwa, którego dotyczy transakcja
+ *                         example: '456e7890-b12c-34f5-d678-526314184001'
+ *                       catId:
+ *                         type: string
+ *                         description: ID kategorii danej transakcji.
  *                         example: '456e7890-b12c-34f5-d678-526314184001'
  *                       type:
  *                         type: string
@@ -239,6 +254,10 @@ router.get('/all', verifyRole('superadmin'), actionsController.getAllActions);
  *                         type: string
  *                         description: Wartość danej transakcji
  *                         example: '200'
+ *                       addedAt:
+ *                         type: datetime
+ *                         description: Data i godzina dodawania transakcji
+ *                         example: 2025-01-01 15:30:01
  *       404:
  *         description: Brak transakcji dla gospodarstwa.
  *         content:

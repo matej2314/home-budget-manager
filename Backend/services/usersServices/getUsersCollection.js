@@ -1,5 +1,6 @@
 const pool = require('../../database/db');
 const usersQueries = require('../../database/usersQueries');
+const logger = require('../../configs/logger');
 
 const getUsersCollection = async () => {
     const connection = await pool.getConnection();

@@ -6,11 +6,12 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const logger = require('../configs/logger');
 const { isValidPassword, isValidEmail, isValidUsername } = require('../utils/validation');
 const jwtCookieOptions = require('../configs/jwtCookieOptions');
+const {checkUserEmail} = require('../utils/checkUserEmail');
 const queries = require('../database/authQueries');
 
 exports.registerUser = async (req, res) => {
     const { reg_username, reg_email, reg_password, role } = req.body;
-    const allowedRoles = ['superadmin','host', 'inmate', 'user'];
+    const allowedRoles = ['superadmin', 'user'];
 
     const validations = [
         { isValid: !!reg_username && isValidUsername(reg_username), message: 'Podaj prawidłowe dane użytkownika.' },
@@ -34,6 +35,15 @@ exports.registerUser = async (req, res) => {
             if (rows.length > 0) {
                 return res.status(400).json({ status: 'error', message: 'Konto superadmina już istnieje' });
             }
+        };
+
+        const emailCheck = await checkUserEmail(connection, reg_email);
+
+        if (emailCheck && emailCheck.email == reg_email) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Użytkownik o takim adresie e-mail istnieje.',
+            });
         };
 
         const hashedPassword = await bcrypt.hash(reg_password, 10);

@@ -8,7 +8,7 @@ const usersController = require('../controllers/usersController.js');
 
 /**
  * @swagger
- * /users/all:
+ * /users/collection:
  *   get:
  *     summary: Pobierz wszystkich użytkowników aplikacji.
  *     description: Zwraca listę wszystkich użytkowników w bazie danych uporządkowaną według ID użytkownika.
@@ -80,7 +80,7 @@ const usersController = require('../controllers/usersController.js');
  *                   example: 'Błąd pobierania listy użytkowników.'
  */
 
-router.get('/all', verifyJWT(), usersController.getAllUsers);
+router.get('/collection', verifyJWT(), verifyRole('superadmin'), usersController.getAllUsers);
 
 /**
  * @swagger
@@ -152,14 +152,14 @@ router.get('/all', verifyJWT(), usersController.getAllUsers);
  *                   example: 'Nie udało się pobrać listy domowników gospodarstwa.'
  */
 
-router.get('/house', verifyJWT(), usersController.getInhabitants);
+router.get('/house', verifyJWT(), verifyRole('mates'), usersController.getInhabitants);
 
 /**
  * @swagger
  * /users/delete/{userId}:
  *   post:
  *     summary: Usuń użytkownika
- *     description: Usuwa użytkownika z systemu. Jeśli użytkownik jest właścicielem gospodarstwa, gospodarstwo również zostaje usunięte.
+ *     description: Usuwa użytkownika z systemu. Jeśli użytkownik jest właścicielem gospodarstwa, gospodarstwo i wszelkie informacje o nim również zostaną usunięte. Rola domowników zmieni się na 'user'
  *     tags:
  *       - Users
  *     security:
@@ -238,14 +238,14 @@ router.get('/house', verifyJWT(), usersController.getInhabitants);
  *                   example: Błąd podczas usuwania użytkownika.
  */
 
-router.post('/delete/:userId', verifyJWT(), usersController.deleteUser);
+router.post('/delete/:userId', verifyJWT(), verifyRole('superadmin'), usersController.deleteUser);
 
 /**
  * @swagger
  * /users/delete/inhabitant:
  *   delete:
  *     summary: Usuń domownika
- *     description: Usuwa domownika z gospodarstwa, jeśli użytkownik posiada odpowiednie uprawnienia.
+ *     description: Usuwa domownika z gospodarstwa, jeśli użytkownik posiada odpowiednie uprawnienia. Rola domownika w systemie zmienia się na 'user'
  *     tags:
  *       - Inhabitants
  *     security:
@@ -331,7 +331,7 @@ router.delete('/delete/inhabitant', verifyJWT(), verifyRole('host'), usersContro
  * /users/invite:
  *   post:
  *     summary: Dodaj użytkownika do gospodarstwa
- *     description: Dodaje użytkownika do gospodarstwa, jeśli spełnia odpowiednie warunki (np. nie jest już domownikiem).
+ *     description: Dodaje użytkownika do gospodarstwa, jeśli spełnia odpowiednie warunki (np. nie jest już domownikiem lub gospodarzem).
  *     tags:
  *       - Users
  *     security:

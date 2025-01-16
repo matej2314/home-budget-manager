@@ -29,7 +29,7 @@ exports.addNewHouse = async (req, res) => {
         }
 
     } catch (error) {
-        logger.error(`Błąd w kontrolerze: ${error.message}`);
+        logger.error(`Błąd w addNewHouse: ${error.message}`);
         return res.status(500).json({ status: 'error', message: 'Wystąpił błąd podczas dodawania nowego gospodarstwa.' });
     }
 };
@@ -46,7 +46,7 @@ exports.getAllHouses = async (req, res) => {
         };
 
     } catch (error) {
-        logger.error(`Błąd w kontrolerze: ${error}`);
+        logger.error(`Błąd w getAllHouses: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Wystąpił błąd podczas przetwarzania żądania.' });
     }
 };
@@ -64,7 +64,7 @@ exports.getHouseInfo = async (req, res) => {
         };
        
     } catch (error) {
-        logger.error(`Błąd w kontrolerze: ${error}`);
+        logger.error(`Błąd w getHouseInfo: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Wystąpił błąd przy przetwarzaniu żądania.' });
     };
 };
@@ -90,7 +90,7 @@ exports.deleteHouse = async (req, res) => {
         res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
         return res.status(200).json(result);
     } catch (error) {
-        logger.error(`Błąd w kontrolerze: ${error}`);
+        logger.error(`Błąd w deleteHouse: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
     };
 };

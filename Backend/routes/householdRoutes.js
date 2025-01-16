@@ -89,7 +89,7 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
 
 /**
  * @swagger
- * /house/all:
+ * /house/collection:
  *   get:
  *     summary: Pobierz wszystkie gospodarstwa
  *     description: Zwraca listę wszystkich gospodarstw w systemie. Gospodarstwa są uporządkowane według identyfikatora gospodarstwa.
@@ -120,14 +120,30 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  *                         type: string
  *                         description: Unikalny identyfikator gospodarstwa.
  *                         example: '123e4567-e89b-12d3-a456-426614174000'
+ *                       userId:
+ *                         type: string
+ *                         description: Identyfikator właściciela gospodarstwa.
+ *                         example: '456e7890-b12c-34f5-d678-526314184001'
  *                       houseName:
  *                         type: string
  *                         description: Nazwa gospodarstwa.
  *                         example: My Flat
- *                       ownerId:
+ *                       initBudget:
  *                         type: string
- *                         description: Identyfikator właściciela gospodarstwa.
- *                         example: '456e7890-b12c-34f5-d678-526314184001'
+ *                         description: Początkowy budżet gospodarstwa
+ *                         example: 5000
+ *                       balance: 
+ *                         type: string
+ *                         description: Kwota ostatniego bilansu gospodarstwa
+ *                         example: 15800
+ *                       balanceDate:
+ *                         type: date
+ *                         description: Data wykonania ostatniego bilansu
+ *                         example: 2025-01-01
+ *                       createdAt:
+ *                         type: datetime
+ *                         description: Data utworzenia gospodarstwa.
+ *                         example: 2025-01-01 13:25:01                       
  *       404:
  *         description: Brak gospodarstw w systemie.
  *         content:
@@ -161,7 +177,7 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  */
 
 
-router.get('/all', verifyJWT(),verifyRole('superadmin'), householdController.getAllHouses);
+router.get('/collection', verifyJWT(),verifyRole('superadmin'), householdController.getAllHouses);
 
 /**
  * @swagger
@@ -206,7 +222,7 @@ router.get('/all', verifyJWT(),verifyRole('superadmin'), householdController.get
  *                       type: string
  *                       description: Nazwa gospodarstwa.
  *                       example: My Flat
- *                     ownerId:
+ *                     userId:
  *                       type: string
  *                       description: Identyfikator właściciela gospodarstwa.
  *                       example: '456e7890-b12c-34f5-d678-526314184001'
@@ -218,7 +234,7 @@ router.get('/all', verifyJWT(),verifyRole('superadmin'), householdController.get
  *                       type: number
  *                       description: Ostatnia wartość bilansu gospodarstwa.
  *                       example: 2500
- *                     last_balance:
+ *                     balanceDate:
  *                       type: string
  *                       format: date
  *                       description: Data dokonania ostatniego bilansowania.
