@@ -5,7 +5,7 @@ const verifyJWT = require('../middlewares/verifyJWT');
 
 /**
  * @swagger
- * /auth/register:
+ * /auth/signup:
  *   post:
  *     summary: Rejestracja nowego użytkownika
  *     description: Tworzy nowe konto użytkownika na podstawie przesłanych danych rejestracyjnych.
@@ -63,7 +63,7 @@ const verifyJWT = require('../middlewares/verifyJWT');
  *         description: Wewnętrzny błąd serwera.
  */
 
-router.post('/register', authController.registerUser);
+router.post('/signup', authController.registerUser);
 
 /**
  * @swagger
