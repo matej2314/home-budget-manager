@@ -22,8 +22,8 @@ const balanceHouseActions = () => {
 
                 const dateLimit = balanceDate || createdAt;
                 const nextBalanceDate = new Date(dateLimit);
-                nextBalanceDate.setMonth(nextBalanceDate.getMonth() + 1);
-                // nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
+                // nextBalanceDate.setMonth(nextBalanceDate.getMonth() + 1);
+                nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
 
                 const now = new Date();
 
