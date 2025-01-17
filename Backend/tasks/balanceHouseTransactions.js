@@ -4,7 +4,7 @@ const logger = require('../configs/logger');
 const { formatDateToSQL } = require('../utils/formatDateToSQL');
 
 const balanceHouseActions = () => {
-    cron.schedule('0 13 * * *', async () => {
+    cron.schedule('0 12 * * *', async () => {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();

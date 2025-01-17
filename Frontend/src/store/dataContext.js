@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
+import { useQuery } from '@tanstack/react-query';
 import { serverUrl } from '../url';
 import fetchData from '../utils/fetchData';
 
@@ -11,35 +12,21 @@ export const DataContext = createContext({
 });
 
 const dataProvider = ({ children }) => {
-    const [fetchedData, setFetchedData] = useState({ data: [] });
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { data, isLoading, error, refetch } = useQuery(
+        ['boardData'], () => fetchData(`${serverUrl}/board/data`),
+        {
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+            enabled: true,
+        }
+    );
 
-    const loadData = async () => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const response = await fetchData(`${serverUrl}/board/data`);
-            setFetchedData(response);
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setIsLoading(false);
-        };
+    const refreshData = () => {
+        refetch();
     };
 
-    useEffect(() => {
-        loadData();
-    }, []);
-
-
-const refreshData = () => {
-    loadData();
-};
-
     return (
-        <DataContext.Provider value={{ data: fetchedData, isLoading, error, refreshData }}>
+        <DataContext.Provider value={{ data, isLoading, error, refreshData }}>
             {children}
         </DataContext.Provider>
     );
