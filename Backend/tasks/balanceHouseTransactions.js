@@ -4,7 +4,7 @@ const logger = require('../configs/logger');
 const { formatDateToSQL } = require('../utils/formatDateToSQL');
 
 const balanceHouseActions = () => {
-    cron.schedule('0 12 * * *', async () => {
+    cron.schedule('0 13 * * *', async () => {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -24,7 +24,7 @@ const balanceHouseActions = () => {
                 const nextBalanceDate = new Date(dateLimit);
                 // nextBalanceDate.setMonth(nextBalanceDate.getMonth() + 1);
                 nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
-                nextBalanceDate.setHours(0, 0, 0, 0);
+                
                 const now = new Date().toISOString().split('T')[0];
 
                 if (now >= nextBalanceDate) {
@@ -61,7 +61,7 @@ const balanceHouseActions = () => {
                         logger.info(`Bilans gospodarstwa ${houseId} zaktualizowany.`);
                     }
                 } else {
-                    logger.info(`Gospodarstwo ${houseId} nie wymaga bilansowania przed ${nextBalanceDate.toLocaleString()}.`);
+                    logger.info(`Gospodarstwo ${houseId} nie wymaga bilansowania przed ${nextBalanceDate}.`);
                 }
             }
 

@@ -1,7 +1,8 @@
+import { DashBoardPage } from './pages/DashboardPage';
 
 function App() {
   return (
-    <p>Budget web app</p>
+    <DashBoardPage />
   )
 }
 

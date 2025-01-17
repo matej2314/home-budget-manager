@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { serverUrl } from '../url';
 import fetchData from '../utils/fetchData';
 
-
 export const DataContext = createContext({
     data: {},
     isLoading: true,
