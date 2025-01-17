@@ -4,37 +4,42 @@ const logger = require('../configs/logger');
 const { formatDateToSQL } = require('../utils/formatDateToSQL');
 
 const balanceHouseActions = () => {
-    cron.schedule('0 13 * * *', async () => {
+    cron.schedule('0 14 * * *', async () => { 
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
             logger.info('Bilansowanie rozpoczęte.');
 
-            const [households] = await connection.query('SELECT houseId, userId, userName, houseName, initBudget, balance, balanceDate, DATE(createdAt) FROM households');
+            const [households] = await connection.query(
+                `SELECT houseId, userId, userName, houseName, initBudget, balance, DATE(balanceDate) AS balanceDate, DATE(createdAt) AS createdAt 
+                 FROM households`
+            );
+
             logger.info(`Znaleziono ${households.length} gospodarstw w bazie.`);
 
             if (households.length === 0) {
                 return;
             }
 
+            const today = new Date().toISOString().split('T')[0];
+
             for (const household of households) {
                 const { houseId, balanceDate, createdAt, balance } = household;
 
-                const dateLimit = balanceDate || createdAt;
-                const nextBalanceDate = new Date(dateLimit);
-                // nextBalanceDate.setMonth(nextBalanceDate.getMonth() + 1);
-                nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
                 
-                const now = new Date().toISOString().split('T')[0];
+                const dateLimit = balanceDate || createdAt;
+                logger.info(`Obliczanie daty dla gospodarstwa ${houseId}, balanceDate: ${balanceDate}, createdAt: ${createdAt}`);
 
-                if (now >= nextBalanceDate) {
-                    const formattedDateLimit = formatDateToSQL(dateLimit);
+                const nextBalanceDate = new Date(dateLimit);
+                nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
+                const nextBalanceDateStr = nextBalanceDate.toISOString().split('T')[0];
 
-                    logger.info(`Sprawdzamy transakcje dla gospodarstwa ${houseId} od ${formattedDateLimit}.`);
+                if (today >= nextBalanceDateStr) {
+                    logger.info(`Sprawdzamy transakcje dla gospodarstwa ${houseId} od ${dateLimit}.`);
 
                     const [transactions] = await connection.query(
                         `SELECT * FROM transactions WHERE houseId = ? AND DATE(addedAt) > ?`,
-                        [houseId, formattedDateLimit]
+                        [houseId, dateLimit]
                     );
 
                     logger.info(`Znaleziono ${transactions.length} transakcji dla gospodarstwa ${houseId}.`);
@@ -54,14 +59,14 @@ const balanceHouseActions = () => {
                         );
 
                         await connection.query(
-                            `DELETE FROM transactions WHERE houseId = ? AND addedAt > ?`,
-                            [houseId, formattedDateLimit]
+                            `DELETE FROM transactions WHERE houseId = ? AND DATE(addedAt) > ?`,
+                            [houseId, dateLimit]
                         );
 
                         logger.info(`Bilans gospodarstwa ${houseId} zaktualizowany.`);
                     }
                 } else {
-                    logger.info(`Gospodarstwo ${houseId} nie wymaga bilansowania przed ${nextBalanceDate}.`);
+                    logger.info(`Gospodarstwo ${houseId} nie wymaga bilansowania przed ${nextBalanceDateStr}.`);
                 }
             }
 
