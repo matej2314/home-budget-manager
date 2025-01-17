@@ -3,7 +3,7 @@ const pool = require('../database/db');
 const logger = require('../configs/logger');
 
 const balanceHouseActions = () => {
-    cron.schedule('0 14 * * *', async () => { 
+    cron.schedule('0 18 * * *', async () => { 
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -37,7 +37,7 @@ const balanceHouseActions = () => {
                     logger.info(`Sprawdzamy transakcje dla gospodarstwa ${houseId} od ${dateLimit}.`);
 
                     const [transactions] = await connection.query(
-                        `SELECT * FROM transactions WHERE houseId = ? AND DATE(addedAt) > ?`,
+                        `SELECT * FROM transactions WHERE houseId = ? AND DATE(addedAt) >= ?`,
                         [houseId, dateLimit]
                     );
 
