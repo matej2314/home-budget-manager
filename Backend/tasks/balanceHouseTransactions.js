@@ -1,7 +1,6 @@
 const cron = require('node-cron');
 const pool = require('../database/db');
 const logger = require('../configs/logger');
-const { formatDateToSQL } = require('../utils/formatDateToSQL');
 
 const balanceHouseActions = () => {
     cron.schedule('0 14 * * *', async () => { 
