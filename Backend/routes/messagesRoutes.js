@@ -27,7 +27,7 @@ router.post('/send', async (req, res) => {
         logger.error(`Błąd przy wysyłaniu wiadomości : ${error}`);
         return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
     } finally {
-        connection.release();
+     if(connection) connection.release();
     };
 });
 
@@ -43,8 +43,23 @@ router.get('/receive', async (req, res) => {
         logger.error(`Błąd przy pobieraniu wiadomości : ${error}`);
         return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
     } finally {
-        connection.release();
+       if(connection) connection.release();
     }
 });
+
+router.put('/:msgId/read', async (req, res) => {
+    const { msgId } = req.params;
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.query('UPDATE messages SET is_read = TRUE WHERE id =?', [msgId]);
+        logger.info(`Wiadomość ${msgId} oznaczona jako przeczytana.`);
+        return res.status(200).json({ status: 'error', message: 'Wiadomość oznaczona jako przeczytana.' });
+    } catch (error) {
+
+    } finally {
+       if(connection) connection.release();
+    }
+})
 
 module.exports = router;

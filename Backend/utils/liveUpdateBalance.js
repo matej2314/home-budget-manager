@@ -1,0 +1,30 @@
+const logger = require('../configs/logger');
+
+const liveUpdateBalance = async (type, value, houseId, connection) => {
+    
+    try {
+        const [houseBalance] = await connection.query('SELECT balance FROM households WHERE houseId=?', [houseId]);
+
+        if (houseBalance.length === 0) {
+            logger.error(`Gospodarstwo ${houseId} nie istnieje.`);
+            return;
+        };
+
+        let newBalance = houseBalance[0].balance;
+
+        if (type === 'income') {
+            newBalance += value;
+        } else if (type === 'expense') {
+            newBalance -= value;
+        };
+
+        const [addNewBalance] = await connection.query('UPDATE households SET balance = ? WHERE houseId = ?', [newBalance, houseId]);
+        logger.info(`Nowe saldo gospodarstwa ${houseId}: ${newBalance}`);
+
+
+    } catch (error) {
+        logger.error(`Nie udało się zaktualizować salda gospodarstwa ${houseId}: ${error}`);
+    } finally {
+        if (connection) connection.release();
+    };
+};
