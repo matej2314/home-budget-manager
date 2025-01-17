@@ -4,13 +4,13 @@ const logger = require('../configs/logger');
 const { formatDateToSQL } = require('../utils/formatDateToSQL');
 
 const balanceHouseActions = () => {
-    cron.schedule('0 11 * * *', async () => {
+    cron.schedule('0 13 * * *', async () => {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
             logger.info('Bilansowanie rozpoczęte.');
 
-            const [households] = await connection.query('SELECT * FROM households');
+            const [households] = await connection.query('SELECT houseId, userId, userName, houseName, initBudget, balance, balanceDate, DATE(createdAt) FROM households');
             logger.info(`Znaleziono ${households.length} gospodarstw w bazie.`);
 
             if (households.length === 0) {
@@ -24,8 +24,8 @@ const balanceHouseActions = () => {
                 const nextBalanceDate = new Date(dateLimit);
                 // nextBalanceDate.setMonth(nextBalanceDate.getMonth() + 1);
                 nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
-
-                const now = new Date();
+                nextBalanceDate.setHours(0, 0, 0, 0);
+                const now = new Date().toISOString().split('T')[0];
 
                 if (now >= nextBalanceDate) {
                     const formattedDateLimit = formatDateToSQL(dateLimit);
@@ -33,7 +33,7 @@ const balanceHouseActions = () => {
                     logger.info(`Sprawdzamy transakcje dla gospodarstwa ${houseId} od ${formattedDateLimit}.`);
 
                     const [transactions] = await connection.query(
-                        `SELECT * FROM transactions WHERE houseId = ? AND addedAt > ?`,
+                        `SELECT * FROM transactions WHERE houseId = ? AND DATE(addedAt) > ?`,
                         [houseId, formattedDateLimit]
                     );
 
