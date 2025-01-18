@@ -52,7 +52,7 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
         }
     } catch (error) {
         await connection.rollback();
-        logger.error(`Błąd przy dodawaniu nowego gospodarstwa: ${error}`);
+        logger.error(`Błąd przy dodawaniu nowego gospodarstwa: ${error.message}`);
         return { status: 'error', message: 'Wystąpił błąd podczas przetwarzania żądania.' };
     } finally {
         connection.release();

@@ -8,7 +8,7 @@ const usersController = require('../controllers/usersController.js');
 
 /**
  * @swagger
- * /users/all:
+ * /users/collection:
  *   get:
  *     summary: Pobierz wszystkich uzytkowników aplikacji.
  *     description: Zwraca listę wszystkich użytkowników w bazie danych uporządkowaną według ID użytkownika.
@@ -80,7 +80,7 @@ const usersController = require('../controllers/usersController.js');
  *                   example: Błąd pobierania listy użytkowników.
  */
 
-router.get('/all', verifyJWT(), usersController.getAllUsers);
+router.get('/collection', verifyJWT(), usersController.getAllUsers);
 
 /**
  * @swagger

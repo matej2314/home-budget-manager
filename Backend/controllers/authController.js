@@ -7,10 +7,11 @@ const logger = require('../configs/logger');
 const { isValidPassword, isValidEmail, isValidUsername } = require('../utils/validation');
 const jwtCookieOptions = require('../configs/jwtCookieOptions');
 const queries = require('../database/authQueries');
+const { checkUserEmail } = require('../utils/checkUserEmail');
 
 exports.registerUser = async (req, res) => {
     const { reg_username, reg_email, reg_password, role } = req.body;
-    const allowedRoles = ['superadmin','host', 'inmate', 'user'];
+    const allowedRoles = ['superadmin', 'user'];
 
     const validations = [
         { isValid: !!reg_username && isValidUsername(reg_username), message: 'Podaj prawidłowe dane użytkownika.' },
@@ -20,6 +21,12 @@ exports.registerUser = async (req, res) => {
     ];
 
     const connection = await pool.getConnection();
+
+    const checkEmail = await checkUserEmail(connection, reg_email);
+
+    if (checkEmail.email === reg_email) {
+        return res.status(400).json({ status: 'error', message: 'Użytkownik o takim adresie e-mail istnieje.' });
+    };
 
     try {
         for (const validation of validations) {

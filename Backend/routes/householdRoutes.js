@@ -79,7 +79,7 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
 
 /**
  * @swagger
- * /house/all:
+ * /house/collection:
  *   get:
  *     summary: Pobierz wszystkie gospodarstwa
  *     description: Zwraca listę wszystkich gospodarstw w systemie, uporządkowaną według identyfikatora gospodarstwa.
@@ -150,7 +150,7 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  *                   example: Błąd podczas pobierania gospodarstw.
  */
 
-router.get('/all', verifyJWT(),verifyRole('superadmin'), householdController.getAllHouses);
+router.get('/collection', verifyJWT(),verifyRole('superadmin'), householdController.getAllHouses);
 
 /**
  * @swagger

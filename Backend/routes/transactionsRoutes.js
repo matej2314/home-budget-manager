@@ -83,7 +83,7 @@ router.post('/new', verifyJWT(), verifyRole('mates'), actionsController.addNewAc
 
 /**
  * @swagger
- * /action/all:
+ * /action/collection:
  *   get:
  *     summary: Pobierz wszystkie transakcje
  *     description: Zwraca listę wszystkich transakcji w bazie danych uporządkowaną według ID transakcji.
@@ -162,7 +162,7 @@ router.post('/new', verifyJWT(), verifyRole('mates'), actionsController.addNewAc
  *                   example: Błąd podczas pobierania transakcji.
  */
 
-router.get('/all', verifyRole('superadmin'), actionsController.getAllActions);
+router.get('/collection', verifyRole('superadmin'), actionsController.getAllActions);
 
 /**
  * @swagger

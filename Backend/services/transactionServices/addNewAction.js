@@ -3,12 +3,14 @@ const { v4: uuidv4 } = require('uuid');
 const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUserHouse');
 const logger = require('../../configs/logger');
+const { liveUpdateBalance } = require('../../utils/liveUpdateBalance');
 
-const addNewAction = async (userId, type, value) => {
+const addNewAction = async (userId, type, value, catId) => {
+    
     const transactionId = uuidv4();
     
     const validTypes = ['income', 'expense'];
-
+    
     if (!type || !validTypes.includes(type) ) {
         logger.error('Nieprawidłowe dane wejściowe do dodania transakcji.');
         return {
@@ -33,12 +35,15 @@ const addNewAction = async (userId, type, value) => {
         }
 
         const houseId = houseData.houseId;
+        const id = uuidv4();
 
         const addActionQuery = actionQueries.newitemQuery;
-        await connection.query(addActionQuery, [transactionId, userId, houseId, type, value]);
+        await connection.query(addActionQuery, [id, transactionId, userId, houseId, catId, type, value]);
 
         logger.info(`Transakcja ${transactionId} została pomyślnie dodana dla gospodarstwa ${houseId}.`);
 
+        await liveUpdateBalance(type, value, houseId, connection);
+        
         await connection.commit();
 
         return {
@@ -55,7 +60,7 @@ const addNewAction = async (userId, type, value) => {
             message: 'Wystąpił błąd podczas dodawania transakcji. Spróbuj ponownie.',
         };
     } finally {
-        await connection.release();
+        if (connection) connection.release();
     };
 
 };
