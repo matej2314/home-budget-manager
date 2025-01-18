@@ -8,7 +8,7 @@ const { isValidPassword, isValidEmail, isValidUsername } = require('../utils/val
 const jwtCookieOptions = require('../configs/jwtCookieOptions');
 const {checkUserEmail} = require('../utils/checkUserEmail');
 const queries = require('../database/authQueries');
-const { checkUserEmail } = require('../utils/checkUserEmail');
+
 
 exports.registerUser = async (req, res) => {
     const { reg_username, reg_email, reg_password, role } = req.body;
