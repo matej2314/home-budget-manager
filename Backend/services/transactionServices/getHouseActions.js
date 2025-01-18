@@ -1,6 +1,7 @@
 const pool = require('../../database/db');
 const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUserHouse');
+const logger = require('../../configs/logger');
 
 const getHouseActions = async (userId) => {
     const connection = await pool.getConnection();
@@ -10,10 +11,10 @@ const getHouseActions = async (userId) => {
     
         if (!houseData) {
             logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
-            return res.status(404).json({
+            return {
                 status: 'notfound',
                 message: `Użytkownik ${userId} nie należy do żadnego gospodarstwa.`,
-            });
+            };
         }
     
         const houseId = houseData.houseId;
@@ -21,25 +22,25 @@ const getHouseActions = async (userId) => {
     
         if (rows.length == 0) {
             logger.error(`Brak transakcji dla gospodarstwa ${houseId}`);
-            return res.status(404).json({
+            return {
                 status: 'notfound',
                 message: 'Brak transakcji dla gospodarstwa.',
-            });
+            };
         }
         logger.info(`Pobranie wszystkich transakcji dla gospodarstwa zakończyło się sukcesem.`);
-        return res.status(200).json({
+        return {
             status: 'success',
             message: 'Transakcje dla gospodarstwa pobrane poprawnie',
             actions: rows,
-        });
+        };
     } catch (error) {
         logger.error(`Błąd podczas pobierania transakcji gospodarstwa: ${error.message}`);
-        return res.status(500).json({
+        return {
             status: 'error',
             message: 'Błąd podczas pobierania transakcji dla gospodarstwa.',
-        });
+        };
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 };
 

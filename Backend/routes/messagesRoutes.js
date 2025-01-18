@@ -3,11 +3,9 @@ const router = express.Router();
 const pool = require('../database/db');
 const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
-const verifyJWT = require('../middlewares/verifyJWT');
 
-router.post('/send', verifyJWT(), async (req, res) => {
-    const { recipientId, content } = req.body;
-    const senderId = req.userId;
+router.post('/send', async (req, res) => {
+    const { senderId, recipientId, content } = req.body;
 
     if (!senderId || !recipientId || !content) {
         return res.status(404).json({
@@ -29,22 +27,18 @@ router.post('/send', verifyJWT(), async (req, res) => {
         logger.error(`Błąd przy wysyłaniu wiadomości : ${error}`);
         return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
     } finally {
-
      if(connection) connection.release();
     };
 });
 
-router.get('/receive', verifyJWT(), async (req, res) => {
-
-    const  userId  = req.userId;
+router.get('/receive', async (req, res) => {
+    const { userId } = req.userId;
     const connection = await pool.getConnection();
 
     try {
-        const [messages] = await connection.query('SELECT * FROM messages WHERE recipientId =? ORDER BY datetime ASC',
-            [userId, userId]);
-        
+        const [messages] = await connection.query('SELECT * FROM messages WHERE senderId =? OR recipientId =? ORDER BY datetime ASC', [userId, userId]);
         logger.info(`Użytkownik ${userId} pobrał wiadomości.`);
-        return res.status(200).json({ status: 'success', message: 'Pobrano wiadomości', messages: messages });
+        return res.status(200).json({ status: 'success', message: 'Pobrano wiadomości', messages });
     } catch (error) {
         logger.error(`Błąd przy pobieraniu wiadomości : ${error}`);
         return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
@@ -54,7 +48,6 @@ router.get('/receive', verifyJWT(), async (req, res) => {
 });
 
 router.put('/:msgId/read', async (req, res) => {
-    
     const { msgId } = req.params;
     const connection = await pool.getConnection();
 
@@ -63,8 +56,7 @@ router.put('/:msgId/read', async (req, res) => {
         logger.info(`Wiadomość ${msgId} oznaczona jako przeczytana.`);
         return res.status(200).json({ status: 'error', message: 'Wiadomość oznaczona jako przeczytana.' });
     } catch (error) {
-        logger.error(`Błąd przy oznaczaniu wiadomości ${msgId} jako przeczytanej: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd przy oznaczaniu wiadomości.' });
+
     } finally {
        if(connection) connection.release();
     }

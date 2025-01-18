@@ -21,7 +21,7 @@ const getInhabitants = async (houseId) => {
             message: 'Nie udało się pobrać listy domowników gospodarstwa.',
         };
     } finally {
-        connection.release();
+        if (connection) connection.release();
     }
 };
 

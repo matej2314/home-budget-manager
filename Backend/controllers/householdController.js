@@ -1,6 +1,6 @@
 const logger = require('../configs/logger');
 const { addNewHouse } = require('../services/householdServices/addNewHouse');
-const { getAllHouses } = require('../services/householdServices/getAllHouses');
+const { getHousesCollection } = require('../services/householdServices/getHousesCollection');
 const { getHouseInfo } = require('../services/householdServices/getHouseinfo');
 const { deleteHouse } = require('../services/householdServices/deleteHouse');
 const jwt = require('jsonwebtoken');
@@ -25,11 +25,11 @@ exports.addNewHouse = async (req, res) => {
             res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
             return res.status(200).json(result);
         } else {
-            return res.status(500).json(result);
+            return res.status(500).json({status: 'error', message: result.message});
         }
 
     } catch (error) {
-        logger.error(`Błąd w kontrolerze: ${error.message}`);
+        logger.error(`Błąd w addNewHouse: ${error.message}`);
         return res.status(500).json({ status: 'error', message: 'Wystąpił błąd podczas dodawania nowego gospodarstwa.' });
     }
 };
@@ -37,16 +37,16 @@ exports.addNewHouse = async (req, res) => {
 
 exports.getAllHouses = async (req, res) => {
     try {
-        const result = await getAllHouses();
+        const result = await getHousesCollection();
 
         if (result.status === 'error') {
-            return res.status(404).json(result);
+            return res.status(404).json({status: 'error', message: result.message});
         } else if (result.status === 'success') {
             return res.status(200).json(result);
         };
 
     } catch (error) {
-        logger.error(`Błąd w kontrolerze: ${error}`);
+        logger.error(`Błąd w getAllHouses: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Wystąpił błąd podczas przetwarzania żądania.' });
     }
 };
@@ -64,7 +64,7 @@ exports.getHouseInfo = async (req, res) => {
         };
        
     } catch (error) {
-        logger.error(`Błąd w kontrolerze: ${error}`);
+        logger.error(`Błąd w getHouseInfo: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Wystąpił błąd przy przetwarzaniu żądania.' });
     };
 };
@@ -84,13 +84,13 @@ exports.deleteHouse = async (req, res) => {
         if (result.status === 'error') {
             return res.status(400).json(result);
         } else if (result.status === 'noperm') {
-            return res.status(403).json(result);
+            return res.status(403).json({status: 'error', message: result.message});
         };
         const token = jwt.sign({ id: userId, userName: req.userName, role: result.newRole }, JWT_SECRET, { expiresIn: '24h' });
         res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
         return res.status(200).json(result);
     } catch (error) {
-        logger.error(`Błąd w kontrolerze: ${error}`);
+        logger.error(`Błąd w deleteHouse: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
     };
 };

@@ -14,4 +14,4 @@ RUN npm install -g serve
 
 EXPOSE 5052
 
-CMD ["serve", "-s", "dist", "-l", "5050"]
+CMD ["serve", "-s", "dist", "-l", "5052"]

@@ -41,7 +41,7 @@ const deleteAction = async (transactionId, userId) => {
             message: 'Nie udało się usunąć transakcji.',
         };
     } finally {
-        connection.release();
+        if (connection) connection.release();
     };
 };
 

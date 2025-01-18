@@ -1,6 +1,6 @@
 const logger = require('../configs/logger');
 const { addUserToHouse } = require('../services/usersServices/addUserToHouse');
-const { getAllUsers } = require('../services/usersServices/getAllUsers');
+const { getUsersCollection } = require('../services/usersServices/getUsersCollection');
 const { getInhabitants } = require('../services/usersServices/getInhabitants');
 const { deleteUser } = require('../services/usersServices/deleteUser');
 const { deleteInhabitant } = require('../services/usersServices/deleteInhabitant');
@@ -13,11 +13,11 @@ exports.addUserToHouse = async (req, res) => {
         const response = await addUserToHouse(userId, userName);
 
         if (response.status === 'badreq') {
-            return res.status(404).json(response);
+            return res.status(404).json({status: 'error', message: response.message});
         } else if (response.status === 'error') {
             return res.status(500).json(response);
         } else if (response.status === 'inmate') {
-            return res.status(400).json(response);
+            return res.status(400).json({status: 'error', message: response.message});
         } if (response.status === 'success') {
             return res.status(200).json(response);
         };
@@ -32,7 +32,7 @@ exports.addUserToHouse = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
 
     try {
-        const response = await getAllUsers();
+        const response = await getUsersCollection();
 
         if (response.status === 'success') {
             return res.status(200).json(response);
@@ -81,7 +81,7 @@ exports.deleteInhabitant = async (req, res) => {
         const response = await deleteInhabitant(inhabitantId);
 
         if (response.status === 'badreq') {
-            return res.status(400).json(response);
+            return res.status(400).json({status: 'error', message: response.message});
         } else if (response.status === 'success') {
             return res.status(200).json(response);
         }

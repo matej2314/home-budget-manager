@@ -1,7 +1,7 @@
 const logger = require('../configs/logger');
 const { addNewAction } = require('../services/transactionServices/addNewAction');
 const { deleteAction } = require('../services/transactionServices/deleteAction');
-const { getAllActions } = require('../services/transactionServices/getAllActions');
+const {getActionsCollection } = require('../services/transactionServices/getActionsCollection');
 const { getHouseActions } = require('../services/transactionServices/getHouseActions');
 
 exports.addNewAction = async (req, res) => {
@@ -14,7 +14,7 @@ exports.addNewAction = async (req, res) => {
         if (response.status === 'success') {
             return res.status(200).json(response);
         } else if (response.status === 'nodata') {
-            return res.status(400).json(response);
+            return res.status(404).json({status: 'error', message: response.message});
         } else if (response.status === 'error') {
             return res.status(500).json(response);
         }
@@ -27,10 +27,10 @@ exports.addNewAction = async (req, res) => {
 
 exports.getAllActions = async (req, res) => {
     try {
-        const result = await getAllActions();
+        const result = await getActionsCollection();
 
         if (result.status === 'notfound') {
-            return res.status(404).json(result);
+            return res.status(404).json({status: 'error', message: result.message});
         } else if (result.status === 'error') {
             return res.status(500).json(result);
         } else if (result.status === 'success') {
@@ -50,9 +50,9 @@ exports.getHouseActions = async (req, res) => {
         const response = await getHouseActions(userId);
 
         if (response.status === 'notfound') {
-            return res.status(404).json(response.message);
+            return res.status(404).json({status: 'error', message: response.message});
         } else if (response.status === 'error') {
-            return res.status(500).json(response.message);
+            return res.status(500).json({status: 'error', message: response.message});
         } if (response.status === 'success') {
             return res.status(200).json(response);
         }
@@ -70,9 +70,9 @@ exports.deleteAction = async (req, res) => {
         const response = await deleteAction(transactionId, userId);
 
         if (response.status === 'badreq') {
-            return res.status(400).json(response);
+            return res.status(400).json({status: 'error', message: response.message});
         } else if (response.status === 'notfound') {
-            return res.status(404).json(response);
+            return res.status(404).json({status: 'error', message: response.message});
         } else if (response.status === 'error') {
             return res.status(500).json(response);
         } else {

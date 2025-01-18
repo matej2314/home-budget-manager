@@ -6,7 +6,10 @@ const logger = require('../../configs/logger');
 const { liveUpdateBalance } = require('../../utils/liveUpdateBalance');
 
 const addNewAction = async (userId, type, value, catId) => {
+<<<<<<< HEAD
     
+=======
+>>>>>>> 1482d99b26fb5793125700680af3bce10b816658
     const transactionId = uuidv4();
     
     const validTypes = ['income', 'expense'];
@@ -38,7 +41,11 @@ const addNewAction = async (userId, type, value, catId) => {
         const id = uuidv4();
 
         const addActionQuery = actionQueries.newitemQuery;
+<<<<<<< HEAD
         await connection.query(addActionQuery, [id, transactionId, userId, houseId, catId, type, value]);
+=======
+        await connection.query(addActionQuery, [transactionId, userId, houseId, catId, type, value]);
+>>>>>>> 1482d99b26fb5793125700680af3bce10b816658
 
         logger.info(`Transakcja ${transactionId} została pomyślnie dodana dla gospodarstwa ${houseId}.`);
 

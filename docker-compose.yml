@@ -1,32 +1,31 @@
-# services:
-#   backend:
-#     build:
-#       context: ./Backend
-#     container_name: budgetApp-backend
-#     restart: always
-#     networks:
-#       - main_network
-#     ports:
-#       - "5052:5052"
-#     volumes:
-#       - /root/main/budgetApp/backend/logs:/app/logs
-#       - /root/main/budgetApp/backend/.env:/app/.env
-#       - /root/main/budgetApp/backend/google:/app/google
-#       - /root/main/budgetApp/backend/emaildata.js:/app/emaildata.js
-#     environment:
-#       - DB_HOST=main_db
+services:
+  backend:
+    build:
+      context: ./Backend
+    container_name: budgetApp-backend
+    restart: always
+    networks:
+      - main_network
+    ports:
+      - "5053:5053"
+    volumes:
+      - /root/main/budgetApp/backend/logs:/app/logs
+      - /root/main/budgetApp/backend/.env:/app/.env
+      # - /root/main/budgetApp/backend/google:/app/google
+      # - /root/main/budgetApp/backend/emaildata.js:/app/emaildata.js
+    environment:
+      - DB_HOST=main_db
   # app:
-  #budgetApp
   #     context: ./Frontend
   #   container_name: budgetApp-frontend
   #   restart: always
   #   networks:
   #     - main_network
   #   ports:
-  #     - "5053:5053"
+  #     - "5052:5052"
     
 
-# networks:
-#   main_network:
-#     external: true
-#     name: main_network
+networks:
+  main_network:
+    external: true
+    name: main_network
