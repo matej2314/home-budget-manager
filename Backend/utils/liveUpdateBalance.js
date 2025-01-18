@@ -22,7 +22,11 @@ exports.liveUpdateBalance = async (type, value, houseId, connection) => {
         const [addNewBalance] = await connection.query('UPDATE households SET balance = ? WHERE houseId = ?', [newBalance, houseId]);
         logger.info(`Nowe saldo gospodarstwa ${houseId}: ${newBalance}`);
 
-        broadcastMessage(newBalance, houseId);
+        broadcastMessage({
+            type: 'balance_update',
+            houseId: houseId,
+            newBalance: newBalance,
+        });
 
     } catch (error) {
         logger.error(`Nie udało się zaktualizować salda gospodarstwa ${houseId}: ${error}`);

@@ -43,7 +43,7 @@ const broadcastMessage = (data) => {
         return;
     }
 
-    wss.client.forEach((client) => {
+    wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(data));
         }
