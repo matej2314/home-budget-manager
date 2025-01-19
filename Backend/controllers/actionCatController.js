@@ -57,10 +57,10 @@ exports.actionCatCollection = async (req, res) => {
 };
 
 exports.deleteActionCat = async (req, res) => {
-    const { catName } = req.body;
+    const { catName, catId } = req.body;
    
     try {
-        const response = await deleteActionCat(catName);
+        const response = await deleteActionCat(catName, catId);
 
         if (response.status === 'badreq') {
             return res.status(400).json({

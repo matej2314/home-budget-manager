@@ -18,7 +18,7 @@ exports.deleteHouse = async (userId, houseName) => {
         };
         const houseId = ownership[0].houseId;
         
-        const [result] = await connection.query(houseQueries.deleteQuery, [houseId]);
+        const [result] = await connection.query(houseQueries.deleteQuery, [houseId, userId]);
 
         if (result.affectedRows == 0) {
             logger.info('Nie znaleziono gospodarstwa.');
