@@ -1,54 +1,92 @@
-import { createContext } from "react";
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { serverUrl } from '../url';
-import fetchData from '../utils/fetchData';
-import sendRequest from '../utils/sendRequest';
+import { createContext, useState, useEffect } from "react";
+import { useSocket } from './socketContext';
+import sendWebSocketMessage from '../utils/sendWebSocketMessage';
 
-export const MessageContext = createContext({
+const MessageContext = createContext({
     messages: [],
-    isLoading: true,
+    isLoading: false,
     error: null,
     sendMessage: () => { },
-    refreshMessages: () => { },
+    fetchMessages: () => { },
+    markAsRead: () => { },
+    deleteMessage: () => { },
 });
 
 const MessageProvider = ({ children }) => {
-    const queryClient = useQueryClient();
+    const { socket, connected } = useSocket();
+    const [messages, setMessages] = useState([]);
+    const [error, setError] = useState(false);
 
-    const { data: messages, isLoading, error, refetch } = useQuery(
-        ['messages'],
-        () => fetchData(`${serverUrl}/msg/receive`),
-        {
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: true,
-        }
-    );
+    useEffect(() => {
+        if (!socket) return;
 
-    const sendMessageMutation = useMutation(
-        (newMessage) => sendRequest('POST', newMessage, `${serverUrl}/msg/send`),
-        {
-            onSuccess: () => {
-                queryClient.invalidateQueries(['messages']);
-            },
-        }
-    );
+        const handleMessage = (event) => {
+            try {
+                const parsedMessage = JSON.parse(event.data);
+                const { type, message, data } = parsedMessage;
 
-    const sendMessage = async (newMessage) => {
-        try {
-            await sendMessageMutation.mutateAsync(newMessage);
-        } catch (error) {
-            console.log('Błąd podczas wysyłania wiadomości.', error);
+
+                switch (type) {
+                    case 'newMessage':
+                        setMessages((prevMessages) => [...prevMessages, message]);
+                        break;
+                    case 'messages':
+                        setMessages(data);
+                        break;
+                    case 'error':
+                        setError(data);
+                        break;
+                    case 'read':
+                        setMessages((prevMessages) => [...prevMessages, message]);
+                        break;
+                    case 'delMsg':
+                        setMessages((prevMessages) => [...prevMessages, message]);
+                        break;
+                    default:
+                        console.log(`Nieznany typ wiadomości: ${type}`);
+                };
+
+            } catch (error) {
+                setError(error);
+                console.log(error);
+            }
+        };
+
+        socket.addEventListener('message', handleMessage);
+
+        return () => {
+            socket.removeEventListener('message', handleMessage);
         }
+    }, [socket]);
+
+    const sendMessage = (message) => {
+        sendWebSocketMessage(socket, connected, 'send', message, setError);
     };
 
-    const refreshMessages = () => {
-        refetch();
+    const fetchMessages = (userId) => {
+        sendWebSocketMessage(socket, connected, 'fetch', { userId }, setError);
+    };
+
+    const markAsRead = (msgId) => {
+        sendWebSocketMessage(socket, connected, 'read', { msgId }, setError);
+    };
+
+    const deleteMessage = (msgId) => {
+        sendWebSocketMessage(socket, connected, 'delMsg', { msgId }, setError);
     };
 
     return (
-        <messageContext.Provider value={{ messages: messages || [], isLoading, error, sendMessage, refreshMessages }}>
+        <MessageContext.Provider value={{
+            messages,
+            isLoading,
+            error,
+            sendMessage,
+            fetchMessages,
+            markAsRead,
+            deleteMessage
+        }}>
             {children}
-        </messageContext.Provider>
+        </MessageContext.Provider>
     );
 };
 

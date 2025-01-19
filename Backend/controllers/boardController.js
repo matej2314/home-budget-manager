@@ -23,12 +23,7 @@ const getBoardData = async (userId) => {
             return {status: 'notfound', message: 'Brak informacji o gospodarstwie.'};
         }
 
-        const houseData = {
-            name: householdData[0].houseName,
-            host: householdData[0].userName,
-            balance: householdData[0].balance,
-            balanceDate: householdData[0].balanceDate,
-        };
+        const houseData = householdData;
        
         const [matesData] = await connection.query(dashboardQueries.matesData,[userHouseId]);
 
