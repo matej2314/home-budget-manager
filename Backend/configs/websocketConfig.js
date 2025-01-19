@@ -1,39 +1,44 @@
 const logger = require('./logger');
-const WebSocket = require('ws');
 const pool = require('../database/db');
 const { v4: uuidv4 } = require('uuid');
-// const jwt = require('jsonwebtoken');
-// const JWT_SECRET = process.env.JWT_SECRET;
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET;
+const io = require('socket.io');
 
-let wss;
+let ioInstance;
 
 const initializeWebSocket = (server) => {
-    wss = new WebSocket.Server({ server });
+   
+    ioInstance = io(server, {
+        cors: {
+            origin: '*',
+            methods: ['GET', 'POST']
+        }
+    });
 
-    wss.on('connection', (ws,req) => {
-        // const token = req.headers.cookie ? req.headers.cookie.split(';')
-        //     .find(cookie => cookie.trim().startsWith('SESSID=*'))?.split('=')[1] : null;
+    ioInstance.on('connection', (socket) => {
+        const token = socket.handshake.headers.cookie?.SESSID;
 
-        // if (!token) {
-        //     logger.error('Błąd autoryzacji WebSocket.');
-        //     ws.send(JSON.stringify({ type: 'error', message: 'Błąd autoryzacji.' }));
-        //     ws.close();
-        //     return;
-        // } 
+        if (!token) {
+            logger.error('Błąd autoryzacji WebSocket.');
+            socket.emit('error', { type: 'error', message: 'Błąd autoryzacji.' });
+            socket.disconnect();
+            return;
+        }
 
-        // jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        jwt.verify(token, JWT_SECRET, (err, decoded) => {
+            if (err) {
+                socket.emit('error', { type: 'error', message: 'Błąd autoryzacji.' });
+                socket.disconnect();
+            } else {
+                socket.userId = decoded.id;
+                logger.info('Nowe połączenie WebSocket.');
+            }
+        });
 
-        //     ws.userId =  decoded.id;
-
-        //     if (err) {
-        //         ws.send(JSON.stringify({ type: 'error', message: 'Błąd autoryzacji.' }));
-        //         ws.close();
-        //     } else {
-        //         logger.info('Nowe połączenie WebSocket.');
-        //     }
-        // });
         logger.info('Połączenie websocket nawiązane.');
-        ws.on('message', async (message) => {
+
+        socket.on('message', async (message) => {
             let connection;
         
             try {
@@ -43,12 +48,11 @@ const initializeWebSocket = (server) => {
                 connection = await pool.getConnection();
         
                 if (type === 'send') {
-                    
                     const id = uuidv4();
                     const { recipientId, content } = data;
         
                     await connection.query('INSERT INTO messages (id, senderId, recipientId, content, is_read) VALUES (?, ?, ?, ?, ?)', 
-                        [id, senderId, recipientId, content, false]);
+                        [id, socket.userId, recipientId, content, false]);
         
                     logger.info(`Wiadomość o ID ${id} została zapisana w bazie danych`);
 
@@ -56,14 +60,13 @@ const initializeWebSocket = (server) => {
                         type: 'newMessage',
                         message: {
                             id,
-                            senderId : ws.userId,
+                            senderId: socket.userId,
                             recipientId,
                             content
                         },
                     });
 
                 } else if (type === 'fetch') {
-                    
                     const { userId } = data;
         
                     const [messages] = await connection.query(
@@ -71,11 +74,10 @@ const initializeWebSocket = (server) => {
                         [userId, userId]
                     );
         
-                    ws.send(JSON.stringify({ type: 'messages', data: messages }));
+                    socket.emit('messages', { type: 'messages', data: messages });
                     logger.info(`Wysłano wiadomości dla użytkownika ${userId}.`);
 
                 } else if (type === 'read') {
-                   
                     const { msgId } = data;
         
                     await connection.query('UPDATE messages SET is_read = TRUE WHERE id = ?', [msgId]);
@@ -92,17 +94,17 @@ const initializeWebSocket = (server) => {
                 }
             } catch (error) {
                 logger.error(`Błąd podczas przetwarzania wiadomości WebSocket: ${error.message}`);
-                ws.send(JSON.stringify({ type: 'error', message: error.message }));
+                socket.emit('error', { type: 'error', message: error.message });
             } finally {
                 if (connection) connection.release();
             }
         });
-        
-        ws.on('close', (code, reason) => {
-            logger.info(`Połączenie WebSocket zamknięte. Kod: ${code}, Powód: ${reason}`);
+
+        socket.on('disconnect', (reason) => {
+            logger.info(`Połączenie WebSocket zamknięte. Powód: ${reason}`);
         });
 
-        ws.on('error', (error) => {
+        socket.on('error', (error) => {
             logger.error(`Błąd WebSocket: ${error.message}`);
         });
     });
@@ -112,16 +114,12 @@ const initializeWebSocket = (server) => {
 };
 
 const broadcastMessage = (data) => {
-    if (!wss) {
+    if (!ioInstance) {
         logger.error('Nie zainicjalizowano serwera WebSocket.');
         return;
     }
 
-    wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(data));
-        }
-    });
+    ioInstance.emit('newMessage', data); 
 };
 
 module.exports = { initializeWebSocket, broadcastMessage };

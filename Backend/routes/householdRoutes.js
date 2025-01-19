@@ -91,13 +91,11 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  * @swagger
  * /house/collection:
  *   get:
- *     summary: Pobierz wszystkie gospodarstwa
- *     description: Zwraca listę wszystkich gospodarstw w systemie. Gospodarstwa są uporządkowane według identyfikatora gospodarstwa.
- *     tags:
- *       - Households
+ *     summary: Pobiera kolekcję gospodarstw domowych.
+ *     description: Zwraca listę gospodarstw domowych wraz z przypisanymi użytkownikami, ich nazwami i rolami.
  *     responses:
  *       200:
- *         description: Lista gospodarstw pobrana pomyślnie.
+ *         description: Zwraca listę gospodarstw domowych.
  *         content:
  *           application/json:
  *             schema:
@@ -105,11 +103,9 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'success'
+ *                   example: success
  *                 message:
  *                   type: string
- *                   description: Wiadomość o sukcesie.
  *                   example: Gospodarstwa pobrane poprawnie.
  *                 houses:
  *                   type: array
@@ -117,35 +113,27 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  *                     type: object
  *                     properties:
  *                       houseId:
- *                         type: string
- *                         description: Unikalny identyfikator gospodarstwa.
- *                         example: '123e4567-e89b-12d3-a456-426614174000'
- *                       userId:
- *                         type: string
- *                         description: Identyfikator właściciela gospodarstwa.
- *                         example: '456e7890-b12c-34f5-d678-526314184001'
+ *                         type: integer
+ *                         description: ID gospodarstwa.
+ *                         example: 1
  *                       houseName:
  *                         type: string
  *                         description: Nazwa gospodarstwa.
- *                         example: My Flat
- *                       initBudget:
+ *                         example: Gospodarstwo A
+ *                       userId:
+ *                         type: integer
+ *                         description: ID użytkownika przypisanego do gospodarstwa.
+ *                         example: 101
+ *                       userName:
  *                         type: string
- *                         description: Początkowy budżet gospodarstwa
- *                         example: 5000
- *                       balance: 
+ *                         description: Nazwa użytkownika przypisanego do gospodarstwa.
+ *                         example: Jan Kowalski
+ *                       role:
  *                         type: string
- *                         description: Kwota ostatniego bilansu gospodarstwa
- *                         example: 15800
- *                       balanceDate:
- *                         type: date
- *                         description: Data wykonania ostatniego bilansu
- *                         example: 2025-01-01
- *                       createdAt:
- *                         type: datetime
- *                         description: Data utworzenia gospodarstwa.
- *                         example: 2025-01-01 13:25:01                       
+ *                         description: Rola użytkownika w gospodarstwie.
+ *                         example: admin
  *       404:
- *         description: Brak gospodarstw w systemie.
+ *         description: Brak gospodarstw w bazie danych.
  *         content:
  *           application/json:
  *             schema:
@@ -153,14 +141,12 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'error'
+ *                   example: error
  *                 message:
  *                   type: string
- *                   description: Wiadomość o braku danych.
  *                   example: Brak gospodarstw.
  *       500:
- *         description: Wewnętrzny błąd serwera.
+ *         description: Błąd serwera podczas przetwarzania żądania.
  *         content:
  *           application/json:
  *             schema:
@@ -168,13 +154,12 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'error'
+ *                   example: error
  *                 message:
  *                   type: string
- *                   description: Opis błędu.
  *                   example: Wystąpił błąd podczas przetwarzania żądania.
  */
+
 
 router.get('/collection', verifyJWT(),verifyRole('superadmin'), householdController.getAllHouses);
 
