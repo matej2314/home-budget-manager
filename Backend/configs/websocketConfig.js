@@ -10,31 +10,31 @@ let ioInstance;
 const initializeWebSocket = (server) => {
    
     ioInstance = io(server, {
-        cors: {
-            origin: '*',
-            credentials: true,
-        }
+        // cors: {
+        //     origin: '*',
+        //     credentials: true,
+        // }
     });
 
     ioInstance.on('connection', (socket) => {
-        const token = socket.handshake.headers.cookie?.SESSID;
+        // const token = socket.handshake.headers.cookie?.SESSID;
 
-        if (!token) {
-            logger.error('Błąd autoryzacji WebSocket.');
-            socket.emit('error', { type: 'error', message: 'Błąd autoryzacji.' });
-            socket.disconnect();
-            return;
-        }
+        // if (!token) {
+        //     logger.error('Błąd autoryzacji WebSocket.');
+        //     socket.emit('error', { type: 'error', message: 'Błąd autoryzacji.' });
+        //     socket.disconnect();
+        //     return;
+        // }
 
-        jwt.verify(token, JWT_SECRET, (err, decoded) => {
-            if (err) {
-                socket.emit('error', { type: 'error', message: 'Błąd autoryzacji.' });
-                socket.disconnect();
-            } else {
-                socket.userId = decoded.id;
-                logger.info('Nowe połączenie WebSocket.');
-            }
-        });
+        // jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        //     if (err) {
+        //         socket.emit('error', { type: 'error', message: 'Błąd autoryzacji.' });
+        //         socket.disconnect();
+        //     } else {
+        //         socket.userId = decoded.id;
+        //         logger.info('Nowe połączenie WebSocket.');
+        //     }
+        // });
 
         logger.info('Połączenie websocket nawiązane.');
 
