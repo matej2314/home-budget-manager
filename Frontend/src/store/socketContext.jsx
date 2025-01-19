@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { socketPath } from '../url';
+import { AuthContext } from "./authContext";
+import { io } from "socket.io-client";
+import { socketPath } from "../url";
 
 export const SocketContext = createContext();
 
@@ -10,59 +12,57 @@ export const SocketProvider = ({ children }) => {
     const [connected, setConnected] = useState(false);
     const [messages, setMessages] = useState([]);
     const [error, setError] = useState(null);
-
-
-    const initializeSocket = () => {
-        const socketUrl = socketPath;
-        const ws = new WebSocket(socketUrl);
-
-        ws.onopen = () => {
-            setConnected(true);
-            console.log("WebSocket connected");
-        };
-
-        ws.onmessage = (event) => {
-
-            setMessages((prevMessages) => [...prevMessages, event.data]);
-        };
-
-        ws.onerror = (error) => {
-            setError(error.message);
-            console.error("WebSocket Error:", error);
-        };
-
-        ws.onclose = () => {
-            setConnected(false);
-            console.log("WebSocket disconnected");
-        };
-
-        setSocket(ws);
-    };
-
-    const sendMessage = (message) => {
-
-        if (socket && connected) {
-            socket.send(message);
-        } else {
-            setError("WebSocket is not connected");
-        }
-    };
-
-    const closeSocket = () => {
-        if (socket) {
-            socket.closeSocket();
-        }
-    };
+    const { isAuthenticated } = useContext(AuthContext);
 
     useEffect(() => {
+        if (isAuthenticated) {
 
-        initializeSocket();
+            const newSocket = io(socketPath, {
+                transports: ["websocket"],
+            });
 
+            newSocket.on("connect", () => {
+                setConnected(true);
+                console.log("Socket.IO connected");
+            });
 
-        return () => {
-            closeSocket();
-        };
-    }, []);
+            newSocket.on("disconnect", () => {
+                setConnected(false);
+                console.log("Socket.IO disconnected");
+            });
+
+            newSocket.on("connect_error", (error) => {
+                setError(error.message);
+                console.error("Socket.IO Error:", error);
+            });
+
+            newSocket.on("message", (message) => {
+                setMessages((prevMessages) => [...prevMessages, message]);
+            });
+
+            setSocket(newSocket);
+
+            return () => {
+                newSocket.disconnect();
+                setSocket(null);
+                setConnected(false);
+            };
+        } else {
+            if (socket) {
+                socket.disconnect();
+                setSocket(null);
+                setConnected(false);
+            }
+        }
+    }, [isAuthenticated]);
+
+    const sendMessage = (message) => {
+        if (socket && connected) {
+            socket.emit("message", message);
+        } else {
+            setError("Socket.IO is not connected");
+        }
+    };
 
     return (
         <SocketContext.Provider value={{ socket, connected, messages, sendMessage, error }}>

@@ -20,21 +20,20 @@ const MessageProvider = ({ children }) => {
     useEffect(() => {
         if (!socket) return;
 
-        const handleMessage = (event) => {
+        const handleMessage = (data) => {
             try {
-                const parsedMessage = JSON.parse(event.data);
-                const { type, message, data } = parsedMessage;
-
+                const parsedMessage = JSON.parse(data);
+                const { type, message, data: msgData } = parsedMessage;
 
                 switch (type) {
                     case 'newMessage':
                         setMessages((prevMessages) => [...prevMessages, message]);
                         break;
                     case 'messages':
-                        setMessages(data);
+                        setMessages(msgData);
                         break;
                     case 'error':
-                        setError(data);
+                        setError(msgData);
                         break;
                     case 'read':
                         setMessages((prevMessages) => [...prevMessages, message]);
@@ -45,18 +44,17 @@ const MessageProvider = ({ children }) => {
                     default:
                         console.log(`Nieznany typ wiadomości: ${type}`);
                 };
-
             } catch (error) {
-                setError(error);
-                console.log(error);
+                setError(error.message);
+                console.error("Błąd przetwarzania wiadomości:", error);
             }
         };
 
-        socket.addEventListener('message', handleMessage);
+        socket.on('message', handleMessage);
 
         return () => {
-            socket.removeEventListener('message', handleMessage);
-        }
+            socket.off('message', handleMessage);
+        };
     }, [socket]);
 
     const sendMessage = (message) => {
@@ -78,7 +76,7 @@ const MessageProvider = ({ children }) => {
     return (
         <MessageContext.Provider value={{
             messages,
-            isLoading,
+            isLoading: false,
             error,
             sendMessage,
             fetchMessages,
