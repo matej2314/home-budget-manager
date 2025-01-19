@@ -3,7 +3,7 @@ module.exports = {
     addQuery: 'INSERT INTO households (houseId, userId, userName, houseName, initBudget) VALUES (?, ?, ?, ?, ?)',
     mateQuery: 'UPDATE users SET inmate = ?, role = ? WHERE id = ?',
     hostQuery: 'UPDATE users SET host = ?, role = ? WHERE id = ?',
-    dataQuery: 'SELECT h.houseId, h.houseName, h.initBudget, h.balance, h.balanceDate, hu.userId, hu.userName, hu.role FROM households h JOIN householdUsers hu ON h.houseId = hu.houseId WHERE h.houseId = ?;',
+    dataQuery: 'SELECT h.houseId, h.houseName, h.initBudget, h.balanceDate, hu.userId, hu.userName, hu.role FROM households h JOIN householdUsers hu ON h.houseId = hu.houseId WHERE h.houseId = ?;',
     ownershipQuery: 'SELECT houseId FROM households WHERE houseName=?',
     deleteQuery: 'DELETE FROM households WHERE houseId=?',
     updateroleHu: 'UPDATE householdUsers SET role = ? WHERE userId = ?',
