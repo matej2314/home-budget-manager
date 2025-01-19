@@ -8,59 +8,64 @@ const io = require('socket.io');
 let ioInstance;
 
 const initializeWebSocket = (server) => {
-   
+    
     ioInstance = io(server, {
-        // cors: {
-        //     origin: '*',
-        //     credentials: true,
-        // }
+        cors: {
+            origin: '*', 
+            credentials: true,
+        }
+    });
+
+    io.use((socket, next) => {
+        const token = socket.request.cookies?.SESSID;
+        if (!token) {
+            return next(new Error('No token provided'));
+        }
+
+        jwt.verify(token, JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return next(new Error('Invalid token'));
+            }
+            socket.user = decoded;
+            next();
+        });
     });
 
     ioInstance.on('connection', (socket) => {
-        // const token = socket.handshake.headers.cookie?.SESSID;
-
-        // if (!token) {
-        //     logger.error('Błąd autoryzacji WebSocket.');
-        //     socket.emit('error', { type: 'error', message: 'Błąd autoryzacji.' });
-        //     socket.disconnect();
-        //     return;
-        // }
-
-        // jwt.verify(token, JWT_SECRET, (err, decoded) => {
-        //     if (err) {
-        //         socket.emit('error', { type: 'error', message: 'Błąd autoryzacji.' });
-        //         socket.disconnect();
-        //     } else {
-        //         socket.userId = decoded.id;
-        //         logger.info('Nowe połączenie WebSocket.');
-        //     }
-        // });
-
         logger.info('Połączenie websocket nawiązane.');
 
         socket.on('message', async (message) => {
+
             let connection;
-        
             try {
-                const parsedMessage = JSON.parse(message);
+                
+                let parsedMessage;
+                try {
+                    parsedMessage = JSON.parse(message);
+                } catch (e) {
+                    logger.error('Błąd parsowania wiadomości JSON.');
+                    socket.emit('error', { type: 'error', message: 'Niepoprawny format wiadomości.' });
+                    return;
+                }
+
                 const { type, data } = parsedMessage;
-        
+
                 connection = await pool.getConnection();
-        
+
                 if (type === 'send') {
                     const id = uuidv4();
                     const { recipientId, content } = data;
-        
+
                     await connection.query('INSERT INTO messages (id, senderId, recipientId, content, is_read) VALUES (?, ?, ?, ?, ?)', 
-                        [id, socket.userId, recipientId, content, false]);
-        
+                        [id, socket.user.id, recipientId, content, false]);
+
                     logger.info(`Wiadomość o ID ${id} została zapisana w bazie danych`);
 
                     broadcastMessage({
                         type: 'newMessage',
                         message: {
                             id,
-                            senderId: socket.userId,
+                            senderId: socket.user.id,
                             recipientId,
                             content
                         },
@@ -68,21 +73,21 @@ const initializeWebSocket = (server) => {
 
                 } else if (type === 'fetch') {
                     const { userId } = data;
-        
+
                     const [messages] = await connection.query(
                         'SELECT * FROM messages WHERE senderId = ? OR recipientId = ? ORDER BY datetime ASC', 
                         [userId, userId]
                     );
-        
+
                     socket.emit('messages', { type: 'messages', data: messages });
                     logger.info(`Wysłano wiadomości dla użytkownika ${userId}.`);
 
                 } else if (type === 'read') {
                     const { msgId } = data;
-        
+
                     await connection.query('UPDATE messages SET is_read = TRUE WHERE id = ?', [msgId]);
                     logger.info(`Wiadomość o ID ${msgId} została oznaczona jako przeczytana.`);
-                    
+
                 } else if (type === 'delMsg') {
                     const { msgId } = data;
 
@@ -119,7 +124,7 @@ const broadcastMessage = (data) => {
         return;
     }
 
-    ioInstance.emit('newMessage', data); 
+    ioInstance.emit('newMessage', data);
 };
 
 module.exports = { initializeWebSocket, broadcastMessage };
