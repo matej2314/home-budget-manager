@@ -2,15 +2,37 @@ const logger = require('./logger');
 const WebSocket = require('ws');
 const pool = require('../database/db');
 const { v4: uuidv4 } = require('uuid');
+// const jwt = require('jsonwebtoken');
+// const JWT_SECRET = process.env.JWT_SECRET;
 
 let wss;
 
 const initializeWebSocket = (server) => {
     wss = new WebSocket.Server({ server });
 
-    wss.on('connection', (ws) => {
-        logger.info('Nowe połączenie WebSocket.');
+    wss.on('connection', (ws,req) => {
+        // const token = req.headers.cookie ? req.headers.cookie.split(';')
+        //     .find(cookie => cookie.trim().startsWith('SESSID=*'))?.split('=')[1] : null;
 
+        // if (!token) {
+        //     logger.error('Błąd autoryzacji WebSocket.');
+        //     ws.send(JSON.stringify({ type: 'error', message: 'Błąd autoryzacji.' }));
+        //     ws.close();
+        //     return;
+        // } 
+
+        // jwt.verify(token, JWT_SECRET, (err, decoded) => {
+
+        //     ws.userId =  decoded.id;
+
+        //     if (err) {
+        //         ws.send(JSON.stringify({ type: 'error', message: 'Błąd autoryzacji.' }));
+        //         ws.close();
+        //     } else {
+        //         logger.info('Nowe połączenie WebSocket.');
+        //     }
+        // });
+        logger.info('Połączenie websocket nawiązane.');
         ws.on('message', async (message) => {
             let connection;
         
@@ -23,7 +45,7 @@ const initializeWebSocket = (server) => {
                 if (type === 'send') {
                     
                     const id = uuidv4();
-                    const { senderId, recipientId, content } = data;
+                    const { recipientId, content } = data;
         
                     await connection.query('INSERT INTO messages (id, senderId, recipientId, content, is_read) VALUES (?, ?, ?, ?, ?)', 
                         [id, senderId, recipientId, content, false]);
@@ -34,7 +56,7 @@ const initializeWebSocket = (server) => {
                         type: 'newMessage',
                         message: {
                             id,
-                            senderId,
+                            senderId : ws.userId,
                             recipientId,
                             content
                         },
