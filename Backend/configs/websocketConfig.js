@@ -12,7 +12,6 @@ const initializeWebSocket = (server) => {
     ioInstance = io(server, {
         cors: {
             origin: '*',
-            methods: ['GET', 'POST'],
             credentials: true,
         }
     });
