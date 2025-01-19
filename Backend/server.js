@@ -46,7 +46,7 @@ const householdRouter = require('./routes/householdRoutes.js');
 const transactionRouter = require('./routes/transactionsRoutes.js');
 const dashboardRouter = require('./routes/dashboardRoutes.js');
 const actionCatRouter = require('./routes/actionCatRoutes.js');
-const messagesRouter = require('./routes/messagesRoutes.js');
+
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
@@ -54,7 +54,6 @@ app.use('/house', householdRouter);
 app.use('/action', transactionRouter);
 app.use('/board', dashboardRouter);
 app.use('/actioncat', actionCatRouter);
-app.use('/msg', messagesRouter);
 
 const server = http.createServer(app);
 

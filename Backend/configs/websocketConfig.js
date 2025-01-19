@@ -1,5 +1,7 @@
 const logger = require('./logger');
 const WebSocket = require('ws');
+const pool = require('../database/db');
+const { v4: uuidv4 } = require('uuid');
 
 let wss;
 
@@ -9,21 +11,71 @@ const initializeWebSocket = (server) => {
     wss.on('connection', (ws) => {
         logger.info('Nowe połączenie WebSocket.');
 
-        ws.on('message', (message) => {
+        ws.on('message', async (message) => {
+            let connection;
+        
             try {
                 const parsedMessage = JSON.parse(message);
-
-                if (parsedMessage.type === 'chat') {
-                    logger.info('Odebrano wiadomość typu "chat".');
+                const { type, data } = parsedMessage;
+        
+                connection = await pool.getConnection();
+        
+                if (type === 'send') {
                     
+                    const id = uuidv4();
+                    const { senderId, recipientId, content } = data;
+        
+                    await connection.query('INSERT INTO messages (id, senderId, recipientId, content, is_read) VALUES (?, ?, ?, ?, ?)', 
+                        [id, senderId, recipientId, content, false]);
+        
+                    logger.info(`Wiadomość o ID ${id} została zapisana w bazie danych`);
+
+                    broadcastMessage({
+                        type: 'newMessage',
+                        message: {
+                            id,
+                            senderId,
+                            recipientId,
+                            content
+                        },
+                    });
+
+                } else if (type === 'fetch') {
+                    
+                    const { userId } = data;
+        
+                    const [messages] = await connection.query(
+                        'SELECT * FROM messages WHERE senderId = ? OR recipientId = ? ORDER BY datetime ASC', 
+                        [userId, userId]
+                    );
+        
+                    ws.send(JSON.stringify({ type: 'messages', data: messages }));
+                    logger.info(`Wysłano wiadomości dla użytkownika ${userId}.`);
+
+                } else if (type === 'read') {
+                   
+                    const { msgId } = data;
+        
+                    await connection.query('UPDATE messages SET is_read = TRUE WHERE id = ?', [msgId]);
+                    logger.info(`Wiadomość o ID ${msgId} została oznaczona jako przeczytana.`);
+                    
+                } else if (type === 'delMsg') {
+                    const { msgId } = data;
+
+                    await connection.query('DELETE FROM messages WHERE id =?', [msgId]);
+                    logger.info(`Wiadomość ${msgId} usunięta z systemu.`);
+
                 } else {
-                    logger.error(`Nieznany typ wiadomości: ${parsedMessage.type}`);
+                    logger.error(`Nieznany typ wiadomości: ${type}`);
                 }
             } catch (error) {
-                logger.error(`Błąd podczas odbierania wiadomości WebSocket: ${error.message}`);
+                logger.error(`Błąd podczas przetwarzania wiadomości WebSocket: ${error.message}`);
+                ws.send(JSON.stringify({ type: 'error', message: error.message }));
+            } finally {
+                if (connection) connection.release();
             }
         });
-
+        
         ws.on('close', (code, reason) => {
             logger.info(`Połączenie WebSocket zamknięte. Kod: ${code}, Powód: ${reason}`);
         });
