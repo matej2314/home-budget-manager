@@ -1,15 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import { useSocket } from './socketContext';
-import sendWebSocketMessage from '../utils/sendWebSocketMessage';
 
-const MessageContext = createContext({
+
+export const MessageContext = createContext({
     messages: [],
     isLoading: false,
     error: null,
-    sendMessage: () => { },
-    fetchMessages: () => { },
-    markAsRead: () => { },
-    deleteMessage: () => { },
 });
 
 const MessageProvider = ({ children }) => {
@@ -23,22 +19,16 @@ const MessageProvider = ({ children }) => {
         const handleMessage = (data) => {
             try {
                 const parsedMessage = JSON.parse(data);
-                const { type, message, data: msgData } = parsedMessage;
+                const { type, message } = parsedMessage;
 
                 switch (type) {
                     case 'newMessage':
                         setMessages((prevMessages) => [...prevMessages, message]);
                         break;
-                    case 'messages':
-                        setMessages(msgData);
-                        break;
                     case 'error':
-                        setError(msgData);
+                        setError(message);
                         break;
-                    case 'read':
-                        setMessages((prevMessages) => [...prevMessages, message]);
-                        break;
-                    case 'delMsg':
+                    case 'balance_update':
                         setMessages((prevMessages) => [...prevMessages, message]);
                         break;
                     default:
@@ -57,31 +47,12 @@ const MessageProvider = ({ children }) => {
         };
     }, [socket]);
 
-    const sendMessage = (message) => {
-        sendWebSocketMessage(socket, connected, 'send', message, setError);
-    };
-
-    const fetchMessages = (userId) => {
-        sendWebSocketMessage(socket, connected, 'fetch', { userId }, setError);
-    };
-
-    const markAsRead = (msgId) => {
-        sendWebSocketMessage(socket, connected, 'read', { msgId }, setError);
-    };
-
-    const deleteMessage = (msgId) => {
-        sendWebSocketMessage(socket, connected, 'delMsg', { msgId }, setError);
-    };
-
     return (
         <MessageContext.Provider value={{
             messages,
+            connected,
             isLoading: false,
             error,
-            sendMessage,
-            fetchMessages,
-            markAsRead,
-            deleteMessage
         }}>
             {children}
         </MessageContext.Provider>

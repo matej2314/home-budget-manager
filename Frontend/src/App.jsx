@@ -1,8 +1,9 @@
-import { DashBoardPage } from './pages/DashboardPage';
+import DashBoardPage from './pages/DashboardPage';
 
 function App() {
   return (
-    <DashBoardPage />
+    // <DashBoardPage />
+    <p>main</p>
   )
 }
 

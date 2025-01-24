@@ -31,6 +31,12 @@ exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => 
 			});
 		} catch (error) {
 			logger.error(`Błąd websocket w liveupdate: ${error.message}`);
+			broadcastMessage(userId, {
+				type: 'error',
+				data: {
+                   message: 'Websocket error.',
+				}
+			})
 		}
 	} catch (error) {
 		logger.error(`Nie udało się zaktualizować salda gospodarstwa ${houseId}: ${error.message}`);

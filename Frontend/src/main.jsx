@@ -1,5 +1,5 @@
-import DataProvider from './store/dataContext.js';
-import AuthProvider from './store/authContext.js';
+import DataProvider from './store/dataContext.jsx';
+import AuthProvider from './store/authContext.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createRoot } from 'react-dom/client'
 import './index.css'

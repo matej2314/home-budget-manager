@@ -4,13 +4,21 @@ const { v4: uuidv4 } = require('uuid');
 const io = require('socket.io');
 const getMysqlExpireDate = require('../utils/getMySqlExpireDate');
 const authMiddleware = require('../middlewares/websocket/authMiddleware');
+const socketQueries = require('../database/websocketQueries');
 
 let ioInstance;
 
 const initializeWebSocket = (server) => {
 	ioInstance = io(server, {
 		cors: {
-			origin: 'http://localhost:3000',
+			origin: (origin, callback) => {
+                const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+                if (allowedOrigins.includes(origin)) {
+                    callback(null, true);
+                } else {
+                    callback(new Error('Nieautoryzowany origin'), false);
+                }
+            },
 			credentials: true,
 		},
 	});
@@ -24,10 +32,10 @@ const initializeWebSocket = (server) => {
 
 		try {
 			
-			await pool.query('INSERT INTO socketConnections (id, userId, connectionId, expireDate) VALUES(?, ?, ?, ?)', [id, userId, socket.id, expireDate]);
+			await pool.query(socketQueries.saveConnection, [id, userId, socket.id, expireDate]);
 
 			socket.on('disconnect', async (reason) => {
-				await pool.query('DELETE FROM socketConnections WHERE userId =? AND connectionId=?', [socket.user.id, socket.id]);
+				await pool.query(socketQueries.deleteConnection, [socket.user.id, socket.id]);
 				logger.info(`Połączenie WebSocket zamknięte. Powód: ${reason}`);
 			});
 
@@ -36,6 +44,10 @@ const initializeWebSocket = (server) => {
 			});
 		} catch (error) {
 			logger.error(`Błąd przy inicjalizacji połączenia: ${error.message}`);
+			socket.emit({
+				type: 'connect_error',
+				error: 'Błąd podczas nawiązywania połączenia.',
+			});
 		}
 	});
 
@@ -52,7 +64,7 @@ const broadcastMessage = async (userId, { type, data } = {}) => {
 	const connection = await pool.getConnection();
 
 	try {
-		const [result] = await connection.query('SELECT connectionId FROM socketConnections WHERE userId=?', [userId]);
+		const [result] = await connection.query(socketQueries.selectConnection, [userId]);
 
 		if (!result || result.length == 0) {
 			logger.error(`Brak połączenia dla userId: ${userId}`);

@@ -1,7 +1,9 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
+import { AuthContext } from './authContext';
 import { useQuery } from '@tanstack/react-query';
 import { serverUrl } from '../url';
 import fetchData from '../utils/fetchData';
+
 
 export const DataContext = createContext({
     data: {},
@@ -10,15 +12,16 @@ export const DataContext = createContext({
     refreshData: () => { },
 });
 
-const dataProvider = ({ children }) => {
-    const { data, isLoading, error, refetch } = useQuery(
-        ['boardData'], () => fetchData(`${serverUrl}/board/data`),
-        {
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
-            enabled: true,
-        }
-    );
+const DataProvider = ({ children }) => {
+    const { isAuthenticated } = useContext(AuthContext);
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ['boardData'],
+        queryFn: () => fetchData(`${serverUrl}/board/data`),
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        enabled: isAuthenticated,
+    });
+
 
     const refreshData = () => {
         refetch();
@@ -30,3 +33,5 @@ const dataProvider = ({ children }) => {
         </DataContext.Provider>
     );
 };
+
+export default DataProvider;

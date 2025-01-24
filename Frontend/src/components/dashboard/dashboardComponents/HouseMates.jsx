@@ -4,11 +4,11 @@ import { DataContext } from "../../../store/dataContext";
 export default function HouseMates() {
     const { data, isLoading, error } = useContext(DataContext);
 
-    const matesData = data.dashboardData.houseMates;
+    const matesData = data.dashboardData.houseMates || '';
 
     return (
         <div>
-            {!isLoading && !error && data ? (
+            {/* {!isLoading && !error && data ? (
                 matesData.map((mate, index) => (
                     <ul key={index}>
                         <li><span>{mate.userName}-{mate.role}</span></li>
@@ -16,7 +16,8 @@ export default function HouseMates() {
                 ))
             ) : (
                 <p>Brak informacji o domownikach.</p>
-            )}
+            )} */}
+            <p>brak danych</p>
         </div>
     )
 }

@@ -2,6 +2,7 @@ const pool = require('../database/db');
 const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 const { broadcastMessage } = require('../configs/websocketConfig');
+const messagesQueries = require('../database/messagesQueries');
 
 exports.sendMessage = async (req, res) => {
     const userId = req.userId;
@@ -15,21 +16,25 @@ exports.sendMessage = async (req, res) => {
     }
 
     try {
-        const query = 'INSERT INTO messages (id, senderId, recipientId, content, datetime, is_read) VALUES (?, ?, ?, ?, NOW(), ?)';
-        const result = await connection.query(query, [id, userId, recipientId, content, false]);
+        const result = await connection.query(messagesQueries.saveMessage, [id, userId, recipientId, content, false]);
 
         if (result.affectedRows === 0) {
             logger.error(`Nie udało się zapisać wiadomości od użytkownika ${userId} do użytkownika ${recipientId}`);
             return res.status(500).json({ status: 'error', message: 'Nie udało się zapisać wiadomości.' });
         }
-
-        broadcastMessage(recipientId, {
-            type: 'newMessage',
-            data: {
-                recipientId: recipientId,
-                content: content,
-            }
-        });
+        try {
+            broadcastMessage(recipientId, {
+                type: 'newMessage',
+                data: {
+                    senderId: userId,
+                    recipientId: recipientId,
+                    content: content,
+                }
+            });
+        } catch (error) {
+            logger.error('Nie udało się wysłać wiadomości do adresata.', error);  
+        };
+        
 
         return res.status(200).json({
             status: 'success',
@@ -45,11 +50,10 @@ exports.sendMessage = async (req, res) => {
 
 exports.getMessages = async (req, res) => {
     const userId = req.userId;
-    const messageCollectionQuery = 'SELECT * FROM messages WHERE senderId = ? OR recipientId = ? ORDER BY datetime';
     const connection = await pool.getConnection();
 
     try {
-        const [messages] = await connection.query(messageCollectionQuery, [userId, userId]);
+        const [messages] = await connection.query(messagesQueries.getMessages, [userId, userId]);
 
         if (messages.length === 0) {
             logger.info(`Brak wiadomości dla użytkownika ${userId}`);

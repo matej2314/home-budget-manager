@@ -1,11 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import sendRequest from '../utils/sendRequest';
 import fetchData from "../utils/fetchData";
-import serverUrl from '../url';
+import { serverUrl } from '../url';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState(null);
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
             const response = await sendRequest('POST', {}, `${serverUrl}/auth/logout`);
 
             if (response) {
-               setMessage(response.message);
+                setMessage(response.message);
             };
 
         } catch (error) {
@@ -98,3 +98,5 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     )
 }
+
+export default AuthProvider;
