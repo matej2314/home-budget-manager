@@ -1,5 +1,9 @@
 export default function MainPage() {
     return (
-        <p>Main Page</p>
+        <main>
+            <div id="header">
+
+            </div>
+        </main>
     )
 };
