@@ -1,6 +1,6 @@
-import { createContext } from "react";
-import { useQuery } from '@tanstack/react-query';
-import { serverUrl } from '../url';
+import { createContext, useState, useEffect, useContext } from "react";
+import { AuthContext } from './authContext';
+import { serverUrl } from "../url";
 import fetchData from '../utils/fetchData';
 
 export const DataContext = createContext({
@@ -10,19 +10,33 @@ export const DataContext = createContext({
     refreshData: () => { },
 });
 
-const dataProvider = ({ children }) => {
-    const { data, isLoading, error, refetch } = useQuery(
-        ['boardData'], () => fetchData(`${serverUrl}/board/data`),
-        {
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
-            enabled: true,
+export const DataProvider = ({ children }) => {
+    const [data, setData] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { isAuthenticated } = useContext(AuthContext);
+
+    const fetchBoardData = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const result = await fetchData(`${serverUrl}/board/data`);
+            setData(result);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setIsLoading(false);
         }
-    );
+    };
 
     const refreshData = () => {
-        refetch();
+        fetchBoardData();
     };
+
+    useEffect(() => {
+        fetchBoardData();
+    }, [isAuthenticated]);
 
     return (
         <DataContext.Provider value={{ data, isLoading, error, refreshData }}>
