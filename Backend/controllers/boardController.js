@@ -35,6 +35,8 @@ const getBoardData = async (userId) => {
 
         const [actionsCatData] = await connection.query(dashboardQueries.actionCatData);
 
+        const [messagesData] = await connection.query('SELECT * FROM messages WHERE senderId=? OR recipientId=? ORDER BY datetime', [userId, userId]);
+
         await connection.commit();
 
         return {
@@ -43,6 +45,7 @@ const getBoardData = async (userId) => {
             dashboardData: {
                 houseData,
                 houseMates,
+                messagesData,
                 actionsData,
                 actionsCatData,
             },

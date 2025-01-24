@@ -6,62 +6,60 @@ const logger = require('../../configs/logger');
 const { liveUpdateBalance } = require('../../utils/liveUpdateBalance');
 
 const addNewAction = async (userId, type, value, catId) => {
-    const transactionId = uuidv4();
-    const id = uuidv4();
-    
-    const validTypes = ['income', 'expense'];
-    
-    if (!type || !validTypes.includes(type) ) {
-        logger.error('Nieprawidłowe dane wejściowe do dodania transakcji.');
-        return {
-            status: 'nodata',
-            message: 'Nieprawidłowe dane wejściowe. Sprawdź typ i wartość.',
-        };
-    }
+	const transactionId = uuidv4();
+	const id = uuidv4();
 
-    const connection = await pool.getConnection();
+	const validTypes = ['income', 'expense'];
 
-    try {
-        await connection.beginTransaction();
+	if (!type || !validTypes.includes(type)) {
+		logger.error('Nieprawidłowe dane wejściowe do dodania transakcji.');
+		return {
+			status: 'nodata',
+			message: 'Nieprawidłowe dane wejściowe. Sprawdź typ i wartość.',
+		};
+	}
 
-        const houseData = await checkHouse(connection, userId);
+	const connection = await pool.getConnection();
 
-        if (!houseData) {
-            logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
-            return {
-                status: 'error',
-                message: `Użytkownik ${userId} nie należy do żadnego gospodarstwa.`,
-            };
-        }
+	try {
+		await connection.beginTransaction();
 
-        const houseId = houseData.houseId;
-    
-        const addActionQuery = actionQueries.newitemQuery;
-        await connection.query(addActionQuery, [id, transactionId, userId, houseId, catId, type, value]);
+		const houseData = await checkHouse(connection, userId);
 
-        logger.info(`Transakcja ${transactionId} została pomyślnie dodana dla gospodarstwa ${houseId}.`);
+		if (!houseData) {
+			logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
+			return {
+				status: 'error',
+				message: `Użytkownik ${userId} nie należy do żadnego gospodarstwa.`,
+			};
+		}
 
-        await liveUpdateBalance(type, value, houseId, connection);
-        
-        await connection.commit();
+		const houseId = houseData.houseId;
 
-        return {
-            status: 'success',
-            message: 'Transakcja dodana poprawnie.',
-            transactionId,
-        };
+		const addActionQuery = actionQueries.newitemQuery;
+		await connection.query(addActionQuery, [id, transactionId, userId, houseId, catId, type, value]);
 
-    } catch (error) {
-        await connection.rollback();
-        logger.error(`Błąd podczas dodawania transakcji: ${error.message}`);
-        return {
-            status: 'error',
-            message: 'Wystąpił błąd podczas dodawania transakcji. Spróbuj ponownie.',
-        };
-    } finally {
-        if (connection) connection.release();
-    };
+		logger.info(`Transakcja ${transactionId} została pomyślnie dodana dla gospodarstwa ${houseId}.`);
 
+		await liveUpdateBalance(type, value, houseId, userId, connection);
+
+		await connection.commit();
+
+		return {
+			status: 'success',
+			message: 'Transakcja dodana poprawnie.',
+			transactionId,
+		};
+	} catch (error) {
+		await connection.rollback();
+		logger.error(`Błąd podczas dodawania transakcji: ${error.message}`);
+		return {
+			status: 'error',
+			message: 'Wystąpił błąd podczas dodawania transakcji. Spróbuj ponownie.',
+		};
+	} finally {
+		if (connection) connection.release();
+	}
 };
 
-module.exports = {addNewAction};
+module.exports = { addNewAction };
