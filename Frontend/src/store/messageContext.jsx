@@ -16,17 +16,17 @@ const MessageProvider = ({ children }) => {
     useEffect(() => {
         if (!socket) return;
 
-        const handleMessage = (data) => {
+        const handleMessage = (message) => {
             try {
-                const parsedMessage = JSON.parse(data);
-                const { type, message, data: msgData } = parsedMessage;
+                const parsedMessage = JSON.parse(message);
+                const { type, data } = parsedMessage;
 
                 switch (type) {
                     case 'newMessage':
-                        setMessages((prevMessages) => [...prevMessages, message]);
+                        setMessages((prevMessages) => [...prevMessages, parsedMessage]);
                         break;
                     case 'balance_update':
-                        setMessages((prevMessages) => [...prevMessages, message]);
+                        setMessages((prevMessages) => [...prevMessages, parsedMessage]);
                         break;
                     default:
                         console.log(`Nieznany typ wiadomości: ${type}`);

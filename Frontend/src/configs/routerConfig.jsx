@@ -2,7 +2,7 @@ import MainPage from "../pages/MainPage";
 import DashboardPage from '../pages/DashboardPage';
 
 const routes = [
-    { path: '/main', element: <MainPage /> },
+    { path: '/', element: <MainPage /> },
     { path: '/dashboard', element: <DashboardPage /> }
 ];
 
