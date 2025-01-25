@@ -1,20 +1,20 @@
+import { Link } from "react-router-dom"
+
 export default function DashBoardMenu() {
     return (
-        <div className="w-full h-fit flex flex-col gap-3">
-            <div>
-                <ul>
-                    {/* osobna podstrona wyświetlająca użytkowników gospodarstwa z możliwością kontaktu z wybranym użytkownikiem,
-                    admin gospodarstwa może usuwać poszczególnych użytkowników, ten sam komponent co HouseMates.jsx ale
-                    z dodatkowymi możliwościami, dodatkowy podkomponent do zapraszania użytkownika do gospodarstwa  */}
-                    <li>House mates</li>
-                    po kliknięciu wyświetla się lista transakcji, przy każdej transakcji przycisk 'usuń',
-                    obok listy przycisk 'dodaj transakcje'
-                    <li>Transactions</li>
-                    <li>Calendar</li>
-                    {/* kontakt do twórców  */}
-                    <li>Contact</li>
-                </ul>
-            </div>
+        <div id='dashboardMenu' className="w-[15rem] bg-customGray flex flex-col items-center justify-start text-slate-300 pt-5 gap-3">
+            <div className="w-11/12 h-fit flex justify-end"><button>OP</button></div>
+            <ul className="w-full h-full flex flex-col items-center gap-4">
+                <li><Link to='/dashboard'>Dashboard</Link></li>
+                <li><Link to='myhouse'>My house</Link></li>
+                <li><Link to='housemates'>Housemates</Link></li>
+                <li><Link to='calendar'>Calendar</Link></li>
+                <li><Link to='messages'>Messages</Link></li>
+                <li><Link to='users'>Users (if superadmin)</Link></li>
+                <li><Link to='households'>Households(if superadmin)</Link></li>
+                <li><Link to='stats'>Page stats(if superadmin)</Link></li>
+                <li><Link to='actioncats'>Actions cats (if superadmin)</Link></li>
+            </ul>
         </div>
     )
 }
