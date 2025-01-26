@@ -1,15 +1,9 @@
+import MainPageMenu from "../components/main-page-components/MainPageMenu"
+
 export default function MainPage() {
     return (
         <main className="w-full h-screen flex flex-col justify-start items-center gap-4 pt-1">
-            <div id="mainMenu" className="w-[98vw] h-fit flex bg-blue-800 rounded-md">
-                <ul className="w-full h-fit flex justify-around items-center py-3 text-gray-100 text-md">
-                    <li>Main Page</li>
-                    <li>About us</li>
-                    {/* <li>Demo</li> */}
-                    <li>SignUp/Login</li>
-                    <li>Contact</li>
-                </ul>
-            </div>
+            <MainPageMenu />
             <div id='mainPageContent' className="w-[99%] h-full flex flex-col gap-3 pb-1">
                 <div id="short-info-boxes" className="w-full h-fit flex flex-col gap-5">
                     <h2 className="w-full h-fit flex flex-row justify-center items-center text-black text-2xl">What is Home Budget Web Manager?</h2>
