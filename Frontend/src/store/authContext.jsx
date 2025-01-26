@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState(null);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({});
     const [error, setError] = useState(null);
 
 
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         setMessage(null);
         try {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/login`);
-            setUser(response);
+            setUser({ userName: response.userName, role: response.role, id: response.id });
             setMessage(response.message);
             setIsAuthenticated(true);
 
@@ -73,20 +73,20 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await fetchData(`${serverUrl}/auth/verify`);
 
-            if (response) {
-                setUser(response);
+            if (response.status === 'success') {
                 setIsAuthenticated(true);
+                setUser({ userName: response.userName, role: response.role, id: response.userId });
             } else {
-                setUser(null);
                 setIsAuthenticated(false);
+                setUser(null);
             }
-
         } catch (error) {
             setError(error.message);
         } finally {
             setIsLoading(false);
-        };
+        }
     };
+
 
     useEffect(() => {
         checkSession();

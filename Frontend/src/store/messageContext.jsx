@@ -16,14 +16,16 @@ const MessageProvider = ({ children }) => {
     useEffect(() => {
         if (!socket) return;
 
-        const handleMessage = (message) => {
+        const handleMessage = (rawMessage) => {
             try {
-                const parsedMessage = JSON.parse(message);
-                const { type, data } = parsedMessage;
+                const messageArray = JSON.parse(rawMessage);
+                const { type, data } = messageArray;
+
+                setError(null);
 
                 switch (type) {
                     case 'newMessage':
-                        setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+                        setMessages((prevMessages) => [...prevMessages, messageArray]);
                         break;
                     case 'balance_update':
                         setMessages((prevMessages) => [...prevMessages, parsedMessage]);

@@ -219,6 +219,7 @@ router.post('/logout', authController.logoutUser);
 
 router.get('/verify', verifyJWT(), (req, res) => {
     res.status(200).json({
+        status: 'success',
         userId: req.userId,
         userName: req.userName,
         role: req.role,

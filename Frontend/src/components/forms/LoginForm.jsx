@@ -1,9 +1,11 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
 
 
 export default function LoginForm() {
     const { login, isLoading, error, message, user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const email = useRef();
     const password = useRef();
@@ -17,8 +19,13 @@ export default function LoginForm() {
         };
 
         await login(data);
-    }
+    };
 
+    useEffect(() => {
+        if (!error && message) {
+            navigate('/dashboard');
+        }
+    }, [error, message, navigate]);
 
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>
