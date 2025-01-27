@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { AuthContext } from '../../../store/authContext';
 
@@ -27,13 +27,13 @@ export default function DashboardHeader() {
                 {!error && user ? <p>{user.userName}</p> : <p>Guest</p>}
             </div>
             <div id="icons-container" className="flex justify-around items-center gap-2">
-                <span className="w-fit h-fit hover:text-lime-700"><Icon icon='material-symbols:notifications-outline' width={20} height={20} /></span>
-                <span className="w-fit h-fit hover:text-sky-700"><Icon icon='tabler:messages' width={20} height={20} /></span>
-                <span className="w-fit h-fit hover:text-yellow-900"><Icon icon='ph:house-bold' width={20} height={20} /></span>
+                <Link title='Notifications' className="w-fit h-fit hover:text-lime-700"><Icon icon='material-symbols:notifications-outline' width={20} height={20} /></Link>
+                <Link to='/dashboard/messages' title="Messages" className="w-fit h-fit hover:text-sky-700"><Icon icon='tabler:messages' width={20} height={20} /></Link>
+                <Link to='/dashboard/myhouse' title="My house" className="w-fit h-fit hover:text-yellow-900"><Icon icon='ph:house-bold' width={20} height={20} /></Link>
             </div>
             <div id="user-opts" className="w-full h-full flex justify-end items-center gap-5 mr-5">
                 <p className="flex justify-center items-center gap-2">Language : <Icon icon='flagpack:gb-ukm' width={20} height={20} className="translate-y-[2px]" /></p>
-                <button type="button" onClick={handleLogOut}><Icon icon='mdi:logout' width={20} height={20} /></button>
+                <button type="button" title="Logout" onClick={handleLogOut}><Icon icon='mdi:logout' width={20} height={20} /></button>
             </div>
         </div>
     )

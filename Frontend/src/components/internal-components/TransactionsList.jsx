@@ -10,27 +10,51 @@ export default function TransactionsList({ limit, mainSite }) {
     const sortedTransactions = transactions.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
     const transactionsToDisplay = limit ? sortedTransactions.slice(0, limit) : transactions;
 
-
     const handleDeleteAction = async (e) => {
         e.preventDefault();
     }
 
     return (
-        <ul className="w-full h-fit flex flex-col items-center gap-2">
+        <div className="w-full h-full overflow-auto">
             {!isLoading && !error ? (
-                transactionsToDisplay.map((transaction, index) => (
-                    <li key={index} data-id={transaction.transactionId} className="w-full h-fit flex justify-center gap-2 border-b-[1px] border-slate-300 last:border-0 pb-2 px-2 last:pb-0" >
-                        <span className="w-full flex justify-center gap-2">{`${transaction.value} zł`}</span>
-                        <span className="w-full">{transaction.type}</span>
-                        <span className="w-full">{transaction.categoryName}</span>
-                        <span className="w-full">{transaction.userName}</span>
-                        <span className="w-full">{transaction.addedAt.split('T')[0]}</span>
-                        {!mainSite && <button type="button" className="w-fit h-fit" onClick={handleDeleteAction}><Icon icon='material-symbols:delete-outline' width={20} height={20} /></button>}
-                    </li>
-                ))
+                <table className="w-full h-full table-auto border-collapse text-sm">
+                    <thead>
+                        <tr className="border-b">
+                            <th className="px-4 py-2 text-left">Value</th>
+                            <th className="px-4 py-2 text-left">Type</th>
+                            <th className="px-4 py-2 text-left">Category</th>
+                            <th className="px-4 py-2 text-left">User</th>
+                            <th className="px-4 py-2 text-left">Date</th>
+                            {mainSite === false && <th className="px-4 py-2 text-left">Actions</th>}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transactionsToDisplay.map((transaction, index) => (
+                            <tr key={index} className="border-b">
+                                <td className="px-4 py-2">{`${transaction.value} zł`}</td>
+                                <td className="px-4 py-2">{transaction.type}</td>
+                                <td className="px-4 py-2">{transaction.categoryName}</td>
+                                <td className="px-4 py-2">{transaction.userName}</td>
+                                <td className="px-4 py-2">{transaction.addedAt.split('T')[0]}</td>
+                                {mainSite === false && (
+                                    <td className="px-4 py-2">
+                                        <button
+                                            type="button"
+                                            className="w-fit h-fit"
+                                            onClick={handleDeleteAction}
+                                            title="Delete transaction"
+                                        >
+                                            <Icon icon='material-symbols:delete-outline' width={20} height={20} />
+                                        </button>
+                                    </td>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             ) : (
                 <p>Brak transakcji</p>
             )}
-        </ul>
-    )
+        </div>
+    );
 }

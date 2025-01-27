@@ -28,7 +28,7 @@ export default function TransactionsPage() {
                     <button onClick={handleClickAdd} className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4">Add new transaction</button>
                     <button className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4" onClick={() => navigate('/dashboard/actioncats')}>Vew all categories</button>
                 </div>
-                <TransactionsList />
+                <TransactionsList mainSite={false} />
             </div>
 
             <Modal
