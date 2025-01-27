@@ -12,7 +12,7 @@ const app = express();
 
 const port = process.env.SERV_PORT || 5053;
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173', 'http://185.170.196.107/'];
 
 app.use(
 	cors({
