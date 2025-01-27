@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Modal from 'react-modal';
-import Authorization from '../Authorization';
+import Authorization from './Authorization';
 
 Modal.setAppElement('#root');
-
 
 export default function MainPageMenu() {
     const [isModalOpen, setisModalOpen] = useState(false);

@@ -8,6 +8,7 @@ import MessagesPage from '../pages/dashboard-subpages/MessagesPage';
 import UsersPage from '../pages/dashboard-subpages/UsersPage';
 import HouseholdsPage from '../pages/dashboard-subpages/HouseholdsPage';
 import StatsPage from '../pages/dashboard-subpages/StatsPage';
+import TransactionsPage from "../pages/dashboard-subpages/TransactionsPage";
 import TransactionsCategoriesPage from '../pages/dashboard-subpages/TransactionsCategoriesPage';
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
         children: [
             { index: true, element: <DashBoard /> },
             { path: 'myhouse', element: <HouseInfoPage /> },
+            { path: 'transactions', element: <TransactionsPage /> },
             { path: 'housemates', element: <HouseMatesPage /> },
             { path: 'calendar', element: <CalendarPage /> },
             { path: 'messages', element: <MessagesPage /> },

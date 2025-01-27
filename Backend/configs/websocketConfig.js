@@ -29,28 +29,46 @@ const initializeWebSocket = (server) => {
 		const id = uuidv4();
 		const userId = socket.user.id;
 		const expireDate = getMysqlExpireDate();
-
+	
 		try {
-			
+			const [checkConnection] = await pool.query(socketQueries.checkIfConnection, [userId]);
+	
+			if (checkConnection.length > 0) {
+				const existingConnection = checkConnection[0];
+				const existingExpireDate = new Date(existingConnection.expireDate);
+	
+				if (existingExpireDate > new Date()) {
+					logger.info(`Połączenie dla użytkownika ${userId} już istnieje i jest aktywne. Używamy istniejącego połączenia.`);
+					socket.emit('connect_success', { message: 'Połączenie zostało przywrócone.' });
+	
+					// Możesz dodać dodatkową logikę, aby przejść do innych operacji związanych z aktywnym połączeniem.
+					return;
+				} else {
+					logger.error(`Połączenie dla użytkownika ${userId} wygasło. Usuwamy stare połączenie.`);
+					await pool.query(socketQueries.deleteConnection, [userId]);
+				}
+			}
+	
 			await pool.query(socketQueries.saveConnection, [id, userId, socket.id, expireDate]);
-
+	
 			socket.on('disconnect', async (reason) => {
-				await pool.query(socketQueries.deleteConnection, [socket.user.id, socket.id]);
+				await pool.query(socketQueries.deleteConnection, [userId]);
 				logger.info(`Połączenie WebSocket zamknięte. Powód: ${reason}`);
 			});
-
+	
 			socket.on('error', (error) => {
 				logger.error(`Błąd WebSocket: ${error.message}`);
 			});
+	
 		} catch (error) {
 			logger.error(`Błąd przy inicjalizacji połączenia: ${error.message}`);
-			socket.emit({
-				type: 'connect_error',
-				error: 'Błąd podczas nawiązywania połączenia.',
+			socket.emit('connect_error', {
+				message: 'Błąd podczas nawiązywania połączenia.',
 			});
+			socket.disconnect();
 		}
 	});
-
+	
 	logger.info('Serwer WebSocket zainicjalizowany.');
 	console.log('Serwer WebSocket zainicjalizowany.');
 };

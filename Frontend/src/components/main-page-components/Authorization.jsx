@@ -1,5 +1,5 @@
-import LoginForm from './forms/LoginForm';
-import SignUpForm from './forms/SignUpForm';
+import LoginForm from '../forms/LoginForm';
+import SignUpForm from '../forms/SignUpForm';
 
 const formMapping = {
     login: <LoginForm />,

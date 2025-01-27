@@ -1,12 +1,9 @@
-import { useContext } from 'react';
-import { DataContext } from '../../store/dataContext';
-
 import DashboardHeader from './dashboardComponents/DashBoardHeader';
 import MatesCounter from './dashboardComponents/MatesCounter';
 import MonthlyBudget from './dashboardComponents/DisplayMonthlyBudget';
 import DisplayLiveBalance from './dashboardComponents/DisplayLiveBalance';
 import MessagesCounter from './dashboardComponents/MessagesCounter';
-import HouseMatesList from './dashboardComponents/HouseMatesList';
+import DisplayMatesList from './dashboardComponents/DisplayMatesList';
 import LastTransactionsList from './dashboardComponents/LastTransactionsList';
 import TopCategoriesList from './dashboardComponents/TopCategoriesList';
 import BudgetPerDay from './dashboardComponents/charts-components/BudgetPerDay';
@@ -14,8 +11,6 @@ import TransactionsPerDay from './dashboardComponents/charts-components/Transact
 import TransactionsCategories from './dashboardComponents/charts-components/TransactionsCategories';
 
 export default function DashBoard() {
-
-    const { data, isLoading, error } = useContext(DataContext);
 
     return (
         <div id="pagecontent" className="bg-slate-200 w-full h-full">
@@ -27,7 +22,7 @@ export default function DashBoard() {
                 <MessagesCounter />
             </div>
             <div id="middlePart" className="w-full h-fit flex gap-3">
-                <HouseMatesList />
+                <DisplayMatesList />
                 <LastTransactionsList />
                 <TopCategoriesList />
             </div>
