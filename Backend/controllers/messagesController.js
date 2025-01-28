@@ -68,3 +68,21 @@ exports.getMessages = async (req, res) => {
         if (connection) connection.release();
     }
 };
+
+exports.deleteMessage = async (req, res) => {
+    const { messageId } = req.body;
+    const connection = await pool.getConnection();
+
+    try {
+        const [delMessage] = await connection.query('DELETE FROM messages WHERE id=?', [messageId]);
+
+        if (delMessage.affectedRows == 0) {
+            return res.status(404).json({ status: 'error', message: 'Nie udało się odnależć wiadomości w bazie danych.' });
+        };
+        logger.info(`Usunięto wiadomość ${messageId}`);
+        return res.status(200).json({ status: 'success', message: `Wiadomość usunięta poprawnie.` });
+    } catch (error) {
+        logger.error(`Błąd podczas usuwania wiadomości: ${error}`);
+        return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
+    };
+}

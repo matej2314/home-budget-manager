@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { DataContext } from '../../store/dataContext';
 import sendRequest from "../../utils/sendRequest";
 
-export default function DisplayMessageDetails({ messageId }) {
+export default function DisplayMessageDetails({ onRequestClose, message, isOpen }) {
 
     return (
         <Modal>

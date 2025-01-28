@@ -148,4 +148,6 @@ router.post('/send', verifyJWT(), messagesController.sendMessage);
 
 router.get('/collection', verifyJWT(), messagesController.getMessages);
 
+router.delete('/delete', messagesController.deleteMessage);
+
 module.exports = router;

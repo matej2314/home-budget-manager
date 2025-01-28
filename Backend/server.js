@@ -49,6 +49,7 @@ const transactionRouter = require('./routes/transactionsRoutes.js');
 const dashboardRouter = require('./routes/dashboardRoutes.js');
 const actionCatRouter = require('./routes/actionCatRoutes.js');
 const messagesRouter = require('./routes/messagesRoutes.js');
+const initialMonthlyBudgetsRouter = require('./routes/initialMonthlyBudgetsRoutes.js');
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
@@ -57,6 +58,7 @@ app.use('/action', transactionRouter);
 app.use('/board', dashboardRouter);
 app.use('/actioncat', actionCatRouter);
 app.use('/message', messagesRouter);
+app.use('/initmonthly', initialMonthlyBudgetsRouter);
 
 const server = http.createServer(app);
 
