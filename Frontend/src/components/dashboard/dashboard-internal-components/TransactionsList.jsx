@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Icon } from '@iconify/react';
-import { DataContext } from '../../store/dataContext';
-import sendRequest from '../../utils/sendRequest';
+import { DataContext } from '../../../store/dataContext';
+import sendRequest from '../../../utils/sendRequest';
 
 export default function TransactionsList({ limit, mainSite }) {
     const { data, isLoading, error } = useContext(DataContext);

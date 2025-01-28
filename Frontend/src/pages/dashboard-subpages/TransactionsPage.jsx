@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import TransactionsList from "../../components/dashboard-internal-components/TransactionsList";
+import TransactionsList from "../../components/dashboard/dashboard-internal-components/TransactionsList";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import AddTransactionForm from "../../components/forms/AddTransactionForm";
 import Modal from 'react-modal';

@@ -1,5 +1,6 @@
+import { useState } from "react";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader"
-import MessagesList from '../../components/dashboard-internal-components/MessagesList';
+import MessagesList from '../../components/dashboard/dashboard-internal-components/MessagesList';
 
 export default function MessagesPage() {
 

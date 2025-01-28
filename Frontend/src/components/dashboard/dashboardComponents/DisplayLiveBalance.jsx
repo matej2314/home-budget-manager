@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { DataContext } from '../../../store/dataContext';
+import { DataContext } from "../../../store/dataContext";
 import { MessageContext } from "../../../store/messageContext";
 
 export default function DisplayLiveBalance() {

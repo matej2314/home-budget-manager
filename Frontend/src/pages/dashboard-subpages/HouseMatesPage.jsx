@@ -1,5 +1,5 @@
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
-import MatesList from '../../components/dashboard-internal-components/MatesList';
+import MatesList from '../../components/dashboard/dashboard-internal-components/MatesList';
 
 export default function HouseMatesPage() {
 

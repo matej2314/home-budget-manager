@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { AuthContext } from '../../../store/authContext';
-import LanguageSelector from "../../dashboard-internal-components/LanguageSelector";
+import LanguageSelector from "../dashboard-internal-components/LanguageSelector";
 
 export default function DashboardHeader() {
     const { user, error, logout } = useContext(AuthContext);

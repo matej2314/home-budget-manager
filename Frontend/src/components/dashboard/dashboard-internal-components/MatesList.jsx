@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../../store/authContext";
-import { DataContext } from "../../store/dataContext";
+import { AuthContext } from "../../../store/authContext";
+import { DataContext } from "../../../store/dataContext";
 import { Icon } from '@iconify/react';
-import SendMessageModal from '../modals/SendMessageModal';
+import SendMessageModal from '../../modals/SendMessageModal';
 
 export default function MatesList({ mode }) {
     const { user, isAuthenticated } = useContext(AuthContext);

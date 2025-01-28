@@ -1,4 +1,4 @@
-import TransactionsList from '../../dashboard-internal-components/TransactionsList';
+import TransactionsList from '../dashboard-internal-components/TransactionsList';
 
 export default function LastTransactionsList() {
 

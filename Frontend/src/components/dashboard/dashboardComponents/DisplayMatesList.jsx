@@ -1,4 +1,4 @@
-import MatesList from "../../dashboard-internal-components/MatesList";
+import MatesList from "../dashboard-internal-components/MatesList";
 
 export default function DisplayMatesList() {
 
