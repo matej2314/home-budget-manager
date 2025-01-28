@@ -1,5 +1,5 @@
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader"
-import MessagesList from '../../components/internal-components/MessagesList';
+import MessagesList from '../../components/dashboard-internal-components/MessagesList';
 
 export default function MessagesPage() {
 

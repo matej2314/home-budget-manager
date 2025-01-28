@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Icon } from '@iconify/react';
 import { DataContext } from '../../store/dataContext';
 import SendMessageModal from '../modals/SendMessageModal';
+import DisplayMessageDetails from '../modals/DisplayMessageDetails';
 
 export default function MessagesList() {
     const { data, isLoading, error } = useContext(DataContext);

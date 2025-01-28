@@ -1,0 +1,17 @@
+1. opanowanie websocket do wyświetlania current budget (message o nazwie 'balance_update' z pliku liveUpdateBalance).
+2. Dodanie mechanizmu dodawania nowego gospodarstwa. Dodanie mechanizmu deklarowania budżetu na dany miesiąc, 
+wzięcie go pod uwagę przy obliczaniu bilansu.
+3. Wyświetlanie 'top categories of transactions'. Wyliczenie procentowego udziału na podstawie transakcji z DataContext.
+4. Wykresy.
+5. Podstrona 'my house'. Zbiorcze statystyki. Jak się uda to inne wykresy niż na głównej. Ewentualnie usunąć podstronę.
+6. Zmiana endpointu usuwania transakcji, aby najpierw sprawdzał, czy transakcja została dodana do użytkownika.
+7. Uaktywnienie przycisku 'Show user's transactions' w podstronie housemates i na głównej.
+8. Poprawa kalendarza (wyświetlanie większej liczby szczegółów dot. transakcji po najechaniu/kliknięciu).
+9. Upload zdjęć profilowych i wyświetlanie ich na froncie w odpowiednim miejscu.
+10. Postrona wiadomości: blok z przyciskami (nad divem z wiadomościami): wszystkie, przeczytane, usunięte. Endpoint usuwania wiadomości z systemu.
+11. System powiadomień (ikona dzwonka).
+12. Zmiana ikony w momencie pobrania wiadomości z wartością is_read = false. Wyświetlanie liczby wiadomości o wartości is_read = false
+na stronie głównej dashboardu.
+13. Wypełnienie plików językowych.
+14. Zmiana podstrony actioncats na modala ( ? ).
+15.

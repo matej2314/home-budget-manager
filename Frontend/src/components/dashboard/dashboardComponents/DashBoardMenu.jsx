@@ -11,10 +11,10 @@ export default function DashBoardMenu() {
             <ul className="w-full h-full flex flex-col items-center gap-4">
                 <li><Link to='/dashboard'>Dashboard</Link></li>
                 <li><Link to='myhouse'>My house</Link></li>
-                <li><Link to='transactions'>Transactions</Link></li>
-                <li><Link to='housemates'>Housemates</Link></li>
-                <li><Link to='calendar'>Calendar</Link></li>
                 <li><Link to='messages'>Messages</Link></li>
+                <li><Link to='housemates'>Housemates</Link></li>
+                <li><Link to='transactions'>Transactions</Link></li>
+                <li><Link to='calendar'>Calendar</Link></li>
                 {user.role === 'superadmin' && <>
                     <li><Link to='users'>Users (if superadmin)</Link></li>
                     <li><Link to='households'>Households(if superadmin)</Link></li>
