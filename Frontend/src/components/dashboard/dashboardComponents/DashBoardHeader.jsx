@@ -2,11 +2,16 @@ import { useContext } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { AuthContext } from '../../../store/authContext';
+import { DataContext } from "../../../store/dataContext";
 import LanguageSelector from "../dashboard-internal-components/LanguageSelector";
 
 export default function DashboardHeader() {
     const { user, error, logout } = useContext(AuthContext);
+    const { data, isLoading } = useContext(DataContext);
     const navigate = useNavigate();
+
+    const messages = data && !isLoading ? data.dashboardData.messagesData || [] : [];
+    const filteredMessages = messages.filter((message) => message.recipient === user.userName);
 
     const handleLogOut = async () => {
         try {
@@ -30,8 +35,13 @@ export default function DashboardHeader() {
                 </div>
                 {!error && user ? <p>{user.userName}</p> : <p>Guest</p>}
             </div>
-            <div id="icons-container" className="flex justify-around items-center gap-2">
+            <div id="icons-container" className="flex justify-center items-center gap-2">
                 <Link title='Notifications' className="w-fit h-fit hover:text-lime-700"><Icon icon='material-symbols:notifications-outline' width={20} height={20} /></Link>
+                {filteredMessages && (
+                    <span className="bg-red-700 w-4 h-4 rounded-full absolute top-[1.15rem] left-[26rem] text-white text-center text-xs flex items-center justify-center">
+                        {filteredMessages.length}
+                    </span>
+                )}
                 <Link to='/dashboard/messages' title="Messages" className="w-fit h-fit hover:text-sky-700"><Icon icon='tabler:messages' width={20} height={20} /></Link>
                 <Link to='/dashboard/myhouse' title="My house" className="w-fit h-fit hover:text-yellow-900"><Icon icon='ph:house-bold' width={20} height={20} /></Link>
             </div>

@@ -2,19 +2,19 @@ import { useRef, useState } from "react";
 import sendRequest from '../../utils/sendRequest';
 import { serverUrl } from '../../url';
 
-export default function SendMessageForm() {
+export default function SendMessageForm({ reply, recipientName }) {
 
     const [sended, setSended] = useState(false);
 
-    const recipientName = useRef();
-    const messageContent = useRef();
+    const recipientRef = useRef();
+    const messageContentRef = useRef();
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
 
         const messageData = {
-            recipientName: recipientName.current.value,
-            content: messageContent.current.value,
+            recipientName: recipientRef.current.value,
+            content: messageContentRef.current.value,
         };
 
         try {
@@ -23,6 +23,7 @@ export default function SendMessageForm() {
 
             if (sendMessage.status === 'success') {
                 alert(sendMessage.message);
+                messageContentRef.current.value = "";
             }
         } catch (error) {
             console.log(error.message);
@@ -33,16 +34,38 @@ export default function SendMessageForm() {
 
     return (
         <div className="w-full h-full flex flex-col justify-center items-center gap-4">
-            <h2 className="text-2xl mb-2">Send message</h2>
-            <form onSubmit={handleSendMessage} className="w-full h-full flex flex-col items-center justify-center gap-3">
+            <h2 className="text-2xl mb-2">
+                {reply ? 'Reply message' : 'Send message'}
+            </h2>
+            <form
+                onSubmit={handleSendMessage}
+                className="w-full h-full flex flex-col items-center justify-center gap-3"
+            >
                 <label className="w-full h-fit flex justify-center" htmlFor="recipientName">Type recipient name:</label>
-                <input className="w-1/2" type="text" name="recipientName" id="recipientName" ref={recipientName} required />
+                <input
+                    type="text"
+                    name="recipientName"
+                    id="recipientName"
+                    ref={recipientRef}
+                    defaultValue={recipientName || ""}
+                    required
+                    disabled={recipientName}
+                    className={`${recipientName ? "bg-gray-300 cursor-not-allowed" : ""} w-1/2 pl-2`}
+                />
+
                 <label className="w-full h-fit flex justify-center" htmlFor="messageContent">Type your message:</label>
-                <textarea className="w-1/2" name="messageContent" id="messageContent" ref={messageContent} resize={false} />
-                <button type="submit" className="bg-slate-400/75 p-2 rounded-xl hover:bg-slate-300" disabled={sended}>Send message</button>
+                <textarea
+                    className="w-1/2 resize-none"
+                    name="messageContent"
+                    id="messageContent"
+                    ref={messageContentRef}
+                    required
+                />
+
+                <button type="submit" className="bg-slate-400/75 p-2 rounded-xl hover:bg-slate-300" disabled={sended}>
+                    Send message
+                </button>
             </form>
         </div>
-    )
-
-
+    );
 }

@@ -23,13 +23,13 @@ const balanceHouseActions = async () => {
             const today = new Date().toISOString().split('T')[0];
 
             for (const household of households) {
-                const { houseId, balanceDate, createdAt} = household;
+                const { houseId, balanceDate, createdAt, initBudget } = household;
 
-              const formattedBalanceDate = balanceDate ? new Date(balanceDate).toISOString().split('T')[0] : null;
-              const formattedCreatedAt = new Date(createdAt).toISOString().split('T')[0];
+                const formattedBalanceDate = balanceDate ? new Date(balanceDate).toISOString().split('T')[0] : null;
+                const formattedCreatedAt = new Date(createdAt).toISOString().split('T')[0];
                 
                 const dateLimit = formattedBalanceDate || formattedCreatedAt;
-                
+
                 logger.info(`Obliczanie daty dla gospodarstwa ${houseId}, balanceDate: ${balanceDate}, createdAt: ${createdAt}`);
 
                 const nextBalanceDate = new Date(dateLimit);
@@ -46,39 +46,48 @@ const balanceHouseActions = async () => {
                     
                     logger.info(`Znaleziono ${transactions.length} transakcji dla gospodarstwa ${houseId}.`);
 
-                    if (transactions.length === 0) {
-                        logger.info(`Brak transakcji dla gospodarstwa ${houseId} w tym momencie.`);
+                    let newBalance = 0;
+
+                    if (!formattedBalanceDate) {
+                        newBalance = initBudget;
                     } else {
-                        let newBalance = 0;
-                    
-                        transactions.forEach(ts => {
-                            if (ts.type === 'income') {
-                                newBalance += ts.value;
-                                
-                            } else if (ts.type === 'expense') {
-                                newBalance -= ts.value;
-                                
-                            };
-                        });
-
-                        const id = uuidv4();
-
-                     const [insertBalance] = await connection.query(
-                            `INSERT INTO monthly_balances (id, monthly_balance, houseId, balanceDate) VALUES(?, ?, ?, NOW());`,
-                            [id, parseInt(newBalance), houseId]
+                        const [initialBudgetRows] = await connection.query(
+                            `SELECT value FROM initialMonthlyBudgets WHERE houseId = ? ORDER BY createdAt DESC LIMIT 1`,
+                            [houseId]
                         );
 
-                        if (insertBalance.affectedRows === 1) {
-                            await connection.query('UPDATE households SET balanceDate = NOW() WHERE houseId=?', [houseId]);
-                        };
-
-                        await connection.query(
-                            `DELETE FROM transactions WHERE houseId = ? AND DATE(addedAt) > ?`,
-                            [houseId, dateLimit]
-                        );
-
-                        logger.info(`Bilans gospodarstwa ${houseId} zaktualizowany.`);
+                        if (initialBudgetRows.length > 0) {
+                            newBalance = initialBudgetRows[0].value;
+                        } else {
+                            newBalance = initBudget;
+                        }
                     }
+
+                    transactions.forEach(ts => {
+                        if (ts.type === 'income') {
+                            newBalance += ts.value;
+                        } else if (ts.type === 'expense') {
+                            newBalance -= ts.value;
+                        }
+                    });
+
+                    const id = uuidv4();
+
+                    const [insertBalance] = await connection.query(
+                        `INSERT INTO monthly_balances (id, monthly_balance, houseId, balanceDate) VALUES(?, ?, ?, NOW());`,
+                        [id, parseInt(newBalance), houseId]
+                    );
+
+                    if (insertBalance.affectedRows === 1) {
+                        await connection.query('UPDATE households SET balanceDate = NOW() WHERE houseId=?', [houseId]);
+                    }
+
+                    await connection.query(
+                        `DELETE FROM transactions WHERE houseId = ? AND DATE(addedAt) > ?`,
+                        [houseId, dateLimit]
+                    );
+
+                    logger.info(`Bilans gospodarstwa ${houseId} zaktualizowany.`);
                 } else {
                     logger.info(`Gospodarstwo ${houseId} nie wymaga bilansowania przed ${nextBalanceDateStr}.`);
                 }

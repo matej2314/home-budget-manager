@@ -1,7 +1,10 @@
 import Modal from 'react-modal';
 import SendMessageForm from '../forms/SendMessageForm';
 
-export default function SendMessageModal({ isOpen, onRequestClose, recipient }) {
+export default function ReplyMessageModal({ isOpen, onRequestClose, message }) {
+
+    const recipientName = isOpen && message && message.recipient || null;
+
     return (
         <Modal
             isOpen={isOpen}
@@ -12,7 +15,7 @@ export default function SendMessageModal({ isOpen, onRequestClose, recipient }) 
             <button onClick={onRequestClose}
                 className='relative left-[28.7rem] bottom-6 text-black hover:text-gray-600'
             >X</button>
-            <SendMessageForm reply={false} recipientName={recipient} />
+            <SendMessageForm reply={true} recipientName={recipientName} />
         </Modal>
     )
 }

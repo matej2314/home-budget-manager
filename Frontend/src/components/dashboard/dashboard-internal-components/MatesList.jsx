@@ -8,12 +8,14 @@ export default function MatesList({ mode }) {
     const { user, isAuthenticated } = useContext(AuthContext);
     const { data, isLoading, error } = useContext(DataContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [recipient, setRecipient] = useState(null);
 
     const houseMates = !isLoading && !error ? data.dashboardData.houseMates : [];
 
 
-    const handleOpenModal = () => {
+    const handleOpenModal = (recipient) => {
         setIsModalOpen(true);
+        setRecipient(recipient)
     };
 
     const handleCloseModal = () => {
@@ -39,7 +41,7 @@ export default function MatesList({ mode }) {
                                 <td className="px-4 py-2">{mate.userName}</td>
                                 <td className="px-4 py-2">{mate.role}</td>
                                 <td className="px-4 py-2 flex gap-3">
-                                    <button type="button" onClick={handleOpenModal} className="w-fit h-fit" title='Send message'>
+                                    <button type="button" onClick={() => handleOpenModal(mate.userName)} className="w-fit h-fit" title='Send message'>
                                         <Icon icon='mdi-light:message' width={20} height={20} />
                                     </button>
                                     {mode === 'subpage' && (
@@ -65,7 +67,7 @@ export default function MatesList({ mode }) {
             ) : (
                 <p>Brak domowników</p>
             )}
-            <SendMessageModal isOpen={isModalOpen} onRequestClose={handleCloseModal} />
+            <SendMessageModal isOpen={isModalOpen} onRequestClose={handleCloseModal} recipient={recipient} />
         </div>
     );
 }
