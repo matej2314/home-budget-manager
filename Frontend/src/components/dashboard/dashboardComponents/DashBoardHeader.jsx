@@ -11,7 +11,8 @@ export default function DashboardHeader() {
     const navigate = useNavigate();
 
     const messages = data && !isLoading ? data.dashboardData.messagesData || [] : [];
-    const filteredMessages = messages.filter((message) => message.recipient === user.userName);
+    const filteredMessages = messages.filter((message) => message.recipient === user.userName)
+        .filter(message => message.readed === 0);
 
     const handleLogOut = async () => {
         try {
@@ -23,10 +24,6 @@ export default function DashboardHeader() {
         }
     };
 
-    const handleChangeLang = (lang) => {
-        setSelectedLang(lang);
-    }
-
     return (
         <div id='dashboard-header' className="w-full h-fit flex flex-row items-center text-slate-900 bg-slate-200 py-3 pl-5 gap-5 border-2 border-b-slate-800/5">
             <div id="user-info" className="flex justify-around items-center gap-3">
@@ -35,10 +32,10 @@ export default function DashboardHeader() {
                 </div>
                 {!error && user ? <p>{user.userName}</p> : <p>Guest</p>}
             </div>
-            <div id="icons-container" className="flex justify-center items-center gap-2">
+            <div id="icons-container" className="w-full flex justify-start items-center gap-2">
                 <Link title='Notifications' className="w-fit h-fit hover:text-lime-700"><Icon icon='material-symbols:notifications-outline' width={20} height={20} /></Link>
-                {filteredMessages && (
-                    <span className="bg-red-700 w-4 h-4 rounded-full absolute top-[1.15rem] left-[26rem] text-white text-center text-xs flex items-center justify-center">
+                {filteredMessages.length > 0 && (
+                    <span className="bg-red-700 w-4 h-4 rounded-full absolute top-[1.15rem] left-[25rem] text-white text-center text-xs flex items-center justify-center">
                         {filteredMessages.length}
                     </span>
                 )}

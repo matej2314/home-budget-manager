@@ -25,17 +25,17 @@ export default function DisplayLiveBalance() {
 
     useEffect(() => {
         if (!socketError && messages && messages.length > 0) {
-            console.log('otrzymane wiadomości:', messages)
             const balanceMessage = messages
                 .filter((message) => message.type === 'balance_update')
                 .pop();
             if (balanceMessage) {
-                setCurrentBalance(balanceMessage.data.newBalance);
                 console.log(balanceMessage.data.newBalance)
+                setCurrentBalance(balanceMessage.data.newBalance);
+
             };
         }
 
-    }, [messages, socketError]);
+    }, [messages, socketError, currentBalance]);
 
     return (
         <div id="liveBalance" className="w-1/4 h-[8.5rem] bg-sky-500/85 text-xl text-white flex flex-col justify-start items-center rounded-md pt-4">
