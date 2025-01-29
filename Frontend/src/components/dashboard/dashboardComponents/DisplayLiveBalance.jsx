@@ -1,13 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../../store/dataContext";
-import { MessageContext } from "../../../store/messageContext";
+import { useSocket } from "../../../store/socketContext";
 
 export default function DisplayLiveBalance() {
-    const {
-        messages,
-        isLoading: socketLoading,
-        error: socketError
-    } = useContext(MessageContext);
+    const { messages, connected } = useSocket();
 
     const {
         data,
@@ -24,18 +20,17 @@ export default function DisplayLiveBalance() {
     }, [dataLoading, data, dataError]);
 
     useEffect(() => {
-        if (!socketError && messages && messages.length > 0) {
+        if (connected && messages && messages.length > 0) {
             const balanceMessage = messages
                 .filter((message) => message.type === 'balance_update')
                 .pop();
             if (balanceMessage) {
-                console.log(balanceMessage.data.newBalance)
-                setCurrentBalance(balanceMessage.data.newBalance);
+                setCurrentBalance(balanceMessage.newBalance);
 
             };
         }
 
-    }, [messages, socketError, currentBalance]);
+    }, [messages, connected, currentBalance]);
 
     return (
         <div id="liveBalance" className="w-1/4 h-[8.5rem] bg-sky-500/85 text-xl text-white flex flex-col justify-start items-center rounded-md pt-4">

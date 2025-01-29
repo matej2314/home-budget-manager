@@ -156,7 +156,7 @@ router.post('/login', authController.loginUser);
  *                   type: string
  */
 
-router.post('/logout', authController.logoutUser);
+router.post('/logout', verifyJWT(), authController.logoutUser);
 
 /**
  * @swagger

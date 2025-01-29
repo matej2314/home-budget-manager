@@ -2,9 +2,11 @@ import { useContext, useState } from "react";
 import { Icon } from "@iconify/react";
 import { DataContext } from "../../../store/dataContext";
 import { AuthContext } from "../../../store/authContext";
+import sendRequest from "../../../utils/sendRequest";
 import DisplayMessageDetails from "../../modals/DisplayMessageDetails";
 import ReplyMessageModal from "../../modals/ReplyMessageModal";
 import DeleteMessageModal from "../../modals/DeleteMessageModal";
+import { serverUrl } from "../../../url";
 
 export default function MessagesList() {
     const { data, isLoading, error } = useContext(DataContext);
@@ -12,9 +14,12 @@ export default function MessagesList() {
     const [modal, setModal] = useState({ isOpen: false, type: null, message: null });
     const [messagesType, setMessagesType] = useState("all");
 
+    const messagesStates = ['all', 'new', 'readed', 'sended'];
+    const tableHeader = ["Sender", "Recipient", "Message", "Date", "Is readed", "Actions"];
+
     const messages = !isLoading && !error ? data.dashboardData.messagesData || [] : [];
-    const filteredMessages = messages.filter((msg) => msg.recipient === user.userName);
     const sortedMessages = messages.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const filteredMessages = messages.filter((msg) => msg.recipient === user.userName);
 
     const filterMap = {
         all: sortedMessages,
@@ -31,8 +36,23 @@ export default function MessagesList() {
         setModal({ isOpen: false, type: null, message: null });
     };
 
-    const messagesStates = ['all', 'new', 'readed', 'sended'];
-    const tableHeader = ["Sender", "Recipient", "Message", "Date", "Is readed", "Actions"];
+    const handleMarkMessage = async (message) => {
+
+        if (user.userName !== message.recipient) {
+            alert('Nie jesteś odbiorcą tej wiadomości!');
+            return;
+        };
+
+        if (user.userName === message.recipient) {
+            const markMessage = await sendRequest('PUT', { messageId: message.id }, `${serverUrl}/message/readed`);
+
+            if (markMessage.status === 'error') {
+                alert(markMessage.message);
+            } else if (markMessage.status === 'success') {
+                console.log(markMessage.message);
+            };
+        };
+    };
 
     return (
         <div className="w-full h-full overflow-auto">
@@ -47,7 +67,6 @@ export default function MessagesList() {
                     </button>
                 ))}
             </div>}
-
             {!isLoading && !error ? (
                 <table className="w-full h-full table-auto border-collapse text-sm">
                     <thead>
@@ -71,10 +90,16 @@ export default function MessagesList() {
                                     <button onClick={() => handleOpenModal("details", message)} title="Open message">
                                         <Icon icon="lets-icons:message-open-light" width={20} height={20} />
                                     </button>
-                                    <button title="Delete message">
+                                    <button
+                                        title="Delete message"
+                                        onClick={() => handleOpenModal('delete', message)}
+                                    >
                                         <Icon icon="mdi-light:delete" width={22} height={22} />
                                     </button>
-                                    <button title="Mark as read">
+                                    <button
+                                        title="Mark as readed"
+                                        onClick={() => handleMarkMessage(message)}
+                                    >
                                         <Icon icon="iconoir:mail-opened" width={20} height={20} />
                                     </button>
                                     {message.sender !== user.userName && <button onClick={() => handleOpenModal("reply", message)} title="Reply">
@@ -90,12 +115,14 @@ export default function MessagesList() {
                     {isLoading ? 'Ładowanie wiadomości...' : messages.length === 0 ? 'Brak wiadomości.' : null}
                 </p>
             )}
-
             {modal.isOpen && modal.type === "details" && (
                 <DisplayMessageDetails isOpen={modal.isOpen} onRequestClose={handleCloseModal} message={modal.message} />
             )}
             {modal.isOpen && modal.type === "reply" && (
                 <ReplyMessageModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} message={modal.message} />
+            )}
+            {modal.isOpen && modal.type === 'delete' && (
+                <DeleteMessageModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} message={modal.message} />
             )}
         </div>
     );

@@ -37,6 +37,20 @@ export const SocketProvider = ({ children }) => {
                 console.error("Socket.IO Error:", error);
             });
 
+            newSocket.on('balance_update', (data) => {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    { type: 'balance_update', ...data }
+                ]);
+            });
+
+            newSocket.on('newMessage', (data) => {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    { type: 'newMessage', ...data }
+                ]);
+            })
+
             newSocket.on("message", (message) => {
                 setMessages((prevMessages) => [...prevMessages, message]);
             });
@@ -57,9 +71,9 @@ export const SocketProvider = ({ children }) => {
         }
     }, [isAuthenticated]);
 
-    const sendMessage = (message) => {
+    const sendMessage = (type, message) => {
         if (socket && connected) {
-            socket.emit("message", message);
+            socket.emit(type, message);
         } else {
             setError("Socket.IO is not connected");
         }

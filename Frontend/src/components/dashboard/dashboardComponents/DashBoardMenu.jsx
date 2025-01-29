@@ -5,6 +5,16 @@ import { Link } from "react-router-dom"
 export default function DashBoardMenu() {
     const { user, isAuthenticated } = useContext(AuthContext);
 
+    const linksElements = [
+        { path: '/dashboard', label: 'Dashboard' },
+        { path: 'myprofile', label: 'My profile' },
+        { path: 'myhouse', label: 'My house' },
+        { path: 'messages', label: 'Messages' },
+        { path: 'housemates', label: 'Housemates' },
+        { path: 'transactions', label: 'Transactions' },
+        { path: 'calendar', label: 'Calendar' },
+    ];
+
     return (
         <div id='dashboardMenu' className="w-fit bg-customGray flex flex-col justify-start items-center text-slate-300 pt-5 gap-12">
             <div
@@ -16,13 +26,9 @@ export default function DashBoardMenu() {
                 </button>
             </div>
             <ul className="w-full h-full flex flex-col items-center gap-4 px-12">
-                <li><Link to='/dashboard'>Dashboard</Link></li>
-                <li><Link to='/myprofile'>My profile</Link></li>
-                <li><Link to='myhouse'>My house</Link></li>
-                <li><Link to='messages'>Messages</Link></li>
-                <li><Link to='housemates'>Housemates</Link></li>
-                <li><Link to='transactions'>Transactions</Link></li>
-                <li><Link to='calendar'>Calendar</Link></li>
+                {linksElements.map((link, index) => (
+                    <li key={index}><Link to={link.path}>{link.label}</Link></li>
+                ))}
                 {user.role === 'superadmin' && <>
                     <li><Link to='users'>Users (if superadmin)</Link></li>
                     <li><Link to='households'>Households(if superadmin)</Link></li>

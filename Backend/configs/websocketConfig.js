@@ -41,7 +41,6 @@ const initializeWebSocket = (server) => {
 					logger.info(`Połączenie dla użytkownika ${userId} już istnieje i jest aktywne. Używamy istniejącego połączenia.`);
 					socket.emit('connect_success', { message: 'Połączenie zostało przywrócone.' });
 	
-					// Możesz dodać dodatkową logikę, aby przejść do innych operacji związanych z aktywnym połączeniem.
 					return;
 				} else {
 					logger.error(`Połączenie dla użytkownika ${userId} wygasło. Usuwamy stare połączenie.`);

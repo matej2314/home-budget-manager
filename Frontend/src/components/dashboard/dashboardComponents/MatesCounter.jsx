@@ -11,7 +11,6 @@ export default function MatesCounter() {
             <div className="h-1/2 w-1/2 flex flex-col justify-center items-center gap-4">
                 <h2 className="text-2xl">Housemates:</h2>
                 {!isLoading && !error && <span className="text-2xl">{matesData.length}</span>}
-
             </div>
         </div>
     )

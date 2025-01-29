@@ -3,7 +3,7 @@ import SendMessageForm from '../forms/SendMessageForm';
 
 export default function ReplyMessageModal({ isOpen, onRequestClose, message }) {
 
-    const recipientName = isOpen && message && message.recipient || null;
+    const recipientName = isOpen && message && message.sender || null;
 
     return (
         <Modal

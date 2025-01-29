@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState({});
     const [error, setError] = useState(null);
 
-
     const register = async (data) => {
         setError(null);
         setIsLoading(true);

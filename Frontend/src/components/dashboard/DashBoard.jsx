@@ -6,9 +6,9 @@ import MessagesCounter from './dashboardComponents/MessagesCounter';
 import DisplayMatesList from './dashboardComponents/DisplayMatesList';
 import LastTransactionsList from './dashboardComponents/LastTransactionsList';
 import TopCategoriesList from './dashboardComponents/TopCategoriesList';
-import BudgetPerDay from './dashboardComponents/charts-components/BudgetPerDay';
-import TransactionsPerDay from './dashboardComponents/charts-components/TransactionsPerDay';
-import TransactionsCategories from './dashboardComponents/charts-components/TransactionsCategories';
+import BudgetPerDay from './dashboardComponents/charts-dashboard-components/BudgetPerDay';
+import TransactionsPerDay from './dashboardComponents/charts-dashboard-components/TransactionsPerDay';
+import TransactionsCategories from './dashboardComponents/charts-dashboard-components/TransactionsCategories';
 
 export default function DashBoard() {
 

@@ -11,7 +11,7 @@ export default function MatesList({ mode }) {
     const [recipient, setRecipient] = useState(null);
 
     const houseMates = !isLoading && !error ? data.dashboardData.houseMates : [];
-
+    const thLabels = ['Name', 'Role', 'Actions'];
 
     const handleOpenModal = (recipient) => {
         setIsModalOpen(true);
@@ -30,9 +30,9 @@ export default function MatesList({ mode }) {
                 <table className="w-full h-full table-auto border-collapse text-sm">
                     <thead>
                         <tr className="border-b">
-                            <th className="px-4 py-2 text-left">Name</th>
-                            <th className="px-4 py-2 text-left">Role</th>
-                            <th className="px-4 py-2 text-left">Actions</th>
+                            {thLabels.map((label, index) => (
+                                <th key={index} className="px-4 py-2 text-left">{label}</th>
+                            ))}
                         </tr>
                     </thead>
                     <tbody>

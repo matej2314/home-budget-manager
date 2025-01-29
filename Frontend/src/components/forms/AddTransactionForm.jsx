@@ -25,7 +25,7 @@ export default function AddTransactionForm({ onClose }) {
             alert(saveAction.message);
             setTimeout(() => {
                 onClose();
-            }, 2000);
+            }, 500);
         } else if (saveAction.status === 'error') {
             alert(saveAction.message);
             onClose();

@@ -3,9 +3,7 @@ import sendRequest from '../../utils/sendRequest';
 import { serverUrl } from '../../url';
 
 export default function SendMessageForm({ reply, recipientName }) {
-
     const [sended, setSended] = useState(false);
-
     const recipientRef = useRef();
     const messageContentRef = useRef();
 

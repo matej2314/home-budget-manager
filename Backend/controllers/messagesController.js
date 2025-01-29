@@ -78,6 +78,42 @@ exports.getMessages = async (req, res) => {
     }
 };
 
+exports.markMessage = async (req, res) => {
+    const  messageId  = req.body.messageId;
+    const userId = req.userId;
+
+    if (!messageId) {
+        logger.error('Brak danych wiadomości do oznaczenia!');
+        return res.status(400).json({ status: 'error', message: 'Prześlij poprawne dane wiadomości.' });
+    };
+
+    const connection = await pool.getConnection();
+    const markQuery = 'UPDATE messages SET is_read=1 WHERE id = ? AND recipientId = ?';
+
+    try {
+        const [result] = await connection.query(markQuery, [messageId, userId]);
+
+        if (result.affectedRows == 0) {
+            logger.info('Nie znaleziono wiadomości.');
+            return res.status(404).json({
+                status: 'error',
+                message: 'Nie znaleziono wiadomości.',
+            });
+        };
+
+        return res.status(200).json({
+            status: 'error',
+            message: `Status wiadomości zmieniony poprawnie.`,
+        });
+    } catch (error) {
+        logger.error(`Błąd w markMessage: ${error}`);
+        return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
+    } finally {
+        if (connection) connection.release();
+    }
+
+};
+
 exports.deleteMessage = async (req, res) => {
     const { messageId } = req.body;
     const connection = await pool.getConnection();

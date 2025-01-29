@@ -8,6 +8,7 @@ const { isValidPassword, isValidEmail, isValidUsername } = require('../utils/val
 const jwtCookieOptions = require('../configs/jwtCookieOptions');
 const { checkUserEmail } = require('../utils/checkUserEmail');
 const queries = require('../database/authQueries');
+const socketQueries = require('../database/websocketQueries');
 
 exports.registerUser = async (req, res) => {
 	const { reg_username, reg_email, reg_password, role } = req.body;
@@ -146,6 +147,9 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.logoutUser = async (req, res) => {
+
+	await pool.query(socketQueries.deleteConnection, [req.userId]);
+
 	res.clearCookie('SESSID', {
 		httpOnly: true,
 		secure: false,
