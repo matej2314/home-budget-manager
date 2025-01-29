@@ -6,16 +6,25 @@ const messagesQueries = require('../database/messagesQueries');
 
 exports.sendMessage = async (req, res) => {
     const userId = req.userId;
-    const { recipientId, content } = req.body;
-    const connection = await pool.getConnection();
+    const { recipientName, content } = req.body;
+   
     const id = uuidv4();
 
-    if (!recipientId || !content) {
+    if (!recipientName || !content) {
         logger.error('Brak danych wymaganych do wysłania wiadomości.');
         return res.status(400).json({ status: 'error', message: 'Brak danych wymaganych do wysłania wiadomości.' });
-    }
+    };
 
+    const connection = await pool.getConnection();
     try {
+        const [checkUserId] = await connection.query(messagesQueries.checkUserIdQuery, [recipientName]);
+
+        if (checkUserId.length == 0) {
+            return res.status(404).json({ status: 'error', message: 'Nie znaleziono nadawcy.' });
+        };
+
+        const recipientId = checkUserId[0].id;
+
         const result = await connection.query(messagesQueries.saveMessage, [id, userId, recipientId, content, false]);
 
         if (result.affectedRows === 0) {
