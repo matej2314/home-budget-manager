@@ -41,15 +41,13 @@ export default function MessagesList() {
         if (user.userName !== message.recipient) {
             alert('Nie jesteś odbiorcą tej wiadomości!');
             return;
-        };
-
-        if (user.userName === message.recipient) {
+        } else if (user.userName === message.recipient) {
             const markMessage = await sendRequest('PUT', { messageId: message.id }, `${serverUrl}/message/readed`);
 
             if (markMessage.status === 'error') {
                 alert(markMessage.message);
             } else if (markMessage.status === 'success') {
-                console.log(markMessage.message);
+                alert(markMessage.message);
             };
         };
     };

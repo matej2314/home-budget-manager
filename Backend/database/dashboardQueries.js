@@ -5,6 +5,7 @@ module.exports = {
     h.userName AS host,
     DATE_FORMAT(h.balanceDate, '%Y-%m-%d') AS lastBalanceDate, 
     ib.value AS lastInitialBudget,
+    DATE_FORMAT(ib.validUntil, '%Y-%m-%d') AS validUntil,
     DATE_FORMAT(ib.addedAt, '%Y-%m-%d') AS definedAt,
     mb.monthly_balance AS latestMonthly
     FROM households h

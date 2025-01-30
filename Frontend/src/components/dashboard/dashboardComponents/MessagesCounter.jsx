@@ -1,21 +1,28 @@
-import { useContext } from "react"
-import { DataContext } from "../../../store/dataContext";
-import { AuthContext } from "../../../store/authContext";
+import { useContext, useEffect, useState } from "react"
+import { useSocket } from '../../../store/socketContext';
 
 export default function MessagesCounter() {
-    const { data, isLoading, error } = useContext(DataContext);
-    const { user } = useContext(AuthContext);
 
-    const messages = !isLoading && !error && data.dashboardData.messagesData || [];
+    const { connected, messages, error } = useSocket();
+    const [userMessages, setUserMessages] = useState([]);
 
-    const newMessages = messages.filter((message) => message.recipient === user.userName)
-        .filter((message) => message.readed == 0)
+    useEffect(() => {
+        if (connected && !error && messages.length > 0) {
+            const userMessages = messages.filter((message) => message.type === 'newMessage');
+
+            if (userMessages) {
+                setUserMessages(userMessages);
+            };
+        }
+    }, [messages, connected]);
 
     return (
-        <div id='newMessages' className="w-1/4 h-[8.5rem] bg-sky-700/85 flex flex-col text-white justify-start items-center rounded-md pt-4">
+        <div
+            id='newMessages'
+            className="w-1/4 h-[8.5rem] bg-sky-700/85 flex flex-col text-white justify-start items-center rounded-md pt-4">
             <div className="h-11/12 w-11/12 flex flex-col justify-center items-center gap-4">
                 <h2 className="text-xl">New messages:</h2>
-                <span className="text-xl">{newMessages.length}</span>
+                <span className="text-xl">{userMessages.length > 0 ? userMessages.length : 0}</span>
             </div>
         </div>
     )

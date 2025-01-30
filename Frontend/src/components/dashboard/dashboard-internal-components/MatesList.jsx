@@ -41,7 +41,9 @@ export default function MatesList({ mode }) {
                                 <td className="px-4 py-2">{mate.userName}</td>
                                 <td className="px-4 py-2">{mate.role}</td>
                                 <td className="px-4 py-2 flex gap-3">
-                                    <button type="button" onClick={() => handleOpenModal(mate.userName)} className="w-fit h-fit" title='Send message'>
+                                    <button type="button"
+                                        onClick={() => handleOpenModal(mate.userName)}
+                                        className="w-fit h-fit" title='Send message'>
                                         <Icon icon='mdi-light:message' width={20} height={20} />
                                     </button>
                                     {mode === 'subpage' && (
@@ -67,7 +69,11 @@ export default function MatesList({ mode }) {
             ) : (
                 <p>Brak domowników</p>
             )}
-            <SendMessageModal isOpen={isModalOpen} onRequestClose={handleCloseModal} recipient={recipient} />
+            {user.userName !== recipient ?
+                <SendMessageModal
+                    isOpen={isModalOpen}
+                    onRequestClose={handleCloseModal}
+                    recipient={recipient} /> : null}
         </div>
     );
 }
