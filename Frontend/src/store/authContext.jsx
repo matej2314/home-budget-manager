@@ -37,10 +37,12 @@ export const AuthProvider = ({ children }) => {
         setMessage(null);
         try {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/login`);
-            setUser({ userName: response.userName, role: response.role, id: response.id });
-            setMessage(response.message);
-            setIsAuthenticated(true);
 
+            if (response.status === 'success') {
+                setUser({ userName: response.userName, role: response.role, id: response.id });
+                setMessage(response.message);
+                setIsAuthenticated(true);
+            };
         } catch (error) {
             setError(error.message);
         } finally {
@@ -55,8 +57,10 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await sendRequest('POST', {}, `${serverUrl}/auth/logout`);
 
-            if (response) {
+            if (response.status === 'success') {
                 setMessage(response.message);
+                setIsAuthenticated(false);
+                setUser(null);
             };
 
         } catch (error) {
@@ -73,8 +77,8 @@ export const AuthProvider = ({ children }) => {
             const response = await fetchData(`${serverUrl}/auth/verify`);
 
             if (response.status === 'success') {
-                setIsAuthenticated(true);
                 setUser({ userName: response.userName, role: response.role, id: response.userId });
+                setIsAuthenticated(true);
             } else {
                 setIsAuthenticated(false);
                 setUser(null);

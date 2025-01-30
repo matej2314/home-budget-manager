@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import sendRequest from '../../utils/sendRequest';
 import { serverUrl } from '../../url';
+import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function SendMessageForm({ reply, recipientName }) {
     const [sended, setSended] = useState(false);
@@ -20,11 +21,11 @@ export default function SendMessageForm({ reply, recipientName }) {
             const sendMessage = await sendRequest('POST', messageData, `${serverUrl}/message/send`);
 
             if (sendMessage.status === 'success') {
-                alert(sendMessage.message);
+                showInfoToast(sendMessage.message);
                 messageContentRef.current.value = "";
             }
         } catch (error) {
-            console.log(error.message);
+            showErrorToast(sendMessage.message);
         } finally {
             setSended(true);
         }

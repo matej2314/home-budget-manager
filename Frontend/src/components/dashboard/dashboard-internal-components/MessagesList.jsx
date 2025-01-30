@@ -7,9 +7,10 @@ import DisplayMessageDetails from "../../modals/DisplayMessageDetails";
 import ReplyMessageModal from "../../modals/ReplyMessageModal";
 import DeleteMessageModal from "../../modals/DeleteMessageModal";
 import { serverUrl } from "../../../url";
+import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 
 export default function MessagesList() {
-    const { data, isLoading, error } = useContext(DataContext);
+    const { data, isLoading, error, refreshData } = useContext(DataContext);
     const { user } = useContext(AuthContext);
     const [modal, setModal] = useState({ isOpen: false, type: null, message: null });
     const [messagesType, setMessagesType] = useState("all");
@@ -39,15 +40,19 @@ export default function MessagesList() {
     const handleMarkMessage = async (message) => {
 
         if (user.userName !== message.recipient) {
-            alert('Nie jesteś odbiorcą tej wiadomości!');
+            showErrorToast('Nie jesteś odbiorcą tej wiadomości!');
             return;
         } else if (user.userName === message.recipient) {
             const markMessage = await sendRequest('PUT', { messageId: message.id }, `${serverUrl}/message/readed`);
 
             if (markMessage.status === 'error') {
-                alert(markMessage.message);
+                showErrorToast(markMessage.message);
+
             } else if (markMessage.status === 'success') {
-                alert(markMessage.message);
+                showInfoToast(markMessage.message);
+                setTimeout(() => {
+                    refreshData();
+                }, 1000);
             };
         };
     };
@@ -59,7 +64,7 @@ export default function MessagesList() {
                     <button
                         key={type}
                         onClick={() => setMessagesType(type)}
-                        className='border-2 border-slate-300 text-slate-100 bg-slate-400/80 py-1 px-2 rounded-xl hover:bg-inherit hover:text-slate-800 shadow-lg hover:shadow-sm'
+                        className='border-2 border-slate-300 text-slate-700 bg-slate-300/40 py-1 px-2 rounded-xl hover:bg-inherit hover:text-slate-800 shadow-lg hover:shadow-sm'
                     >
                         {type.charAt(0).toUpperCase() + type.slice(1)}
                     </button>

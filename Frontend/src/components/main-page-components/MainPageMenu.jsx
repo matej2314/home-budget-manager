@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Modal from 'react-modal';
 import Authorization from './Authorization';
+import LanguageSelector from '../dashboard/dashboard-internal-components/LanguageSelector';
 
 Modal.setAppElement('#root');
 
@@ -19,14 +20,14 @@ export default function MainPageMenu() {
         setMode(selectedMode);
     }
     return (
-        <div id="mainMenu" className="w-[98vw] h-fit flex bg-blue-800 rounded-md">
-            <ul className="w-full h-fit flex justify-around items-center py-3 text-gray-100 text-md">
+        <div id="mainMenu" className="w-[98vw] h-fit flex border-2 border-y-slate-300 rounded-md shadow-sm shadow-slate-400">
+            <ul className="w-full h-fit flex justify-between items-center px-3 py-1 text-slate-800 text-md">
                 <li>Main Page</li>
                 <li>About us</li>
                 <li onClick={openModal} className='cursor-pointer'>SignUp/Login</li>
                 <li>Contact</li>
+                <LanguageSelector />
             </ul>
-
             <Modal
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}

@@ -9,6 +9,7 @@ import TopCategoriesList from './dashboardComponents/TopCategoriesList';
 import BudgetPerDay from './dashboardComponents/charts-dashboard-components/BudgetPerDay';
 import TransactionsPerDay from './dashboardComponents/charts-dashboard-components/TransactionsPerDay';
 import TransactionsCategories from './dashboardComponents/charts-dashboard-components/TransactionsCategories';
+import FastActions from './dashboard-internal-components/FastActionsSection';
 
 export default function DashBoard() {
 
@@ -21,6 +22,7 @@ export default function DashBoard() {
                 <DisplayLiveBalance />
                 <MessagesCounter />
             </div>
+            <FastActions />
             <div id="middlePart" className="w-full h-fit flex gap-3">
                 <DisplayMatesList />
                 <LastTransactionsList />

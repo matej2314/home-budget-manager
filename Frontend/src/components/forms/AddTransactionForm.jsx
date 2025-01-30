@@ -2,6 +2,7 @@ import { useRef, useEffect, useContext } from 'react';
 import { DataContext } from '../../store/dataContext';
 import { serverUrl } from '../../url';
 import sendRequest from '../../utils/sendRequest';
+import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function AddTransactionForm({ onClose }) {
     const { data, isLoading, error } = useContext(DataContext);
@@ -22,12 +23,12 @@ export default function AddTransactionForm({ onClose }) {
         const saveAction = await sendRequest('POST', newActionData, `${serverUrl}/action/new`)
 
         if (saveAction.status === 'success') {
-            alert(saveAction.message);
+            showInfoToast(saveAction.message);
             setTimeout(() => {
                 onClose();
             }, 500);
         } else if (saveAction.status === 'error') {
-            alert(saveAction.message);
+            showErrorToast(saveAction.message);
             onClose();
         }
     };

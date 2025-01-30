@@ -102,7 +102,7 @@ exports.markMessage = async (req, res) => {
         };
 
         return res.status(200).json({
-            status: 'error',
+            status: 'success',
             message: `Status wiadomości zmieniony poprawnie.`,
         });
     } catch (error) {

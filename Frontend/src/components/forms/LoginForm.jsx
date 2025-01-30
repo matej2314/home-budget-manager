@@ -1,6 +1,7 @@
 import { useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
+import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 
 export default function LoginForm() {
@@ -22,16 +23,23 @@ export default function LoginForm() {
     };
 
     useEffect(() => {
-        if (!error && message) {
-            navigate('/dashboard');
+        if (message) {
+            showInfoToast(message);
+            const timer = setTimeout(() => {
+                navigate('/dashboard');
+            }, 600);
+
+            return () => clearTimeout(timer);
+        };
+
+        if (message || error) {
+            showErrorToast(message);
         }
     }, [error, message, navigate]);
 
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>
             <h2 className='text-xl'>Login</h2>
-            {error && !message && <p className='text-red-600'>{error}</p>}
-            {message && <p className='text-green-500'>{message}</p>}
             <form onSubmit={handleSubmit} className='w-fit h-fit flex flex-col justify-center items-center gap-3'>
                 <label htmlFor="email">Email:</label>
                 <input

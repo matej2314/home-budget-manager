@@ -69,7 +69,7 @@ export default function MatesList({ mode }) {
             ) : (
                 <p>Brak domowników</p>
             )}
-            {user.userName !== recipient ?
+            {isAuthenticated && user.userName !== recipient ?
                 <SendMessageModal
                     isOpen={isModalOpen}
                     onRequestClose={handleCloseModal}

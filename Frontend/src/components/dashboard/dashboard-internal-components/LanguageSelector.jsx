@@ -23,7 +23,7 @@ export default function LanguageSelector() {
             defaultValue={languages.find(lang => lang.value === i18next.language) || languages[0]}
             onChange={handleLangChange}
             isSearchable={false}
-            className="w-fit text-slate-900"
+            className="w-fit text-slate-900 border-2 rounded-md shadow-sm shadow-slate-400"
         />
     );
 }

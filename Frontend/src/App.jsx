@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import routes from './configs/routerConfig';
+import { ToastContainer } from 'react-toastify';
 // import './configs/i18n';
 
 
@@ -17,11 +18,18 @@ export default function App() {
     }
   })
 
-
-
-
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position='top-center'
+        autoClose={false}
+        closeButton={true}
+        hideProgressBar={true}
+        rtl={false}
+        draggable={false}
+      />
+    </>
   )
 }
 

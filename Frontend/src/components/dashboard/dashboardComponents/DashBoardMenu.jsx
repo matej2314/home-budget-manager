@@ -16,20 +16,12 @@ export default function DashBoardMenu() {
     ];
 
     return (
-        <div id='dashboardMenu' className="w-fit bg-customGray flex flex-col justify-start items-center text-slate-300 pt-5 gap-12">
-            <div
-                className="w-full h-fit flex justify-end mr-5">
-                <button id="openCloseBtn" className="w-[1rem] h-[1rem] border-2 border-slate-300/40 hover:border-slate-300/70 rounded-md flex flex-col items-center justify-center text-white gap-1 p-3.5">
-                    <span className="w-[1rem] h-fit text-white border-2 border-slate-300/40 hover:border-slate-300/70 relative"></span>
-                    <span className="w-[1rem] h-fit text-white border-2 border-slate-300/40 hover:border-slate-300/70 relative"></span>
-                    <span className="w-[1rem] h-fit text-white border-2 border-slate-300/40 hover:border-slate-300/70 relative"></span>
-                </button>
-            </div>
-            <ul className="w-full h-full flex flex-col items-center gap-4 px-12">
+        <div id='dashboardMenu' className="w-fit bg-customGray flex flex-col justify-start items-center text-slate-300 pt-[3.5rem] gap-12">
+            <ul className="w-full h-full flex flex-col items-center gap-6 px-12">
                 {linksElements.map((link, index) => (
                     <li key={index}><Link to={link.path}>{link.label}</Link></li>
                 ))}
-                {user.role === 'superadmin' && <>
+                {isAuthenticated && user.role === 'superadmin' && <>
                     <li><Link to='users'>Users (if superadmin)</Link></li>
                     <li><Link to='households'>Households(if superadmin)</Link></li>
                     <li><Link to='stats'>Page stats(if superadmin)</Link></li>

@@ -35,7 +35,9 @@ export const DataProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        fetchBoardData();
+        if (isAuthenticated) {
+            fetchBoardData();
+        };
     }, [isAuthenticated]);
 
     return (

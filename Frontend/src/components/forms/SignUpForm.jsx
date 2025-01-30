@@ -1,8 +1,11 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
+import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function SignUpForm() {
     const { register, isLoading, error, message, user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const userName = useRef();
     const userEmail = useRef();
@@ -38,6 +41,20 @@ export default function SignUpForm() {
 
         await register(data);
     };
+
+    useEffect(() => {
+        if (message) {
+            showInfoToast(message);
+            const timer = setTimeout(() => {
+                navigate('/');
+            }, 600);
+
+            return () => clearTimeout(timer);
+        }
+        if (error) {
+            showErrorToast(error);
+        }
+    }, [error, message, navigate]);
 
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>

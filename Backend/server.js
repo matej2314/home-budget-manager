@@ -27,10 +27,10 @@ app.use(
 	})
 );
 
-// app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/avatars', express.static(path.join(__dirname, 'public', 'user-photos')));
 
 app.options('*', (req, res) => {
 	res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');

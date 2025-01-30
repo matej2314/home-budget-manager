@@ -1,15 +1,19 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 import { DataContext } from '../../store/dataContext';
-import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader"
+import Modal from 'react-modal';
 
-export default function TransactionsCategoriesPage() {
+export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) {
     const { data, isLoading, error } = useContext(DataContext);
     const actionCats = !isLoading && !error && data.dashboardData.actionsCatData || [];
 
     return (
-        <div id="pagecontent" className="bg-slate-200 w-full h-screen">
-            <DashboardHeader />
-            <div id="middle-content" className="flex gap-5 ">
+        <Modal
+            isOpen={isOpen}
+            onRequestClose={onRequestClose}
+            className='bg-slate-300 rounded-lg p-6 w-1/3 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400'
+            overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
+        >
+            <div id="categories-list" className='flex flex-col items-center'>
                 <ul className="w-full h-fit flex flex-col items-center justify-center gap-3">
                     {!isLoading && !error && data ? (
                         actionCats.map((cat) => (
@@ -23,6 +27,6 @@ export default function TransactionsCategoriesPage() {
                     )}
                 </ul>
             </div>
-        </div>
+        </Modal>
     )
-};
+}

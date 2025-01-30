@@ -5,7 +5,7 @@ export default function MainPage() {
         <main className="w-full h-screen flex flex-col justify-start items-center gap-4 pt-1">
             <MainPageMenu />
             <div id='mainPageContent' className="w-[99%] h-full flex flex-col gap-3 pb-1">
-                <div id="short-info-boxes" className="w-full h-fit flex flex-col gap-5">
+                <div id="short-info-boxes" className="w-full h-fit flex flex-col gap-5 bg-sky-200 px-5">
                     <h2 className="w-full h-fit flex flex-row justify-center items-center text-black text-2xl">What is Home Budget Web Manager?</h2>
                     <div id="boxes" className="w-full h-fit flex flex-row justify-around gap-3 border-b-2 border-sky-400 pb-4">
                         <div id='infoBox' className="w-full h-fit flex flex-col items-center gap-3 border-2 border-cyan-600 rounded-md p-2 bg-cyan-300">

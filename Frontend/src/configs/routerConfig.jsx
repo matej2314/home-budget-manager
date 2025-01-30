@@ -10,7 +10,6 @@ import HouseholdsPage from '../pages/dashboard-subpages/HouseholdsPage';
 import UserProfilePage from '../pages/dashboard-subpages/UserProfilePage';
 import StatsPage from '../pages/dashboard-subpages/StatsPage';
 import TransactionsPage from "../pages/dashboard-subpages/TransactionsPage";
-import TransactionsCategoriesPage from '../pages/dashboard-subpages/TransactionsCategoriesPage';
 
 const routes = [
     { path: '/', element: <MainPage /> },
@@ -28,7 +27,6 @@ const routes = [
             { path: 'users', element: <UsersPage /> },
             { path: 'households', element: <HouseholdsPage /> },
             { path: 'stats', element: <StatsPage /> },
-            { path: 'actioncats', element: <TransactionsCategoriesPage /> }
         ],
     }
 ];

@@ -1,54 +1,50 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 import TransactionsList from "../../components/dashboard/dashboard-internal-components/TransactionsList";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
-import AddTransactionForm from "../../components/forms/AddTransactionForm";
+import AddTransactionModal from "../../components/modals/AddTransactionModal";
+import TransactionsCategoriesModal from "../../components/modals/TransactionsCategoriesModal";
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 
 export default function TransactionsPage() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate();
+    const [modal, setModal] = useState({ isOpen: false, type: null });
 
-    const handleClickAdd = () => {
-        setIsModalOpen(true);
+
+    const handleAddTransaction = () => {
+        setModal({ isOpen: true, type: 'transaction' });
     };
 
+    const handleShowCategories = () => {
+        setModal({ isOpen: true, type: 'categories' });
+    }
+
     const handleCloseModal = () => {
-        setIsModalOpen(false);
+        setIsModalOpen({ isOpen: false, type: null });
     };
 
     return (
-        <div id="pagecontent" className="bg-slate-200 w-screen h-screen flex flex-col">
+        <div id="pagecontent" className="bg-slate-200 w-screen flex flex-col">
             <DashboardHeader />
             <div id="middle-content" className="flex flex-col gap-4 border-2 border-b-slate-800/5 pt-3 pb-4 px-5">
                 <div id='actionBtns' className="w-[75vw] h-fit flex justify-center items-center rounded-md gap-3">
-                    <button onClick={handleClickAdd} className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4">Add new transaction</button>
-                    <button className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4" onClick={() => navigate('/dashboard/actioncats')}>Vew all categories</button>
+                    <button
+                        onClick={handleAddTransaction}
+                        className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"
+                    >
+                        Add new transaction
+                    </button>
+                    <button
+                        className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"
+                        onClick={handleShowCategories}
+                    >
+                        Vew all categories
+                    </button>
                 </div>
                 <TransactionsList mainSite={false} />
             </div>
-
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={handleCloseModal}
-                contentLabel="Add New Transaction"
-                className="w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-x-[40vw] translate-y-[30vh]"
-                overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-            >
-                <h2 className="w-full h-fit flex justify-center text-2xl mb-7">Add New Transaction</h2>
-                <AddTransactionForm onClose={handleCloseModal} />
-                <div className="flex justify-end mt-4">
-                    <button
-                        onClick={handleCloseModal}
-                        className="bg-gray-300 text-black p-2 rounded-md"
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </Modal>
+            {modal.isOpen && modal.type === 'transaction' && <AddTransactionModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
+            {modal.isOpen && modal.type === 'categories' && <TransactionsCategoriesModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
         </div>
     );
 }

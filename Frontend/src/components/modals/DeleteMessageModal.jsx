@@ -1,6 +1,7 @@
 import Modal from 'react-modal';
 import sendRequest from "../../utils/sendRequest";
 import { serverUrl } from '../../url';
+import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function DeleteMessageModal({ isOpen, onRequestClose, message }) {
 
@@ -11,9 +12,9 @@ export default function DeleteMessageModal({ isOpen, onRequestClose, message }) 
         const result = await sendRequest('DELETE', delData, `${serverUrl}/message/delete`)
 
         if (result.status === 'error') {
-            alert('Nie udało się usunąć wiadomości.');
+            showErrorToast('Nie udało się usunąć wiadomości.');
         } else if (result.status === 'success') {
-            alert('Wiadomość usunięta poprawnie');
+            showInfoToast('Wiadomość usunięta poprawnie');
             onRequestClose();
         }
     };
