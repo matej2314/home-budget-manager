@@ -8,7 +8,7 @@ export default function DashboardPage() {
 
     return (
         <>
-            {!isLoading && !error && data && <main className="w-full flex flex-row justify-start overflow-auto bg-slate-200">
+            {!isLoading && !error && data && <main className="min-w-screen min-h-screen flex flex-row justify-start overflow-y-hidden bg-slate-200">
                 <DashBoardMenu />
                 <Outlet />
             </main>}

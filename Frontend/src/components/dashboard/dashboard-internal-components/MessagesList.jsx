@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import { DataContext } from "../../../store/dataContext";
 import { AuthContext } from "../../../store/authContext";
@@ -10,10 +11,25 @@ import { serverUrl } from "../../../url";
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 
 export default function MessagesList() {
+    const { filter } = useParams();
     const { data, isLoading, error, refreshData } = useContext(DataContext);
     const { user } = useContext(AuthContext);
     const [modal, setModal] = useState({ isOpen: false, type: null, message: null });
-    const [messagesType, setMessagesType] = useState("all");
+    const [messagesType, setMessagesType] = useState(filter || "all");
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if (filterMap[filter]) {
+            setMessagesType(filter);
+        } else {
+            navigate('/dashboard/messages/all', { replace: true });
+        }
+    }, [filter, navigate]);
+
+    const handleChangeFilter = (type) => {
+        navigate(`/dashboard/messages/${type}`);
+    }
 
     const messagesStates = ['all', 'new', 'readed', 'sended'];
     const tableHeader = ["Sender", "Recipient", "Message", "Date", "Is readed", "Actions"];
@@ -28,6 +44,8 @@ export default function MessagesList() {
         readed: filteredMessages.filter((msg) => msg.readed === 1),
         sended: sortedMessages.filter((msg) => msg.sender === user.userName),
     };
+
+
 
     const handleOpenModal = (type, message = null) => {
         setModal({ isOpen: true, type, message });
@@ -58,12 +76,12 @@ export default function MessagesList() {
     };
 
     return (
-        <div className="w-full h-full overflow-auto">
-            {data && !isLoading && <div className="flex gap-3">
+        <div className="min-w-full min-h-full overflow-auto">
+            {data && !isLoading && <div className="flex gap-3 mb-6">
                 {messagesStates.map((type) => (
                     <button
                         key={type}
-                        onClick={() => setMessagesType(type)}
+                        onClick={() => handleChangeFilter(type)}
                         className='border-2 border-slate-300 text-slate-700 bg-slate-300/40 py-1 px-2 rounded-xl hover:bg-inherit hover:text-slate-800 shadow-lg hover:shadow-sm'
                     >
                         {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -71,7 +89,7 @@ export default function MessagesList() {
                 ))}
             </div>}
             {!isLoading && !error ? (
-                <table className="w-full h-full table-auto border-collapse text-sm">
+                <table className="min-w-full h-full table-fixed border-collapse text-sm">
                     <thead>
                         <tr className="border-b">
                             {tableHeader.map((header) => (
@@ -82,14 +100,14 @@ export default function MessagesList() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filterMap[messagesType].map((message) => (
+                        {filterMap[messagesType]?.map((message) => (
                             <tr key={message.id} className="border-b">
-                                <td className="px-4 py-2">{message.sender}</td>
-                                <td className="px-4 py-2">{message.recipient}</td>
-                                <td className="px-4 py-2">{message.message}</td>
-                                <td className="px-4 py-2">{message.date.split("T")[0]}</td>
-                                <td className="px-4 py-2">{message.readed ? "Readed" : "Unreaded"}</td>
-                                <td className="px-4 py-2 flex items-center gap-3">
+                                <td className="min-w-full px-4 py-2 whitespace-nowrap">{message.sender}</td>
+                                <td className="min-w-full px-4 py-2 whitespace-nowrap">{message.recipient}</td>
+                                <td className="min-w-full px-4 py-2 whitespace-nowrap">{message.message}</td>
+                                <td className="min-w-full px-4 py-2 whitespace-nowrap">{message.date.split("T")[0]}</td>
+                                <td className="min-w-full px-4 py-2 whitespace-nowrap">{message.readed ? "Readed" : "Unreaded"}</td>
+                                <td className="min-w-full px-4 py-2 flex items-center gap-3">
                                     <button onClick={() => handleOpenModal("details", message)} title="Open message">
                                         <Icon icon="lets-icons:message-open-light" width={20} height={20} />
                                     </button>

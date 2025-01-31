@@ -23,7 +23,7 @@ const routes = [
             { path: 'transactions', element: <TransactionsPage /> },
             { path: 'housemates', element: <HouseMatesPage /> },
             { path: 'calendar', element: <CalendarPage /> },
-            { path: 'messages', element: <MessagesPage /> },
+            { path: 'messages/:filter?', element: <MessagesPage /> },
             { path: 'users', element: <UsersPage /> },
             { path: 'households', element: <HouseholdsPage /> },
             { path: 'stats', element: <StatsPage /> },
