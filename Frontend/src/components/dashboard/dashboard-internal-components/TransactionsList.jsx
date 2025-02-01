@@ -8,7 +8,7 @@ import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 export default function TransactionsList({ limit, mainSite, filterId }) {
     const { data, isLoading, error, refreshData } = useContext(DataContext);
 
-    const transactions = !isLoading && !error && Array.isArray(data.dashboardData.actionsData) ? data.dashboardData.actionsData : [];
+    const transactions = !isLoading && !error && Array.isArray(data.actionsData) ? data.actionsData : [];
     const filteredTransactions = filterId ? [...transactions].filter((transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = filteredTransactions.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
     const transactionsToDisplay = limit ? sortedTransactions.slice(0, limit) : sortedTransactions;

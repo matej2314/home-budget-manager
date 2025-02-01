@@ -10,7 +10,7 @@ export default function DashBoardMenu() {
     const { messages, error } = useSocket();
     const { user, isAuthenticated } = useContext(AuthContext);
 
-    const newMessages = !error && messages.filter((message) => message.type === 'newMessage');
+    const newMessages = !error && messages.newMessages;
 
     const linksElements = [
         { path: '/dashboard', label: 'Dashboard', icon: 'carbon:dashboard-reference' },

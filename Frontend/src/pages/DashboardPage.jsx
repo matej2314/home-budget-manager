@@ -9,7 +9,7 @@ export default function DashboardPage() {
     const { data, isLoading, error } = useContext(DataContext);
     const { connected, messages } = useSocket();
 
-    const liveMessages = connected && messages.filter((message) => message.type === 'newMessage');
+    const liveMessages = connected && messages.newMessages;
 
     useEffect(() => {
         if (connected && liveMessages.length > 0) {

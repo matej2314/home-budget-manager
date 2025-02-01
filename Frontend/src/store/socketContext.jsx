@@ -10,13 +10,15 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const [connected, setConnected] = useState(false);
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState({
+        balanceUpdates: [],
+        newMessages: [],
+    });
     const [error, setError] = useState(null);
     const { isAuthenticated } = useContext(AuthContext);
 
     useEffect(() => {
         if (isAuthenticated) {
-
             const newSocket = io(socketPath, {
                 transports: ["websocket"],
                 withCredentials: true,
@@ -37,22 +39,18 @@ export const SocketProvider = ({ children }) => {
                 console.error("Socket.IO Error:", error);
             });
 
-            newSocket.on('balance_update', (data) => {
-                setMessages((prevMessages) => [
+            newSocket.on("balance_update", (data) => {
+                setMessages((prevMessages) => ({
                     ...prevMessages,
-                    { type: 'balance_update', ...data }
-                ]);
+                    balanceUpdates: [...prevMessages.balanceUpdates, data],
+                }));
             });
 
-            newSocket.on('newMessage', (data) => {
-                setMessages((prevMessages) => [
+            newSocket.on("newMessage", (data) => {
+                setMessages((prevMessages) => ({
                     ...prevMessages,
-                    { type: 'newMessage', ...data }
-                ]);
-            })
-
-            newSocket.on("message", (message) => {
-                setMessages((prevMessages) => [...prevMessages, message]);
+                    newMessages: [...prevMessages.newMessages, data],
+                }));
             });
 
             setSocket(newSocket);

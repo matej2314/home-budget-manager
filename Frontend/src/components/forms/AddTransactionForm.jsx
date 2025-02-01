@@ -6,7 +6,7 @@ import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function AddTransactionForm({ onClose }) {
     const { data, isLoading, error } = useContext(DataContext);
-    const actionCategories = !isLoading && !error && data.dashboardData.actionsCatData || [];
+    const actionCategories = !isLoading && !error && data.actionsCatData || [];
     const typeRef = useRef();
     const valueRef = useRef();
     const catIdRef = useRef();

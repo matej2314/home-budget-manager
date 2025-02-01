@@ -3,7 +3,7 @@ import { DataContext } from '../../../store/dataContext';
 
 export default function MonthlyBudget() {
     const { data, isLoading, error } = useContext(DataContext);
-    const houseData = !isLoading && !error && data.dashboardData.houseData[0] || [];
+    const houseData = !isLoading && !error && data.houseData[0] || [];
     const lastMonthlyBudget = houseData.lastInitialBudget || '';
     const initBudgetDate = houseData.definedAt || '';
     const validDate = houseData.validUntil || '';

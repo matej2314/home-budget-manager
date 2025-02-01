@@ -21,8 +21,8 @@ export default function MessagesList() {
     const [newMessages, setNewMessages] = useState([]);
     const navigate = useNavigate();
 
-    const liveMessages = connected && socketMessages && socketMessages.filter((message) => message.type === 'newMessage') || [];
-    const messages = !isLoading && !error ? data.dashboardData.messagesData || [] : [];
+    const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
+    const messages = !isLoading && !error ? data.messagesData || [] : [];
     const sortedMessages = messages.sort((a, b) => new Date(b.date) - new Date(a.date));
     const filteredMessages = messages.filter((msg) => msg.recipient === user.userName);
 

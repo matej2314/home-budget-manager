@@ -67,11 +67,12 @@ const { getBoardData } = require('../controllers/boardController');
  */
 
 
-router.get('/data', verifyJWT(), verifyRole('mates'), async (req, res) => {
+router.get('/data/:filter?', verifyJWT(), verifyRole('mates'), async (req, res) => {
     const userId = req.userId;
+    const filter = req.params.filter;
     
     try {
-        const response = await getBoardData(userId);
+        const response = await getBoardData(userId, filter);
 
         if (response.status == 'notfound') {
             return res.status(404).json({status: 'error', message: response.message});

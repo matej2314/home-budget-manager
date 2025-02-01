@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) {
     const { data, isLoading, error } = useContext(DataContext);
-    const actionCats = !isLoading && !error && data.dashboardData.actionsCatData || [];
+    const actionCats = !isLoading && !error && data.actionsCatData || [];
 
     return (
         <Modal

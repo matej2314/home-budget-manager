@@ -10,7 +10,7 @@ export default function MatesList({ mode }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [recipient, setRecipient] = useState(null);
 
-    const houseMates = !isLoading && !error ? data.dashboardData.houseMates : [];
+    const houseMates = !isLoading && !error ? data.houseMates : [];
     const thLabels = ['Name', 'Role', 'Actions'];
 
     const handleOpenModal = (recipient) => {

@@ -3,7 +3,7 @@ const checkUserHouse = require('../utils/checkUserHouse');
 const logger = require('../configs/logger');
 const dashboardQueries = require('../database/dashboardQueries');
 
-const getBoardData = async (userId) => {
+const getBoardData = async (userId, filter = 'all') => {
     const connection = await pool.getConnection();
 
     try {
@@ -17,38 +17,46 @@ const getBoardData = async (userId) => {
         }
         const userHouseId = userHouse.houseId;
 
-        const [householdData] = await connection.query(dashboardQueries.householdData, [userHouseId]);
+        let boardData = {};
+
+        if (filter === 'all' || filter === 'house') {
+            const [householdData] = await connection.query(dashboardQueries.householdData, [userHouseId]);
         
-        if (!householdData) {
-            return {status: 'notfound', message: 'Brak informacji o gospodarstwie.'};
+            if (!householdData) {
+                return {status: 'notfound', message: 'Brak informacji o gospodarstwie.'};
+            }
+            boardData.houseData = householdData;
         }
-
-        const houseData = householdData;
        
-        const [matesData] = await connection.query(dashboardQueries.matesData,[userHouseId]);
+        if (filter === 'all' || filter === 'mates') {
+            const [matesData] = await connection.query(dashboardQueries.matesData,[userHouseId]);
 
-        const houseMates = matesData;
-
-        const [transactionsData] = await connection.query(dashboardQueries.transactionsData, [userHouseId]);
+            boardData.houseMates = matesData;
+        };
+       
+        if (filter === 'all' || filter === 'transactions') {
+            const [transactionsData] = await connection.query(dashboardQueries.transactionsData, [userHouseId]);
         
-        const actionsData = transactionsData;
+            boardData.actionsData = transactionsData;
+        };
+       
 
-        const [actionsCatData] = await connection.query(dashboardQueries.actionCatData);
+        if (filter === 'all' || filter === 'categories') {
+            const [actionsCatData] = await connection.query(dashboardQueries.actionCatData);
+            boardData.actionCatData = actionsCatData;
+        };
 
-        const [messagesData] = await connection.query(dashboardQueries.messagesData, [userId, userId]);
-
+        if (filter === 'all' || filter === 'messages') {
+            const [messagesData] = await connection.query(dashboardQueries.messagesData, [userId, userId]);
+            boardData.messagesData = messagesData;
+        };
+        
         await connection.commit();
 
         return {
             status: 'success',
             message: 'Dane boardu pobrane poprawnie.',
-            dashboardData: {
-                houseData,
-                houseMates,
-                messagesData,
-                actionsData,
-                actionsCatData,
-            },
+            dashboardData: boardData,
         };
 
     } catch (error) {

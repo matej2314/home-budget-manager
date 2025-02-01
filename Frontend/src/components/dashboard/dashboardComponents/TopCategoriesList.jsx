@@ -5,7 +5,7 @@ import PieChart from "../../charts/PieChart";
 export default function TopCategoriesList() {
     const { data, isLoading, error } = useContext(DataContext);
 
-    const transactions = !isLoading && !error && data.dashboardData.actionsData || [];
+    const transactions = !isLoading && !error && data.actionsData;
     const transactionsCategories = transactions.map((action) => action.categoryName);
     const uniqueCategories = new Set(transactionsCategories);
 

@@ -15,7 +15,7 @@ export default function DashboardHeader() {
     const { data, isLoading } = useContext(DataContext);
     const navigate = useNavigate();
 
-    const dataMessages = isAuthenticated && data && !isLoading ? data.dashboardData.messagesData || [] : [];
+    const dataMessages = isAuthenticated && data && !isLoading ? data.messagesData || [] : [];
     const filteredDataMessages = dataMessages.filter((message) => message.recipient === user.userName)
         .filter(message => message.readed === 0);
 
@@ -30,10 +30,10 @@ export default function DashboardHeader() {
     };
 
     useEffect(() => {
-        if (connected && !SocketError && messages.length > 0) {
-            const userMessages = messages.filter((message) => message.type === 'newMessage');
+        if (connected && !SocketError && messages) {
+            const userMessages = messages.newMessages;
 
-            if (userMessages) {
+            if (userMessages.length > 0) {
                 setSocketMessages(userMessages);
             };
         }
@@ -47,19 +47,6 @@ export default function DashboardHeader() {
                 </div>
                 {isAuthenticated && !error && user ? <p>{user.userName}</p> : <p>Guest</p>}
             </div>
-            {/* <div id="icons-container" className="w-full flex justify-start items-center gap-2">
-                <Link title='Notifications' className="w-fit h-fit hover:text-lime-700"><Icon icon='material-symbols:notifications-outline' width={20} height={20} /></Link>
-                {(filteredDataMessages.length > 0 && (
-                    <NotificationDot color='bg-red-700' data={filteredDataMessages.length} head={true} />
-                )
-                )}
-                {(socketMessages.length > 0 && (
-                    <NotificationDot color='bg-green-700' data={socketMessages.length} head={true} />
-                )
-                )}
-                <Link to='/dashboard/messages' title="Messages" className="w-fit h-fit hover:text-sky-700"><Icon icon='tabler:messages' width={20} height={20} /></Link>
-                <Link to='/dashboard/myhouse' title="My house" className="w-fit h-fit hover:text-yellow-900"><Icon icon='ph:house-bold' width={20} height={20} /></Link>
-            </div> */}
             <HeaderIconsContainer filteredDataMessages={filteredDataMessages} socketMessages={socketMessages} />
             <div id="user-opts" className="w-full h-full flex justify-end items-center gap-4">
                 <LanguageSelector />

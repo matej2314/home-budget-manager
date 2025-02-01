@@ -11,7 +11,7 @@ Modal.setAppElement('#root');
 export default function CalendarPage() {
     const { data, isLoading, error } = useContext(DataContext);
 
-    const transactions = !isLoading && !error && data.dashboardData.actionsData || [];
+    const transactions = !isLoading && !error && data.actionsData || [];
 
     const events = transactions.map(transaction => ({
         title: `Transakcja: ${transaction.categoryName}-${transaction.type}-${transaction.value}-${transaction.userName}`,

@@ -14,16 +14,14 @@ export default function DisplayLiveBalance() {
     const [currentBalance, setCurrentBalance] = useState(null);
 
     useEffect(() => {
-        if (!dataLoading && data && !dataError && data.dashboardData?.houseData?.length) {
-            setCurrentBalance(data.dashboardData.houseData[0].liveBalance)
+        if (!dataLoading && data && !dataError && data.houseData?.length) {
+            setCurrentBalance(data.houseData[0].liveBalance)
         }
     }, [dataLoading, data, dataError]);
 
     useEffect(() => {
         if (connected && messages && messages.length > 0) {
-            const balanceMessage = messages
-                .filter((message) => message.type === 'balance_update')
-                .pop();
+            const balanceMessage = messages.balanceUpdates.pop();
             if (balanceMessage) {
                 setCurrentBalance(balanceMessage.newBalance);
 
