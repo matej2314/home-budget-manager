@@ -23,24 +23,31 @@ export default function MatesList({ mode }) {
     };
 
     return (
-        <div className="w-full h-full overflow-auto">
+        <div className={`${mode === 'subpage' && 'w-11/12'} h-full overflow-auto`}>
             {error ? (
                 <p>Wystąpił błąd podczas ładowania danych.</p>
             ) : houseMates.length > 0 ? (
-                <table className="w-full h-full table-auto border-collapse text-sm">
+                <table className={`${mode === 'subpage' ? 'w-11/12' : 'w-[100%]'} h-full table-auto text-sm`}>
                     <thead>
-                        <tr className="border-b">
+                        <tr className={`w-full ${mode === 'subpage' ? 'bg-slate-400/80' : 'bg-slate-400/50'}`}>
                             {thLabels.map((label, index) => (
-                                <th key={index} className="px-4 py-2 text-left">{label}</th>
+                                <th
+                                    key={index}
+                                    className={`px-4 py-2 text-center 
+                    ${index === 0 ? 'rounded-tl-xl' : ''} 
+                    ${index === thLabels.length - 1 ? 'rounded-tr-xl' : ''}`}
+                                >
+                                    {label}
+                                </th>
                             ))}
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="w-full">
                         {houseMates.map((mate, index) => (
-                            <tr key={index} className="border-b">
-                                <td className="px-4 py-2">{mate.userName}</td>
-                                <td className="px-4 py-2">{mate.role}</td>
-                                <td className="px-4 py-2 flex gap-3">
+                            <tr key={index} className="w-11/12 border-[1px] border-slate-400">
+                                <td className="mx-auto py-2 text-center">{mate.userName}</td>
+                                <td className="mx-auto py-2 text-center">{mate.role}</td>
+                                <td className="mx-auto py-2 flex justify-center gap-3">
                                     <button type="button"
                                         onClick={() => handleOpenModal(mate.userName)}
                                         className="w-fit h-fit" title='Send message'>

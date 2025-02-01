@@ -34,20 +34,28 @@ export default function TransactionsList({ limit, mainSite, filterId }) {
     };
 
     return (
-        <div className="w-full h-full overflow-auto">
+        <div className="w-full h-full overflow-auto pb-4">
             {!isLoading && !error ? (
-                <table className="w-full h-full table-auto border-collapse text-sm">
+                <table className={`${mainSite ? 'w-[97%] mx-auto' : 'w-full'} h-full table-auto border-collapse text-sm border-b-[1px] border-slate-400`}>
                     <thead>
-                        <tr className="border-b">
-                            {tableLabels.map((label) => (
-                                <th key={label} className="px-4 py-2 text-left">{label}</th>
+                        <tr className={`border-b ${mainSite ? 'bg-slate-400/50' : 'bg-slate-400/80'}`}>
+                            {tableLabels.map((label, index) => (
+                                <th
+                                    key={index}
+                                    className={`px-4 py-2 text-left 
+                                    ${index === 0 ? 'rounded-tl-xl' : ''} 
+                                    ${mainSite && index === tableLabels.length - 1 ? 'rounded-tr-xl' : ''}`}
+                                >
+                                    {label}
+                                </th>
                             ))}
-                            {!mainSite && <th className="px-4 py-2 text-left">Actions</th>}
+                            {!mainSite && <th className="px-4 py-2 text-left rounded-tr-xl">Actions</th>}
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="border-x-[1px] border-slate-400">
                         {transactionsToDisplay.map((transaction) => (
-                            <tr key={transaction.transactionId} className="border-b">
+                            <tr key={transaction.transactionId}
+                                className={`border-b ${transaction.transactionId === transactionsToDisplay.length - 1 ? 'border-b-2 border-slate-400' : 'border-none'}`}>
                                 <td className="px-4 py-2">{`${transaction.value} zł`}</td>
                                 <td className="px-4 py-2">{transaction.type}</td>
                                 <td className="px-4 py-2">{transaction.categoryName}</td>

@@ -4,9 +4,10 @@ import MatesList from '../../components/dashboard/dashboard-internal-components/
 export default function HouseMatesPage() {
 
     return (
-        <div id="pagecontent" className="bg-slate-200 w-full h-screen">
+        <div id="pagecontent" className="bg-slate-200 w-full min-h-screen">
             <DashboardHeader />
-            <div id="middle-content" className="flex gap-5 border-2 border-b-slate-800/5 py-4 px-5">
+            <div id="middle-content" className="w-full flex flex-col justify-center items-center gap-5 py-4 mx-auto">
+                <h2 className="min-w-full h-fit flex justify-center text-2xl">Your housemates:</h2>
                 <MatesList mode='subpage' />
             </div>
         </div>

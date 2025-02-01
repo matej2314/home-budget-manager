@@ -34,7 +34,7 @@ export default function CalendarPage() {
     };
 
     return (
-        <div id="pagecontent" className="bg-slate-200 w-screen h-screen flex flex-col gap-3 items-center">
+        <div id="pagecontent" className="w-full min-h-screen bg-slate-200 flex flex-col gap-5 items-stretch">
             <DashboardHeader />
             <div style={{ height: '500px', width: '97%' }}>
                 <Calendar

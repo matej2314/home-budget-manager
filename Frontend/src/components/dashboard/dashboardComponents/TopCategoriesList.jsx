@@ -1,8 +1,8 @@
-import { useContext } from "react"
+import { useContext } from "react";
 import { DataContext } from '../../../store/dataContext';
+import PieChart from "../../charts/PieChart";
 
 export default function TopCategoriesList() {
-
     const { data, isLoading, error } = useContext(DataContext);
 
     const transactions = !isLoading && !error && data.dashboardData.actionsData || [];
@@ -12,17 +12,29 @@ export default function TopCategoriesList() {
     const categoryPercentages = Array.from(uniqueCategories).map((category) => {
         const categoryCount = transactionsCategories.filter(c => c === category).length;
         const percentage = (categoryCount / transactionsCategories.length) * 100;
-        return { category, percentage };
-    })
+        return { label: category, value: percentage };
+    });
 
     return (
-        <div id='transactions-top-categories' className="w-1/2 h-[25.5rem] flex flex-col justify-start rounded-md border-2 border-slate-500/20 mr-5 gap-3 my-4 py-2 px-[4rem]">
-            <h2 className="w-full h-fit flex justify-center text-xl">Top categories of transactions:</h2>
-            <ul className="w-full h-fit flex flex-col justify-center items-center gap-3">
+        <div className="w-1/3 h-fit flex flex-col items-center border-2 border-slate-500/20 my-4 pt-2 pb-4 mr-5">
+            <h2 className="text-xl mb-4">Top categories of transactions:</h2>
+            <ul className="mb-4">
                 {categoryPercentages.map((cat) => (
-                    <li key={cat.category} className="w-full flex justify-center gap-2"><span>{cat.category}</span>-<span>{cat.percentage.toFixed(2)} %</span></li>
+                    <li key={cat.label}>
+                        {cat.label} : {cat.value.toFixed(2)} %
+                    </li>
                 ))}
             </ul>
+
+            <PieChart
+                data={categoryPercentages}
+                width={300}
+                height={350}
+                margin={0}
+                showLabel={false}
+                legendPosition='top'
+                colors={["#ff6384", "#36a2eb", "#ffcd56", "#4bc0c0"]}
+            />
         </div>
-    )
+    );
 }

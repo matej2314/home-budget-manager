@@ -18,13 +18,14 @@ export default function MessagesCounter() {
     }, [messages, connected]);
 
     return (
-        <div
+        <Link to='messages/new'
             id='newMessages'
-            className="w-1/4 h-[8.5rem] bg-sky-700/85 flex flex-col text-white justify-start items-center rounded-md pt-4">
-            <Link to='messages' className="h-11/12 w-11/12 flex flex-col justify-center items-center gap-4">
+            className={`w-1/4 h-[8.5rem] bg-sky-700/85 flex flex-row text-white justify-center items-start rounded-md gap-3 pt-5 ${userMessages.length == 0 ? 'pointer-events-none' : null}`}
+        >
+            <div className="w-full flex flex-col items-center justify-start -translate-y-1 translate-x-1 gap-5">
                 <h2 className="text-xl">New messages:</h2>
                 <span className="text-xl">{userMessages.length > 0 ? userMessages.length : 0}</span>
-            </Link>
-        </div>
+            </div>
+        </Link>
     )
 }
