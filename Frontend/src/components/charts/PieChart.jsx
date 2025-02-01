@@ -94,11 +94,4 @@ const PieChart = ({ data, colors, width, height, margin, showLabel, legendPositi
     );
 };
 
-PieChart.defaultProps = {
-    width: 400,
-    height: 400,
-    margin: 40,
-    legendPosition: 'bottom',
-};
-
 export default PieChart;

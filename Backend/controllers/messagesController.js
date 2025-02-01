@@ -6,6 +6,7 @@ const messagesQueries = require('../database/messagesQueries');
 
 exports.sendMessage = async (req, res) => {
     const userId = req.userId;
+    const userName = req.userName;
     const { recipientName, content } = req.body;
    
     const id = uuidv4();
@@ -35,9 +36,12 @@ exports.sendMessage = async (req, res) => {
             broadcastMessage(recipientId, {
                 type: 'newMessage',
                 data: {
-                    senderId: userId,
-                    recipientId: recipientId,
-                    content: content,
+                    id: id,
+                    sender: userName,
+                    recipient: recipientName,
+                    message: content,
+                    date: new Date().toISOString(),
+                    readed: 0,
                 }
             });
         } catch (error) {

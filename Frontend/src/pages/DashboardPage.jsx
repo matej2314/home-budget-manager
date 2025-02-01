@@ -1,10 +1,21 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DataContext } from '../store/dataContext';
+import { useSocket } from "../store/socketContext";
 import DashBoardMenu from "../components/dashboard/dashboardComponents/DashBoardMenu";
 import { Outlet } from 'react-router-dom';
+import { showMessageToast } from '../configs/toastify';
 
 export default function DashboardPage() {
     const { data, isLoading, error } = useContext(DataContext);
+    const { connected, messages } = useSocket();
+
+    const liveMessages = connected && messages.filter((message) => message.type === 'newMessage');
+
+    useEffect(() => {
+        if (connected && liveMessages.length > 0) {
+            showMessageToast('Otrzymałeś nową wiadomość!');
+        }
+    }, [liveMessages, connected]);
 
     return (
         <>

@@ -1,24 +1,41 @@
 import { useContext, useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import { DataContext } from "../../../store/dataContext";
 import { AuthContext } from "../../../store/authContext";
-import sendRequest from "../../../utils/sendRequest";
+import { useSocket } from '../../../store/socketContext';
 import DisplayMessageDetails from "../../modals/DisplayMessageDetails";
 import ReplyMessageModal from "../../modals/ReplyMessageModal";
 import DeleteMessageModal from "../../modals/DeleteMessageModal";
-import { serverUrl } from "../../../url";
-import { showInfoToast, showErrorToast } from '../../../configs/toastify';
+import { markMessage } from "../../../utils/markMessage";
+import MessagesFilterBtns from "./MessagesFilterBtns";
+import { messagesStates, tableHeader } from "../../../utils/messagesMapArrays";
 
 export default function MessagesList() {
     const { filter } = useParams();
     const { data, isLoading, error, refreshData } = useContext(DataContext);
     const { user } = useContext(AuthContext);
+    const { connected, messages: socketMessages } = useSocket();
     const [modal, setModal] = useState({ isOpen: false, type: null, message: null });
     const [messagesType, setMessagesType] = useState(filter || "all");
+    const [newMessages, setNewMessages] = useState([]);
     const navigate = useNavigate();
-    const location = useLocation();
 
+    const liveMessages = connected && socketMessages && socketMessages.filter((message) => message.type === 'newMessage') || [];
+    const messages = !isLoading && !error ? data.dashboardData.messagesData || [] : [];
+    const sortedMessages = messages.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const filteredMessages = messages.filter((msg) => msg.recipient === user.userName);
+
+    useEffect(() => {
+
+        const newMessagesSet = new Set(newMessages.map((msg) => msg.id));
+        const uniqueMessages = liveMessages.filter((message) => !newMessagesSet.has(message.id));
+
+        if (uniqueMessages.length > 0) {
+            setNewMessages((prevMessages) => [...uniqueMessages, ...prevMessages]);
+        }
+
+    }, [liveMessages]);
 
     useEffect(() => {
         if (filterMap[filter]) {
@@ -32,16 +49,9 @@ export default function MessagesList() {
         navigate(`/dashboard/messages/${type}`);
     }
 
-    const messagesStates = ['all', 'new', 'readed', 'sended'];
-    const tableHeader = ["Sender", "Recipient", "Message", "Date", "Is readed", "Actions"];
-
-    const messages = !isLoading && !error ? data.dashboardData.messagesData || [] : [];
-    const sortedMessages = messages.sort((a, b) => new Date(b.date) - new Date(a.date));
-    const filteredMessages = messages.filter((msg) => msg.recipient === user.userName);
-
     const filterMap = {
         all: sortedMessages,
-        new: filteredMessages.filter((msg) => msg.readed === 0),
+        new: newMessages,
         readed: filteredMessages.filter((msg) => msg.readed === 1),
         sended: sortedMessages.filter((msg) => msg.sender === user.userName),
     };
@@ -52,42 +62,14 @@ export default function MessagesList() {
 
     const handleCloseModal = () => {
         setModal({ isOpen: false, type: null, message: null });
+        refreshData();
     };
 
-    const handleMarkMessage = async (message) => {
-
-        if (user.userName !== message.recipient) {
-            showErrorToast('Nie jesteś odbiorcą tej wiadomości!');
-            return;
-        } else if (user.userName === message.recipient) {
-            const markMessage = await sendRequest('PUT', { messageId: message.id }, `${serverUrl}/message/readed`);
-
-            if (markMessage.status === 'error') {
-                showErrorToast(markMessage.message);
-
-            } else if (markMessage.status === 'success') {
-                showInfoToast(markMessage.message);
-                setTimeout(() => {
-                    refreshData();
-                }, 1000);
-            };
-        };
-    };
+    const handleMarkMessage = (message) => markMessage(message, user, refreshData);
 
     return (
         <div className="mx-auto min-h-full">
-            {data && !isLoading && <div className="flex gap-3 mb-6">
-                {messagesStates.map((type) => (
-                    <button
-                        key={type}
-                        onClick={() => handleChangeFilter(type)}
-                        className={`border-2 border-slate-300 text-slate-700 bg-slate-300/40 py-1 px-2 rounded-xl hover:bg-inherit
-                             hover:text-slate-800 shadow-lg hover:shadow-sm ${location.pathname === `/dashboard/messages/${type}` ? 'bg-slate-400/80' : null}`}
-                    >
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
-                    </button>
-                ))}
-            </div>}
+            {data && !isLoading && < MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />}
             {!isLoading && !error ? (
                 <table className="w-[80rem] h-full table-fixed border-collapse text-sm border-b-[1px] border-slate-400 rounded-b-xl">
                     <thead>

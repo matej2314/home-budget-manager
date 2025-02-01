@@ -23,7 +23,7 @@ export default function App() {
       <RouterProvider router={router} />
       <ToastContainer
         position='top-center'
-        autoClose={false}
+        autoClose={2000}
         closeButton={true}
         hideProgressBar={true}
         rtl={false}
