@@ -4,7 +4,7 @@ const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const balanceHouseActions = async () => {
-    cron.schedule('0 17 * * *', async () => { 
+    cron.schedule('0 2 * * *', async () => { 
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -33,7 +33,7 @@ const balanceHouseActions = async () => {
                 logger.info(`Obliczanie daty dla gospodarstwa ${houseId}, balanceDate: ${balanceDate}, createdAt: ${createdAt}`);
 
                 const nextBalanceDate = new Date(dateLimit);
-                nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
+                nextBalanceDate.setDate(nextBalanceDate.getDate() + 30);
                 const nextBalanceDateStr = nextBalanceDate.toISOString().split('T')[0];
                 
                 if (today >= nextBalanceDateStr) {
@@ -56,7 +56,7 @@ const balanceHouseActions = async () => {
                         newBalance = initBudget;
                     } else {
                         const [initialBudgetRows] = await connection.query(
-                            `SELECT value FROM initialMonthlyBudgets WHERE houseId = ? ORDER BY createdAt DESC LIMIT 1`,
+                            `SELECT value FROM initialMonthlyBudgets WHERE houseId = ? ORDER BY addedAt DESC LIMIT 1`,
                             [houseId]
                         );
 

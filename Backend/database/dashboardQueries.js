@@ -26,14 +26,14 @@ module.exports = {
 WHERE h.houseId = ?;`,
     
 statsQuery: `SELECT
-ib.value AS initialBudgetValue,
- DATE_FORMAT(ib.addedAt, '%Y-%m-%d') AS initBudgetDate,
- DATE_FORMAT(ib.validUntil, '%Y-%m-%d') AS initialBudgetValidDate,
+ib.value AS definedMonthlyBudgets,
+ DATE_FORMAT(ib.addedAt, '%Y-%m-%d') AS initMonthlyBudgetDate,
+ DATE_FORMAT(ib.validUntil, '%Y-%m-%d') AS initMonthlyBudgetValidDate,
  mb.monthly_balance AS monthlyBalanceValue,
  DATE_FORMAT(mb.balanceDate, '%Y-%m-%d') AS monthlyBalanceDate,
  tc.transactionCount AS transactionCount,
- tc.StartDate AS actionsStartDate,
- tc.balanceDate AS actionsEndDate
+ tc.StartDate AS countStartDate,
+ tc.balanceDate AS countEndDate
  FROM initialMonthlyBudgets ib
  LEFT JOIN monthly_balances mb
  ON ib.houseId = mb.houseId
