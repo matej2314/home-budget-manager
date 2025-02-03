@@ -5,6 +5,7 @@ const io = require('socket.io');
 const getMysqlExpireDate = require('../utils/getMySqlExpireDate');
 const authMiddleware = require('../middlewares/websocket/authMiddleware');
 const socketQueries = require('../database/websocketQueries');
+const checkUserHouse = require('../utils/checkUserHouse');
 
 let ioInstance;
 
@@ -105,4 +106,45 @@ const broadcastMessage = async (userId, { type, data } = {}) => {
 	}
 };
 
-module.exports = { initializeWebSocket, broadcastMessage };
+const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
+	if (!ioInstance) {
+		logger.error('Nie zainicjalizowano serwera WebSocket.');
+		return;
+	};
+
+	const connection = await pool.getConnection();
+
+	try {
+		const [houseMates] = await connection.query('SELECT userId FROM householdUsers WHERE houseId = ?', [houseId]);
+
+		if (houseMates.length === 0) {
+			logger.error(`Nie znaleziono domowników gospodarstwa ${houseId}`);
+			return;
+		};
+
+
+			const [usersConnections] = await connection.query(`SELECT connectionId FROM socketConnections WHERE userId IN (?)`, 
+				[houseMates.map(mate => mate.userId)]
+			);
+
+		if (!usersConnections || usersConnections.length === 0) {
+			logger.error(`Nie znaleziono połączeń dla domowników gospodarstwa ${houseId}`);
+			return;
+		};
+				
+		usersConnections.forEach((connection) => {
+			const socket = ioInstance.sockets.sockets.get(connection.connectionId);
+
+			if (socket) {
+				socket.emit(type, data);
+			}
+		});
+		logger.info(`Wysłano wiadomość do domowników gospodarstwa ${houseId}`);
+	} catch (error) {
+		logger.error(`Błąd podczas rozsyłania wiadomości do domoowników ${houseId}`);
+	} finally {
+		if (connection) connection.release();
+	}
+}
+
+module.exports = { initializeWebSocket, broadcastMessage, broadcastToHouseMates };

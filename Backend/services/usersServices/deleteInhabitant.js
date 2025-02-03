@@ -1,6 +1,8 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
 const usersQueries = require('../../database/usersQueries');
+const checkUserHouse = require('../../utils/checkUserHouse');
+const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
 const deleteInhabitant = async (inhabitantId) => {
 
@@ -15,6 +17,10 @@ const deleteInhabitant = async (inhabitantId) => {
 
     try {
         await connection.beginTransaction();
+
+        const inhabitantHouse = await checkUserHouse(connection, inhabitantId);
+
+        const inhabitantHouseId = inhabitantHouse.houseId;
 
         const [deleteHouseIdHu] = await connection.query(
             usersQueries.updatehouseIdHu,
@@ -42,6 +48,14 @@ const deleteInhabitant = async (inhabitantId) => {
         );
 
         await connection.commit();
+
+        await broadcastToHouseMates(inhabitantHouseId, {
+            type: 'notification',
+            data: {
+                category: 'usersActions',
+                message: 'Usunięto domownika.',
+            },
+        });
 
         return {
             status: 'success',

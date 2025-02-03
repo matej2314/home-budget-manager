@@ -20,15 +20,15 @@ export default function DisplayLiveBalance() {
     }, [dataLoading, data, dataError]);
 
     useEffect(() => {
-        if (connected && messages && messages.length > 0) {
-            const balanceMessage = messages.balanceUpdates.pop();
-            if (balanceMessage) {
-                setCurrentBalance(balanceMessage.newBalance);
+        if (connected && messages && messages.balanceUpdates.length > 0) {
+            const { newBalance } = messages.balanceUpdates[0];
+            if (newBalance) {
+                setCurrentBalance(newBalance);
 
             };
         }
 
-    }, [messages, connected, currentBalance]);
+    }, [messages, connected]);
 
     return (
         <div id="liveBalance" className="w-1/4 h-[8.5rem] bg-sky-500/85 text-xl text-white flex flex-col justify-start items-center rounded-md pt-4">

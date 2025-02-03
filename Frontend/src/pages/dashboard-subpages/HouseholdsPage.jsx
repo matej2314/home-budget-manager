@@ -1,6 +1,9 @@
+import { useContext } from "react"
+import { AuthContext } from "../../store/authContext"
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader"
 
 export default function HouseholdsPage() {
+    const { user } = useContext(AuthContext);
 
     return (
         <div id="pagecontent" className="bg-slate-200 min-w-screen min-h-screen">

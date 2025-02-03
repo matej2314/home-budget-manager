@@ -26,7 +26,7 @@ export default function LoginForm() {
         if (message) {
             showInfoToast(message);
             const timer = setTimeout(() => {
-                navigate('/dashboard');
+                navigate('dashboard');
             }, 600);
 
             return () => clearTimeout(timer);

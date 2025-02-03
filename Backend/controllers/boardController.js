@@ -50,6 +50,11 @@ const getBoardData = async (userId, filter = 'all') => {
             const [messagesData] = await connection.query(dashboardQueries.messagesData, [userId, userId]);
             boardData.messagesData = messagesData;
         };
+
+        if (filter === 'all' || filter === 'stats') {
+            const [statsData] = await connection.query(dashboardQueries.statsQuery, [userHouseId]);
+            boardData.statsData = statsData;
+        }
         
         await connection.commit();
 

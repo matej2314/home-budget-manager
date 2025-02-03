@@ -60,7 +60,7 @@ export default function TransactionsList({ limit, mainSite, filterId }) {
                                 <td className="px-4 py-2">{transaction.type}</td>
                                 <td className="px-4 py-2">{transaction.categoryName}</td>
                                 <td className="px-4 py-2">{transaction.userName}</td>
-                                <td className="px-4 py-2">{transaction.addedAt.split('T')[0]}</td>
+                                <td className="px-4 py-2">{transaction.addedAt}</td>
                                 {!mainSite && (
                                     <td className="px-4 py-2">
                                         <button

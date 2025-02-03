@@ -22,6 +22,10 @@ export default function DashBoardMenu() {
         { path: 'calendar', label: 'Calendar', icon: 'famicons:calendar-outline' },
     ];
 
+    const adminLinksElements = [
+
+    ];
+
     return (
         <div id='dashboardMenu' className="w-fit bg-customGray flex flex-col justify-start items-stretch text-slate-300 pt-[2.3rem] gap-12 px-7 border-r-2 border-slate-900">
             <ul className="h-full flex flex-col items-center gap-6">

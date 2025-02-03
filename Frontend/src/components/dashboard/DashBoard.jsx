@@ -8,7 +8,6 @@ import LastTransactionsList from './dashboardComponents/LastTransactionsList';
 import TopCategoriesList from './dashboardComponents/TopCategoriesList';
 import BudgetPerDay from './dashboardComponents/charts-dashboard-components/BudgetPerDay';
 import TransactionsPerDay from './dashboardComponents/charts-dashboard-components/TransactionsPerDay';
-import TransactionsCategories from './dashboardComponents/charts-dashboard-components/TransactionsCategories';
 import FastActions from './dashboard-internal-components/FastActionsSection';
 
 export default function DashBoard() {
@@ -31,7 +30,6 @@ export default function DashBoard() {
             <div id='chartsPart' className="h-[30rem] mb-4 mx-5 flex flex-col gap-3">
                 <BudgetPerDay />
                 <TransactionsPerDay />
-                <TransactionsCategories />
             </div>
         </div>
     )

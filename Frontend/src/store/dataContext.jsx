@@ -17,6 +17,7 @@ export const DataProvider = ({ children }) => {
         actionsData: [],
         actionsCatData: [],
         messagesData: [],
+        statsData: [],
     });
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -33,8 +34,9 @@ export const DataProvider = ({ children }) => {
                 ...(result.dashboardData.houseData && { houseData: result.dashboardData.houseData }),
                 ...(result.dashboardData.houseMates && { houseMates: result.dashboardData.houseMates }),
                 ...(result.dashboardData.actionsData && { actionsData: result.dashboardData.actionsData }),
-                ...(result.dashboardData.actionsCatData && { actionsCatData: result.dashboardData.actionsCatData }),
+                ...(result.dashboardData.actionCatData && { actionsCatData: result.dashboardData.actionCatData }),
                 ...(result.dashboardData.messagesData && { messagesData: result.dashboardData.messagesData }),
+                ...(result.dashboardData.statsData && { statsData: result.dashboardData.statsData }),
             }));
         } catch (error) {
             setError(error.message);

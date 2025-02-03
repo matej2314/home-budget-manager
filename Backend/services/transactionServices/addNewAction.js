@@ -4,6 +4,7 @@ const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUserHouse');
 const logger = require('../../configs/logger');
 const { liveUpdateBalance } = require('../../utils/liveUpdateBalance');
+const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
 const addNewAction = async (userId, type, value, catId) => {
 	const transactionId = uuidv4();
@@ -44,6 +45,16 @@ const addNewAction = async (userId, type, value, catId) => {
 		await liveUpdateBalance(type, value, houseId, userId, connection);
 
 		await connection.commit();
+
+		await broadcastToHouseMates(houseId, {
+			type: 'notification',
+			data: {
+				category: 'transactions',
+				action: 'addTransaction',
+				message: 'Dodano nową transakcję.',
+				user: userId
+			}
+		});
 
 		return {
 			status: 'success',

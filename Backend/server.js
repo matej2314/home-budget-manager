@@ -30,7 +30,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/avatars', express.static(path.join(__dirname, 'public', 'user-photos')));
+app.use('/users-avatars', express.static(path.join(__dirname, 'public', 'user-photos')));
 
 app.options('*', (req, res) => {
 	res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');
@@ -50,6 +50,7 @@ const dashboardRouter = require('./routes/dashboardRoutes.js');
 const actionCatRouter = require('./routes/actionCatRoutes.js');
 const messagesRouter = require('./routes/messagesRoutes.js');
 const initialMonthlyBudgetsRouter = require('./routes/initialMonthlyBudgetsRoutes.js');
+const avatarsRouter = require('./routes/avatarsRoutes.js');
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
@@ -59,6 +60,7 @@ app.use('/board', dashboardRouter);
 app.use('/actioncat', actionCatRouter);
 app.use('/message', messagesRouter);
 app.use('/initmonthly', initialMonthlyBudgetsRouter);
+app.use('/avatars', avatarsRouter);
 
 const server = http.createServer(app);
 

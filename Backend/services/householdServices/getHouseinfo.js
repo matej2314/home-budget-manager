@@ -1,6 +1,7 @@
 const pool = require('../../database/db');
 const houseQueries = require('../../database/householdQueries');
 const logger = require('../../configs/logger');
+const checkUserHouse = require('../../utils/checkUserHouse');
 
 exports.getHouseInfo = async (userId) => {
     if (!userId) {
@@ -11,30 +12,31 @@ exports.getHouseInfo = async (userId) => {
     const connection = await pool.getConnection();
 
     try {
-        const [gethouseId] = await connection.query('SELECT houseId FROM householdUsers WHERE userId =?', [userId]);
-       
-        if (gethouseId.length === 0) {
-            logger.error('Użytkownik nie zarządza gospodarstwem.');
-            return { status: 'error', message: 'Użytkownik nie zarządza gospodarstwem.' };
-        } else {
-            const householdId = gethouseId[0].houseId;
-           
-            const [result] = await connection.execute(houseQueries.dataQuery, [householdId]);
+        await connection.beginTransaction();
+        const checkHouse = await checkUserHouse(connection, userId);
 
-            if (result.length === 0) {
+        const householdId = checkHouse.houseId;
+       
+            const [basicData] = await connection.execute(houseQueries.dataQuery, [householdId]);
+
+            if (basicData.length === 0) {
                 logger.error('Nie znaleziono gospodarstwa.');
                 return { status: 'error', message: 'Nie znaleziono gospodarstwa.' };
             }
+
+            const [statsData] = await connection.query(houseQueries.statsQuery, [householdId]);
+            
+            await connection.commit();
     
             logger.info(`Informacje o gospodarstwie ${householdId} pobrane poprawnie.`);
             return {
                 status: 'success',
                 message: 'Informacje o gospodarstwie pobrane poprawnie.',
-                info: result,
+                info: basicData,
+                stats: statsData,
             };
-        };
-
-    } catch (error) {
+        } catch (error) {
+        await connection.rollback();
         logger.error(`Błąd podczas pobierania informacji o gospodarstwie: ${error.stack}`);
         return { status: 'error', message: 'Nie udało się pobrać danych o gospodarstwie.' };
     } finally {

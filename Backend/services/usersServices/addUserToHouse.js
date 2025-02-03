@@ -2,6 +2,7 @@ const pool = require('../../database/db');
 const logger = require('../../configs/logger');
 const checkUserHouse = require('../../utils/checkUserHouse');
 const usersQueries = require('../../database/usersQueries');
+const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
 const addUserToHouse = async (userId, userName) => {
     const connection = await pool.getConnection();
@@ -29,6 +30,14 @@ const addUserToHouse = async (userId, userName) => {
                         await connection.query(usersQueries.updateroleHu, ['inmate', invitedUser.id]);
                     }
                 };
+
+                await broadcastToHouseMates(hostHouseId, {
+                    type: 'notification',
+                    data: {
+                        category: 'usersActions',
+                        message: 'Nowy domownik w gospodarstwie!',
+                    }
+                });
 
                 await connection.commit();
                 logger.info(`Użytkownik ${userName} został dodany do gospodarstwa.`);

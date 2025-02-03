@@ -13,12 +13,18 @@ export const SocketProvider = ({ children }) => {
     const [messages, setMessages] = useState({
         balanceUpdates: [],
         newMessages: [],
+        notifications: {
+            transactions: [],
+            usersActions: [],
+            monthlyBalance: []
+        },
     });
     const [error, setError] = useState(null);
     const { isAuthenticated } = useContext(AuthContext);
 
     useEffect(() => {
         if (isAuthenticated) {
+            console.log('socket')
             const newSocket = io(socketPath, {
                 transports: ["websocket"],
                 withCredentials: true,
@@ -42,7 +48,7 @@ export const SocketProvider = ({ children }) => {
             newSocket.on("balance_update", (data) => {
                 setMessages((prevMessages) => ({
                     ...prevMessages,
-                    balanceUpdates: [...prevMessages.balanceUpdates, data],
+                    balanceUpdates: [data],
                 }));
             });
 
@@ -51,6 +57,36 @@ export const SocketProvider = ({ children }) => {
                     ...prevMessages,
                     newMessages: [...prevMessages.newMessages, data],
                 }));
+            });
+
+            newSocket.on('notification', (data) => {
+
+                if (data.category === 'transactions') {
+                    setMessages((prevMessages) => ({
+                        ...prevMessages,
+                        notifications: {
+                            ...prevMessages.notifications,
+                            transactions: [...prevMessages.notifications.transactions, data],
+                        },
+                    }));
+
+                } else if (data.category === 'usersActions') {
+                    setMessages((prevMessages) => ({
+                        ...prevMessages,
+                        notifications: {
+                            ...prevMessages.notifications,
+                            usersActions: [...prevMessages.notifications.usersActions, data],
+                        },
+                    }));
+                } else if (data.category === 'monthlyBalance') {
+                    setMessages((prevMessages) => ({
+                        ...prevMessages,
+                        notifications: {
+                            ...prevMessages.notifications,
+                            monthlyBalance: [...prevMessages.notifications.monthlyBalance, data],
+                        },
+                    }));
+                };
             });
 
             setSocket(newSocket);

@@ -50,7 +50,18 @@ const deleteAction = async (transactionId, userId) => {
 
         await connection.commit();
 
+        await broadcastToHouseMates(houseId, {
+            type: 'notification',
+            data: {
+                category: 'transactions',
+                action: 'deleteTransaction',
+                message: 'Usunięto transakcję.',
+                user: userId
+            }
+        });
+
         logger.info(`Udało się usunąć transakcję ${transactionId}.`);
+
         return {
             status: 'success',
             message: `Transakcja ${transactionId} usunięta.`,

@@ -19,6 +19,7 @@ const avatarStorage = multer.diskStorage({
         }
     },
     filename: (req, file, cb) => {
+        const userId = req.userId;
         cb(null, `${file.originalname}-${userId}`);
     },
 });
@@ -29,7 +30,7 @@ const saveAvatar = multer({
         fileSize: 5 * 1024 * 1024,
     },
     fileFilter: (req, file, cb) => {
-        const filetypes = /jpg|png/;
+        const filetypes = /jpg|png|jpeg/;
         const mimetype = filetypes.test(file.mimetype);
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
 

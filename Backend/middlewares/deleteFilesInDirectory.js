@@ -17,15 +17,15 @@ const deleteFiles = async (req, res, next) => {
 
     try {
         const files = await fs.readdir(userPath);
-        for (const file of files) {
-            const filePath = path.join(userPath, file);
-            try {
-                await fs.unlink(filePath);
-                logger.info(`Plik ${filePath} usunięty.`);
-            } catch (error) {
-                logger.error(`Nie udało się usunąć pliku ${filePath}: ${error.message}`);
-            }
-        }
+        if (files.length !== 1) {
+            logger.error(`Nie znaleziono avatara użytkownika ${userId}`);
+            return res.status(404).json({ status: 'error', message: 'Nie znaleziono avatara użytkownika.' });
+        };
+
+        const file = files[0];
+        const filePath = path.join(userPath, file);
+        await fs.unlink(filePath);
+        await fs.rmdir(userPath);
         logger.info('Avatary usunięte.');
         next();
     } catch (error) {
