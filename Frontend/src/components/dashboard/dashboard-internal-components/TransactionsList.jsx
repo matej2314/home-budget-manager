@@ -36,7 +36,7 @@ export default function TransactionsList({ limit, mainSite, filterId }) {
     return (
         <div className="w-full h-full overflow-auto pb-4">
             {!isLoading && !error ? (
-                <table className={`${mainSite ? 'w-[97%] mx-auto' : 'w-full'} h-full table-auto border-collapse text-sm border-b-[1px] border-slate-400`}>
+                <table className={`${mainSite ? 'w-[97%] mx-auto' : 'w-full'} h-full table-fixed border-collapse text-sm border-b-[1px] border-slate-400 pb-6`}>
                     <thead>
                         <tr className={`border-b ${mainSite ? 'bg-slate-400/50' : 'bg-slate-400/80'}`}>
                             {tableLabels.map((label, index) => (

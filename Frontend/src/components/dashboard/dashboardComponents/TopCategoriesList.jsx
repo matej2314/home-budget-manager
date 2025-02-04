@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { DataContext } from '../../../store/dataContext';
-import PieChart from "../../charts/PieChart";
+import BarChart from '../../charts/BarChart';
 
-export default function TopCategoriesList() {
+export default function TopCategoriesList({ main }) {
     const { data, isLoading, error } = useContext(DataContext);
 
     const transactions = !isLoading && !error && data.actionsData;
@@ -15,8 +15,11 @@ export default function TopCategoriesList() {
         return { label: category, value: percentage };
     });
 
+    const labels = categoryPercentages.map((cat) => cat.label);
+    const dataValues = categoryPercentages.map(cat => cat.value);
+
     return (
-        <div className="w-1/3 h-fit flex flex-col items-center border-2 border-slate-500/20 my-4 pt-2 pb-4 mr-5">
+        <div className={`w-full h-fit flex flex-col items-center border-2 border-slate-500/20 ${main ? 'mt-4' : 'mt-0'} pb-4`}>
             <h2 className="text-xl mb-4">Top categories of transactions:</h2>
             <ul className="mb-4">
                 {categoryPercentages.map((cat) => (
@@ -25,15 +28,14 @@ export default function TopCategoriesList() {
                     </li>
                 ))}
             </ul>
-
-            <PieChart
-                data={categoryPercentages}
-                width={300}
-                height={350}
-                margin={0}
-                showLabel={false}
-                legendPosition='top'
-                colors={["#ff6384", "#36a2eb", "#ffcd56", "#4bc0c0"]}
+            <BarChart
+                labels={labels}
+                dataValues={dataValues}
+                title="Transaction Categories"
+                colors={['rgba(255, 99, 132, 0.2)']}
+                borderColors={['rgba(255, 99, 132, 1)']}
+                width={main ? 220 : 350}
+                height={main ? 100 : 350}
             />
         </div>
     );
