@@ -1,6 +1,4 @@
 export default function NotificationDot({ color, data, head }) {
-
-
     const position = () => {
         if (color === 'bg-green-700') {
             return 'top-[1rem] left-[24rem]';

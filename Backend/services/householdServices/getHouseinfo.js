@@ -24,8 +24,6 @@ exports.getHouseInfo = async (userId) => {
                 return { status: 'error', message: 'Nie znaleziono gospodarstwa.' };
             }
 
-            const [statsData] = await connection.query(houseQueries.statsQuery, [householdId]);
-            
             await connection.commit();
     
             logger.info(`Informacje o gospodarstwie ${householdId} pobrane poprawnie.`);

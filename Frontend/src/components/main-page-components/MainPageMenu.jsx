@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../store/authContext';
 import Modal from 'react-modal';
 import Authorization from './Authorization';
 import LanguageSelector from '../dashboard/dashboard-internal-components/LanguageSelector';
@@ -9,6 +10,7 @@ Modal.setAppElement('#root');
 export default function MainPageMenu() {
     const [isModalOpen, setisModalOpen] = useState(false);
     const [mode, setMode] = useState(null);
+    const { user, isLoading, error } = useContext(AuthContext);
 
     const openModal = () => setisModalOpen(true);
     const closeModal = () => {
@@ -21,12 +23,16 @@ export default function MainPageMenu() {
     }
     return (
         <div id="mainMenu" className="w-[98vw] h-fit flex border-2 border-y-slate-300 rounded-md shadow-sm shadow-slate-400">
-            <ul className="w-full h-fit flex justify-between items-center px-3 py-1 text-slate-800 text-md">
+            <ul className="w-full h-fit flex justify-between items-center py-1 text-slate-800 text-md px-2">
                 <li>Home Page</li>
                 <li>About us</li>
                 <li onClick={openModal} className='cursor-pointer'>SignUp/Login</li>
                 <li>Contact</li>
-                <LanguageSelector />
+                <li className='h-full w-fit flex items-center gap-3'>
+                    <LanguageSelector />
+                    {!isLoading && !error && <p className=' h-full flex justify-center items-center'>User: {user.userName}</p>}
+                </li>
+
             </ul>
             <Modal
                 isOpen={isModalOpen}

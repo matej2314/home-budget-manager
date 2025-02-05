@@ -4,22 +4,6 @@ module.exports = {
     mateQuery: 'UPDATE users SET inmate = ?, role = ? WHERE id = ?',
     hostQuery: 'UPDATE users SET host = ?, role = ? WHERE id = ?',
     dataQuery: `SELECT houseId, houseName, initBudget, DATE_FORMAT(createdAt, '%Y-%m-%d') AS createdAt FROM households WHERE houseId = ?;`,
-    statsQuery: `SELECT 
-    ib.value AS initialBudgetValue,
-     DATE_FORMAT(ib.addedAt, '%Y-%m-%d') AS initBudgetDate,
-     DATE_FORMAT(ib.validUntil, '%Y-%m-%d') AS initialBudgetValidDate,
-     mb.monthly_balance AS monthlyBalanceValue,
-     DATE_FORMAT(mb.balanceDate, '%Y-%m-%d') AS monthlyBalanceDate,
-     tc.transactionCount AS transactionCount,
-     tc.StartDate AS actionsStartDate,
-     tc.balanceDate AS actionsEndDate
-     FROM initialMonthlyBudgets ib
-     LEFT JOIN monthly_balances mb
-     ON ib.houseId = mb.houseId
-     LEFT JOIN transactionCounts tc
-     ON ib.houseId = tc.houseId
-     WHERE ib.houseId=?
-     ORDER BY mb.balanceDate ASC; `,
     ownershipQuery: 'SELECT houseId FROM households WHERE houseName=?',
     deleteQuery: 'DELETE FROM households WHERE houseId=? AND userId=?',
     updateroleHu: 'UPDATE householdUsers SET role = ? WHERE userId = ?',
