@@ -20,14 +20,14 @@ export const showSuccessToast = (message) => {
 export const showErrorToast = (message) => {
     toast.error(message, {
         className: toastStyles.error,
-        autoClose: 3000,
+        autoClose: 2000,
     });
 };
 
 export const showInfoToast = (message) => {
     toast.info(message, {
         className: toastStyles.info,
-        autoClose: 3000
+        autoClose: 2000
     });
 };
 

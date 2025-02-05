@@ -23,9 +23,9 @@ export default function LoginForm() {
     };
 
     useEffect(() => {
-        if (message) {
-            showInfoToast(message);
+        if (user && !isLoading && !error) {
             const timer = setTimeout(() => {
+                showInfoToast(`Użytkownik ${user.userName} zalogowany pomyślnie!`);
                 navigate('dashboard');
             }, 600);
 
@@ -35,7 +35,7 @@ export default function LoginForm() {
         if (message || error) {
             showErrorToast(message);
         }
-    }, [error, message, navigate]);
+    }, [error, isLoading, navigate, user]);
 
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>

@@ -13,6 +13,7 @@ export default function DashBoardMenu() {
     const newMessages = !error && messages.newMessages;
 
     const linksElements = [
+        { path: '/', label: 'Home page', icon: 'solar:home-linear' },
         { path: '/dashboard', label: 'Dashboard', icon: 'carbon:dashboard-reference' },
         { path: 'myprofile', label: 'My profile', icon: 'healthicons:ui-user-profile' },
         { path: 'myhouse', label: 'My house', icon: 'uil:house-user' },

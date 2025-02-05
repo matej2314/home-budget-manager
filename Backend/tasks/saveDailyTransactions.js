@@ -28,10 +28,9 @@ const saveDailyTransactions = async () => {
 
            
             const getDailyTransactionsQuery = `
-                SELECT transactionId 
-                FROM transactions 
-                WHERE addedAt BETWEEN ? AND ? 
-                AND houseId IN (?);
+                SELECT houseId, COUNT(transactionId) AS transactionCount
+                FROM transactions WHERE addedAt BETWEEN ? AND ? AND houseId IN (?)
+                GROUP BY houseId;
             `;
 
             const [rows] = await connection.query(getDailyTransactionsQuery, [timeInterval.start, timeInterval.end, households.map((house) => house.houseId)]);
@@ -41,22 +40,30 @@ const saveDailyTransactions = async () => {
                 return;
             }
 
-            const transactionCount = rows.length
+            for (const row of rows) {
+                const id = uuidv4();
+                const transactionCount = row.transactionCount;
+                const houseId = row.houseId;
 
-            const id = uuidv4();
+                const [addActionCount] = await connection.query('INSERT INTO dailyTransactions(id, dailyActionCount, houseId, date)',
+                    [id, transactionCount, houseId, now]
+                );
 
-            const [addActionCount] = await connection.query('INSERT INTO dailyTransactions (id, dailyActionCount, date) VALUES (?, ?, ?)', [id, transactionCount, now]);
+                if (addActionCount.affectedRows === 0) {
+                    logger.error(`Nie zapisano dziennych transakcji dla houseId: ${houseId}`)
+                } else {
+                    logger.info(`Zapisano liczbę dziennych transakcji dla ${houseId}`);
+                }
+            };
 
-            if (addActionCount.affectedRows === 0) {
-                logger.error(`Nie zapisano liczby dziennych transakcji.`);
-            } else {
-                logger.info(`Zapisano liczbę dziennych transakcji: ${transactionCount}`);
-            }
-
+            await connection.commit();
         } catch (error) {
             logger.error(`Błąd w saveDailyTransactions: ${error}`);
+            await connection.rollback();
         } finally {
             if (connection) connection.release();
         }
     });
 };
+
+module.exports = saveDailyTransactions;

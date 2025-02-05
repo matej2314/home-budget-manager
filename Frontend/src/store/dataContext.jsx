@@ -18,6 +18,7 @@ export const DataProvider = ({ children }) => {
         actionsCatData: [],
         messagesData: [],
         statsData: [],
+        dailyData: [],
     });
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -37,6 +38,7 @@ export const DataProvider = ({ children }) => {
                 ...(result.dashboardData.actionCatData && { actionsCatData: result.dashboardData.actionCatData }),
                 ...(result.dashboardData.messagesData && { messagesData: result.dashboardData.messagesData }),
                 ...(result.dashboardData.statsData && { statsData: result.dashboardData.statsData }),
+                ...(result.dashboardData.dailyData && { dailyData: result.dashboardData.dailyData }),
             }));
         } catch (error) {
             setError(error.message);

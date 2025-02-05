@@ -39,6 +39,12 @@ const getBoardData = async (userId, filter = 'all') => {
         
             boardData.actionsData = transactionsData;
         };
+
+        if (filter === 'all' || filter === 'daily') {
+            const [dailyData] = await connection.query(dashboardQueries.dailyData, [userHouseId]);
+            
+            boardData.dailyData = dailyData;
+        }
        
 
         if (filter === 'all' || filter === 'categories') {

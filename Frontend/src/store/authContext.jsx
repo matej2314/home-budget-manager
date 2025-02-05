@@ -40,10 +40,11 @@ export const AuthProvider = ({ children }) => {
 
             if (response.status === 'success') {
                 setUser({ userName: response.userName, role: response.role, id: response.id });
-                setMessage(response.message);
                 setIsAuthenticated(true);
+                setMessage(response.message);
             };
         } catch (error) {
+            setIsAuthenticated(false);
             setError(error.message);
         } finally {
             setIsLoading(false);
@@ -60,7 +61,7 @@ export const AuthProvider = ({ children }) => {
             if (response.status === 'success') {
                 setMessage(response.message);
                 setIsAuthenticated(false);
-                setUser(null);
+                setUser({});
             };
 
         } catch (error) {

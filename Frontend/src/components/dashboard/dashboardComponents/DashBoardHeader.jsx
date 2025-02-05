@@ -22,10 +22,10 @@ export default function DashboardHeader() {
     const handleLogOut = async () => {
         try {
             await logout();
-            showInfoToast('Użytkownik wylogowany!');
             setTimeout(() => {
+                showInfoToast('Użytkownik wylogowany!');
                 navigate('/');
-            }, 1000);
+            }, 600);
         } catch (error) {
             showErrorToast(`Błąd wylogowania: ${error.message}`);
         }

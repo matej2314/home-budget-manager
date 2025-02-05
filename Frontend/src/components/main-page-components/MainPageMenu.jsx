@@ -22,7 +22,7 @@ export default function MainPageMenu() {
     return (
         <div id="mainMenu" className="w-[98vw] h-fit flex border-2 border-y-slate-300 rounded-md shadow-sm shadow-slate-400">
             <ul className="w-full h-fit flex justify-between items-center px-3 py-1 text-slate-800 text-md">
-                <li>Main Page</li>
+                <li>Home Page</li>
                 <li>About us</li>
                 <li onClick={openModal} className='cursor-pointer'>SignUp/Login</li>
                 <li>Contact</li>
