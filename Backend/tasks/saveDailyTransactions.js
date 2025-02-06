@@ -4,7 +4,7 @@ const pool = require('../database/db');
 const { v4: uuidv4 } = require('uuid');
 
 const saveDailyTransactions = async () => {
-    cron.schedule('40 23 * * *', async () => {
+    cron.schedule('30 23 * * *', async () => {
         const connection = await pool.getConnection();
 
         try {
@@ -42,20 +42,21 @@ const saveDailyTransactions = async () => {
                 return;
             }
 
-            for (const row of rows) {
-                const id = uuidv4();
-                const transactionCount = row.transactionCount;
-                const houseId = row.houseId;
+            const valuesToInsert = rows.map(row => [
+                uuidv4(),
+                row.transactionCount,
+                row.houseId,
+                now,
+            ]);
 
-                const [addActionCount] = await connection.query('INSERT INTO dailyTransactions(id, dailyActionCount, houseId, date) VALUES (?, ?, ?, ?)',
-                    [id, transactionCount, houseId, now]
-                );
+            const addActionQuery = 'INSERT INTO dailyTransactions (id, dailyActionCount, houseId, date) VALUES ?';
 
-                if (addActionCount.affectedRows === 0) {
-                    logger.error(`Nie zapisano dziennych transakcji dla houseId: ${houseId}`)
-                } else {
-                    logger.info(`Zapisano liczbę dziennych transakcji dla ${houseId}`);
-                }
+            const [addActionCount] = await connection.query(addActionQuery,[valuesToInsert]);
+
+            if (addActionCount.affectedRows === rows.length) {
+                logger.info(`Zapisano ${addActionCount.affectedRows} dziennych transakcji.`);
+            } else {
+                logger.error(`Nie zapisano dziennych transakcji.`);
             };
 
             await connection.commit();
