@@ -4,7 +4,7 @@ const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const balanceHouseActions = async () => {
-    cron.schedule('0 2 * * *', async () => { 
+    cron.schedule('0 1 * * *', async () => { 
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -47,7 +47,7 @@ const balanceHouseActions = async () => {
                     logger.info(`Znaleziono ${transactions.length} transakcji dla gospodarstwa ${houseId}.`);
                     const transactionCountId = uuidv4();
 
-                    await connection.query(`INSERT INTO transactionCounts (id, houseId, transactionCount, startDate, balanceDate) VALUES (?,?,?,?,?)`,
+                    await connection.query(`INSERT INTO monthlyTransactionCounts (id, houseId, transactionCount, startDate, balanceDate) VALUES (?,?,?,?,?)`,
                         [transactionCountId, houseId, transactions.length, dateLimit, today]);
 
                     let newBalance = 0;

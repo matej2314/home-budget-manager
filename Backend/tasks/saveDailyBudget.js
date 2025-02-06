@@ -20,8 +20,8 @@ const saveDailyBudget = async () => {
 
             for (const house of households) {
                 const id = uuidv4();
-                const { houseId, balance } = house;
-                const [addDailyBudget] = await connection.query('INSERT INTO dailyBudget (id, houseId, value) VALUES (?, ?, ?)', [id, houseId, balance]);
+                const [addDailyBudget] = await connection.query('INSERT INTO dailyBudget (id, houseId, value) VALUES (?, ?, ?);',
+                    [id, house.houseId, house.balance]);
                 if (addDailyBudget.affectedRows === 0) {
                     logger.error('Nie udało się zapisać dziennego budżetu.');
                 } else {

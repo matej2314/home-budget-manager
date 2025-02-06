@@ -36,7 +36,7 @@ ib.value AS definedMonthlyBudgets,
  FROM initialMonthlyBudgets ib
  LEFT JOIN monthly_balances mb
  ON ib.houseId = mb.houseId
- LEFT JOIN transactionCounts tc
+ LEFT JOIN monthlyTransactionCounts tc
  ON ib.houseId = tc.houseId
  WHERE ib.houseId=?
  ORDER BY mb.balanceDate ASC; `,

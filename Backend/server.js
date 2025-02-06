@@ -7,6 +7,7 @@ const express = require('express');
 const swaggerDocs = require('./configs/swaggerConfig.js');
 const balanceHouseActions = require('./tasks/balanceHouseTransactions.js');
 const saveDailyTransactions = require('./tasks/saveDailyTransactions.js');
+const saveDailyBudget = require('./tasks/saveDailyBudget.js');
 const { initializeWebSocket } = require('./configs/websocketConfig.js');
 const http = require('http');
 const app = express();
@@ -71,7 +72,9 @@ try {
 		console.log(`SERVER RUNNING ON PORT ${port}`);
 		initializeWebSocket(server);
 		saveDailyTransactions();
+		saveDailyBudget();
 		balanceHouseActions();
+		
 	});
 	server.setTimeout(0);
 

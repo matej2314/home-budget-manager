@@ -4,7 +4,7 @@ const pool = require('../database/db');
 const { v4: uuidv4 } = require('uuid');
 
 const saveDailyTransactions = async () => {
-    cron.schedule('50 23 * * *', async () => {
+    cron.schedule('40 23 * * *', async () => {
         const connection = await pool.getConnection();
 
         try {
@@ -33,7 +33,9 @@ const saveDailyTransactions = async () => {
                 GROUP BY houseId;
             `;
 
-            const [rows] = await connection.query(getDailyTransactionsQuery, [timeInterval.start, timeInterval.end, households.map((house) => house.houseId)]);
+            const houseIdMap = households.map((house) => house.houseId);
+
+            const [rows] = await connection.query(getDailyTransactionsQuery, [timeInterval.start, timeInterval.end, houseIdMap]);
 
             if (rows.length === 0) {
                 logger.error('Brak nowych transakcji.');
@@ -45,7 +47,7 @@ const saveDailyTransactions = async () => {
                 const transactionCount = row.transactionCount;
                 const houseId = row.houseId;
 
-                const [addActionCount] = await connection.query('INSERT INTO dailyTransactions(id, dailyActionCount, houseId, date)',
+                const [addActionCount] = await connection.query('INSERT INTO dailyTransactions(id, dailyActionCount, houseId, date) VALUES (?, ?, ?, ?)',
                     [id, transactionCount, houseId, now]
                 );
 
