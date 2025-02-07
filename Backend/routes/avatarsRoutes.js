@@ -4,7 +4,7 @@ const logger = require('../configs/logger');
 const verifyJWT = require('../middlewares/verifyJWT');
 const createUserDirectory = require('../middlewares/createUserDirectory');
 const deleteFiles = require('../middlewares/deleteFilesInDirectory');
-const saveAvatar = require('../middlewares/createStorage');
+const saveAvatar = require('../store/avatarStorage');
 
 router.post('/save',
     verifyJWT(),

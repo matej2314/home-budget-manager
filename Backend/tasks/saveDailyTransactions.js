@@ -4,7 +4,7 @@ const pool = require('../database/db');
 const { v4: uuidv4 } = require('uuid');
 
 const saveDailyTransactions = async () => {
-    // cron.schedule('45 23 * * *', async () => {
+    cron.schedule('45 23 * * *', async () => {
         const connection = await pool.getConnection();
 
         try {
@@ -66,7 +66,7 @@ const saveDailyTransactions = async () => {
         } finally {
             if (connection) connection.release();
         }
-    // });
+    });
 };
 
 module.exports = saveDailyTransactions;

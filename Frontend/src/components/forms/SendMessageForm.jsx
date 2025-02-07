@@ -61,7 +61,7 @@ export default function SendMessageForm({ reply, recipientName }) {
                     required
                 />
 
-                <button type="submit" className="bg-slate-400/75 p-2 rounded-xl hover:bg-slate-300" disabled={sended}>
+                <button type="submit" className="bg-slate-300 p-2 rounded-xl hover:bg-slate-400/45 border-[1px] border-slate-500" disabled={sended}>
                     Send message
                 </button>
             </form>

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { AuthContext } from '../../../store/authContext';
 import { useSocket } from '../../../store/socketContext';
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { Icon } from '@iconify/react';
 import NotificationDot from "../dashboard-internal-components/NotificationDot";
 
@@ -9,6 +9,7 @@ import NotificationDot from "../dashboard-internal-components/NotificationDot";
 export default function DashBoardMenu() {
     const { messages, error } = useSocket();
     const { user, isAuthenticated } = useContext(AuthContext);
+    const location = useLocation();
 
     const newMessages = !error && messages.newMessages;
 
@@ -23,17 +24,25 @@ export default function DashBoardMenu() {
         { path: 'calendar', label: 'Calendar', icon: 'famicons:calendar-outline' },
     ];
 
-    const adminLinksElements = [
+    const locationEffect = (link) => {
+        if (location.pathname === `${link.path}` || location.pathname === `/dashboard/${link.path}`) {
+            return 'text-slate-400';
+        }
+    }
 
+    const adminLinksElements = [
+        { path: 'users', label: 'Users', icon: 'mynaui:users' },
+        { path: 'households', label: 'Households', icon: 'lucide-lab:houses' },
+        { path: 'stats', label: 'Statistics', icon: 'uil:statistics' },
     ];
 
     return (
-        <div id='dashboardMenu' className="w-fit bg-customGray flex flex-col justify-start items-stretch text-slate-300 pt-[2.3rem] gap-12 px-7 border-r-2 border-slate-900">
-            <ul className="h-full flex flex-col items-center gap-6">
+        <div id='dashboardMenu' className="w-fit bg-customGray flex flex-col justify-start items-stretch text-slate-300 gap-12 px-7 border-r-2 border-slate-900 pt-10">
+            <ul className="h-full flex flex-col items-center justify-start gap-6">
                 {linksElements.map((link, index) => (
                     <li
                         key={index}
-                        className="w-full h-fit flex flex-row justify-center items-center border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3"
+                        className={`w-full h-fit flex flex-row justify-center items-center border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3 ${locationEffect(link)}`}
                     >
                         <Icon icon={link.icon} width={23} height={23} />
                         <Link to={link.path}>{link.label}</Link>
@@ -41,10 +50,15 @@ export default function DashBoardMenu() {
                     </li>
                 ))}
                 {isAuthenticated && user.role === 'superadmin' && <>
-                    <li><Link to='users'>Users (if superadmin)</Link></li>
-                    <li><Link to='households'>Households(if superadmin)</Link></li>
-                    <li><Link to='stats'>Page stats(if superadmin)</Link></li>
-                    <li><Link to='actioncats'>Actions cats (if superadmin)</Link></li>
+                    {adminLinksElements.map((link, index) => (
+                        <li
+                            key={index}
+                            className={`w-full h-fit flex flex-row justify-center items-center border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3 ${locationEffect(link)}`}
+                        >
+                            <Icon icon={link.icon} width={23} height={23} />
+                            <Link to={link.path}>{link.label}</Link>
+                        </li>
+                    ))}
                 </>
                 }
             </ul>

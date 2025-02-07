@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { AuthContext } from '../../store/authContext';
 import DashboardHeader from './dashboardComponents/DashBoardHeader';
 import MatesCounter from './dashboardComponents/MatesCounter';
 import MonthlyBudget from './dashboardComponents/DisplayMonthlyBudget';
@@ -11,6 +13,8 @@ import LossOrGainChart from './dashboardComponents/charts-dashboard-components/L
 
 
 export default function DashBoard() {
+
+    const { user } = useContext(AuthContext);
 
     return (
 

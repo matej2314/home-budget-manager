@@ -1,25 +1,34 @@
 import { useContext } from 'react';
 import { DataContext } from '../../store/dataContext';
+import { AuthContext } from '../../store/authContext';
 import Modal from 'react-modal';
 
 export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) {
     const { data, isLoading, error } = useContext(DataContext);
     const actionCats = !isLoading && !error && data.actionsCatData || [];
+    const { user } = useContext(AuthContext);
 
     return (
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='bg-slate-300 rounded-lg p-6 w-1/3 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400'
+            className='bg-slate-300 rounded-lg p-6 w-9/12 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
-            <div id="categories-list" className='flex flex-col items-center'>
-                <ul className="w-full h-fit flex flex-col items-center justify-center gap-3">
+            <button type="button" onClick={onRequestClose}>X</button>
+            <div id="categories-list" className='flex flex-col justify-center items-center'>
+                <button
+                    className="bg-slate-300 p-2 rounded-xl hover:bg-slate-400/45 border-[1px] border-slate-500"
+                >
+                    Add new category
+                </button>
+                <ul className="w-full grid grid-cols-2 grid-rows-auto gap-y-2 mt-5">
                     {!isLoading && !error && data ? (
                         actionCats.map((cat) => (
-                            <li key={cat.id} data-id={cat.id} className="w-full h-fit flex justify-center gap-2">
-                                <span>{cat.name}</span> -
-                                <span>{cat.type}</span>
+                            <li key={cat.id} data-id={cat.id} className="w-6/12 h-fit flex justify-between items-center gap-3 mx-auto">
+                                <span className='w-full h-fit flex'>{cat.name}</span> -
+                                <span className='w-fit h-fit'>{cat.type}</span> -
+                                <button type="button" className='w-fit h-fit p-2 bg-slate-400 rounded-xl hover:bg-slate-300 border-[1px] border-slate-600'>Delete</button>
                             </li>
                         ))
                     ) : (

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import AddTransactionModal from '../../modals/AddTransactionModal';
 import SendMessageModal from "../../modals/SendMessageModal";
+import AddUserToHouseModal from '../../modals/AddUserToHouseModal';
 
 
 export default function FastActions() {
@@ -32,6 +33,7 @@ export default function FastActions() {
                     Send message
                 </button>
                 <button
+                    onClick={() => handleOpenModal('addUser')}
                     className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
                 >
                     Add housemate
@@ -42,6 +44,9 @@ export default function FastActions() {
             )}
             {modal.isOpen && modal.type === 'transaction' && (
                 <AddTransactionModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />
+            )}
+            {modal.isOpen && modal.type === 'addUser' && (
+                <AddUserToHouseModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />
             )}
         </>
     )
