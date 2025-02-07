@@ -4,13 +4,13 @@ const pool = require('../database/db');
 const { v4: uuidv4 } = require('uuid');
 
 const saveDailyBudget = async () => {
-    cron.schedule('40 23 * * *', async () => {
+    // cron.schedule('50 23 * * *', async () => {
         const connection = await pool.getConnection();
 
         try {
             await connection.beginTransaction();
 
-            const [households] = await connection.query('SELECT houseId, balance FROM households');
+            const [households] = await connection.query('SELECT houseId, currentBalance FROM households');
 
             logger.info(`Znaleziono ${households.length} gospodarstw.`);
 
@@ -21,7 +21,7 @@ const saveDailyBudget = async () => {
             for (const house of households) {
                 const id = uuidv4();
                 const [addDailyBudget] = await connection.query('INSERT INTO dailyBudget (id, houseId, value) VALUES (?, ?, ?);',
-                    [id, house.houseId, house.balance]);
+                    [id, house.houseId, house.currentBalance]);
                 if (addDailyBudget.affectedRows === 0) {
                     logger.error('Nie udało się zapisać dziennego budżetu.');
                 } else {
@@ -37,7 +37,7 @@ const saveDailyBudget = async () => {
             if (connection) connection.release();
         }
         
-    });
+    // });
 };
 
 module.exports = saveDailyBudget;

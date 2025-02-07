@@ -31,6 +31,11 @@ export default function FastActions() {
                 >
                     Send message
                 </button>
+                <button
+                    className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
+                >
+                    Add housemate
+                </button>
             </div>
             {modal.isOpen && modal.type === 'message' && (
                 <SendMessageModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />

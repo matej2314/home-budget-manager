@@ -1,9 +1,9 @@
 module.exports = {
     householdData: `SELECT
     h.houseName AS houseName,
-    h.balance AS liveBalance,
+    h.currentBalance AS liveBalance,
     h.userName AS host,
-    DATE_FORMAT(h.balanceDate, '%Y-%m-%d') AS lastBalanceDate,
+    DATE_FORMAT(h.monthlyBalanceDate, '%Y-%m-%d') AS lastBalanceDate,
     ib.value AS lastInitialBudget,
     DATE_FORMAT(ib.validUntil, '%Y-%m-%d') AS initialValidUntil,
     DATE_FORMAT(ib.addedAt, '%Y-%m-%d') AS initialDefinedAt
@@ -17,8 +17,8 @@ module.exports = {
     )
     LEFT JOIN monthly_balances mb
     ON mb.houseId = h.houseId
-    AND mb.balanceDate = (
-        SELECT MAX(balanceDate)
+    AND mb.monthlyBalanceDate = (
+        SELECT MAX(monthlyBalanceDate)
         FROM monthly_balances
         WHERE houseId = h.houseId
     )
@@ -29,7 +29,7 @@ ib.value AS definedMonthlyBudgets,
  DATE_FORMAT(ib.addedAt, '%Y-%m-%d') AS initMonthlyBudgetDate,
  DATE_FORMAT(ib.validUntil, '%Y-%m-%d') AS initMonthlyBudgetValidDate,
  mb.monthly_balance AS monthlyBalanceValue,
- DATE_FORMAT(mb.balanceDate, '%Y-%m-%d') AS monthlyBalanceDate,
+ DATE_FORMAT(mb.monthlyBalanceDate, '%Y-%m-%d') AS monthlyBalanceDate,
  tc.transactionCount AS transactionCount,
  DATE_FORMAT(tc.StartDate, '%Y-%m-%d') AS countStartDate,
  DATE_FORMAT(tc.balanceDate, '%Y-%m-%d') AS countEndDate
@@ -39,7 +39,7 @@ ib.value AS definedMonthlyBudgets,
  LEFT JOIN monthlyTransactionCounts tc
  ON ib.houseId = tc.houseId
  WHERE ib.houseId=?
- ORDER BY mb.balanceDate ASC; `,
+ ORDER BY mb.monthlyBalanceDate ASC; `,
 matesData: 'SELECT userName, role FROM householdUsers WHERE houseId = ? ORDER BY id',
 transactionsData: `SELECT 
 t.transactionId AS transactionId,
@@ -59,7 +59,7 @@ dt.houseId,
 DATE_FORMAT(dt.date, '%Y-%m-%d') AS dailyActionsDate,
 db.value AS dailyBudgetValue,
 db.houseId,
-db.date AS dailyBudgetDate
+DATE_FORMAT(db.date, '%Y-%m-%d') AS dailyBudgetDate
 FROM dailyTransactions dt
 LEFT JOIN dailyBudget db
 ON dt.houseId = db.houseId

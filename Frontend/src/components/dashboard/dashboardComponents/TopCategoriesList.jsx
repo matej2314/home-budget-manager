@@ -19,7 +19,7 @@ export default function TopCategoriesList({ main }) {
     const dataValues = categoryPercentages.map(cat => cat.value);
 
     return (
-        <div className={`w-full h-fit flex flex-col items-center border-2 border-slate-500/20 ${main ? 'mt-4' : 'mt-0'} pb-4`}>
+        <div className={`w-fit h-fit flex flex-col items-center border-2 border-slate-500/20 ${main ? 'mt-4' : 'mt-0'} pb-4`}>
             <h2 className="text-xl mb-4">Top categories of transactions:</h2>
             <ul className="mb-4">
                 {categoryPercentages.map((cat) => (
@@ -34,8 +34,8 @@ export default function TopCategoriesList({ main }) {
                 title="Transaction Categories"
                 colors={['rgba(255, 99, 132, 0.2)']}
                 borderColors={['rgba(255, 99, 132, 1)']}
-                width={main ? 220 : 350}
-                height={main ? 100 : 350}
+                width={420}
+                height={400}
             />
         </div>
     );

@@ -42,7 +42,7 @@ export default function DashboardHeader() {
     }, [connected, SocketError, messages]);
 
     return (
-        <div id='dashboard-header' className="w-full h-fit flex flex-row items-center text-slate-900 bg-slate-200 py-3 gap-5 border-2 border-b-slate-800/5 pl-5 pr-8">
+        <div id='dashboard-header' className="w-full h-fit flex flex-row items-center text-slate-900 py-3 gap-5 border-2 border-b-slate-800/5 pl-5 pr-8">
             <div id="user-info" className="w-fit flex justify-around items-center gap-3">
                 <div className="w-14 h-14 bg-white rounded-full">
                     <p className="text-black flex justify-center items-center mt-3">photo</p>

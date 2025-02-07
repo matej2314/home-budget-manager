@@ -5,8 +5,8 @@ export default function MonthlyBudget() {
     const { data, isLoading, error } = useContext(DataContext);
     const houseData = !isLoading && !error && data.houseData[0] || [];
     const lastMonthlyBudget = houseData.lastInitialBudget || '';
-    const initBudgetDate = houseData.definedAt || '';
-    const validDate = houseData.validUntil || '';
+    const initBudgetDate = houseData.initialDefinedAt || '';
+    const validDate = houseData.initialValidUntil || '';
 
     return (
         <div id="monthlyBudget" className="w-1/4 h-[8.5rem] bg-green-600/80 text-xl text-white flex flex-col justify-start items-center rounded-md pt-4">

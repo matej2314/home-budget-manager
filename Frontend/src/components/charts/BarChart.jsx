@@ -16,8 +16,8 @@ const BarChart = ({
     secondColors = ['rgba(255, 99, 132, 0.2)'],
     secondBorderColors = ['rgba(255, 99, 132, 1)'],
     options = {},
-    width = 350, // default width
-    height = 500, // default height
+    width = 350,
+    height = 500,
 }) => {
     // Przygotowanie danych do wykresu
     const datasets = [

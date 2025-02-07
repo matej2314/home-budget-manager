@@ -4,7 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement
 // Rejestrujemy komponenty wykresu liniowego
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
 
-const LineChart = ({ labels, dataValues, secondDataValues = null, title = 'Wykres liniowy', secondTitle = '', colors = ['rgba(75, 192, 192, 0.2)'], borderColors = ['rgba(75, 192, 192, 1)'], secondColors = ['rgba(153, 102, 255, 0.2)'], secondBorderColors = ['rgba(153, 102, 255, 1)'], options = {} }) => {
+const LineChart = ({ labels, dataValues, secondDataValues = null, title = 'Wykres liniowy', secondTitle = '', colors = ['rgba(75, 192, 192, 0.2)'], borderColors = ['rgba(75, 192, 192, 1)'], secondColors = ['rgba(153, 102, 255, 0.2)'], secondBorderColors = ['rgba(153, 102, 255, 1)'], width, height, options = {} }) => {
 
     // Przygotowujemy dane do wykresu na podstawie propsów
     const datasets = [
@@ -62,7 +62,7 @@ const LineChart = ({ labels, dataValues, secondDataValues = null, title = 'Wykre
     // Łączenie opcji domyślnych z opcjami przekazanymi przez propsy
     const chartOptions = { ...defaultOptions, ...options };
 
-    return <Line data={data} options={chartOptions} />;
+    return <Line data={data} options={chartOptions} width={width} height={height} />;
 };
 
 export default LineChart;

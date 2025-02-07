@@ -4,14 +4,14 @@ const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const balanceHouseActions = async () => {
-    cron.schedule('25 0 * * *', async () => { 
+    // cron.schedule('58 23 * * *', async () => { 
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
             logger.info('Bilansowanie rozpoczęte.');
 
             const [households] = await connection.query(
-                `SELECT houseId, initBudget, balanceDate, createdAt FROM households`
+                `SELECT houseId, initBudget, monthlyBalanceDate, createdAt FROM households`
             );
 
             logger.info(`Znaleziono ${households.length} gospodarstw w bazie.`);
@@ -23,17 +23,17 @@ const balanceHouseActions = async () => {
             const today = new Date().toISOString().split('T')[0];
 
             for (const household of households) {
-                const { houseId, balanceDate, createdAt, initBudget } = household;
+                const { houseId, monthlyBalanceDate, createdAt, initBudget } = household;
 
-                const formattedBalanceDate = balanceDate ? new Date(balanceDate).toISOString().split('T')[0] : null;
+                const formattedBalanceDate = monthlyBalanceDate ? new Date(monthlyBalanceDate).toISOString().split('T')[0] : null;
                 const formattedCreatedAt = new Date(createdAt).toISOString().split('T')[0];
                 
                 const dateLimit = formattedBalanceDate || formattedCreatedAt;
 
-                logger.info(`Obliczanie daty dla gospodarstwa ${houseId}, balanceDate: ${balanceDate}, createdAt: ${createdAt}`);
+                logger.info(`Obliczanie daty dla gospodarstwa ${houseId}, balanceDate: ${monthlyBalanceDate}, createdAt: ${createdAt}`);
 
                 const nextBalanceDate = new Date(dateLimit);
-                nextBalanceDate.setDate(nextBalanceDate.getDate() + 30);
+                nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
                 const nextBalanceDateStr = nextBalanceDate.toISOString().split('T')[0];
                 
                 if (today >= nextBalanceDateStr) {
@@ -78,18 +78,15 @@ const balanceHouseActions = async () => {
                     const id = uuidv4();
 
                     const [insertBalance] = await connection.query(
-                        `INSERT INTO monthly_balances (id, monthly_balance, houseId, balanceDate) VALUES(?, ?, ?, NOW());`,
+                        `INSERT INTO monthly_balances (id, monthly_balance, houseId, monthlyBalanceDate) VALUES(?, ?, ?, NOW());`,
                         [id, parseInt(newBalance), houseId]
                     );
 
                     if (insertBalance.affectedRows === 1) {
-                        await connection.query('UPDATE households SET balanceDate = NOW() WHERE houseId=?', [houseId]);
+                        await connection.query('UPDATE households SET monthlyBalanceDate = NOW() WHERE houseId=?', [houseId]);
                     }
 
-                    await connection.query(
-                        `DELETE FROM transactions WHERE houseId = ? AND DATE(addedAt) > ?`,
-                        [houseId, dateLimit]
-                    );
+                    // const [deleteActions] = await connection.query('DELETE FROM transactions WHERE houseId =?', [houseId]);
 
                     logger.info(`Bilans gospodarstwa ${houseId} zaktualizowany.`);
                 } else {
@@ -104,7 +101,7 @@ const balanceHouseActions = async () => {
         } finally {
             if (connection) connection.release();
         }
-    });
+    // });
 };
 
 module.exports = balanceHouseActions;

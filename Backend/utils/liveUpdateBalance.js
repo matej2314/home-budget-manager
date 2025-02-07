@@ -3,14 +3,14 @@ const { broadcastToHouseMates } = require('../configs/websocketConfig');
 
 exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => {
 	try {
-		const [houseBalance] = await connection.query('SELECT balance FROM households WHERE houseId=?', [houseId]);
+		const [houseBalance] = await connection.query('SELECT currentBalance, initBudget FROM households WHERE houseId=?', [houseId]);
 
 		if (houseBalance.length === 0) {
 			logger.error(`Gospodarstwo ${houseId} nie istnieje.`);
 			return;
 		}
 
-		let newBalance = Number(houseBalance[0].balance);
+		let newBalance = Number(houseBalance[0].currentBalance) || Number(houseBalance[0].initBudget);
 
 		if (type === 'income') {
 			newBalance += Number(value);
@@ -18,7 +18,7 @@ exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => 
 			newBalance -= Number(value);
 		}
 
-		const [addNewBalance] = await connection.query('UPDATE households SET balance = ? WHERE houseId = ?', [newBalance, houseId]);
+		const [addNewBalance] = await connection.query('UPDATE households SET currentBalance = ? WHERE houseId = ?', [newBalance, houseId]);
 		logger.info(`Nowe saldo gospodarstwa ${houseId}: ${newBalance}`);
 
 		try {
