@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { DataContext } from "../../store/dataContext";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
-import BarChart from "../../components/charts/BarChart";
-import LineChart from "../../components/charts/LineChart";
 import BudgetPerDay from "../../components/dashboard/dashboardComponents/charts-dashboard-components/BudgetPerDay";
 import TransactionsPerDay from "../../components/dashboard/dashboardComponents/charts-dashboard-components/TransactionsPerDay";
+import BalanceBudgetComparison from "../../components/dashboard/dashboardComponents/charts-dashboard-components/BalanceBudgetComparison";
+import TransactionsOverTime from "../../components/dashboard/dashboardComponents/charts-dashboard-components/TransactionsOverTime";
 
 export default function HouseInfoPage() {
     const { data, isLoading, error: contextError, refreshData } = useContext(DataContext);
@@ -79,7 +79,7 @@ export default function HouseInfoPage() {
                         </div>
                     </div>
                     <div id="dailyData-container" className="w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl mx-auto text-md px-3 py-3">
-                        <div className="flex gap-4">
+                        <div id="dailyShortInfo" className="flex gap-4">
                             <p className="flex text-md gap-1">
                                 <span className="font-bold">Previous day's transactions:</span>
                                 <span>{dailyInfo.dailyActionCount || '65'}</span>
@@ -105,43 +105,15 @@ export default function HouseInfoPage() {
                         <h2 className="text-xl flex justify-center">Last 5 transactions:</h2>
                         <TransactionsList limit={5} mainSite={true} />
                     </div>
-                    <div id="charts1" className="w-full h-fit flex flex-row flex-wrap justify-center items-center mb-5 flex-grow gap-x-5 gap-y-3 px-5">
-                        <div className="w-1/2 h-fit flex flex-col justify-center items-start border-2 border-slate-400 pt-3 px-3 flex-grow flex-shrink">
-                            <h2 className="w-full h-fit flex justify-center text-xl mb-3">Monthly Balance vs Defined Budgets</h2>
-                            <BarChart
-                                labels={labels}
-                                dataValues={monthlyBalances}
-                                secondDataValues={definedBudgets}
-                                title="Monthly Balance"
-                                secondTitle="Defined Budgets"
-                                colors={["rgba(54, 162, 235, 0.5)"]}
-                                borderColors={["rgba(54, 162, 235, 1)"]}
-                                secondColors={["rgba(255, 99, 132, 0.5)"]}
-                                secondBorderColors={["rgba(255, 99, 132, 1)"]}
-                                width={250}
-                                height={150}
-                            />
+                    <div id="charts1" className="w-full h-full flex flex-col flex-wrap justify-around items-center mb-5 flex-grow ml-4 gap-y-4 gap-x-4">
+                        <div className="w-full h-fit flex justify-around gap-5">
+                            <BalanceBudgetComparison data={{ labels: labels, dataValues: monthlyBalances, definedBudgets: definedBudgets }} />
+                            <TransactionsOverTime data={{ labels: actionCountLabels, dataValues: monthlyTransactionCounts }} />
                         </div>
-                        <div id="transactionsOverTime" className=" flex flex-col flex-wrap justify-center items-center mr-5 border-2 border-slate-400 flex-grow flex-shrink">
-                            <h2 className="w-1/2 h-fit flex justify-center text-xl mb-3">Transactions over time: </h2>
-                            <div className="w-fit h-fit">
-                                <LineChart
-                                    labels={actionCountLabels}
-                                    dataValues={monthlyTransactionCounts}
-                                    title='Transactions count'
-                                    colors={["rgba(54, 162, 235, 0.5)"]}
-                                    borderColors={["rgba(54, 162, 235, 1)"]}
-                                    width={470}
-                                    height={444}
-                                />
-                            </div>
-                        </div>
-                        <div className="w-full flex justify-around gap-x-5 px-5">
+
+                        <div className="w-full h-full flex justify-between gap-x-5 pr-5">
                             <TransactionsPerDay data={{ labels: actionLabels, dataValues: dailyTransactions }} />
                             <BudgetPerDay data={{ labels: dailyBudgetLabels, dataValues: dailyBudgetValues }} />
-                        </div>
-                        <div>
-
                         </div>
                     </div>
                 </div>

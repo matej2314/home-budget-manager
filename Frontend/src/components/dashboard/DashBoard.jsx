@@ -23,14 +23,15 @@ export default function DashBoard() {
                 <MessagesCounter />
             </div>
             <FastActions />
+            <div id='chartsPart' className="max-w-screen h-fit mb-4 mx-5 flex flex-col gap-3">
+                <LossOrGainChart />
+            </div>
             <div id="middlePart" className=" h-fit flex gap-3 pr-8">
                 <DisplayMatesList />
                 <LastTransactionsList limit={5} />
                 <TopCategoriesList main={true} />
             </div>
-            <div id='chartsPart' className="max-w-screen h-fit mb-4 mx-5 flex flex-col gap-3">
-                <LossOrGainChart />
-            </div>
+
         </div>
     )
 };

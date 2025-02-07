@@ -11,8 +11,8 @@ export default function BudgetPerDay({ data }) {
                 title='Transactions per day'
                 colors={["rgba(54, 162, 235, 0.5)"]}
                 borderColors={["rgba(54, 162, 235, 1)"]}
-                width={300}
-                height={400}
+                width={555}
+                height={420}
             />
         </div>
     )

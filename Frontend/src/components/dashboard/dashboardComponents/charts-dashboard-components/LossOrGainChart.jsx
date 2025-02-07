@@ -45,7 +45,8 @@ export default function LossOrGainChart() {
                 title={barColors === `rgba(5, 169, 10, 0.5)` ? 'loss' : 'gain'}
                 colors={barColors}
                 borderColors={barColors.map(color => color.replace('0.5', '0'))}
-                height={50}
+                width={1250}
+                height={250}
 
             />
         </div>
