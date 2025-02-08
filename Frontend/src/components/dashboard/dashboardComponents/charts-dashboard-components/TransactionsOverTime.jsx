@@ -3,7 +3,7 @@ import LineChart from "../../../charts/LineChart"
 export default function TransactionsOverTime({ data }) {
 
     return (
-        <div id="transactionsOverTime" className="w-fit h-fit flex flex-col flex-wrap justify-center items-center mr-5 border-2 border-slate-400 flex-grow flex-shrink">
+        <div id="transactionsOverTime" className="w-fit h-fit flex flex-col flex-wrap justify-center items-center mr-5 border-2 border-slate-300 flex-grow flex-shrink">
             <h2 className="w-full h-fit flex justify-center text-xl mb-3">Transactions over time: </h2>
             <div className="w-full h-full">
                 <LineChart

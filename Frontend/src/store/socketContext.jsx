@@ -24,7 +24,6 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            console.log('socket')
             const newSocket = io(socketPath, {
                 transports: ["websocket"],
                 withCredentials: true,

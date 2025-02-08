@@ -21,6 +21,10 @@ export const DataProvider = ({ children }) => {
         dailyData: [],
     });
     const [isLoading, setIsLoading] = useState(true);
+    // const [messagesData, setMessagesData] = useState([]);
+    // const [messsagesDataError, setMessagesDataError] = useState(null);
+    // const [actionsData, setActionsData] = useState([]);
+    // const [actionsDataError, setActionsDataError] = useState(null);
     const [error, setError] = useState(null);
     const { isAuthenticated } = useContext(AuthContext);
 

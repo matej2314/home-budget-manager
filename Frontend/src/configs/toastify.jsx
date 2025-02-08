@@ -6,7 +6,7 @@ const baseStyles = 'p-4 rounded-lg shadow-md text-slate-700';
 
 const toastStyles = {
     success: `text-red-700`,
-    error: ``,
+    error: `color: #E91616`,
     info: ``,
     message: ''
 };

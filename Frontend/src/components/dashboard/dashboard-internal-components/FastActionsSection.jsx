@@ -4,7 +4,7 @@ import SendMessageModal from "../../modals/SendMessageModal";
 import AddUserToHouseModal from '../../modals/AddUserToHouseModal';
 
 
-export default function FastActions() {
+export default function FastActions({ profilePage, action }) {
 
     const [modal, setModal] = useState({ isOpen: false, type: null });
 
@@ -19,7 +19,6 @@ export default function FastActions() {
     return (
         <>
             <div id='fastActions' className='w-full flex justify-start items-center gap-3 ml-10 py-2'>
-                <div><h2>Fast actions:</h2></div>
                 <button
                     onClick={() => handleOpenModal('transaction')}
                     className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
@@ -38,6 +37,30 @@ export default function FastActions() {
                 >
                     Add housemate
                 </button>
+                {profilePage && <>
+                    <button
+                        type="button"
+                        onClick={() => action('transactions')}
+                        className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
+
+                    >
+                        Your transactions
+                    </button>
+                    <button
+                        onClick={() => action('avatar')}
+                        className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
+                        type="button"
+                    >
+                        Change avatar
+                    </button>
+                    <button
+                        onClick={() => action('email')}
+                        className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
+                        type="button"
+                    >
+                        Change e-mail address
+                    </button>
+                </>}
             </div>
             {modal.isOpen && modal.type === 'message' && (
                 <SendMessageModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />

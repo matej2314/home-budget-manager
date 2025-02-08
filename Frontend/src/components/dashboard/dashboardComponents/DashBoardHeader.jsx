@@ -56,8 +56,8 @@ export default function DashboardHeader() {
     return (
         <div id='dashboard-header' className="w-full h-fit flex flex-row items-center text-slate-900 py-3 gap-5 border-2 border-b-slate-800/5 pl-5 pr-8">
             <div id="user-info" className="w-fit flex justify-around items-center gap-3">
-                <div className="w-14 h-14 bg-white rounded-full">
-                    <img src={user.avatar ? `${serverUrl}/avatars/avatar` : `${serverUrl}/user-photos/default.jpg`} className="text-black flex justify-center items-center mt-3 rounded-full" />
+                <div className="w-14 h-14 bg-white rounded-full flex justify-center items-center">
+                    <img src={user && `${serverUrl}/avatars/avatar`} className="rounded-full w-full h-full" />
                 </div>
                 {isAuthenticated && !error && user ? <p>{user.userName}</p> : <p>Guest</p>}
             </div>

@@ -1,7 +1,7 @@
 import LineChart from '../../../charts/LineChart';
 
 export default function TransactionsPerDay({ data }) {
-    console.log(`data w transactions per day: ${JSON.stringify(data)}`)
+
     return (
         <div id="transactions-per-day-chart" className="w-fit h-fit border-2 border-slate-500/20 pt-2 mb-3 flex flex-col justify-start gap-4">
             <h2 className="w-full h-fit flex justify-center text-xl">Transactions per day</h2>

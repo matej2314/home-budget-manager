@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { DataContext } from '../../../store/dataContext';
 import BarChart from '../../charts/BarChart';
+import CategoriesValuesChart from "./charts-dashboard-components/CategoriesValuesChart";
 
 export default function TopCategoriesList({ main }) {
     const { data, isLoading, error } = useContext(DataContext);
@@ -15,28 +16,48 @@ export default function TopCategoriesList({ main }) {
         return { label: category, value: percentage };
     });
 
-    const labels = categoryPercentages.map((cat) => cat.label);
+    const labels = categoryPercentages.map(cat => cat.label);
     const dataValues = categoryPercentages.map(cat => cat.value);
 
+    const groupedTransactions = transactions.reduce((acc, transaction) => {
+        const { categoryName, type, value } = transaction;
+
+        if (!acc[categoryName]) {
+            acc[categoryName] = 0;
+        }
+
+        if (type === 'income') {
+            acc[categoryName] += value;
+        } else if (type === 'expense') {
+            acc[categoryName] -= value;
+        }
+        return acc;
+    }, {});
+
     return (
-        <div className={`w-fit h-fit flex flex-col items-center border-2 border-slate-500/20 ${main ? 'mt-4' : 'mt-0'} pb-4`}>
-            <h2 className="text-xl mb-4">Top categories of transactions:</h2>
-            <ul className="mb-4">
-                {categoryPercentages.map((cat) => (
-                    <li key={cat.label}>
-                        {cat.label} : {cat.value.toFixed(2)} %
-                    </li>
-                ))}
-            </ul>
-            <BarChart
-                labels={labels}
-                dataValues={dataValues}
-                title="Transaction Categories"
-                colors={['rgba(255, 99, 132, 0.2)']}
-                borderColors={['rgba(255, 99, 132, 1)']}
-                width={420}
-                height={400}
-            />
+        <div className={`w-full h-fit flex flex-row justify-around shadow-md shadow-slate-500 ${main ? 'mt-4' : 'mt-0'} pb-8 gap-4 pt-5`}>
+            <div>
+                <h2 className="text-xl mb-4">Top categories of transactions:</h2>
+                <ul className="mb-4">
+                    {categoryPercentages.map((cat) => (
+                        <li key={cat.label}>
+                            {cat.label} : {cat.value.toFixed(2)} %
+                        </li>
+                    ))}
+                </ul>
+                <BarChart
+                    labels={labels}
+                    dataValues={dataValues}
+                    title="Transaction Categories"
+                    colors={['rgba(255, 99, 132, 0.2)']}
+                    borderColors={['rgba(255, 99, 132, 1)']}
+                    width={500}
+                    height={450}
+                />
+            </div>
+            <div>
+                <CategoriesValuesChart labels={Object.keys(groupedTransactions)} values={Object.values(groupedTransactions)} />
+            </div>
         </div>
     );
 }

@@ -18,7 +18,7 @@ export default function DashBoard() {
 
     return (
 
-        <div id="pagecontent" className="w-full h-full min-w-screen bg-slate-200 overflow-y-auto no-scrollbar">
+        <div id="pagecontent" className="w-full h-full min-w-screen bg-slate-200 overflow-y-auto no-scrollbar pb-4">
             <DashboardHeader />
             <div id="house-info-blocks" className="flex gap-5 border-2 border-b-slate-800/5 py-4 pl-5 pr-9">
                 <MatesCounter />
@@ -26,16 +26,17 @@ export default function DashBoard() {
                 <DisplayLiveBalance />
                 <MessagesCounter />
             </div>
-            <FastActions />
+            <div className='mt-1'>
+                <FastActions />
+            </div>
             <div id='chartsPart' className="max-w-screen h-fit mb-4 mx-5 flex flex-col gap-3">
                 <LossOrGainChart />
             </div>
-            <div id="middlePart" className=" h-fit flex gap-3 pr-8">
+            <div id="middlePart" className="max-w-screen pl-5 w-full flex flex-col items-center h-fit gap-3 pr-8">
                 <DisplayMatesList />
                 <LastTransactionsList limit={5} />
                 <TopCategoriesList main={true} />
             </div>
-
         </div>
     )
 };

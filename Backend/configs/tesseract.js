@@ -1,4 +1,4 @@
-const tesseract = require('tesseract.js');
+const Tesseract = require('tesseract.js');
 const sharp = require('sharp');
 const logger = require('./logger');
 
@@ -15,8 +15,10 @@ async function extractPhotoData(imagePath) {
         });
 
         const match = text.match(/SUMA[\s:]*\s*(PLN)?[\s:]*([\d.,]+)/i);
-        return match ? match[1] : null;
+        const totalAmount = match ? match[2] : null;
 
+        logger.info(`Odczytana suma: ${totalAmount}`);
+        return totalAmount;
     } catch (error) {
         logger.error(`Błąd OCR: ${error}`);
         return null;

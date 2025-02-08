@@ -4,8 +4,6 @@ import { ToastContainer } from 'react-toastify';
 import BackToUsMessage from './components/BackToUsMessage';
 // import './configs/i18n';
 
-
-
 export default function App() {
 
   const router = createBrowserRouter(routes, {
@@ -32,6 +30,7 @@ export default function App() {
         draggable={false}
       />
     </>
+
   )
 }
 

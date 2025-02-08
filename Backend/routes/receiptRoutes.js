@@ -1,10 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const logger = require('../configs/logger');
-const { extractPhotoData } = require('../configs/tesseract');
+const  {extractPhotoData}  = require('../configs/tesseract');
+const { uploadReceipt } = require('../store/receiptStorage');
 
-router.post('/receipt', async (req, res) => {
-    
+router.post('/receipt',
+    uploadReceipt.single('receipt'),
+    async (req, res) => {
+        if (!req.file) {
+            return res.status(400).json({ status: 'error', message: 'Prześlij poprawny plik.' });
+        }
+
+        try {
+            const totalAmount = await extractPhotoData(req.file.path);
+
+            if (!totalAmount) return res.status(400).json({ status: 'error', message: 'Brak oczekiwanej wartości.' });
+
+            res.status(200).json({ status: 'success', message: `Ostateczna wartość z obrazu: ${totalAmount} PLN` });
+        } catch (error) {
+            res.status(500).json({ status: 'error', message: 'Błąd przetwarzania obrazu.' });
+        }
 });
 
 

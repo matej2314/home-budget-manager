@@ -10,6 +10,7 @@ import HouseholdsPage from '../pages/dashboard-subpages/HouseholdsPage';
 import UserProfilePage from '../pages/dashboard-subpages/UserProfilePage';
 import StatsPage from '../pages/dashboard-subpages/StatsPage';
 import TransactionsPage from "../pages/dashboard-subpages/TransactionsPage";
+import DashBoardForUser from "../pages/dashboard-subpages/DashboardForUser";
 import ErrorPage from "../pages/ErrorPage";
 
 const routes = [
@@ -25,6 +26,7 @@ const routes = [
             { path: 'housemates', element: <HouseMatesPage /> },
             { path: 'calendar', element: <CalendarPage /> },
             { path: 'messages/:filter?', element: <MessagesPage /> },
+            { path: 'userDashboard', element: <DashBoardForUser /> },
             { path: 'users', element: <UsersPage /> },
             { path: 'households', element: <HouseholdsPage /> },
             { path: 'stats', element: <StatsPage /> },

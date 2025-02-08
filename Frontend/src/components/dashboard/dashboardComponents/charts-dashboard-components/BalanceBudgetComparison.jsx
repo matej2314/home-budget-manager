@@ -3,7 +3,7 @@ import BarChart from "../../../charts/BarChart"
 export default function BalanceBudgetComparison({ data }) {
 
     return (
-        <div id="balanceBudgetcompare" className="w-1/2 h-fit flex flex-col justify-center items-start border-2 border-slate-400 pt-3 px-3 flex-grow flex-shrink">
+        <div id="balanceBudgetcompare" className="w-1/2 h-fit flex flex-col justify-center items-start border-2 border-slate-300 pt-3 px-3 flex-grow flex-shrink">
             <h2 className="w-full h-fit flex justify-center text-xl mb-3">Monthly Balance vs Defined Budgets</h2>
             <BarChart
                 labels={data.labels}

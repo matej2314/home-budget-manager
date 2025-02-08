@@ -2,7 +2,6 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Rejestrujemy komponenty potrzebne do wykresu
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const BarChart = ({
@@ -19,7 +18,6 @@ const BarChart = ({
     width = 350,
     height = 500,
 }) => {
-    // Przygotowanie danych do wykresu
     const datasets = [
         {
             label: title,
@@ -42,6 +40,12 @@ const BarChart = ({
 
     const data = { labels, datasets };
 
+    const minY = Math.min(...dataValues);
+    const maxY = Math.max(...dataValues);
+
+    const yMin = minY < 0 ? minY : 0;
+    const yMax = maxY;
+
     const defaultOptions = {
         responsive: true,
         plugins: {
@@ -58,7 +62,13 @@ const BarChart = ({
             },
             y: {
                 beginAtZero: true,
-                min: 0,
+                min: yMin,
+                max: yMax,
+                ticks: {
+                    callback: function (value) {
+                        return value;
+                    },
+                },
             },
         },
     };
@@ -67,6 +77,5 @@ const BarChart = ({
 
     return <Bar data={data} options={chartOptions} width={width} height={height} />;
 };
-
 
 export default BarChart;

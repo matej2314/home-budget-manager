@@ -38,27 +38,33 @@ router.post('/save',
        }
     });
 
-    router.get(`/avatar`, verifyJWT(), (req, res) => {
-        const userId = req.userId;
-        const avatarDir = path.join(__dirname, '../public/user-photos', `${userId}`);
-        const avatarExtensions = ['.jpg', '.jpeg', '.png'];
-        let avatarPath = null;
-    
-        for (const ext of avatarExtensions) {
-            const filePath = path.join(avatarDir, `${userId}${ext}`);
+router.get('/avatar', verifyJWT(), async (req, res) => {
+    const userId = req.userId;
+    const avatarDir = path.join(__dirname, '../public/user-photos', `${userId}`);
+    const avatarExtensions = ['.jpg', '.jpeg', '.png'];
+    let avatarPath = null;
+
+    // Iteracja po rozszerzeniach
+    for (const ext of avatarExtensions) {
+        const filePath = path.join(avatarDir, `${userId}${ext}`);
+
+        try {
             
-            if (fs.access(filePath)) {
-                avatarPath = filePath;
-                break;
-            }
+            await fs.access(filePath); 
+            avatarPath = filePath;
+            break; 
+        } catch (err) {
+            continue;
         }
-    
-        if (!avatarPath) {
-         return  res.sendFile(path.join(__dirname, '../public/user-photos', 'default.jpg'))
-        }
-    
-        res.sendFile(avatarPath);
-    });
+    }
+
+    if (!avatarPath) {
+        return res.sendFile(path.join(__dirname, '../public/user-photos', 'default.jpg'));
+    }
+
+    res.sendFile(avatarPath);
+});
+
     
 router.delete('/delete',
     verifyJWT(),

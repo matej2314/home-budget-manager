@@ -1,0 +1,1 @@
+export const allowedUserRoles = ['mate', 'host', 'superadmin'];

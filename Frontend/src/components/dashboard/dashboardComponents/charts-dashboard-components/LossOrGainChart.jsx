@@ -37,7 +37,7 @@ export default function LossOrGainChart() {
     const barColors = generateBarColors(monthlyBalances);
 
     return (
-        <div id="lossOrGain" className="w-full h-full border-2 border-slate-500/20 pt-2 mb-3 flex flex-col justify-start items-center gap-4">
+        <div id="lossOrGain" className="w-full h-full shadow shadow-slate-500 pt-2 mb-3 flex flex-col justify-start items-center gap-4 mt-3">
             <h2 className="w-full h-fit flex justify-center text-[1.22rem]">Loss or gain:</h2>
             <BarChart
                 labels={monthlyBalancesLabels}
