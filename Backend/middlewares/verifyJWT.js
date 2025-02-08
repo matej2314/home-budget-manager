@@ -14,6 +14,7 @@ const verifyJWT = () => {
             req.userId = decoded.id;
             req.role = decoded.role;
             req.userName = decoded.userName;
+            req.avatar = decoded.avatar;
             next();
         } catch (error) {
             return res.status(401).json({status: 'error', message: 'Zaloguj się, aby zobaczyć zasoby.' });

@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/login`);
 
             if (response.status === 'success') {
-                setUser({ userName: response.userName, role: response.role, id: response.id });
+                setUser({ userName: response.userName, role: response.role, id: response.id, avatar: response.avatar });
                 setIsAuthenticated(true);
                 setMessage(response.message);
             };
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
             const response = await fetchData(`${serverUrl}/auth/verify`);
 
             if (response.status === 'success') {
-                setUser({ userName: response.userName, role: response.role, id: response.userId });
+                setUser({ userName: response.userName, role: response.role, id: response.userId, avatar: response.avatar });
                 setIsAuthenticated(true);
             } else {
                 setIsAuthenticated(false);

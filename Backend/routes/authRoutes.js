@@ -223,6 +223,7 @@ router.get('/verify', verifyJWT(), (req, res) => {
         userId: req.userId,
         userName: req.userName,
         role: req.role,
+        avatar: req.avatar
     });
 });
 

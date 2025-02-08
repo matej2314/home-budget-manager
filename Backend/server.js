@@ -32,7 +32,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/users-avatars', express.static(path.join(__dirname, 'public', 'user-photos')));
 
 app.options('*', (req, res) => {
 	res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');

@@ -137,6 +137,7 @@ exports.loginUser = async (req, res) => {
 			userName: user.name,
 			role: user.role,
 			id: user.id,
+			avatar: user.avatarName,
 		});
 	} catch (error) {
 		logger.error(`Błąd podczas logowania użytkownika: ${error.message}`);

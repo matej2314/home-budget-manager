@@ -14,7 +14,7 @@ async function extractPhotoData(imagePath) {
             logger: m => logger.info(m)
         });
 
-        const match = text.match(/SUMA[:\s]*([\d.,]+)/i);
+        const match = text.match(/SUMA[\s:]*\s*(PLN)?[\s:]*([\d.,]+)/i);
         return match ? match[1] : null;
 
     } catch (error) {
@@ -23,4 +23,4 @@ async function extractPhotoData(imagePath) {
     };
 };
 
-module.exports = { extractPhotoData };
+module.exports = { extractPhotoData }; 

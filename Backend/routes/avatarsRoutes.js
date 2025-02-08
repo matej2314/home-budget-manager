@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
+const fs = require('fs/promises');
 const logger = require('../configs/logger');
 const verifyJWT = require('../middlewares/verifyJWT');
 const createUserDirectory = require('../middlewares/createUserDirectory');
@@ -12,7 +14,6 @@ router.post('/save',
     saveAvatar.single('avatar'),
     async (req, res) => {
         try {
-            const userId = req.userId;
             
             if (!req.file) {
                 return res.status(400).json({
@@ -21,12 +22,12 @@ router.post('/save',
                 });
             };
 
-            const avatarPath = `/user-photos/${userId}/${req.file.filename}`;
+           
 
             res.status(200).json({
                 status: 'success',
                 message: 'Avatar zapisany pomyślnie.',
-                avatarUrl: avatarPath,
+                avatarName: req.file.filename,
             })
         } catch (error) {
             logger.error(`Błąd podczass zapisywania avatara: ${error}`)
@@ -35,8 +36,30 @@ router.post('/save',
                 message: 'Wystąpił błąd podczas zapisywania avatara.',
             });
        }
-});
+    });
 
+    router.get(`/avatar`, verifyJWT(), (req, res) => {
+        const userId = req.userId;
+        const avatarDir = path.join(__dirname, '../public/user-photos', `${userId}`);
+        const avatarExtensions = ['.jpg', '.jpeg', '.png'];
+        let avatarPath = null;
+    
+        for (const ext of avatarExtensions) {
+            const filePath = path.join(avatarDir, `${userId}${ext}`);
+            
+            if (fs.access(filePath)) {
+                avatarPath = filePath;
+                break;
+            }
+        }
+    
+        if (!avatarPath) {
+         return  res.sendFile(path.join(__dirname, '../public/user-photos', 'default.jpg'))
+        }
+    
+        res.sendFile(avatarPath);
+    });
+    
 router.delete('/delete',
     verifyJWT(),
     deleteFiles,

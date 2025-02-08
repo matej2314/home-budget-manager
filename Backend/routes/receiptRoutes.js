@@ -5,7 +5,7 @@ const { extractPhotoData } = require('../configs/tesseract');
 
 router.post('/receipt', async (req, res) => {
     
-})
+});
 
 
 module.exports = router;

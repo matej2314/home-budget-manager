@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { DataContext } from '../../store/dataContext';
 import { AuthContext } from '../../store/authContext';
 import Modal from 'react-modal';
+import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) {
     const { data, isLoading, error } = useContext(DataContext);

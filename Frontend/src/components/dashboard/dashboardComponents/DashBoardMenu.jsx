@@ -33,7 +33,7 @@ export default function DashBoardMenu() {
     const adminLinksElements = [
         { path: 'users', label: 'Users', icon: 'mynaui:users' },
         { path: 'households', label: 'Households', icon: 'lucide-lab:houses' },
-        { path: 'stats', label: 'Statistics', icon: 'uil:statistics' },
+        { path: 'stats', label: 'Page stats', icon: 'uil:statistics' },
     ];
 
     return (
@@ -62,6 +62,7 @@ export default function DashBoardMenu() {
                 </>
                 }
             </ul>
+
         </div>
     )
 }
