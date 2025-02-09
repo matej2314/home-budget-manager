@@ -3,7 +3,7 @@ import sendRequest from '../../utils/sendRequest';
 import { serverUrl } from '../../url';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
-export default function SendMessageForm({ reply, recipientName }) {
+export default function SendMessageForm({ reply, recipientName, onClose }) {
     const [sended, setSended] = useState(false);
     const recipientRef = useRef();
     const messageContentRef = useRef();
@@ -23,6 +23,9 @@ export default function SendMessageForm({ reply, recipientName }) {
             if (sendMessage.status === 'success') {
                 showInfoToast(sendMessage.message);
                 messageContentRef.current.value = "";
+                setTimeout(() => {
+                    onClose();
+                }, 600);
             }
         } catch (error) {
             showErrorToast(sendMessage.message);

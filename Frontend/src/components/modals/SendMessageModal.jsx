@@ -12,7 +12,7 @@ export default function SendMessageModal({ isOpen, onRequestClose, recipient }) 
             <button onClick={onRequestClose}
                 className='relative left-[28.7rem] bottom-6 text-black hover:text-gray-600'
             >X</button>
-            <SendMessageForm reply={false} recipientName={recipient} />
+            <SendMessageForm reply={false} recipientName={recipient} onClose={onRequestClose} />
         </Modal>
     )
 }

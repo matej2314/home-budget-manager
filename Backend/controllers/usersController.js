@@ -1,9 +1,11 @@
 const logger = require('../configs/logger');
+const pool = require('../database/db');
 const { addUserToHouse } = require('../services/usersServices/addUserToHouse');
 const { getUsersCollection } = require('../services/usersServices/getUsersCollection');
 const { getInhabitants } = require('../services/usersServices/getInhabitants');
 const { deleteUser } = require('../services/usersServices/deleteUser');
 const { deleteInhabitant } = require('../services/usersServices/deleteInhabitant');
+const {changeUserEmail} = require('../services/usersServices/changeUserEmail');
 
 exports.addUserToHouse = async (req, res) => {
     const userId = req.userId;
@@ -89,5 +91,30 @@ exports.deleteInhabitant = async (req, res) => {
         logger.error(`Błąd deleteInhabitant: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Nie udało się usunąć domownika.' });
     };
+};
+
+exports.changeEmail = async (req, res) => {
+    const userId = req.userId;
+    const { newEmail } = req.body;
+    
+    try {
+        const response = await changeUserEmail(newEmail, userId);
+
+        if (response.status === 'badreq') {
+            return res.status(400).json({ status: 'error', message: response.message });
+        } else if (response.status === 'emailexist') {
+            return res.status(400).json({ status: 'error', message: response.message });
+        } else if (response.status === 'error') {
+            return res.status(500).json({ status: 'error', message: response.message });
+        }
+
+        if (response.status === 'success') {
+            return res.status(200).json(response);
+        };
+    } catch (error) {
+        logger.error(`Błąd w changeEmail: ${error}`);
+        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+    };
+   
 };
 

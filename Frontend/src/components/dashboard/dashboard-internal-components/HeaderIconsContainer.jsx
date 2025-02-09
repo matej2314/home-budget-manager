@@ -19,6 +19,10 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
         return Object.values(notifications).some(category => category.length > 0);
     };
 
+    const handleReadedNotification = () => {
+        setIsNotifications(false);
+    };
+
     useEffect(() => {
         const hasNotifications = checkNotifications();
         setIsNotifications(hasNotifications);
@@ -52,7 +56,7 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
             <Link to="/dashboard/myhouse" title="My house" className="w-fit h-fit hover:text-yellow-900">
                 <Icon icon="ph:house-bold" width={20} height={20} />
             </Link>
-            {isNotificationsVisible && <NotificationsContainer />}
+            {isNotificationsVisible && <NotificationsContainer onClick={handleReadedNotification} />}
         </div>
     );
 }

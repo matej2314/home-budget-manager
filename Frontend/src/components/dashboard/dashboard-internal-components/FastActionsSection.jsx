@@ -4,7 +4,7 @@ import SendMessageModal from "../../modals/SendMessageModal";
 import AddUserToHouseModal from '../../modals/AddUserToHouseModal';
 
 
-export default function FastActions({ profilePage, action }) {
+export default function FastActions({ profilePage, action, openModal }) {
 
     const [modal, setModal] = useState({ isOpen: false, type: null });
 
@@ -39,14 +39,6 @@ export default function FastActions({ profilePage, action }) {
                 </button>
                 {profilePage && <>
                     <button
-                        type="button"
-                        onClick={() => action('transactions')}
-                        className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
-
-                    >
-                        Your transactions
-                    </button>
-                    <button
                         onClick={() => action('avatar')}
                         className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
                         type="button"
@@ -54,7 +46,7 @@ export default function FastActions({ profilePage, action }) {
                         Change avatar
                     </button>
                     <button
-                        onClick={() => action('email')}
+                        onClick={openModal}
                         className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
                         type="button"
                     >

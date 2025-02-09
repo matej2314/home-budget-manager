@@ -412,4 +412,6 @@ router.delete('/delete/inhabitant', verifyJWT(), verifyRole('host'), usersContro
 
 router.post('/invite', verifyJWT(), verifyRole('host'), usersController.addUserToHouse);
 
+router.post('/changemail', verifyJWT(), usersController.changeEmail);
+
 module.exports = router;
