@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const logger = require('../configs/logger');
-const  {extractPhotoData}  = require('../configs/tesseract');
-const { uploadReceipt } = require('../store/receiptStorage');
+const {extractPhotoData}  = require('../configs/tesseract');
+const {uploadReceipt}  = require('../store/receiptStorage');
 
-router.post('/receipt',
+router.post('/',
     uploadReceipt.single('receipt'),
     async (req, res) => {
         if (!req.file) {
@@ -12,15 +12,21 @@ router.post('/receipt',
         }
 
         try {
-            const totalAmount = await extractPhotoData(req.file.path);
+            const totalAmount = await extractPhotoData(req.file.buffer);
 
-            if (!totalAmount) return res.status(400).json({ status: 'error', message: 'Brak oczekiwanej wartości.' });
+            req.file.buffer = null;
 
-            res.status(200).json({ status: 'success', message: `Ostateczna wartość z obrazu: ${totalAmount} PLN` });
+            if (!totalAmount) {
+                return res.status(400).json({ status: 'error', message: 'Brak oczekiwanej wartości.' });
+            }
+
+            res.status(200).json({ status: 'success', message: `Ostateczna wartość z obrazu: ${totalAmount} PLN`, value: totalAmount });
         } catch (error) {
+            logger.error(`Błąd przetwarzania obrazu: ${error}`);
             res.status(500).json({ status: 'error', message: 'Błąd przetwarzania obrazu.' });
         }
-});
+    }
+);
 
 
 module.exports = router;

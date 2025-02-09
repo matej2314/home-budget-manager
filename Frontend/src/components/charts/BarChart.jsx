@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -43,8 +42,12 @@ const BarChart = ({
     const minY = Math.min(...dataValues);
     const maxY = Math.max(...dataValues);
 
-    const yMin = minY < 0 ? minY : 0;
+    const hasNegativeValues = minY < 0;
+
+    const yMin = hasNegativeValues ? minY : 0;
     const yMax = maxY;
+
+    const yBuffer = hasNegativeValues ? Math.abs(maxY - minY) * 0.1 : 0;
 
     const defaultOptions = {
         responsive: true,
@@ -62,8 +65,8 @@ const BarChart = ({
             },
             y: {
                 beginAtZero: true,
-                min: yMin,
-                max: yMax,
+                min: yMin - yBuffer,
+                max: yMax + yBuffer,
                 ticks: {
                     callback: function (value) {
                         return value;

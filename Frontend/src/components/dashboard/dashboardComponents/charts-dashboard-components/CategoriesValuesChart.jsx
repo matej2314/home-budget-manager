@@ -13,7 +13,7 @@ export default function CategoriesValuesChart({ labels, values }) {
                 colors={['rgba(255, 99, 132, 0.2)']}
                 borderColors={['rgba(255, 99, 132, 1)']}
                 width={500}
-                height={450}
+                height={470}
             />
         </div>
     )

@@ -51,6 +51,7 @@ const dashboardRouter = require('./routes/dashboardRoutes.js');
 const actionCatRouter = require('./routes/actionCatRoutes.js');
 const messagesRouter = require('./routes/messagesRoutes.js');
 const initialMonthlyBudgetsRouter = require('./routes/initialMonthlyBudgetsRoutes.js');
+const receiptRouter = require('./routes/receiptRoutes.js');
 const avatarsRouter = require('./routes/avatarsRoutes.js');
 
 app.use('/auth', authRouter);
@@ -61,6 +62,7 @@ app.use('/board', dashboardRouter);
 app.use('/actioncat', actionCatRouter);
 app.use('/message', messagesRouter);
 app.use('/initmonthly', initialMonthlyBudgetsRouter);
+app.use('/receipt', receiptRouter);
 app.use('/avatars', avatarsRouter);
 
 const server = http.createServer(app);

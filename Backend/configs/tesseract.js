@@ -2,19 +2,19 @@ const Tesseract = require('tesseract.js');
 const sharp = require('sharp');
 const logger = require('./logger');
 
-async function extractPhotoData(imagePath) {
+async function extractPhotoData(imageBuffer) {
     try {
-        const processedImagePath = imagePath.replace(/\.\w+$/, '_bw.png');
-        await sharp(imagePath)
+        const processedImageBuffer = await sharp(imageBuffer)
             .grayscale()
             .toFormat('png')
-            .toFile(processedImagePath);
-        
-        const { data: { text } } = await Tesseract.recognize(processedImagePath, 'eng', {
+            .toBuffer();
+
+        const { data: { text } } = await Tesseract.recognize(processedImageBuffer, 'pol', {
             logger: m => logger.info(m)
         });
 
-        const match = text.match(/SUMA[\s:]*\s*(PLN)?[\s:]*([\d.,]+)/i);
+        logger.info(`Wykryty tekst: ${text}`);
+        const match = text.match(/(?:SUMA|DO\sZAPŁATY)[\s:]*\s*(PLN)?[\s:]*([\d.,]+)/i);
         const totalAmount = match ? match[2] : null;
 
         logger.info(`Odczytana suma: ${totalAmount}`);
@@ -22,7 +22,7 @@ async function extractPhotoData(imagePath) {
     } catch (error) {
         logger.error(`Błąd OCR: ${error}`);
         return null;
-    };
-};
+    }
+}
 
-module.exports = { extractPhotoData }; 
+module.exports = { extractPhotoData };

@@ -42,9 +42,6 @@ export default function ChangeEmailModal({ handleOpen, onRequestClose }) {
         };
     };
 
-
-
-
     return (
         <Modal
             isOpen={handleOpen}

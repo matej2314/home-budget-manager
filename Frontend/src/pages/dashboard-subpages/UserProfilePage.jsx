@@ -2,8 +2,8 @@ import { useContext, useState, useRef } from 'react';
 import { AuthContext } from '../../store/authContext';
 import { serverUrl } from '../../url';
 import FastActions from '../../components/dashboard/dashboard-internal-components/FastActionsSection';
-import ChangeEmailModal from '../../components/modals/ChangeEmailModal';
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
+import MatesList from '../../components/dashboard/dashboard-internal-components/MatesList';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
@@ -67,7 +67,7 @@ export default function UserProfilePage() {
 
     return (
         <>
-            <div id="pagecontent" className="bg-slate-200 w-full h-screen">
+            <div id="pagecontent" className="bg-slate-200 w-full h-screen overflow-auto no-scrollbar">
                 <DashboardHeader />
                 <div id="middle-content" className="w-full flex flex-col gap-5 py-4 px-5">
                     <div id='page-header' className='w-full h-fit flex justify-center items-center gap-7'>
@@ -81,23 +81,32 @@ export default function UserProfilePage() {
                     </div>
                     <FastActions profilePage={true} action={handleType} openModal={handleOpenModal} />
                 </div>
-                {type && type === 'avatar' ? <>
-                    <form
-                        onSubmit={handleChangeAvatar}
-                        className='w-1/2 h-fit flex flex-col items-center gap-3 mx-auto mt-5 border-2 border-slate-300 py-3 rounded-md shadow-lg shadow-slate-400'
-                    >
-                        <label htmlFor="avatar" className='text-lg font-semibold'>Select your avatar file:</label>
-                        <input type="file" name="avatar" id="avatar" limit={1} accept='image/*' ref={avatarFile} />
-                        <button
-                            type="submit"
-                            disabled={sended}
-                            className='w-fit h-fit border-2 border-slate-400 rounded-md p-3 hover:bg-slate-400 hover:text-slate-50'
+                {type === 'avatar' ? (
+                    <>
+                        <form
+                            onSubmit={handleChangeAvatar}
+                            className='w-1/2 h-fit flex flex-col items-center gap-3 mx-auto mt-5 border-2 border-slate-300 py-3 rounded-md shadow-lg shadow-slate-400'
                         >
-                            Save
-                        </button>
-                    </form>
-                </> : <TransactionsList filterId={user.id} />}
-                {type && type === 'email' && <ChangeEmailModal handleOpen={isModalOpen} onRequestClose={handleCloseModal} />}
+                            <label htmlFor="avatar" className='text-lg font-semibold'>Select your avatar file:</label>
+                            <input type="file" name="avatar" id="avatar" limit={1} accept='image/*' ref={avatarFile} />
+                            <button
+                                type="submit"
+                                disabled={sended}
+                                className='w-fit h-fit border-2 border-slate-400 rounded-md p-3 hover:bg-slate-400 hover:text-slate-50'
+                            >
+                                Save
+                            </button>
+                        </form>
+                    </>
+                ) : type === 'mates' ? (
+                    <div className='w-8/12 h-fit flex justify-center shadow-md shadow-slate-400 mx-auto py-3'>
+                        <MatesList mode='subpage' />
+                    </div>
+
+                ) : (
+                    <div className='w-full h-fit flex justify-center px-5 mb-4'><TransactionsList filterId={user.id} /></div>
+                )}
+
             </div >
         </>
     )
