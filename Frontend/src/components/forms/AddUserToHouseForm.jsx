@@ -2,9 +2,11 @@ import { useRef, useState } from "react";
 import sendRequest from '../../utils/sendRequest';
 import { serverUrl } from '../../url';
 import { showInfoToast, showErrorToast } from "../../configs/toastify";
+import LoadingModal from '../modals/LoadingModal';
 
 export default function AddUserToHouseForm({ onClose }) {
     const [sended, setSended] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const invitedUser = useRef();
 
@@ -15,6 +17,7 @@ export default function AddUserToHouseForm({ onClose }) {
 
         try {
             setSended(false);
+            setIsLoading(true)
             const inviteUser = await sendRequest('POST', data, `${serverUrl}/users/invite`)
 
             if (inviteUser.status === 'success') {
@@ -27,6 +30,7 @@ export default function AddUserToHouseForm({ onClose }) {
             console.error(error);
         } finally {
             setSended(true);
+            setIsLoading(false);
         };
 
     };
@@ -49,6 +53,7 @@ export default function AddUserToHouseForm({ onClose }) {
                     Invite
                 </button>
             </form>
+            {isLoading && <LoadingModal isOpen={isLoading} />}
         </div>
     )
 

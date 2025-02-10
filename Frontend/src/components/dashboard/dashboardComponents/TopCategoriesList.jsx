@@ -1,18 +1,22 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DataContext } from '../../../store/dataContext';
 import BarChart from '../../charts/BarChart';
 import CategoriesValuesChart from "./charts-dashboard-components/CategoriesValuesChart";
 
 export default function TopCategoriesList({ main }) {
-    const { data, isLoading, error } = useContext(DataContext);
+    const { actionsData, fetchTransactions, actionsError, actionsLoading } = useContext(DataContext);
 
-    const transactions = !isLoading && !error && data.actionsData;
+    useEffect(() => {
+        fetchTransactions();
+    }, []);
+
+    const transactions = !actionsLoading && !actionsError && actionsData || [];
     const transactionsCategories = transactions.map((action) => action.categoryName);
     const uniqueCategories = new Set(transactionsCategories);
 
     const categoryPercentages = Array.from(uniqueCategories).map((category) => {
         const categoryCount = transactionsCategories.filter(c => c === category).length;
-        const percentage = (categoryCount / transactionsCategories.length) * 100;
+        const percentage = ((categoryCount / transactionsCategories.length) * 100).toFixed(2);
         return { label: category, value: percentage };
     });
 
@@ -41,7 +45,7 @@ export default function TopCategoriesList({ main }) {
                 <ul className="mb-4">
                     {categoryPercentages.map((cat) => (
                         <li key={cat.label}>
-                            {cat.label} : {cat.value.toFixed(2)} %
+                            {cat.label} : {cat.value} %
                         </li>
                     ))}
                 </ul>

@@ -3,34 +3,48 @@ import { AuthContext } from './authContext';
 import { serverUrl } from "../url";
 import fetchData from '../utils/fetchData';
 
+
 export const DataContext = createContext({
     data: {},
+    messagesData: {},
+    actionsData: {},
     isLoading: true,
-    error: null,
+    messagesLoading: false,
+    messagesError: null,
+    actionsLoading: false,
+    actionsError: null,
     refreshData: () => { },
+    fetchMessages: () => { },
+    fetchTransactions: () => { },
 });
 
 export const DataProvider = ({ children }) => {
+
+    const { isAuthenticated } = useContext(AuthContext);
+
     const [data, setData] = useState({
         houseData: [],
         houseMates: [],
-        actionsData: [],
         actionsCatData: [],
-        messagesData: [],
         statsData: [],
         dailyData: [],
+        dataError: null,
+        loading: true,
     });
-    const [isLoading, setIsLoading] = useState(true);
-    // const [messagesData, setMessagesData] = useState([]);
-    // const [messsagesDataError, setMessagesDataError] = useState(null);
-    // const [actionsData, setActionsData] = useState([]);
-    // const [actionsDataError, setActionsDataError] = useState(null);
-    const [error, setError] = useState(null);
-    const { isAuthenticated } = useContext(AuthContext);
+    const [messagesData, setMessagesData] = useState({
+        messagesData: [],
+        messagesDataError: null,
+        loading: false,
+    });
+
+    const [actionsData, setActionsData] = useState({
+        actionsData: [],
+        actionsDataError: null,
+        loading: false,
+    })
 
     const fetchBoardData = async (filter = 'all') => {
-        setIsLoading(true);
-        setError(null);
+        setData(prevData => ({ ...prevData, loading: true, dataError: null }));
 
         try {
             const result = await fetchData(`${serverUrl}/board/data/${filter}`);
@@ -38,16 +52,43 @@ export const DataProvider = ({ children }) => {
                 ...prevData,
                 ...(result.dashboardData.houseData && { houseData: result.dashboardData.houseData }),
                 ...(result.dashboardData.houseMates && { houseMates: result.dashboardData.houseMates }),
-                ...(result.dashboardData.actionsData && { actionsData: result.dashboardData.actionsData }),
                 ...(result.dashboardData.actionCatData && { actionsCatData: result.dashboardData.actionCatData }),
-                ...(result.dashboardData.messagesData && { messagesData: result.dashboardData.messagesData }),
                 ...(result.dashboardData.statsData && { statsData: result.dashboardData.statsData }),
                 ...(result.dashboardData.dailyData && { dailyData: result.dashboardData.dailyData }),
+                loading: false,
             }));
         } catch (error) {
-            setError(error.message);
-        } finally {
-            setIsLoading(false);
+            setData(prevData => ({ ...prevData, dataError: error }));
+        }
+    };
+
+    const fetchMessages = async (filter = 'messages') => {
+        setMessagesData(prevData => ({ ...prevData, loading: true, messagesDataError: null }));
+
+        try {
+            const result = await fetchData(`${serverUrl}/board/data/${filter}`);
+            setMessagesData(prevData => ({
+                ...prevData,
+                messagesData: result.dashboardData.messagesData,
+                loading: false,
+            }));
+        } catch (error) {
+            setMessagesData(prevData => ({ ...prevData, messagesDataError: error }));
+        }
+    };
+
+    const fetchTransactions = async (filter = 'transactions') => {
+        setActionsData(prevData => ({ ...prevData, loading: true, actionsDataError: null }));
+
+        try {
+            const result = await fetchData(`${serverUrl}/board/data/${filter}`);
+            setActionsData(prevData => ({
+                ...prevData,
+                actionsData: result.dashboardData.actionsData,
+                loading: false,
+            }))
+        } catch (error) {
+            setActionsData(prevData => ({ ...prevData, actionsDataError: error }));
         }
     };
 
@@ -62,7 +103,19 @@ export const DataProvider = ({ children }) => {
     }, [isAuthenticated]);
 
     return (
-        <DataContext.Provider value={{ data, isLoading, error, refreshData }}>
+        <DataContext.Provider value={{
+            data,
+            messagesData: messagesData.messagesData,
+            actionsData: actionsData.actionsData,
+            isLoading: data.loading,
+            messagesLoading: messagesData.loading,
+            messagesError: messagesData.messagesDataError,
+            actionsLoading: actionsData.loading,
+            actionsError: actionsData.actionsDataError,
+            refreshData,
+            fetchMessages,
+            fetchTransactions,
+        }}>
             {children}
         </DataContext.Provider>
     );

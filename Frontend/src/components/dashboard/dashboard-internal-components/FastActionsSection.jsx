@@ -5,6 +5,7 @@ import SendMessageModal from "../../modals/SendMessageModal";
 import AddUserToHouseModal from '../../modals/AddUserToHouseModal';
 import ChangeEmailModal from "../../modals/ChangeEmailModal";
 import DeclareBudgetModal from "../../modals/DeclareBudgetModal";
+import LoadingModal from "../../modals/LoadingModal";
 
 export default function FastActions({ profilePage, action }) {
 
@@ -75,7 +76,6 @@ export default function FastActions({ profilePage, action }) {
                     >
                         Change e-mail address
                     </button>
-
                 </>}
             </div>
             {modal.isOpen && modal.type === 'message' && (

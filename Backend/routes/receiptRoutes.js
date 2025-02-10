@@ -20,7 +20,7 @@ router.post('/',
                 return res.status(400).json({ status: 'error', message: 'Brak oczekiwanej wartości.' });
             }
 
-            res.status(200).json({ status: 'success', message: `Ostateczna wartość z obrazu: ${totalAmount} PLN`, value: totalAmount });
+            res.status(200).json({ status: 'success', message: `Kwota z paragonu: ${totalAmount} PLN`, value: totalAmount });
         } catch (error) {
             logger.error(`Błąd przetwarzania obrazu: ${error}`);
             res.status(500).json({ status: 'error', message: 'Błąd przetwarzania obrazu.' });

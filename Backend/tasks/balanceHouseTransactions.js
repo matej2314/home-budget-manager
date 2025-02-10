@@ -33,7 +33,7 @@ const balanceHouseActions = async () => {
                 logger.info(`Obliczanie daty dla gospodarstwa ${houseId}, balanceDate: ${monthlyBalanceDate}, createdAt: ${createdAt}`);
 
                 const nextBalanceDate = new Date(dateLimit);
-                nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
+                nextBalanceDate.setDate(nextBalanceDate.getDate() + 30);
                 const nextBalanceDateStr = nextBalanceDate.toISOString().split('T')[0];
                 
                 if (today >= nextBalanceDateStr) {

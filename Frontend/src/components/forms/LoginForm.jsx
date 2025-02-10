@@ -2,6 +2,7 @@ import { useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import LoadingModal from '../modals/LoadingModal';
 
 
 export default function LoginForm() {
@@ -67,6 +68,7 @@ export default function LoginForm() {
                     {isLoading ? 'Logging in' : 'Login'}
                 </button>
             </form>
+            {isLoading && <LoadingModal isOpen={isLoading} />}
         </div>
     )
 

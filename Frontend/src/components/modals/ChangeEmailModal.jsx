@@ -3,10 +3,12 @@ import sendRequest from '../../utils/sendRequest';
 import Modal from 'react-modal';
 import { serverUrl } from '../../url';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
+import LoadingModal from '../modals/LoadingModal';
 
 
 export default function ChangeEmailModal({ handleOpen, onRequestClose }) {
     const [sended, setSended] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const newEmailAddr = useRef();
 
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -24,6 +26,7 @@ export default function ChangeEmailModal({ handleOpen, onRequestClose }) {
 
         try {
             setSended(false);
+            setIsLoading(true);
             const saveEmail = await sendRequest('POST', emailData, `${serverUrl}/users/changemail`);
 
             if (saveEmail.status === 'error') {
@@ -39,6 +42,7 @@ export default function ChangeEmailModal({ handleOpen, onRequestClose }) {
             console.error(error);
         } finally {
             setSended(true);
+            setIsLoading(false);
         };
     };
 
@@ -71,8 +75,8 @@ export default function ChangeEmailModal({ handleOpen, onRequestClose }) {
                         Save
                     </button>
                 </form>
+                {isLoading && <LoadingModal isOpen={isLoading} />}
             </div>
-
         </Modal>
     )
 }

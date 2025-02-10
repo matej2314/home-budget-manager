@@ -5,6 +5,7 @@ import { useSocket } from "../store/socketContext";
 import DashBoardMenu from "../components/dashboard/dashboardComponents/DashBoardMenu";
 import { Outlet } from 'react-router-dom';
 import { showMessageToast } from '../configs/toastify';
+import LoadingModal from "../components/modals/LoadingModal";
 
 export default function DashboardPage() {
     const { data, isLoading, error } = useContext(DataContext);
@@ -21,6 +22,7 @@ export default function DashboardPage() {
 
     return (
         <>
+            {isLoading && <LoadingModal isOpen={isLoading} />}
             {!isLoading && !error && data && isAuthenticated &&
                 <main className="w-screen h-full flex flex-row justify-around items-stretch overflow-y-hidden bg-slate-200">
                     <DashBoardMenu />

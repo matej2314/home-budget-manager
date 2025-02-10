@@ -34,7 +34,7 @@ const getBoardData = async (userId, filter = 'all') => {
             boardData.houseMates = matesData;
         };
        
-        if (filter === 'all' || filter === 'transactions') {
+        if (filter === 'transactions') {
             const [transactionsData] = await connection.query(dashboardQueries.transactionsData, [userHouseId]);
         
             boardData.actionsData = transactionsData;
@@ -52,7 +52,7 @@ const getBoardData = async (userId, filter = 'all') => {
             boardData.actionCatData = actionsCatData;
         };
 
-        if (filter === 'all' || filter === 'messages') {
+        if (filter === 'messages') {
             const [messagesData] = await connection.query(dashboardQueries.messagesData, [userId, userId]);
             boardData.messagesData = messagesData;
         };

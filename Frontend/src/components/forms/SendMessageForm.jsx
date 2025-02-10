@@ -2,9 +2,11 @@ import { useRef, useState } from "react";
 import sendRequest from '../../utils/sendRequest';
 import { serverUrl } from '../../url';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import LoadingModal from '../modals/LoadingModal';
 
 export default function SendMessageForm({ reply, recipientName, onClose }) {
     const [sended, setSended] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const recipientRef = useRef();
     const messageContentRef = useRef();
 
@@ -18,6 +20,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 
         try {
             setSended(false);
+            setIsLoading(true);
             const sendMessage = await sendRequest('POST', messageData, `${serverUrl}/message/send`);
 
             if (sendMessage.status === 'success') {
@@ -31,6 +34,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
             showErrorToast(sendMessage.message);
         } finally {
             setSended(true);
+            setIsLoading(false);
         }
     };
 

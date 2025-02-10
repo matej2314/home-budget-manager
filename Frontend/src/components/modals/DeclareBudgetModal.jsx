@@ -4,10 +4,12 @@ import sendRequest from '../../utils/sendRequest';
 import { serverUrl } from '../../url';
 import { CountDeclaredBudgetPeriod } from '../../utils/CountDeclaredBudgetPeriod';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import LoadingModal from './LoadingModal';
 
 
 export default function DeclareBudgetModal({ isOpen, onRequestClose }) {
     const [sended, setSended] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const declaredBudgetRef = useRef();
     const declaredPeriod = CountDeclaredBudgetPeriod();
 
@@ -25,6 +27,7 @@ export default function DeclareBudgetModal({ isOpen, onRequestClose }) {
 
         try {
             setSended(false);
+            setIsLoading(true);
             const addBudget = await sendRequest('POST', budgetData, `${serverUrl}/initmonthly/new`);
 
             if (addBudget.status === 'error') {
@@ -39,6 +42,7 @@ export default function DeclareBudgetModal({ isOpen, onRequestClose }) {
             console.error(error);
         } finally {
             setSended(true);
+            setIsLoading(false);
         }
     }
 
@@ -69,6 +73,7 @@ export default function DeclareBudgetModal({ isOpen, onRequestClose }) {
                 </button>
                 <p>For period : {declaredPeriod.startPeriod} - {declaredPeriod.endPeriodString}</p>
             </form>
+            {isLoading && <LoadingModal isOpen={isLoading} />}
         </Modal>
     )
 }

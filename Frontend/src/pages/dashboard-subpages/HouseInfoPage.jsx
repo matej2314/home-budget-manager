@@ -39,17 +39,39 @@ export default function HouseInfoPage() {
         }
     }, [stats]);
 
-
     const { actionLabels, dailyTransactions, dailyBudgetLabels, dailyBudgetValues } = useMemo(() => {
         if (!dailyInfo || !dailyInfo.length) {
             return { actionLabels: [], dailyTransactions: [], dailyBudgetLabels: [], dailyBudgetValues: [] };
         };
 
+        // const uniqueDailyActions = Array.from(
+        //     new Set(dailyInfo.map(item => item.dailyActionsDate)))
+        //     .map(date => dailyInfo.find(item => item.dailyActionsDate === date)
+        //     );
+
+        // const uniqueDailyBudgets = Array.from(
+        //     new Set(dailyInfo.map(item => item.dailyBudgetDate)))
+        //     .map(date => dailyInfo.find(item => item.dailyBudgetDate === date));
+
+        const uniqueDailyActions = dailyInfo.reduce((acc, item) => {
+            if (!acc.some(el => el.dailyActionsDate.includes(item.dailyActionsDate))) {
+                acc.push(item);
+            }
+            return acc;
+        }, []);
+
+        const uniqueDailyBudgets = dailyInfo.reduce((acc, item) => {
+            if (!acc.some(el => el.dailyBudgetDate.includes(item.dailyBudgetDate))) {
+                acc.push(item);
+            }
+            return acc;
+        }, []);
+
         return {
-            actionLabels: dailyInfo.map(item => item.dailyActionsDate),
-            dailyTransactions: dailyInfo.map(item => item.dailyActionCount),
-            dailyBudgetLabels: dailyInfo.map(item => item.dailyBudgetDate),
-            dailyBudgetValues: dailyInfo.map(item => item.dailyBudgetValue),
+            actionLabels: uniqueDailyActions.map(item => item.dailyActionsDate),
+            dailyTransactions: uniqueDailyActions.map(item => item.dailyActionCount),
+            dailyBudgetLabels: uniqueDailyBudgets.map(item => item.dailyBudgetDate),
+            dailyBudgetValues: uniqueDailyBudgets.map(item => item.dailyBudgetValue),
         };
     }, [dailyInfo]);
 
@@ -69,12 +91,12 @@ export default function HouseInfoPage() {
                                 <div id="dailyShortInfo" className="flex gap-4">
                                     <p className="flex text-md gap-1">
                                         <span className="font-bold">Previous day's transactions:</span>
-                                        <span>{dailyInfo.dailyActionCount || '65'}</span>
+                                        <span>{dailyInfo[dailyInfo.length - 1].dailyActionCount || '65'}</span>
                                     </p>
                                     <span className="text-md h-full flex items-center">&#124;</span>
                                     <p className="flex text-md gap-1">
                                         <span className="font-bold">Previous day's budget:</span>
-                                        <span>{dailyInfo.dailyBudgetValue || '1500'}</span>
+                                        <span>{dailyInfo[dailyInfo.length - 1].dailyBudgetValue || '1500'}</span>
                                     </p>
                                 </div>
                             </div>
