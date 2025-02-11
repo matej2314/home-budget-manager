@@ -1,4 +1,5 @@
 import { useState, useContext } from "react"
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../../../store/authContext";
 import AddTransactionModal from '../../modals/AddTransactionModal';
 import SendMessageModal from "../../modals/SendMessageModal";
@@ -11,6 +12,15 @@ export default function FastActions({ profilePage, action }) {
 
     const [modal, setModal] = useState({ isOpen: false, type: null });
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleButtonClick = (type) => {
+        if (typeof action === 'function') {
+            action(type);
+        } else {
+            console.error("action must be a function!");
+        }
+    };
 
     const handleOpenModal = (type) => {
         setModal({ isOpen: true, type: type });
@@ -23,18 +33,12 @@ export default function FastActions({ profilePage, action }) {
     return (
         <>
             <div id='fastActions' className='w-full flex justify-start items-center gap-3 ml-10 py-2'>
-                {profilePage ? <button
-                    onClick={() => window.location.reload()}
-                    className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
+                {!profilePage && <button
+                    onClick={() => handleOpenModal('declare')}
+                    className={`w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60 ${user.role !== 'host' && 'hidden'}`}
                 >
-                    Home
-                </button> :
-                    <button
-                        onClick={() => handleOpenModal('declare')}
-                        className={`w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60 ${user.role !== 'host' && 'hidden'}`}
-                    >
-                        Declare new budget
-                    </button>
+                    Declare new budget
+                </button>
                 }
                 <button
                     onClick={() => handleOpenModal('transaction')}
@@ -56,14 +60,14 @@ export default function FastActions({ profilePage, action }) {
                 </button>
                 {profilePage && <>
                     <button
-                        onClick={() => action('mates')}
+                        onClick={() => handleButtonClick('mates')}
                         className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
                         type="button"
                     >
                         Your housemates
                     </button>
                     <button
-                        onClick={() => action('avatar')}
+                        onClick={() => handleButtonClick('avatar')}
                         className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
                         type="button"
                     >

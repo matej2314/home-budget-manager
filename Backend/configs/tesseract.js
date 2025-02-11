@@ -9,9 +9,7 @@ async function extractPhotoData(imageBuffer) {
             .toFormat('png')
             .toBuffer();
 
-        const { data: { text } } = await Tesseract.recognize(processedImageBuffer, 'pol', {
-            logger: m => logger.info(m)
-        });
+        const { data: { text } } = await Tesseract.recognize(processedImageBuffer, 'pol');
 
         logger.info(`Wykryty tekst: ${text}`);
         const match = text.match(/(?:SUMA|DO\sZAPŁATY)[\s:]*\s*(PLN)?[\s:]*([\d.,]+)/i);

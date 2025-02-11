@@ -14,7 +14,7 @@ export default function BasicHouseInfo({ basicHouseInfo }) {
             <span className="text-md">&#124;</span>
             <div className="w-fit flex gap-1">
                 <span className="font-bold">Date of last balance:</span>
-                <span>{basicHouseInfo.lastBalanceDate || '2025-01-01'}</span>
+                <span>{basicHouseInfo.lastBalanceDate || 'Not found'}</span>
             </div>
         </div>
     )

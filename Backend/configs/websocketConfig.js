@@ -22,6 +22,8 @@ const initializeWebSocket = (server) => {
             },
 			credentials: true,
 		},
+		pingInterval: 25000,
+		pingTimeout: 5000,
 	});
 
 	ioInstance.use(authMiddleware);

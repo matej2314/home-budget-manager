@@ -10,23 +10,25 @@ exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => 
 			return;
 		}
 
-		let newBalance = Number(houseBalance[0].currentBalance) || Number(houseBalance[0].initBudget);
+		let newBalance = parseFloat(houseBalance[0].currentBalance) || parseFloat(houseBalance[0].initBudget);
 
 		if (type === 'income') {
-			newBalance += Number(value);
+			newBalance += parseFloat(value);
 		} else if (type === 'expense') {
-			newBalance -= Number(value);
-		}
+			newBalance -= parseFloat(value);
+		};
 
-		const [addNewBalance] = await connection.query('UPDATE households SET currentBalance = ? WHERE houseId = ?', [newBalance, houseId]);
-		logger.info(`Nowe saldo gospodarstwa ${houseId}: ${newBalance}`);
+		const newBalanceToDb = parseFloat(newBalance);
+
+		const [addNewBalance] = await connection.query('UPDATE households SET currentBalance = ? WHERE houseId = ?', [newBalanceToDb, houseId]);
+		logger.info(`Nowe saldo gospodarstwa ${houseId}: ${newBalanceToDb}`);
 
 		try {
 			await broadcastToHouseMates(houseId, {
 				type: 'balance_update',
 				data: {
 					houseId: houseId,
-					newBalance: newBalance,
+					newBalance: newBalanceToDb,
 				},
 			});
 

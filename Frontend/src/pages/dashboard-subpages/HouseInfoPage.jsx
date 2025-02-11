@@ -44,15 +44,6 @@ export default function HouseInfoPage() {
             return { actionLabels: [], dailyTransactions: [], dailyBudgetLabels: [], dailyBudgetValues: [] };
         };
 
-        // const uniqueDailyActions = Array.from(
-        //     new Set(dailyInfo.map(item => item.dailyActionsDate)))
-        //     .map(date => dailyInfo.find(item => item.dailyActionsDate === date)
-        //     );
-
-        // const uniqueDailyBudgets = Array.from(
-        //     new Set(dailyInfo.map(item => item.dailyBudgetDate)))
-        //     .map(date => dailyInfo.find(item => item.dailyBudgetDate === date));
-
         const uniqueDailyActions = dailyInfo.reduce((acc, item) => {
             if (!acc.some(el => el.dailyActionsDate.includes(item.dailyActionsDate))) {
                 acc.push(item);
@@ -91,18 +82,18 @@ export default function HouseInfoPage() {
                                 <div id="dailyShortInfo" className="flex gap-4">
                                     <p className="flex text-md gap-1">
                                         <span className="font-bold">Previous day's transactions:</span>
-                                        <span>{dailyInfo[dailyInfo.length - 1].dailyActionCount || '65'}</span>
+                                        <span>{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyActionCount : '00'}</span>
                                     </p>
                                     <span className="text-md h-full flex items-center">&#124;</span>
                                     <p className="flex text-md gap-1">
                                         <span className="font-bold">Previous day's budget:</span>
-                                        <span>{dailyInfo[dailyInfo.length - 1].dailyBudgetValue || '1500'}</span>
+                                        <span>{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyBudgetValue : '0000'}</span>
                                     </p>
                                 </div>
                             </div>
                             <div id="housemates-container" className="w-fit h-fit flex border-2 border-slate-400 rounded-xl mx-auto gap-2 p-3">
                                 <p className="font-bold">Housemates:</p>
-                                <p>{houseMates.length}</p>
+                                <p>{houseMates.length || '1'}</p>
                                 <Link to='/dashboard/housemates' className="font-semibold text-slate-500 hover:text-slate-800">- View housemates list</Link>
                             </div>
                             <MostActiveMates isLoading={isLoading} matesData={matesData} />

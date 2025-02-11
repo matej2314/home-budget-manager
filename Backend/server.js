@@ -1,5 +1,4 @@
 const dotenv = require('dotenv').config({ path: './.env' });
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('./configs/logger.js');
@@ -9,6 +8,7 @@ const balanceHouseActions = require('./tasks/balanceHouseTransactions.js');
 const saveDailyTransactions = require('./tasks/saveDailyTransactions.js');
 const saveDailyBudget = require('./tasks/saveDailyBudget.js');
 const { initializeWebSocket } = require('./configs/websocketConfig.js');
+const {clearSocketConnections} = require('./utils/clearSocketConnections.js');
 const http = require('http');
 const app = express();
 
@@ -79,17 +79,19 @@ try {
 	});
 	server.setTimeout(0);
 
-	process.on('SIGINT', () => {
+	process.on('SIGINT', async () => {
+		await clearSocketConnections();
 		console.log('Zatrzymywanie serwera...');
-		server.close(() => {
+		server.close(async () => {
 			console.log('Serwer został zatrzymany');
 			process.exit(0);
 		});
 	});
 
-	process.on('SIGTERM', () => {
+	process.on('SIGTERM', async () => {
+		await clearSocketConnections();
 		console.log('Zatrzymywanie serwera...');
-		app.close(() => {
+		server.close(() => {
 			console.log('Serwer został zatrzymany');
 			process.exit(0);
 		});

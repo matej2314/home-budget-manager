@@ -36,9 +36,10 @@ const addNewAction = async (userId, type, value, catId) => {
 		}
 
 		const houseId = houseData.houseId;
+		const valueToDb = parseFloat(value) * 100 / 100;
 
 		const addActionQuery = actionQueries.newitemQuery;
-		await connection.query(addActionQuery, [id, transactionId, userId, houseId, catId, type, value]);
+		await connection.query(addActionQuery, [id, transactionId, userId, houseId, catId, type, valueToDb]);
 
 		logger.info(`Transakcja ${transactionId} została pomyślnie dodana dla gospodarstwa ${houseId}.`);
 

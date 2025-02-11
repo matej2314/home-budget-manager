@@ -4,7 +4,7 @@ const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const balanceHouseActions = async () => {
-    cron.schedule('58 23 * * *', async () => { 
+    // cron.schedule('58 23 * * *', async () => { 
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -33,7 +33,7 @@ const balanceHouseActions = async () => {
                 logger.info(`Obliczanie daty dla gospodarstwa ${houseId}, balanceDate: ${monthlyBalanceDate}, createdAt: ${createdAt}`);
 
                 const nextBalanceDate = new Date(dateLimit);
-                nextBalanceDate.setDate(nextBalanceDate.getDate() + 30);
+                nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
                 const nextBalanceDateStr = nextBalanceDate.toISOString().split('T')[0];
                 
                 if (today >= nextBalanceDateStr) {
@@ -53,7 +53,7 @@ const balanceHouseActions = async () => {
                     let newBalance = 0;
 
                     if (!formattedBalanceDate) {
-                        newBalance = initBudget;
+                        newBalance = parseFloat(initBudget);
                     } else {
                         const [initialBudgetRows] = await connection.query(
                             `SELECT value FROM initialMonthlyBudgets WHERE houseId = ? ORDER BY addedAt DESC LIMIT 1`,
@@ -61,32 +61,30 @@ const balanceHouseActions = async () => {
                         );
 
                         if (initialBudgetRows.length > 0) {
-                            newBalance = initialBudgetRows[0].value;
+                            newBalance = parseFloat(initialBudgetRows[0].value);
                         } else {
-                            newBalance = initBudget;
+                            newBalance = parseFloat(initBudget)
                         }
                     }
 
                     transactions.forEach(ts => {
                         if (ts.type === 'income') {
-                            newBalance += ts.value;
+                            newBalance += parseFloat(ts.value);
                         } else if (ts.type === 'expense') {
                             newBalance -= ts.value;
                         }
                     });
 
                     const id = uuidv4();
-
+                    const newBalanceToDb = parseFloat(newBalance);
                     const [insertBalance] = await connection.query(
                         `INSERT INTO monthly_balances (id, monthly_balance, houseId, monthlyBalanceDate) VALUES(?, ?, ?, NOW());`,
-                        [id, parseInt(newBalance), houseId]
+                        [id, newBalanceToDb, houseId]
                     );
 
                     if (insertBalance.affectedRows === 1) {
                         await connection.query('UPDATE households SET monthlyBalanceDate = NOW() WHERE houseId=?', [houseId]);
                     }
-
-                    // const [deleteActions] = await connection.query('DELETE FROM transactions WHERE houseId =?', [houseId]);
 
                     logger.info(`Bilans gospodarstwa ${houseId} zaktualizowany.`);
                 } else {
@@ -101,7 +99,7 @@ const balanceHouseActions = async () => {
         } finally {
             if (connection) connection.release();
         }
-    });
+    // });
 };
 
 module.exports = balanceHouseActions;

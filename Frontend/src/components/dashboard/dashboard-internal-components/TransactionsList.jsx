@@ -1,25 +1,18 @@
-import { useContext, useEffect } from "react";
 import { Icon } from '@iconify/react';
-import { DataContext } from '../../../store/dataContext';
 import sendRequest from '../../../utils/sendRequest';
 import { serverUrl } from "../../../url";
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import LoadingModal from '../../modals/LoadingModal';
 
-export default function TransactionsList({ limit, mainSite, filterId }) {
-    const { fetchTransactions, actionsData, actionsError, actionsLoading, refreshData } = useContext(DataContext);
+export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError }) {
 
-    const transactions = !actionsLoading && !actionsError && Array.isArray(actionsData) ? actionsData : [];
     const filteredTransactions = filterId ? [...transactions].filter((transaction) => transaction.userId === filterId) : transactions;
-    const sortedTransactions = filteredTransactions.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
+    const sortedTransactions = Array.isArray(filteredTransactions)
+        ? [...filteredTransactions].sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
+        : [];
+
     const transactionsToDisplay = limit ? sortedTransactions.slice(0, limit) : sortedTransactions;
-
-
     const tableLabels = ['Value', 'Type', 'Category', 'User', 'Date'];
-
-    useEffect(() => {
-        fetchTransactions();
-    }, []);
 
     const handleDeleteAction = async (transaction) => {
         try {

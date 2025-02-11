@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { DataContext } from "../../store/dataContext";
 import TransactionsList from "../../components/dashboard/dashboard-internal-components/TransactionsList";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import AddTransactionModal from "../../components/modals/AddTransactionModal";
@@ -8,8 +9,13 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 export default function TransactionsPage() {
+    const { fetchTransactions, actionsData, actionsError, actionsLoading } = useContext(DataContext);
+    const transactions = Array.isArray(actionsData) ? actionsData : [];
     const [modal, setModal] = useState({ isOpen: false, type: null });
 
+    useEffect(() => {
+        fetchTransactions();
+    }, []);
 
     const handleAddTransaction = () => {
         setModal({ isOpen: true, type: 'transaction' });
@@ -41,7 +47,7 @@ export default function TransactionsPage() {
                         Vew all categories
                     </button>
                 </div>
-                <TransactionsList mainSite={false} />
+                <TransactionsList mainSite={false} transactions={actionsData && transactions} actionsLoading={actionsLoading} actionsError={actionsError} />
             </div>
             {modal.isOpen && modal.type === 'transaction' && <AddTransactionModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
             {modal.isOpen && modal.type === 'categories' && <TransactionsCategoriesModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />}

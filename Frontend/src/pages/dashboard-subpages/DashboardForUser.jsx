@@ -8,6 +8,7 @@ import { showErrorToast, showInfoToast } from "../../configs/toastify";
 export default function DashBoardForUser() {
     const [sended, setIsSended] = useState(false);
     const houseNameRef = useRef();
+    const navigate = useNavigate();
 
     const handleAddHouse = async (e) => {
         e.preventDefault();
@@ -22,8 +23,11 @@ export default function DashBoardForUser() {
         try {
             setIsSended(false);
             const addHouse = await sendRequest('POST', houseData, `${serverUrl}/house/new`);
-            if (addHouse) {
+            if (addHouse.status === 'success') {
                 showInfoToast(addHouse.message);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000)
             }
         } catch (error) {
             showErrorToast(addHouse.message);
@@ -40,7 +44,7 @@ export default function DashBoardForUser() {
                 <form onSubmit={handleAddHouse} className="w-1/3 h-fit flex flex-col justify-start items-center mt-5 border-2 border-slate-500 rounded-md py-2">
                     <label htmlFor="houseName" className="text-lg">Type name of your household:</label>
                     <p className="text-xs mb-5">If household exists, you will be added to it</p>
-                    <input type="text" name="houseName" id="houseName" ref={houseNameRef} />
+                    <input type="text" name="houseName" id="houseName" className="bg-slate-200" ref={houseNameRef} />
                     <button
                         type="submit"
                         disabled={sended}

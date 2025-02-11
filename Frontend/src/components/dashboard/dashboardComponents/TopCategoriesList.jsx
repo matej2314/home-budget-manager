@@ -4,13 +4,9 @@ import BarChart from '../../charts/BarChart';
 import CategoriesValuesChart from "./charts-dashboard-components/CategoriesValuesChart";
 
 export default function TopCategoriesList({ main }) {
-    const { actionsData, fetchTransactions, actionsError, actionsLoading } = useContext(DataContext);
+    const { actionsData } = useContext(DataContext);
 
-    useEffect(() => {
-        fetchTransactions();
-    }, []);
-
-    const transactions = !actionsLoading && !actionsError && actionsData || [];
+    const transactions = Array.isArray(actionsData) ? actionsData : [];
     const transactionsCategories = transactions.map((action) => action.categoryName);
     const uniqueCategories = new Set(transactionsCategories);
 

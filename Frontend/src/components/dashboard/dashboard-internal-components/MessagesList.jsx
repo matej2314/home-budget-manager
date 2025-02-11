@@ -12,9 +12,8 @@ import MessagesFilterBtns from "./MessagesFilterBtns";
 import { messagesStates, tableHeader } from "../../../utils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
 
-export default function MessagesList() {
+export default function MessagesList(messages, messagesError, messagesLoading, messagesData) {
     const { filter } = useParams();
-    const { messagesData, messagesLoading, messagesError, fetchMessages } = useContext(DataContext);
     const { user } = useContext(AuthContext);
     const { connected, messages: socketMessages } = useSocket();
     const [modal, setModal] = useState({ isOpen: false, type: null, message: null });
@@ -23,13 +22,10 @@ export default function MessagesList() {
     const navigate = useNavigate();
 
     const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
-    const messages = !messagesLoading && !messagesError ? messagesData || [] : [];
-    const sortedMessages = messages.sort((a, b) => new Date(b.date) - new Date(a.date));
-    const filteredMessages = messages.filter((msg) => msg.recipient === user.userName);
+    const sortedMessages = Array.isArray(messages) ? messages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
+    const filteredMessages = Array.isArray(messages) ? messages.filter((msg) => msg.recipient === user.userName) : [];
 
-    useEffect(() => {
-        fetchMessages();
-    }, []);
+
 
     useEffect(() => {
 
@@ -67,7 +63,6 @@ export default function MessagesList() {
 
     const handleCloseModal = () => {
         setModal({ isOpen: false, type: null, message: null });
-        refreshData();
     };
 
     const handleMarkMessage = (message) => markMessage(message, user, refreshData);

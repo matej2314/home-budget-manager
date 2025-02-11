@@ -29,9 +29,10 @@ exports.addNewMonthlyBudget = async (req, res) => {
         const validUntil = new Date(addedAt);
         validUntil.setDate(validUntil.getDate() + 30);
         const validUntilFormatted = validUntil.toISOString().split('T')[0];
+        const valueToDb = parseFloat(value).toFixed(2);
         
-        await connection.query(initialBudgetQueries.addInitialBudgetQuery, [id, userHouse, value, validUntilFormatted]);
-        await connection.query('UPDATE households SET initBudget = ? WHERE houseId =?', [value,userHouse]);
+        await connection.query(initialBudgetQueries.addInitialBudgetQuery, [id, userHouse, valueToDb, validUntilFormatted]);
+        await connection.query('UPDATE households SET initBudget = ? WHERE houseId =?', [valueToDb,userHouse]);
 
         logger.info(`Budżet miesięczny gospodarstwa ${userHouse} został dodany dnia ${new Date().toLocaleString()}`);
 
@@ -74,7 +75,9 @@ exports.updateInitMonthlyBudget = async (req, res) => {
             return res.status(400).json({ status: 'error', message: 'Budżetu nie można zmienić po 7 dniach od ustawienia!' });
         };
 
-        const [updateBudget] = await connection.query(initialBudgetQueries.updateBudgetQuery, [newValue, budgetId]);
+        const newBudget = parseFloat(newValue).toFixed(2);
+
+        const [updateBudget] = await connection.query(initialBudgetQueries.updateBudgetQuery, [newBudget, budgetId]);
         logger.info(`Budżet miesięczny ${budgetId} zaktualizowany!`);
 
         return res.status(200).json({ status: 'success', message: 'Budżet miesięczny zaktualizowany poprawnie.' });

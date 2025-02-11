@@ -1,5 +1,6 @@
 import { useContext, useState, useRef } from 'react';
 import { AuthContext } from '../../store/authContext';
+import { DataContext } from '../../store/dataContext';
 import { serverUrl } from '../../url';
 import FastActions from '../../components/dashboard/dashboard-internal-components/FastActionsSection';
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
@@ -9,6 +10,8 @@ import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 
 export default function UserProfilePage() {
+    const { fetchTransactions, actionsData, actionsError, actionsLoading } = useContext(DataContext);
+    const transactions = Array.isArray(actionsData) ? actionsData : [];
     const { user, isAutnenticated } = useContext(AuthContext);
     const [type, setType] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -104,7 +107,9 @@ export default function UserProfilePage() {
                     </div>
 
                 ) : (
-                    <div className='w-full h-fit flex justify-center px-5 mb-4'><TransactionsList filterId={user.id} /></div>
+                    <div className='w-full h-fit flex justify-center px-5 mb-4'>
+                        <TransactionsList filterId={user.id} transactions={actionsData && transactions} actionsLoading={actionsLoading} actionsError={actionsError} />
+                    </div>
                 )}
 
             </div >

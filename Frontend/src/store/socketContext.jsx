@@ -27,6 +27,9 @@ export const SocketProvider = ({ children }) => {
             const newSocket = io(socketPath, {
                 transports: ["websocket"],
                 withCredentials: true,
+                reconnection: true,
+                reconnectionAttempts: Infinity,
+                reconnectionDelay: 3000,
             });
 
             newSocket.on("connect", () => {
