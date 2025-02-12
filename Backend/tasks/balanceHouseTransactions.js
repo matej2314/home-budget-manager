@@ -4,7 +4,7 @@ const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const balanceHouseActions = async () => {
-    // cron.schedule('58 23 * * *', async () => { 
+    cron.schedule('58 23 * * *', async () => { 
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -36,7 +36,7 @@ const balanceHouseActions = async () => {
                 nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
                 const nextBalanceDateStr = nextBalanceDate.toISOString().split('T')[0];
                 
-                if (today >= nextBalanceDateStr) {
+                if (today > nextBalanceDateStr) {
                     logger.info(`Sprawdzamy transakcje dla gospodarstwa ${houseId} od ${dateLimit}.`);
 
                     const [transactions] = await connection.query(
@@ -46,6 +46,8 @@ const balanceHouseActions = async () => {
                     
                     logger.info(`Znaleziono ${transactions.length} transakcji dla gospodarstwa ${houseId}.`);
                     const transactionCountId = uuidv4();
+
+                    const transactionsCount = transactions.length;
 
                     await connection.query(`INSERT INTO monthlyTransactionCounts (id, houseId, transactionCount, startDate, balanceDate) VALUES (?,?,?,?,?)`,
                         [transactionCountId, houseId, transactions.length, dateLimit, today]);
@@ -99,7 +101,7 @@ const balanceHouseActions = async () => {
         } finally {
             if (connection) connection.release();
         }
-    // });
+    });
 };
 
 module.exports = balanceHouseActions;

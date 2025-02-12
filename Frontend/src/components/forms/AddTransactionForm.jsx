@@ -57,13 +57,21 @@ export default function AddTransactionForm({ onClose }) {
     const handleSaveAction = async (e) => {
         e.preventDefault();
 
+        const rawValue = numberValueRef.current.value.replace(',', '.');
+        const parsedValue = parseFloat(rawValue);
+
+        if (isNaN(parsedValue)) {
+            showErrorToast('Nieprawidłowa wartość liczby');
+            return;
+        }
+
         const newActionData = {
             type: typeRef.current.value,
-            value: parseFloat(numberValueRef.current.value).toFixed(2),
+            value: parsedValue.toFixed(2),
             catId: catIdRef.current.selectedOptions[0].dataset.id,
         };
 
-        const saveAction = await sendRequest('POST', newActionData, `${serverUrl}/action/new`)
+        const saveAction = await sendRequest('POST', newActionData, `${serverUrl}/action/new`);
 
         if (saveAction.status === 'success') {
             showInfoToast(saveAction.message);
@@ -75,6 +83,7 @@ export default function AddTransactionForm({ onClose }) {
             onClose();
         }
     };
+
 
     return (
         <div className='w-full h-fit flex flex-col items-center'>

@@ -37,7 +37,7 @@ export default function DisplayLiveBalance() {
                 <span
                     className={currentBalance && currentBalance > 0 ? 'text-xl text-lime-900/75' : "text-xl text-red-500"}
                 >
-                    {currentBalance !== null ? `${currentBalance} zł` : 'Brak danych'}
+                    {currentBalance !== null ? `${currentBalance.toFixed(2)} zł` : 'Brak danych'}
                 </span>
             </div >
         </div>

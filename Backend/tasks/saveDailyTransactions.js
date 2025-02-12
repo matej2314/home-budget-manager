@@ -4,7 +4,7 @@ const pool = require('../database/db');
 const { v4: uuidv4 } = require('uuid');
 
 const saveDailyTransactions = async () => {
-    // cron.schedule('45 23 * * *', async () => {
+    cron.schedule('45 23 * * *', async () => {
         const connection = await pool.getConnection();
 
         try {
@@ -54,7 +54,7 @@ const saveDailyTransactions = async () => {
             const [addActionCount] = await connection.query(addActionQuery,[valuesToInsert]);
 
             if (addActionCount.affectedRows === rows.length) {
-                logger.info(`Zapisano ${addActionCount.affectedRows} dziennych transakcji.`);
+                logger.info(`Zapisano ${addActionCount.affectedRows.length} dziennych transakcji.`);
             } else {
                 logger.error(`Nie zapisano dziennych transakcji.`);
             };
@@ -66,7 +66,7 @@ const saveDailyTransactions = async () => {
         } finally {
             if (connection) connection.release();
         }
-    // });
+    });
 };
 
 module.exports = saveDailyTransactions;
