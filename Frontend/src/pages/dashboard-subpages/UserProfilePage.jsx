@@ -107,7 +107,8 @@ export default function UserProfilePage() {
                     </div>
 
                 ) : (
-                    <div className='w-full h-fit flex justify-center px-5 mb-4'>
+                    <div className='w-full h-fit flex flex-col justify-center px-5 mb-4'>
+                        <h2 className='w-full h-fit flex justify-center text-xl mb-4'>Your transactions:</h2>
                         <TransactionsList filterId={user.id} transactions={actionsData && transactions} actionsLoading={actionsLoading} actionsError={actionsError} />
                     </div>
                 )}

@@ -12,7 +12,7 @@ import MessagesFilterBtns from "./MessagesFilterBtns";
 import { messagesStates, tableHeader } from "../../../utils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
 
-export default function MessagesList(messages, messagesError, messagesLoading, messagesData) {
+export default function MessagesList({ userMessages, messagesError, loading }) {
     const { filter } = useParams();
     const { user } = useContext(AuthContext);
     const { connected, messages: socketMessages } = useSocket();
@@ -22,10 +22,8 @@ export default function MessagesList(messages, messagesError, messagesLoading, m
     const navigate = useNavigate();
 
     const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
-    const sortedMessages = Array.isArray(messages) ? messages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
-    const filteredMessages = Array.isArray(messages) ? messages.filter((msg) => msg.recipient === user.userName) : [];
-
-
+    const sortedMessages = Array.isArray(userMessages) ? userMessages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
+    const filteredMessages = Array.isArray(userMessages) ? userMessages.filter((msg) => msg.recipient === user.userName) : [];
 
     useEffect(() => {
 
@@ -69,8 +67,8 @@ export default function MessagesList(messages, messagesError, messagesLoading, m
 
     return (
         <div className="mx-auto min-h-full">
-            {messagesData && !messagesLoading && < MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />}
-            {!messagesLoading && !messagesError ? (
+            {userMessages && < MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />}
+            {!loading ? (
                 <table className="w-[80rem] h-full table-fixed border-collapse text-sm border-b-[1px] border-slate-400 rounded-b-xl">
                     <thead>
                         <tr className="border-b bg-slate-400">
@@ -119,7 +117,7 @@ export default function MessagesList(messages, messagesError, messagesLoading, m
                 </table>
             ) : (
                 <p className="w-full h-fit flex justify-center text-2xl">
-                    {messagesLoading ? 'Ładowanie wiadomości...' : messages.length === 0 ? 'Brak wiadomości.' : null}
+                    <p>Nie udało się pobrać wiadomości.</p>
                 </p>
             )}
             {modal.isOpen && modal.type === "details" && (
@@ -131,7 +129,7 @@ export default function MessagesList(messages, messagesError, messagesLoading, m
             {modal.isOpen && modal.type === 'delete' && (
                 <DeleteMessageModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} message={modal.message} />
             )}
-            {messagesLoading && <LoadingModal isOpen={messagesLoading} />}
+            {loading && <LoadingModal isOpen={loading} />}
         </div>
     );
 }

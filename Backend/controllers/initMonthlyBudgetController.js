@@ -3,6 +3,7 @@ const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 const checkUserHouse = require('../utils/checkUserHouse.js');
 const initialBudgetQueries = require('../database/initialMonthlyBudgetQueries.js');
+const { broadcastToHouseMates } = require('../configs/websocketConfig.js');
 
 exports.addNewMonthlyBudget = async (req, res) => {
     const userId = req.userId;
@@ -28,6 +29,7 @@ exports.addNewMonthlyBudget = async (req, res) => {
         const addedAt = new Date();
         const validUntil = new Date(addedAt);
         validUntil.setDate(validUntil.getDate() + 30);
+        const addedAtFormatted = addedAt.toISOString().split('T')[0];
         const validUntilFormatted = validUntil.toISOString().split('T')[0];
         const valueToDb = parseFloat(value).toFixed(2);
         
@@ -37,6 +39,15 @@ exports.addNewMonthlyBudget = async (req, res) => {
         logger.info(`Budżet miesięczny gospodarstwa ${userHouse} został dodany dnia ${new Date().toLocaleString()}`);
 
         await connection.commit();
+
+        await broadcastToHouseMates(userHouse, {
+			type: 'initial_budget',
+			data: {
+                initBudget: valueToDb,
+                budgetPeriod: `${addedAtFormatted} - ${validUntilFormatted}`,
+				message: 'Zadeklarowano budżet na nowy miesiąc!',
+			}
+		});
 
         return res.status(201).json({ status: 'success', message: 'Budżet miesięczny dodany!' });
         

@@ -13,7 +13,14 @@ import BasicHouseInfo from "../../components/dashboard/dashboard-internal-compon
 import DashBoardForUser from "./DashboardForUser";
 
 export default function HouseInfoPage() {
-    const { data, isLoading, error: contextError, refreshData } = useContext(DataContext);
+    const { data,
+        isLoading,
+        error: contextError,
+        refreshData,
+        actionsData,
+        actionsError,
+        actionsLoading,
+        isTransactionsFetched } = useContext(DataContext);
     const { user, isAuthenticated } = useContext(AuthContext);
 
     const { houseData, houseMates, statsData, dailyData } = data;
@@ -24,6 +31,7 @@ export default function HouseInfoPage() {
     const dailyInfo = getData(dailyData, []);
     const stats = getData(statsData, []);
     const matesData = getData(houseMates, []);
+    const transactions = !actionsError && !actionsLoading && isTransactionsFetched && actionsData || [];
 
     const { labels, monthlyBalances, definedBudgets, monthlyTransactionCounts, actionCountLabels } = useMemo(() => {
         if (!stats || !stats.length) {
@@ -101,7 +109,7 @@ export default function HouseInfoPage() {
                         <div id="content-section" className="w-full flex flex-row justify-center items-start gap-5 flex-wrap">
                             <div id="last-five-transactions" className="flex flex-col items-center gap-3  px-4 mx-5 rounded-md">
                                 <h2 className="text-xl flex justify-center">Last 5 transactions:</h2>
-                                <TransactionsList limit={5} mainSite={true} />
+                                <TransactionsList limit={5} mainSite={true} transactions={actionsData && transactions} />
                             </div>
                             <div id="charts1" className="w-full h-full flex flex-col flex-wrap justify-around items-center mb-5 flex-grow ml-4 gap-y-4 gap-x-4">
                                 <div className="w-full h-fit flex justify-around gap-5">

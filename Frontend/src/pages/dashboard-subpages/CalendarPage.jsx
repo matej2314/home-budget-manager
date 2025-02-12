@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Modal from 'react-modal';
 import { DataContext } from '../../store/dataContext';
 import { Calendar } from 'react-big-calendar';
@@ -9,16 +9,29 @@ import DashboardHeader from '../../components/dashboard/dashboardComponents/Dash
 Modal.setAppElement('#root');
 
 export default function CalendarPage() {
-    const { data, isLoading, error } = useContext(DataContext);
+    const { actionsData, isTransactionsFetched, actionsError, actionsLoading, fetchTransactions } = useContext(DataContext);
 
-    const transactions = !isLoading && !error && data.actionsData || [];
+    useEffect(() => {
+        if (!isTransactionsFetched) {
+            fetchTransactions();
+        }
+    }, [isTransactionsFetched]);
 
-    const events = transactions.map(transaction => ({
-        title: `Transakcja: ${transaction.categoryName}-${transaction.type}-${transaction.value}-${transaction.userName}`,
-        start: new Date(transaction.addedAt),
-        allDay: false,
-        details: transaction,
-    }));
+    const transactions = !actionsError && !actionsLoading && isTransactionsFetched && actionsData || [];
+
+    const events = transactions.map(transaction => {
+        const startDate = new Date(transaction.addedAt);
+        const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+        return {
+            title: `Transakcja: ${transaction.categoryName}-${transaction.type}-${transaction.value}-${transaction.userName}`,
+            start: startDate,
+            end: endDate,
+            allDay: false,
+            details: transaction,
+        };
+    });
+
+
 
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,6 +46,8 @@ export default function CalendarPage() {
         setSelectedEvent(null);
     };
 
+    !actionsLoading && isTransactionsFetched && actionsData && console.log(`events: ${JSON.stringify(events)}`);
+    !actionsLoading && isTransactionsFetched && transactions && console.log(`transactions: ${'transactions:', JSON.stringify(transactions)}`)
     return (
         <div id="pagecontent" className="w-full min-h-screen bg-slate-200 flex flex-col gap-5 items-stretch">
             <DashboardHeader />
@@ -41,7 +56,7 @@ export default function CalendarPage() {
                     localizer={localizer}
                     events={events}
                     startAccessor="start"
-                    endAccessor="start"
+                    endAccessor="end"
                     className='h-[500px] border-[2px] border-slate-300 rounded-md'
                     onSelectEvent={handleEventClick}
                 />

@@ -64,7 +64,7 @@ const initializeWebSocket = (server) => {
 	
 		} catch (error) {
 			logger.error(`Błąd przy inicjalizacji połączenia: ${error.message}`);
-			socket.emit('connect_error', {
+			socket.emit('error', {
 				message: 'Błąd podczas nawiązywania połączenia.',
 			});
 			socket.disconnect();

@@ -9,13 +9,15 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 export default function TransactionsPage() {
-    const { fetchTransactions, actionsData, actionsError, actionsLoading } = useContext(DataContext);
+    const { fetchTransactions, actionsData, actionsError, actionsLoading, isTransactionsFetched } = useContext(DataContext);
     const transactions = Array.isArray(actionsData) ? actionsData : [];
     const [modal, setModal] = useState({ isOpen: false, type: null });
 
     useEffect(() => {
-        fetchTransactions();
-    }, []);
+        if (!isTransactionsFetched) {
+            fetchTransactions();
+        }
+    }, [isTransactionsFetched]);
 
     const handleAddTransaction = () => {
         setModal({ isOpen: true, type: 'transaction' });

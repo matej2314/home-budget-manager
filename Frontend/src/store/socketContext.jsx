@@ -18,6 +18,7 @@ export const SocketProvider = ({ children }) => {
             usersActions: [],
             monthlyBalance: []
         },
+        initBudgets: [],
     });
     const [error, setError] = useState(null);
     const { isAuthenticated } = useContext(AuthContext);
@@ -49,8 +50,14 @@ export const SocketProvider = ({ children }) => {
 
             newSocket.on("balance_update", (data) => {
                 setMessages((prevMessages) => ({
-                    ...prevMessages,
                     balanceUpdates: [data],
+                }));
+            });
+
+            newSocket.on("initial_budget", (data) => {
+                setMessages((prevMessages) => ({
+                    ...prevMessages,
+                    initBudgets: [data],
                 }));
             });
 

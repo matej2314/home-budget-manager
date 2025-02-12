@@ -46,7 +46,7 @@ export default function DashBoardMenu() {
                     >
                         <Icon icon={link.icon} width={23} height={23} />
                         <Link to={link.path}>{link.label}</Link>
-                        {link.dot && newMessages.length > 0 ? <NotificationDot color={'bg-green-700'} data={newMessages.length} /> : null}
+                        {link.dot && newMessages?.length > 0 ? <NotificationDot color={'bg-green-700'} data={newMessages.length} /> : null}
                     </li>
                 ))}
                 {isAuthenticated && user.role === 'superadmin' && <>

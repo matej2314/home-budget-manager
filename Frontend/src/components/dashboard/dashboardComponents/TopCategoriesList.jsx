@@ -1,18 +1,17 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { DataContext } from '../../../store/dataContext';
 import BarChart from '../../charts/BarChart';
 import CategoriesValuesChart from "./charts-dashboard-components/CategoriesValuesChart";
 
 export default function TopCategoriesList({ main }) {
-    const { actionsData } = useContext(DataContext);
-
-    const transactions = Array.isArray(actionsData) ? actionsData : [];
+    const { actionsData, actionsLoading, actionsError, isTransactionsFetched } = useContext(DataContext);
+    const transactions = !actionsLoading && !actionsError && isTransactionsFetched && Array.isArray(actionsData) ? actionsData : [];
     const transactionsCategories = transactions.map((action) => action.categoryName);
     const uniqueCategories = new Set(transactionsCategories);
 
     const categoryPercentages = Array.from(uniqueCategories).map((category) => {
         const categoryCount = transactionsCategories.filter(c => c === category).length;
-        const percentage = ((categoryCount / transactionsCategories.length) * 100).toFixed(2);
+        const percentage = ((categoryCount / transactionsCategories.length) * 100);
         return { label: category, value: percentage };
     });
 
@@ -21,16 +20,20 @@ export default function TopCategoriesList({ main }) {
 
     const groupedTransactions = transactions.reduce((acc, transaction) => {
         const { categoryName, type, value } = transaction;
+        const numericValue = parseFloat(value);
 
         if (!acc[categoryName]) {
             acc[categoryName] = 0;
         }
 
         if (type === 'income') {
-            acc[categoryName] += value;
+            acc[categoryName] += numericValue;
         } else if (type === 'expense') {
-            acc[categoryName] -= value;
-        }
+            acc[categoryName] -= numericValue;
+        };
+
+        acc[categoryName] = parseFloat(acc[categoryName].toFixed(2));
+
         return acc;
     }, {});
 

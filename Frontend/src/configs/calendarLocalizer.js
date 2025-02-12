@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { momentLocalizer } from 'react-big-calendar';
 
 moment.updateLocale('en', {
     week: {

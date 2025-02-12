@@ -26,6 +26,7 @@ export default function MainPageMenu() {
             <ul className="w-full h-fit flex justify-between items-center py-1 text-slate-800 text-md px-2">
                 <li>Home Page</li>
                 <li>About us</li>
+                <li><Link to='/dashboard'>Dashboard</Link></li>
                 <li onClick={openModal} className='cursor-pointer'>SignUp/Login</li>
                 <li>Contact</li>
                 <li className='h-full w-fit flex items-center gap-3'>

@@ -1,6 +1,24 @@
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../store/authContext";
+
 import MainPageMenu from "../components/main-page-components/MainPageMenu"
 
 export default function MainPage() {
+    const { user, isAuthenticated } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const referrer = document.referrer;
+    const myDomain = 'localhost:5173/'
+
+    useEffect(() => {
+        if (isAuthenticated && !referrer.includes(myDomain)) {
+            navigate('dashboard');
+        } else {
+            return;
+        }
+    }, [isAuthenticated]);
+
     return (
         <main className="w-full h-screen flex flex-col justify-start items-center gap-4 pt-1">
             <MainPageMenu />

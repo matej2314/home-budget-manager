@@ -44,7 +44,7 @@ matesData: 'SELECT userName, role FROM householdUsers WHERE houseId = ? ORDER BY
 transactionsData: `SELECT 
 t.transactionId AS transactionId,
 t.value,
-DATE_FORMAT(t.addedAt, '%Y-%d-%m') AS addedAt,
+DATE_FORMAT(t.addedAt, '%Y-%m-%d %H:%i:%s') AS addedAt,
 t.type AS type,
 t.userId AS userId,
 t.houseId,

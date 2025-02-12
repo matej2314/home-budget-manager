@@ -12,17 +12,20 @@ export default function DeclareBudgetModal({ isOpen, onRequestClose }) {
     const [isLoading, setIsLoading] = useState(false);
     const declaredBudgetRef = useRef();
     const declaredPeriod = CountDeclaredBudgetPeriod();
+    const lettersRegex = /[^0-9.,]/;
 
     const handleDeclareBudget = async (e) => {
         e.preventDefault();
 
-        if (!declaredBudgetRef.current.value) {
+        if (!declaredBudgetRef.current.value || lettersRegex.test(declaredBudgetRef.current.value.trim())) {
             showInfoToast('Podaj nowy budżet miesięczny!');
             return;
         };
 
+        const budgetValue = declaredBudgetRef.current.value.trim().replace(',', '.');
+
         const budgetData = {
-            value: declaredBudgetRef.current.value,
+            value: +parseFloat(budgetValue).toFixed(2),
         };
 
         try {

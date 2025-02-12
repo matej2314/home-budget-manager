@@ -13,6 +13,8 @@ export const DataContext = createContext({
     messagesError: null,
     actionsLoading: false,
     actionsError: null,
+    isMessagesFetched: false,
+    isTransactionsFetched: false,
     refreshData: () => { },
     fetchMessages: () => { },
     fetchTransactions: () => { },
@@ -41,7 +43,10 @@ export const DataProvider = ({ children }) => {
         actionsData: [],
         actionsDataError: null,
         loading: false,
-    })
+    });
+
+    const [isMessagesFetched, setIsMessagesFetched] = useState(false);
+    const [isTransactionsFetched, setIsTransactionsFetched] = useState(false);
 
     const fetchBoardData = async (filter = 'all') => {
         setData(prevData => ({ ...prevData, loading: true, dataError: null }));
@@ -64,6 +69,7 @@ export const DataProvider = ({ children }) => {
 
     const fetchMessages = async (filter = 'messages') => {
         setMessagesData(prevData => ({ ...prevData, loading: true, messagesDataError: null }));
+        setIsMessagesFetched(false);
 
         try {
             const result = await fetchData(`${serverUrl}/board/data/${filter}`);
@@ -72,6 +78,7 @@ export const DataProvider = ({ children }) => {
                 messagesData: result.dashboardData.messagesData,
                 loading: false,
             }));
+            setIsMessagesFetched(true);
         } catch (error) {
             setMessagesData(prevData => ({ ...prevData, messagesDataError: error }));
         }
@@ -79,6 +86,7 @@ export const DataProvider = ({ children }) => {
 
     const fetchTransactions = async (filter = 'transactions') => {
         setActionsData(prevData => ({ ...prevData, loading: true, actionsDataError: null }));
+        setIsTransactionsFetched(false);
 
         try {
             const result = await fetchData(`${serverUrl}/board/data/${filter}`);
@@ -86,7 +94,8 @@ export const DataProvider = ({ children }) => {
                 ...prevData,
                 actionsData: result.dashboardData.actionsData,
                 loading: false,
-            }))
+            }));
+            setIsTransactionsFetched(true);
         } catch (error) {
             setActionsData(prevData => ({ ...prevData, actionsDataError: error }));
         }
@@ -115,6 +124,8 @@ export const DataProvider = ({ children }) => {
             refreshData,
             fetchMessages,
             fetchTransactions,
+            isMessagesFetched,
+            isTransactionsFetched,
         }}>
             {children}
         </DataContext.Provider>

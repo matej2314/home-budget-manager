@@ -14,13 +14,13 @@ export default function DisplayLiveBalance() {
     const [currentBalance, setCurrentBalance] = useState(null);
 
     useEffect(() => {
-        if (!dataLoading && data && !dataError && data.houseData?.length) {
+        if (!dataLoading && data && !dataError && data?.houseData?.length) {
             setCurrentBalance(data.houseData[0].liveBalance)
         }
     }, [dataLoading, data, dataError]);
 
     useEffect(() => {
-        if (connected && messages && messages.balanceUpdates.length > 0) {
+        if (connected && messages && messages?.balanceUpdates?.length > 0) {
             const { newBalance } = messages.balanceUpdates[0];
             if (newBalance) {
                 setCurrentBalance(newBalance);
@@ -37,7 +37,7 @@ export default function DisplayLiveBalance() {
                 <span
                     className={currentBalance && currentBalance > 0 ? 'text-xl text-lime-900/75' : "text-xl text-red-500"}
                 >
-                    {currentBalance !== null ? `${currentBalance.toFixed(2)} zł` : 'Brak danych'}
+                    {currentBalance !== null ? `${currentBalance} zł` : 'Brak danych'}
                 </span>
             </div >
         </div>
