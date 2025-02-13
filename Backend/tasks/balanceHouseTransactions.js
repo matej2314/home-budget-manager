@@ -36,12 +36,12 @@ const balanceHouseActions = async () => {
                 nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
                 const nextBalanceDateStr = nextBalanceDate.toISOString().split('T')[0];
                 
-                if (today > nextBalanceDateStr) {
+                if (today === nextBalanceDateStr) {
                     logger.info(`Sprawdzamy transakcje dla gospodarstwa ${houseId} od ${dateLimit}.`);
 
                     const [transactions] = await connection.query(
-                        `SELECT * FROM transactions WHERE houseId = ? AND DATE(addedAt) >= ?`,
-                        [houseId, dateLimit]
+                        `SELECT value, type FROM transactions WHERE houseId = ? AND DATE(addedAt) BETWEEN ? AND ?`,
+                        [houseId, dateLimit, nextBalanceDateStr]
                     );
                     
                     logger.info(`Znaleziono ${transactions.length} transakcji dla gospodarstwa ${houseId}.`);
