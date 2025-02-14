@@ -18,7 +18,7 @@ export default function DashboardPage() {
     const liveMessages = connected && messages.newMessages;
 
     useEffect(() => {
-        if (connected && liveMessages.length > 0) {
+        if (connected && liveMessages?.length > 0) {
             showMessageToast('Otrzymałeś nową wiadomość!');
         }
     }, [liveMessages, connected]);

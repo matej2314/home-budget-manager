@@ -22,7 +22,7 @@ services:
   #   networks:
   #     - main_network
   #   ports:
-  #     - "5052:5052"
+  #     - "5052:80"
     
 
 networks:

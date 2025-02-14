@@ -4,7 +4,7 @@ import { serverUrl } from "../../../url";
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import LoadingModal from '../../modals/LoadingModal';
 
-export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError }) {
+export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
 
     const filteredTransactions = filterId ? [...transactions].filter((transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)
@@ -33,6 +33,17 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
 
     return (
         <div className="w-full h-full overflow-auto pb-4">
+            <div className='w-full h-fit flex justify-end gap-3 pr-5 mb-2'>
+                {Array.from({ length: actionsTotalPages }, (_, index) => (
+                    <button
+                        key={index}
+                        className=''
+                        onClick={() => getTransactions(index + 1)}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
             {!actionsLoading && !actionsError ? (
                 <table className={`${mainSite ? 'w-[97%] mx-auto' : 'w-full'} h-full table-fixed border-collapse text-sm border-b-[1px] border-slate-400 pb-6`}>
                     <thead>

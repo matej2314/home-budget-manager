@@ -9,7 +9,15 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 export default function TransactionsPage() {
-    const { fetchTransactions, actionsData, actionsError, actionsLoading, isTransactionsFetched } = useContext(DataContext);
+    const {
+        fetchTransactions,
+        actionsData,
+        actionsError,
+        actionsLoading,
+        isTransactionsFetched,
+        actionsTotalPages,
+        actionsPage,
+    } = useContext(DataContext);
     const transactions = Array.isArray(actionsData) ? actionsData : [];
     const [modal, setModal] = useState({ isOpen: false, type: null });
 
@@ -28,7 +36,7 @@ export default function TransactionsPage() {
     }
 
     const handleCloseModal = () => {
-        setIsModalOpen({ isOpen: false, type: null });
+        setModal({ isOpen: false, type: null });
     };
 
     return (
@@ -49,7 +57,14 @@ export default function TransactionsPage() {
                         Vew all categories
                     </button>
                 </div>
-                <TransactionsList mainSite={false} transactions={actionsData && transactions} actionsLoading={actionsLoading} actionsError={actionsError} />
+                <TransactionsList
+                    mainSite={false}
+                    transactions={actionsData && transactions}
+                    actionsLoading={actionsLoading}
+                    actionsError={actionsError}
+                    actionsTotalPages={actionsTotalPages}
+                    getTransactions={fetchTransactions}
+                />
             </div>
             {modal.isOpen && modal.type === 'transaction' && <AddTransactionModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
             {modal.isOpen && modal.type === 'categories' && <TransactionsCategoriesModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />}

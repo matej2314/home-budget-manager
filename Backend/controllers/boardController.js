@@ -2,8 +2,9 @@ const pool = require('../database/db');
 const checkUserHouse = require('../utils/checkUserHouse');
 const logger = require('../configs/logger');
 const dashboardQueries = require('../database/dashboardQueries');
+const {countTotalPages} = require('../utils/countTotalPages');
 
-const getBoardData = async (userId, filter = 'all') => {
+const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
     const connection = await pool.getConnection();
 
     try {
@@ -18,6 +19,7 @@ const getBoardData = async (userId, filter = 'all') => {
         const userHouseId = userHouse.houseId;
 
         let boardData = {};
+        const offset = (page - 1) * limit;
 
         if (filter === 'all' || filter === 'house') {
             const [householdData] = await connection.query(dashboardQueries.householdData, [userHouseId]);
@@ -35,9 +37,10 @@ const getBoardData = async (userId, filter = 'all') => {
         };
        
         if (filter === 'transactions') {
-            const [transactionsData] = await connection.query(dashboardQueries.transactionsData, [userHouseId]);
-        
+            const [transactionsData] = await connection.query(dashboardQueries.transactionsData, [userHouseId, limit, offset]);
             boardData.actionsData = transactionsData;
+            const totalPages = await countTotalPages(filter, userHouseId);
+            boardData.totalPages = totalPages ?  totalPages.pages : null;
         };
 
         if (filter === 'all' || filter === 'daily') {
@@ -53,16 +56,20 @@ const getBoardData = async (userId, filter = 'all') => {
         };
 
         if (filter === 'messages') {
-            const [messagesData] = await connection.query(dashboardQueries.messagesData, [userId, userId]);
+            const [messagesData] = await connection.query(dashboardQueries.messagesData, [userId, userId, limit, offset]);
             boardData.messagesData = messagesData;
+            const totalPages = await countTotalPages(filter,userHouseId, userId);
+            boardData.totalPages = totalPages ? totalPages.pages : 0;
         };
 
         if (filter === 'all' || filter === 'stats') {
             const [statsData] = await connection.query(dashboardQueries.statsQuery, [userHouseId]);
             boardData.statsData = statsData;
-        }
-        
+        };
+
         await connection.commit();
+        boardData.page = page;
+        logger.info(JSON.stringify(boardData))
 
         return {
             status: 'success',

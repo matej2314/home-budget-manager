@@ -13,6 +13,8 @@ export const DataContext = createContext({
     messagesError: null,
     actionsLoading: false,
     actionsError: null,
+    actionsTotalPages: 1,
+    actionsPage: 1,
     isMessagesFetched: false,
     isTransactionsFetched: false,
     refreshData: () => { },
@@ -23,6 +25,9 @@ export const DataContext = createContext({
 export const DataProvider = ({ children }) => {
 
     const { isAuthenticated } = useContext(AuthContext);
+    const [isMessagesFetched, setIsMessagesFetched] = useState(false);
+    const [isTransactionsFetched, setIsTransactionsFetched] = useState(false);
+    const [actionsPage, setActionsPage] = useState(1);
 
     const [data, setData] = useState({
         houseData: [],
@@ -37,16 +42,17 @@ export const DataProvider = ({ children }) => {
         messagesData: [],
         messagesDataError: null,
         loading: false,
+        totalPages: 0,
+        page: 1,
     });
 
     const [actionsData, setActionsData] = useState({
         actionsData: [],
         actionsDataError: null,
         loading: false,
+        totalPages: 0,
+        page: 1,
     });
-
-    const [isMessagesFetched, setIsMessagesFetched] = useState(false);
-    const [isTransactionsFetched, setIsTransactionsFetched] = useState(false);
 
     const fetchBoardData = async (filter = 'all') => {
         setData(prevData => ({ ...prevData, loading: true, dataError: null }));
@@ -67,15 +73,17 @@ export const DataProvider = ({ children }) => {
         }
     };
 
-    const fetchMessages = async (filter = 'messages') => {
+    const fetchMessages = async (filter = 'messages', page = 1) => {
         setMessagesData(prevData => ({ ...prevData, loading: true, messagesDataError: null }));
         setIsMessagesFetched(false);
 
         try {
-            const result = await fetchData(`${serverUrl}/board/data/${filter}`);
+            const result = await fetchData(`${serverUrl}/board/data/messages/${page}`);
             setMessagesData(prevData => ({
                 ...prevData,
-                messagesData: result.dashboardData.messagesData,
+                messagesData: result.dashboardData.messagesData || [],
+                totalPages: result.dashboardData.totalPages || 1,
+                page: page,
                 loading: false,
             }));
             setIsMessagesFetched(true);
@@ -84,15 +92,18 @@ export const DataProvider = ({ children }) => {
         }
     };
 
-    const fetchTransactions = async (filter = 'transactions') => {
+
+    const fetchTransactions = async (page = 1) => {
         setActionsData(prevData => ({ ...prevData, loading: true, actionsDataError: null }));
         setIsTransactionsFetched(false);
 
         try {
-            const result = await fetchData(`${serverUrl}/board/data/${filter}`);
+            const result = await fetchData(`${serverUrl}/board/data/transactions/${page}`);
             setActionsData(prevData => ({
                 ...prevData,
                 actionsData: result.dashboardData.actionsData,
+                totalPages: result.dashboardData.totalPages,
+                page: result.dashboardData.page,
                 loading: false,
             }));
             setIsTransactionsFetched(true);
@@ -114,13 +125,15 @@ export const DataProvider = ({ children }) => {
     return (
         <DataContext.Provider value={{
             data,
-            messagesData: messagesData.messagesData,
-            actionsData: actionsData.actionsData,
             isLoading: data.loading,
+            messagesData: messagesData.messagesData,
             messagesLoading: messagesData.loading,
             messagesError: messagesData.messagesDataError,
+            actionsData: actionsData.actionsData,
             actionsLoading: actionsData.loading,
             actionsError: actionsData.actionsDataError,
+            actionsTotalPages: actionsData.totalPages,
+            actionsPage: actionsData.page,
             refreshData,
             fetchMessages,
             fetchTransactions,

@@ -47,7 +47,7 @@ export default function DashboardHeader() {
         if (connected && !SocketError && messages) {
             const userMessages = messages.newMessages;
 
-            if (userMessages.length > 0) {
+            if (userMessages) {
                 setSocketMessages(userMessages);
             };
         }

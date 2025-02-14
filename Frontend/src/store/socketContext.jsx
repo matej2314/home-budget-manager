@@ -10,6 +10,8 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const [connected, setConnected] = useState(false);
+    const [error, setError] = useState(null);
+    const { isAuthenticated } = useContext(AuthContext);
     const [messages, setMessages] = useState({
         balanceUpdates: [],
         newMessages: [],
@@ -20,8 +22,7 @@ export const SocketProvider = ({ children }) => {
         },
         initBudgets: [],
     });
-    const [error, setError] = useState(null);
-    const { isAuthenticated } = useContext(AuthContext);
+
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -75,7 +76,7 @@ export const SocketProvider = ({ children }) => {
                         ...prevMessages,
                         notifications: {
                             ...prevMessages.notifications,
-                            transactions: [...prevMessages.notifications.transactions, data],
+                            transactions: [...prevMessages.notifications.transactions, data]
                         },
                     }));
 
