@@ -8,10 +8,10 @@ export const SocketContext = createContext();
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
+    const { isAuthenticated, user } = useContext(AuthContext);
     const [socket, setSocket] = useState(null);
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState(null);
-    const { isAuthenticated } = useContext(AuthContext);
     const [messages, setMessages] = useState({
         balanceUpdates: [],
         newMessages: [],
@@ -30,8 +30,8 @@ export const SocketProvider = ({ children }) => {
                 transports: ["websocket"],
                 withCredentials: true,
                 reconnection: true,
-                reconnectionAttempts: Infinity,
                 reconnectionDelay: 3000,
+                connectionStateRecovery: true,
             });
 
             newSocket.on("connect", () => {
@@ -51,6 +51,7 @@ export const SocketProvider = ({ children }) => {
 
             newSocket.on("balance_update", (data) => {
                 setMessages((prevMessages) => ({
+                    ...prevMessages,
                     balanceUpdates: [data],
                 }));
             });
@@ -70,33 +71,25 @@ export const SocketProvider = ({ children }) => {
             });
 
             newSocket.on('notification', (data) => {
+                setMessages((prevMessages) => {
+                    const updatedNotifications = {
+                        ...prevMessages.notifications,
+                        transactions: Array.isArray(prevMessages.notifications.transactions)
+                            ? [...prevMessages.notifications.transactions, data]
+                            : [data],
+                        usersActions: Array.isArray(prevMessages.notifications.usersActions)
+                            ? [...prevMessages.notifications.usersActions, data]
+                            : [data],
+                        monthlyBalance: Array.isArray(prevMessages.notifications.monthlyBalance)
+                            ? [...prevMessages.notifications.monthlyBalance, data]
+                            : [data],
+                    };
 
-                if (data.category === 'transactions') {
-                    setMessages((prevMessages) => ({
+                    return {
                         ...prevMessages,
-                        notifications: {
-                            ...prevMessages.notifications,
-                            transactions: [...prevMessages.notifications.transactions, data]
-                        },
-                    }));
-
-                } else if (data.category === 'usersActions') {
-                    setMessages((prevMessages) => ({
-                        ...prevMessages,
-                        notifications: {
-                            ...prevMessages.notifications,
-                            usersActions: [...prevMessages.notifications.usersActions, data],
-                        },
-                    }));
-                } else if (data.category === 'monthlyBalance') {
-                    setMessages((prevMessages) => ({
-                        ...prevMessages,
-                        notifications: {
-                            ...prevMessages.notifications,
-                            monthlyBalance: [...prevMessages.notifications.monthlyBalance, data],
-                        },
-                    }));
-                };
+                        notifications: updatedNotifications,
+                    };
+                });
             });
 
             setSocket(newSocket);

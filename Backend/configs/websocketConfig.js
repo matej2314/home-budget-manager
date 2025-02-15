@@ -12,7 +12,7 @@ const initializeWebSocket = (server) => {
 	ioInstance = io(server, {
 		cors: {
 			origin: (origin, callback) => {
-                const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+                const allowedOrigins = ['http://localhost:5173'];
                 if (allowedOrigins.includes(origin)) {
                     callback(null, true);
                 } else {
@@ -21,8 +21,15 @@ const initializeWebSocket = (server) => {
             },
 			credentials: true,
 		},
-		pingInterval: 25000,
+		pingInterval: 15000,
 		pingTimeout: 5000,
+		reconnection: true,
+		reconectionAttempts: 3,
+		reconnectionDelay: 3000,
+		reconnectionDelayMax: 10000,
+		randomizationFactor: 0.5,
+		connectionStateRecovery: true,
+		
 	});
 
 	ioInstance.use(authMiddleware);
@@ -40,7 +47,6 @@ const initializeWebSocket = (server) => {
 				const existingExpireDate = new Date(existingConnection.expireDate);
 	
 				if (existingExpireDate > new Date()) {
-					logger.info(`Połączenie dla użytkownika ${userId} już istnieje i jest aktywne. Używamy istniejącego połączenia.`);
 					socket.emit('connect_success', { message: 'Połączenie zostało przywrócone.' });
 	
 					return;
