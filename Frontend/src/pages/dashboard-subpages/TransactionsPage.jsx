@@ -16,16 +16,14 @@ export default function TransactionsPage() {
         actionsLoading,
         isTransactionsFetched,
         actionsTotalPages,
-        actionsPage,
     } = useContext(DataContext);
+
     const transactions = Array.isArray(actionsData) ? actionsData : [];
     const [modal, setModal] = useState({ isOpen: false, type: null });
 
     useEffect(() => {
-        if (!isTransactionsFetched) {
-            fetchTransactions();
-        }
-    }, [isTransactionsFetched]);
+        fetchTransactions(1);
+    }, []);
 
     const handleAddTransaction = () => {
         setModal({ isOpen: true, type: 'transaction' });

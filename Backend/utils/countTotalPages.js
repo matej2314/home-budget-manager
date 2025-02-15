@@ -9,7 +9,7 @@ const countTotalPages = async (dataType, houseId, userId) => {
         query = `SELECT COUNT(*) AS total FROM transactions WHERE houseId = ?`;
         params = [houseId];
     } else if (dataType === 'messages' && userId) {
-        query = `SELECT COUNT(*) AS total FROM messages WHERE recipientId =? OR recipientId =?`;
+        query = `SELECT COUNT(*) AS total FROM messages WHERE senderId =? OR recipientId =?`;
         params = [userId, userId];
     } else {
         return;
@@ -22,7 +22,7 @@ const countTotalPages = async (dataType, houseId, userId) => {
 
             const totalRecords = getPagesCounter[0].total;
             const limit = 10;
-            const totalPages = Math.ceil(totalRecords / limit);
+            const totalPages = Math.ceil(totalRecords / limit) ;
 
             return { status: 'success', type: dataType, pages: totalPages };
             

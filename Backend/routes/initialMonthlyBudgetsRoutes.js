@@ -6,6 +6,4 @@ const initMonthlyController = require('../controllers/initMonthlyBudgetControlle
 
 router.post('/new', verifyJWT(), verifyRole('mates'), initMonthlyController.addNewMonthlyBudget);
 
-router.put('/:budgetId', verifyJWT(), verifyRole('mates'), initMonthlyController.updateInitMonthlyBudget);
-
 module.exports = router;

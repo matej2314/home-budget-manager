@@ -40,7 +40,7 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
             const [transactionsData] = await connection.query(dashboardQueries.transactionsData, [userHouseId, limit, offset]);
             boardData.actionsData = transactionsData;
             const totalPages = await countTotalPages(filter, userHouseId);
-            boardData.totalPages = totalPages ?  totalPages.pages : null;
+            boardData.totalPages = totalPages ?  totalPages.pages : 0;
         };
 
         if (filter === 'all' || filter === 'daily') {
@@ -69,8 +69,7 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
 
         await connection.commit();
         boardData.page = page;
-        logger.info(JSON.stringify(boardData))
-
+        
         return {
             status: 'success',
             message: 'Dane boardu pobrane poprawnie.',

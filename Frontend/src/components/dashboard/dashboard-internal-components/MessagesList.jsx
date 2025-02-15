@@ -12,7 +12,7 @@ import MessagesFilterBtns from "./MessagesFilterBtns";
 import { messagesStates, tableHeader } from "../../../utils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
 
-export default function MessagesList({ userMessages, messagesError, loading }) {
+export default function MessagesList({ userMessages, messagesError, loading, getMessages, messagesPages }) {
     const { filter } = useParams();
     const { user } = useContext(AuthContext);
     const { connected, messages: socketMessages } = useSocket();
@@ -69,52 +69,64 @@ export default function MessagesList({ userMessages, messagesError, loading }) {
         <div className="mx-auto min-h-full">
             {userMessages && < MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />}
             {!loading ? (
-                <table className="w-[80rem] h-full table-fixed border-collapse text-sm border-b-[1px] border-slate-400 rounded-b-xl">
-                    <thead>
-                        <tr className="border-b bg-slate-400">
-                            {tableHeader.map((header, index) => (
-                                <th key={index}
-                                    className={`px-4 py-2 text-center
+                <>
+                    <div className="w-full h-fit flex justify-end mb-2 pr-8">
+                        {Array.from({ length: messagesPages }, (_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => getMessages(index + 1)}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
+                    </div>
+                    <table className="w-[80rem] h-full table-fixed border-collapse text-sm border-b-[1px] border-slate-400 rounded-b-xl">
+                        <thead>
+                            <tr className="border-b bg-slate-400">
+                                {tableHeader.map((header, index) => (
+                                    <th key={index}
+                                        className={`px-4 py-2 text-center
                                     ${index === 0 ? 'rounded-tl-xl' : ''}
                                     ${index === tableHeader.length - 1 ? 'rounded-tr-xl' : ''}`}
-                                >
-                                    {header}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody className="border-x-[1px] border-slate-400">
-                        {filterMap[messagesType]?.map((message) => (
-                            <tr key={message.id}>
-                                <td className="min-w-full py-2 whitespace-nowrap text-center">{message.sender}</td>
-                                <td className="min-w-full py-2 whitespace-nowrap text-center">{message.recipient}</td>
-                                <td className="min-w-full py-2 whitespace-nowrap text-center">{message.message}</td>
-                                <td className="min-w-full py-2 whitespace-nowrap text-center">{message.date.split("T")[0]}</td>
-                                <td className="min-w-full py-2 whitespace-nowrap text-center">{message.readed ? "Readed" : "Unreaded"}</td>
-                                <td className="min-w-full py-2 flex items-center justify-center gap-3">
-                                    <button onClick={() => handleOpenModal("details", message)} title="Open message">
-                                        <Icon icon="lets-icons:message-open-light" width={20} height={20} />
-                                    </button>
-                                    <button
-                                        title="Delete message"
-                                        onClick={() => handleOpenModal('delete', message)}
                                     >
-                                        <Icon icon="mdi-light:delete" width={22} height={22} />
-                                    </button>
-                                    <button
-                                        title="Mark as readed"
-                                        onClick={() => handleMarkMessage(message)}
-                                    >
-                                        <Icon icon="iconoir:mail-opened" width={20} height={20} />
-                                    </button>
-                                    {message.sender !== user.userName && <button onClick={() => handleOpenModal("reply", message)} title="Reply">
-                                        <Icon icon="iconoir:reply-to-message" width={22} height={22} />
-                                    </button>}
-                                </td>
+                                        {header}
+                                    </th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="border-x-[1px] border-slate-400">
+                            {filterMap[messagesType]?.map((message) => (
+                                <tr key={message.id}>
+                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.sender}</td>
+                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.recipient}</td>
+                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.message}</td>
+                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.date.split("T")[0]}</td>
+                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.readed ? "Readed" : "Unreaded"}</td>
+                                    <td className="min-w-full py-2 flex items-center justify-center gap-3">
+                                        <button onClick={() => handleOpenModal("details", message)} title="Open message">
+                                            <Icon icon="lets-icons:message-open-light" width={20} height={20} />
+                                        </button>
+                                        <button
+                                            title="Delete message"
+                                            onClick={() => handleOpenModal('delete', message)}
+                                        >
+                                            <Icon icon="mdi-light:delete" width={22} height={22} />
+                                        </button>
+                                        <button
+                                            title="Mark as readed"
+                                            onClick={() => handleMarkMessage(message)}
+                                        >
+                                            <Icon icon="iconoir:mail-opened" width={20} height={20} />
+                                        </button>
+                                        {message.sender !== user.userName && <button onClick={() => handleOpenModal("reply", message)} title="Reply">
+                                            <Icon icon="iconoir:reply-to-message" width={22} height={22} />
+                                        </button>}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </>
             ) : (
                 <p className="w-full h-fit flex justify-center text-2xl">
                     <p>Nie udało się pobrać wiadomości.</p>

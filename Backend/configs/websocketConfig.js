@@ -5,7 +5,6 @@ const io = require('socket.io');
 const getMysqlExpireDate = require('../utils/getMySqlExpireDate');
 const authMiddleware = require('../middlewares/websocket/authMiddleware');
 const socketQueries = require('../database/websocketQueries');
-const checkUserHouse = require('../utils/checkUserHouse');
 
 let ioInstance;
 

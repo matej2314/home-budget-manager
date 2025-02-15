@@ -11,6 +11,7 @@ export const DataContext = createContext({
     isLoading: true,
     messagesLoading: false,
     messagesError: null,
+    messagesTotalPages: 1,
     actionsLoading: false,
     actionsError: null,
     actionsTotalPages: 1,
@@ -73,7 +74,7 @@ export const DataProvider = ({ children }) => {
         }
     };
 
-    const fetchMessages = async (filter = 'messages', page = 1) => {
+    const fetchMessages = async (page = 1) => {
         setMessagesData(prevData => ({ ...prevData, loading: true, messagesDataError: null }));
         setIsMessagesFetched(false);
 
@@ -107,8 +108,11 @@ export const DataProvider = ({ children }) => {
                 loading: false,
             }));
             setIsTransactionsFetched(true);
+
         } catch (error) {
             setActionsData(prevData => ({ ...prevData, actionsDataError: error }));
+        } finally {
+            setActionsData(prevData => ({ ...prevData, loading: false }));
         }
     };
 
@@ -129,6 +133,7 @@ export const DataProvider = ({ children }) => {
             messagesData: messagesData.messagesData,
             messagesLoading: messagesData.loading,
             messagesError: messagesData.messagesDataError,
+            messagesTotalPages: messagesData.totalPages,
             actionsData: actionsData.actionsData,
             actionsLoading: actionsData.loading,
             actionsError: actionsData.actionsDataError,

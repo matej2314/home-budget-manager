@@ -3,6 +3,7 @@ import sendRequest from '../../../utils/sendRequest';
 import { serverUrl } from "../../../url";
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import LoadingModal from '../../modals/LoadingModal';
+import { tableLabels } from '../../../utils/actionsTableLabels';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
 
@@ -10,9 +11,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
     const sortedTransactions = Array.isArray(filteredTransactions)
         ? [...filteredTransactions].sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
         : [];
-
     const transactionsToDisplay = limit ? sortedTransactions.slice(0, limit) : sortedTransactions;
-    const tableLabels = ['Value', 'Type', 'Category', 'User', 'Date'];
 
     const handleDeleteAction = async (transaction) => {
         try {
