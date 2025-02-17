@@ -11,7 +11,7 @@ const queries = require('../database/authQueries');
 const socketQueries = require('../database/websocketQueries');
 
 exports.registerUser = async (req, res) => {
-	const { reg_username, reg_email, reg_password, role } = req.body;
+	const { reg_username, reg_email, reg_password, role, cookies } = req.body;
 	const allowedRoles = ['superadmin', 'user'];
 
 	const validations = [
@@ -44,15 +44,6 @@ exports.registerUser = async (req, res) => {
 			}
 		}
 
-		const emailCheck = await checkUserEmail(connection, reg_email);
-
-		if (emailCheck && emailCheck.email === reg_email) {
-			return res.status(400).json({
-				status: 'error',
-				message: 'Użytkownik o takim adresie e-mail istnieje.',
-			});
-		}
-
 		const hashedPassword = await bcrypt.hash(reg_password, 10);
 		const userId = uuidv4();
 
@@ -62,6 +53,7 @@ exports.registerUser = async (req, res) => {
 			name: reg_username,
 			password: hashedPassword,
 			email: reg_email,
+			acceptCookies: cookies ? cookies : 0,
 		});
 
 		if (result.affectedRows === 1) {
@@ -137,6 +129,8 @@ exports.loginUser = async (req, res) => {
 			userName: user.name,
 			role: user.role,
 			id: user.id,
+			cookies: user.acceptCookies,
+			tour: user.completeTour,
 			avatar: user.avatarName,
 		});
 	} catch (error) {
