@@ -1,4 +1,4 @@
-import MainPage from "../pages/MainPage";
+import HomePage from '../pages/HomePage';
 import DashboardPage from '../pages/DashboardPage';
 import DashBoard from "../components/dashboard/DashBoard";
 import HouseInfoPage from '../pages/dashboard-subpages/HouseInfoPage';
@@ -14,7 +14,7 @@ import DashBoardForUser from "../pages/dashboard-subpages/DashboardForUser";
 import ErrorPage from "../pages/ErrorPage";
 
 const routes = [
-    { path: '/', element: <MainPage /> },
+    { path: '/', element: <HomePage /> },
     {
         path: 'dashboard',
         element: <DashboardPage />,

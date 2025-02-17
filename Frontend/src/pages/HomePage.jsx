@@ -2,9 +2,9 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
 
-import MainPageMenu from "../components/main-page-components/MainPageMenu"
+import HomePageMenu from "../components/main-page-components/HomePageMenu"
 
-export default function MainPage() {
+export default function HomePage() {
     const { user, isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 

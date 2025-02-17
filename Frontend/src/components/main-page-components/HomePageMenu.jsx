@@ -7,7 +7,7 @@ import LanguageSelector from '../dashboard/dashboard-internal-components/Languag
 
 Modal.setAppElement('#root');
 
-export default function MainPageMenu() {
+export default function HomePageMenu() {
     const [isModalOpen, setisModalOpen] = useState(false);
     const [mode, setMode] = useState(null);
     const { user, isLoading, error } = useContext(AuthContext);
