@@ -1,49 +1,48 @@
 const pool = require('../database/db');
 const logger = require('../configs/logger');
+const { setAcceptCookies } = require('../services/cookiesTourServices/setAcceptCookiesValue');
+const { setCompleteTour } = require('../services/cookiesTourServices/setCompleteTourValue');
 
 exports.setCookieValue = async (req, res) => {
     const userId = req.userId;
     const cookieValue = req.body.cookieValue;
-    const connection = await pool.getConnection();
+   
+    if (!cookieValue) {
+        return res.status(400).json({ status: 'error', message: 'Niepoprawna wartość.' });
+    };
 
     try {
-        const [saveCookiesValue] = await connection.query('UPDATE users SET acceptCookies =? WHERE id =?', [cookieValue, userId]);
+        const setResult = await setAcceptCookies(cookieValue, userId);
 
-        if (saveCookiesValue.affectedRows === 0) {
-            logger.error(`Zapis zgody cookies użytkownika ${userId} nieudany.`);
-            return res.status(500).json({ status: 'error', message: 'Wystąpił błąd serwera.' });
-        } else if (saveCookiesValue.affectedRows === 1) {
-            return res.status(200).json({
-                status: 'success',
-                message: 'Twoja zgoda została zapisana.',
-            });
+        if (setResult.status === 'error') {
+            return res.status(500).json({ status: 'error', message: setResult.mesage });
+        } else if (setResult.status === 'success') {
+            return res.status(200).json({ status: 'success', message: setResult.mesage });
         };
     } catch (error) {
-        logger.error(`Błąd setCookieValue: ${error}`);
+        logger.error(`Błąd w setCookieValue: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
     };
+    
 };
 
 exports.setTourValue = async (req, res) => {
     const userId = req.userId;
-    const tourValue = req.body.tourValue;
-    const connection = await pool.getConnection();
+    
+    if (!tourValue) {
+        return res.status(404).json({status: 'error', message: ''})
+    };
 
     try {
-        const [saveTourValue] = await connection.query('UPDATE users SET completeTour=? WHERE id=?', [tourValue, userId]);
+        const setResult = await setCompleteTour(userId);
 
-        if (saveTourValue.affectedRows === 0) {
-            logger.error(`Zapis info o samouczku użytkownika ${userId} nieudany.`);
-            return res.status(500).json({ status: 'error', message: 'Wystąpił błąd serwera.' });
-        } else if (saveTourValue.affectedRows === 1) {
-            return res.status(200).json({
-                status: 'success',
-                message: 'Gratulujemy przejścia samouczka!',
-            });
+        if (setResult.status === 'error') {
+            return res.status(500).json({ status: 'error', message: setResult.mesage });
+        } else if (setResult.status === 'success') {
+            return res.status(200).json({ status: 'success', message: setResult.mesage });
         };
-
     } catch (error) {
-        logger.error(`Błąd w setTourValue: ${error}`);
-        return res.status(500).json({ status: 'error', mesage: 'Błąd serwera.' });
+        logger.error(`ERROR w setTourValue: ${error}`);
+        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
     };
 };

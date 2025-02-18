@@ -1,85 +1,33 @@
 const pool = require('../database/db');
 const logger = require('../configs/logger');
-const { v4: uuidv4 } = require('uuid');
-const { broadcastMessage } = require('../configs/websocketConfig');
-const messagesQueries = require('../database/messagesQueries');
+const { sendNewMessage } = require('../services/messagesServices/sendNewMessage');
+const { markAsReaded } = require('../services/messagesServices/markAsReaded');
+const { delMessage } = require('../services/messagesServices/deleteMessage');
 
 exports.sendMessage = async (req, res) => {
     const userId = req.userId;
     const userName = req.userName;
     const { recipientName, content } = req.body;
-   
-    const id = uuidv4();
 
     if (!recipientName || !content) {
         logger.error('Brak danych wymaganych do wysłania wiadomości.');
         return res.status(400).json({ status: 'error', message: 'Brak danych wymaganych do wysłania wiadomości.' });
     };
-
-    const connection = await pool.getConnection();
+   
     try {
-        const [checkUserId] = await connection.query(messagesQueries.checkUserIdQuery, [recipientName]);
+        const sendResult = await sendNewMessage(userId, userName, recipientName, content);
 
-        if (checkUserId.length == 0) {
-            return res.status(404).json({ status: 'error', message: 'Nie znaleziono nadawcy.' });
-        };
-
-        const recipientId = checkUserId[0].id;
-
-        const result = await connection.query(messagesQueries.saveMessage, [id, userId, recipientId, content, false]);
-
-        if (result.affectedRows === 0) {
-            logger.error(`Nie udało się zapisać wiadomości od użytkownika ${userId} do użytkownika ${recipientId}`);
-            return res.status(500).json({ status: 'error', message: 'Nie udało się zapisać wiadomości.' });
+        if (sendResult.status === 'badreq') {
+            return res.status(400).json({ status: 'error', message: sendResult.message });
+        } else if (sendResult.status === 'error') {
+            return res.status(500).json({ status: 'error', message: sendResult.message });
+        } else {
+            return res.status(200).json({status: 'success', message: sendResult.message})
         }
-        try {
-            broadcastMessage(recipientId, {
-                type: 'newMessage',
-                data: {
-                    id: id,
-                    sender: userName,
-                    recipient: recipientName,
-                    message: content,
-                    date: new Date().toISOString(),
-                    readed: 0,
-                }
-            });
-        } catch (error) {
-            logger.error('Nie udało się wysłać wiadomości do adresata.', error);  
-        };
-        
-
-        return res.status(200).json({
-            status: 'success',
-            message: 'Wiadomość wysłana.',
-        });
     } catch (error) {
-        logger.error(`Błąd podczas wysyłania wiadomości: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Wystąpił błąd podczas wysyłania wiadomości.' });
-    } finally {
-        connection && connection.release();
-    }
-};
-
-exports.getMessages = async (req, res) => {
-    const userId = req.userId;
-    const connection = await pool.getConnection();
-
-    try {
-        const [messages] = await connection.query(messagesQueries.getMessages, [userId, userId]);
-
-        if (messages.length === 0) {
-            logger.info(`Brak wiadomości dla użytkownika ${userId}`);
-            return res.status(404).json({ status: 'error', message: 'Nie znaleziono wiadomości :(' });
-        }
-
-        return res.status(200).json({ status: 'success', message: 'Pobrano wiadomości', messages: messages });
-    } catch (error) {
-        logger.error(`Błąd pobierania wiadomości użytkownika ${userId}: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Wystąpił błąd podczas pobierania wiadomości.' });
-    } finally {
-        if (connection) connection.release();
-    }
+        logger.error(`Błąd w sendMessage: ${error}`);
+        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+    };
 };
 
 exports.markMessage = async (req, res) => {
@@ -91,47 +39,42 @@ exports.markMessage = async (req, res) => {
         return res.status(400).json({ status: 'error', message: 'Prześlij poprawne dane wiadomości.' });
     };
 
-    const connection = await pool.getConnection();
-    const markQuery = 'UPDATE messages SET is_read=1 WHERE id = ? AND recipientId = ?';
-
     try {
-        const [result] = await connection.query(markQuery, [messageId, userId]);
-
-        if (result.affectedRows == 0) {
-            logger.info('Nie znaleziono wiadomości.');
-            return res.status(404).json({
-                status: 'error',
-                message: 'Nie znaleziono wiadomości.',
-            });
+        const markResult = await markAsReaded(messageId, userId);
+        
+        if (markResult.status === 'notfound') {
+            return res.status(404).json({ status: 'error', message: markResult.message });
+        } else if (markResult.status === 'error') {
+            return res.status(500).json({ status: 'error', message: markResult.message });
         };
 
-        return res.status(200).json({
-            status: 'success',
-            message: `Status wiadomości zmieniony poprawnie.`,
-        });
+        return res.status(200).json({ status: 'success', message: markResult.message });
+
     } catch (error) {
         logger.error(`Błąd w markMessage: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
-    } finally {
-        if (connection) connection.release();
-    }
-
+    };
 };
 
 exports.deleteMessage = async (req, res) => {
     const { messageId } = req.body;
-    const connection = await pool.getConnection();
+   
+    if (!messageId) {
+        return res.status(400).json({ status: 'error', message: 'Wskaż wiadomość!' });
+    };
 
     try {
-        const [delMessage] = await connection.query('DELETE FROM messages WHERE id=?', [messageId]);
 
-        if (delMessage.affectedRows == 0) {
-            return res.status(404).json({ status: 'error', message: 'Nie udało się odnależć wiadomości w bazie danych.' });
-        };
-        logger.info(`Usunięto wiadomość ${messageId}`);
-        return res.status(200).json({ status: 'success', message: `Wiadomość usunięta poprawnie.` });
+        const delResult = await delMessage(messageId);
+
+        if (delResult.status === 'notfound') {
+            return res.status(404).json({ status: 'error', message: delResult.message });
+        } else if (delResult.status === 'error') {
+            return res.status(500).json({status: 'error', message: ''})
+        } else {
+            return res.status(200).json({ status: 'success', message: delResult.message });
+        }
+
     } catch (error) {
-        logger.error(`Błąd podczas usuwania wiadomości: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
-    };
+
+    }
 }
