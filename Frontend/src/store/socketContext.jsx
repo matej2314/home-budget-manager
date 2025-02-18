@@ -31,7 +31,10 @@ export const SocketProvider = ({ children }) => {
                 withCredentials: true,
                 reconnection: true,
                 reconnectionDelay: 3000,
+                reconnectionAttempts: 5,
                 connectionStateRecovery: true,
+                pingInterval: 15000,
+                pintTimeout: 5000,
             });
 
             newSocket.on("connect", () => {
@@ -106,7 +109,7 @@ export const SocketProvider = ({ children }) => {
                 setConnected(false);
             }
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, socket]);
 
     const sendMessage = (type, message) => {
         if (socket && connected) {

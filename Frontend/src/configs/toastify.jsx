@@ -43,3 +43,23 @@ export const showMessageToast = (message) => {
     );
 };
 
+export const showCookiesInfo = (part1, part2) => {
+    toast(
+        <div className='w-full h-full flex justify-center items-center gap-3'>
+            <Icon icon='fluent:cookies-32-regular' width={75} height={75} color='#cda43c' />
+            <div className='w-full h-fit flex flex-col items-center gap-2'>
+                <p>{part1}</p>
+                <p>{part2}</p>
+            </div>
+        </div>, {
+        className: 'text-black h-full flex justify-center',
+        position: 'bottom-center',
+        style: {
+            width: '600px',
+            height: '100px',
+        }
+
+    }
+    )
+}
+

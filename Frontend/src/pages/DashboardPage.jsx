@@ -5,23 +5,29 @@ import { AuthContext } from "../store/authContext";
 import { useSocket } from "../store/socketContext";
 import DashBoardMenu from "../components/dashboard/dashboardComponents/DashBoardMenu";
 import { Outlet } from 'react-router-dom';
-import { showMessageToast } from '../configs/toastify';
-import LoadingModal from "../components/modals/LoadingModal";
-
+import { showCookiesInfo } from '../configs/toastify';
 
 export default function DashboardPage() {
-    const { data, isLoading, error } = useContext(DataContext);
-    const { isAuthenticated, user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const { connected, messages } = useSocket();
     const navigate = useNavigate();
 
     const liveMessages = connected && messages.newMessages;
+    const referrer = document.referrer;
+    const domain = window.location.origin;
 
     useEffect(() => {
         if (connected && liveMessages?.length > 0) {
             showMessageToast('Otrzymałeś nową wiadomość!');
         }
     }, [liveMessages, connected]);
+
+    useEffect(() => {
+
+        if (!referrer && !referrer.includes(domain)) {
+            showCookiesInfo('Strona wykorzystuje Cookies.', 'Szczegółowe informacje odnajdziesz w swoim profilu użytkownika')
+        }
+    }, [referrer]);
 
     return (
         <>
@@ -30,7 +36,6 @@ export default function DashboardPage() {
                     <DashBoardMenu />
                     <Outlet />
                 </main>
-
             ) : user.role === 'user' && navigate('/userDashboard')}
         </>
     )

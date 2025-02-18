@@ -39,7 +39,13 @@ export const AuthProvider = ({ children }) => {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/login`);
 
             if (response.status === 'success') {
-                setUser({ userName: response.userName, role: response.role, id: response.id, avatar: response.avatar });
+                setUser({
+                    userName: response.userName,
+                    role: response.role,
+                    id: response.id,
+                    avatar: response.avatar,
+                    cookiesConsent: response.cookies,
+                });
                 setIsAuthenticated(true);
                 setMessage(response.message);
             };

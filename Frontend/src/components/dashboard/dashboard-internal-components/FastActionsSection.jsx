@@ -6,7 +6,7 @@ import SendMessageModal from "../../modals/SendMessageModal";
 import AddUserToHouseModal from '../../modals/AddUserToHouseModal';
 import ChangeEmailModal from "../../modals/ChangeEmailModal";
 import DeclareBudgetModal from "../../modals/DeclareBudgetModal";
-import LoadingModal from "../../modals/LoadingModal";
+import CookiesModal from '../../modals/CookiesModal';
 
 export default function FastActions({ profilePage, action }) {
 
@@ -80,6 +80,13 @@ export default function FastActions({ profilePage, action }) {
                     >
                         Change e-mail address
                     </button>
+                    <button
+                        onClick={() => handleOpenModal('cookies')}
+                        className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
+                        type="button"
+                    >
+                        Cookies settings
+                    </button>
                 </>}
             </div>
             {modal.isOpen && modal.type === 'message' && (
@@ -93,6 +100,7 @@ export default function FastActions({ profilePage, action }) {
             )}
             {modal.isOpen && modal.type === 'email' && (<ChangeEmailModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />)}
             {modal.isOpen && modal.type === 'declare' && user.role === 'host' && <DeclareBudgetModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
+            {modal.isOpen && modal.type === 'cookies' && <CookiesModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
         </>
     )
 }

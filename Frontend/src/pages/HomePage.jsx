@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
+import { showCookiesInfo } from "../configs/toastify";
 
 import HomePageMenu from "../components/main-page-components/HomePageMenu"
 
@@ -8,8 +9,8 @@ export default function HomePage() {
     const { user, isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    const myDomain = window.location.origin;
     const referrer = document.referrer;
-    const myDomain = 'localhost:5173/'
 
     useEffect(() => {
         if (isAuthenticated && !referrer.includes(myDomain)) {
@@ -19,9 +20,16 @@ export default function HomePage() {
         }
     }, [isAuthenticated]);
 
+    useEffect(() => {
+        if (!referrer || !referrer.includes(myDomain)) {
+            showCookiesInfo('Ta strona korzysta z Cookies.', ' Szczegóły poznasz w Polityce Prywatności lub po zalogowaniu')
+        }
+
+    }, []);
+
     return (
         <main className="w-full h-screen flex flex-col justify-start items-center gap-4 pt-1">
-            <MainPageMenu />
+            <HomePageMenu />
             <div id='mainPageContent' className="w-[99%] h-full flex flex-col gap-3 pb-1">
                 <div id="short-info-boxes" className="w-full h-fit flex flex-col gap-5 bg-sky-200 px-5">
                     <h2 className="w-full h-fit flex flex-row justify-center items-center text-black text-2xl">What is Home Budget Web Manager?</h2>

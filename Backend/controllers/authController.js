@@ -25,7 +25,7 @@ exports.registerUser = async (req, res) => {
 
 	const checkEmail = await checkUserEmail(connection, reg_email);
 
-	if (checkEmail.email === reg_email) {
+	if (checkEmail && checkEmail.email === reg_email) {
 		return res.status(400).json({ status: 'error', message: 'Użytkownik o takim adresie e-mail istnieje.' });
 	}
 

@@ -14,7 +14,7 @@ const app = express();
 
 const port = process.env.SERV_PORT || 5053;
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173', 'http://185.170.196.107/'];
+const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107/'];
 
 app.use(
 	cors({
@@ -53,6 +53,7 @@ const messagesRouter = require('./routes/messagesRoutes.js');
 const initialMonthlyBudgetsRouter = require('./routes/initialMonthlyBudgetsRoutes.js');
 const receiptRouter = require('./routes/receiptRoutes.js');
 const avatarsRouter = require('./routes/avatarsRoutes.js');
+const cookiesTourRouter = require('./routes/cookiesTourRoutes.js');
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
@@ -64,6 +65,7 @@ app.use('/message', messagesRouter);
 app.use('/initmonthly', initialMonthlyBudgetsRouter);
 app.use('/receipt', receiptRouter);
 app.use('/avatars', avatarsRouter);
+app.use('/cookiestour', cookiesTourRouter);
 
 const server = http.createServer(app);
 
