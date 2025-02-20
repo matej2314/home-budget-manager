@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const verifyJWT = () => {
-    
-    return (req, res, next) => {
+const verifyJWT = (req, res, next) => {
        
         const token = req.cookies.SESSID;
 
@@ -20,6 +18,5 @@ const verifyJWT = () => {
             return res.status(401).json({status: 'error', message: 'Zaloguj się, aby zobaczyć zasoby.' });
         };
     };
-};
 
 module.exports = verifyJWT;

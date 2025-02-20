@@ -77,7 +77,7 @@ const verifyJWT = require('../middlewares/verifyJWT');
  *                   example: Błąd dodawania nowej kategorii transakcji.
  */
 
-router.post('/new', verifyJWT(), verifyRole('superadmin'), actionCatController.addNewActionCat);
+router.post('/new', verifyJWT, verifyRole('superadmin'), actionCatController.addNewActionCat);
 
 /**
  * @swagger
@@ -152,7 +152,7 @@ router.post('/new', verifyJWT(), verifyRole('superadmin'), actionCatController.a
  *                   example: Wystąpił błąd podczas przetwarzania żądania.
  */
 
-router.get('/collection', verifyJWT(), verifyRole('superadmin'), actionCatController.actionCatCollection);
+router.get('/collection', verifyJWT, verifyRole('superadmin'), actionCatController.actionCatCollection);
 
 /**
  * @swagger
@@ -238,6 +238,6 @@ router.get('/collection', verifyJWT(), verifyRole('superadmin'), actionCatContro
  *                   example: Nie udało się usunąć kategorii.
  */
 
-router.delete('/delete', verifyJWT(), verifyRole('superadmin'), actionCatController.deleteActionCat);
+router.delete('/delete', verifyJWT, verifyRole('superadmin'), actionCatController.deleteActionCat);
 
 module.exports = router;

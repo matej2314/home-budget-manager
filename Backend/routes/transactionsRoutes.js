@@ -100,7 +100,7 @@ const actionsController = require('../controllers/transactionsController');
  *                   example: Wystąpił błąd podczas dodawania transakcji. Spróbuj ponownie.
  */
 
-router.post('/new', verifyJWT(), verifyRole('mates'), actionsController.addNewAction);
+router.post('/new', verifyJWT, verifyRole('mates'), actionsController.addNewAction);
 
 /**
  * @swagger
@@ -291,7 +291,7 @@ router.get('/collection', verifyRole('superadmin'), actionsController.getAllActi
  */
 
 
-router.get('/my', verifyJWT(), verifyRole('mates'), actionsController.getHouseActions);
+router.get('/my', verifyJWT, verifyRole('mates'), actionsController.getHouseActions);
 
 /**
  * @swagger
@@ -377,6 +377,6 @@ router.get('/my', verifyJWT(), verifyRole('mates'), actionsController.getHouseAc
  *                   example: 'Nie udało się usunąć transakcji.'
  */
 
-router.delete('/', verifyJWT(), verifyRole('mates'), actionsController.deleteAction);
+router.delete('/', verifyJWT, verifyRole('mates'), actionsController.deleteAction);
 
 module.exports = router;

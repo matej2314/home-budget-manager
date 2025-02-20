@@ -85,7 +85,7 @@ const householdController = require('../controllers/householdController.js');
  *                   example: Wystąpił błąd podczas dodawania nowego gospodarstwa.
  */
 
-router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewHouse);
+router.post('/new', verifyJWT, verifyRole('user'), householdController.addNewHouse);
 
 /**
  * @swagger
@@ -161,7 +161,7 @@ router.post('/new', verifyJWT(), verifyRole('user'), householdController.addNewH
  */
 
 
-router.get('/collection', verifyJWT(),verifyRole('superadmin'), householdController.getAllHouses);
+router.get('/collection', verifyJWT,verifyRole('superadmin'), householdController.getAllHouses);
 
 /**
  * @swagger
@@ -255,7 +255,7 @@ router.get('/collection', verifyJWT(),verifyRole('superadmin'), householdControl
  *                   example: Wystąpił błąd przy przetwarzaniu żądania.
  */
 
-router.get('/info', verifyJWT(), verifyRole('mates'), householdController.getHouseInfo);
+router.get('/info', verifyJWT, verifyRole('mates'), householdController.getHouseInfo);
 
 /**
  * @swagger
@@ -356,7 +356,7 @@ router.get('/info', verifyJWT(), verifyRole('mates'), householdController.getHou
  *                   example: Nie udało się usunąć gospodarstwa.
  */
 
-router.delete('/delete', verifyJWT(),verifyRole('host'), householdController.deleteHouse);
+router.delete('/delete', verifyJWT, verifyRole('host'), householdController.deleteHouse);
 
 
 module.exports = router;

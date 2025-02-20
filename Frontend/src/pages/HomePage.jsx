@@ -13,11 +13,10 @@ export default function HomePage() {
     const { user, isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const myDomain = window.location.origin;
     const referrer = document.referrer;
 
     useEffect(() => {
-        if (isAuthenticated && !referrer.includes(myDomain)) {
+        if (isAuthenticated && !referrer.origin === 'http://localhost:5173') {
             navigate('dashboard');
         } else {
             return;

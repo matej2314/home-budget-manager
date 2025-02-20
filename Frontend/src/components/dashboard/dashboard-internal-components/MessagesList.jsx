@@ -11,6 +11,7 @@ import { markMessage } from "../../../utils/markMessage";
 import MessagesFilterBtns from "./MessagesFilterBtns";
 import { messagesStates, tableHeader } from "../../../utils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
+import { formatDbDate } from "../../../utils/formatDateToDisplay";
 
 export default function MessagesList({ userMessages, messagesError, loading, getMessages, messagesPages }) {
     const { filter } = useParams();
@@ -100,7 +101,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                                     <td className="min-w-full py-2 whitespace-nowrap text-center">{message.sender}</td>
                                     <td className="min-w-full py-2 whitespace-nowrap text-center">{message.recipient}</td>
                                     <td className="min-w-full py-2 whitespace-nowrap text-center">{message.message}</td>
-                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.date.split("T")[0]}</td>
+                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{formatDbDate(message.date)}</td>
                                     <td className="min-w-full py-2 whitespace-nowrap text-center">{message.readed ? "Readed" : "Unreaded"}</td>
                                     <td className="min-w-full py-2 flex items-center justify-center gap-3">
                                         <button onClick={() => handleOpenModal("details", message)} title="Open message">

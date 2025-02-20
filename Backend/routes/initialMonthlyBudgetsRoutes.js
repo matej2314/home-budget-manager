@@ -4,6 +4,6 @@ const verifyJWT = require('../middlewares/verifyJWT.js');
 const verifyRole = require('../middlewares/verifyRole.js');
 const initMonthlyController = require('../controllers/initMonthlyBudgetController.js');
 
-router.post('/new', verifyJWT(), verifyRole('mates'), initMonthlyController.addNewMonthlyBudget);
+router.post('/new', verifyJWT, verifyRole('mates'), initMonthlyController.addNewMonthlyBudget);
 
 module.exports = router;

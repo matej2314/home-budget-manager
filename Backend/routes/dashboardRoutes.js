@@ -67,7 +67,7 @@ const { getBoardData } = require('../controllers/boardController');
  */
 
 
-router.get('/data/:filter?/:page?', verifyJWT(), verifyRole('mates'), async (req, res) => {
+router.get('/data/:filter?/:page?', verifyJWT, verifyRole('mates'), async (req, res) => {
     const userId = req.userId;
     const filter = req.params.filter;
     const page = req.params.page;

@@ -4,6 +4,7 @@ import { serverUrl } from "../../../url";
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import LoadingModal from '../../modals/LoadingModal';
 import { tableLabels } from '../../../utils/actionsTableLabels';
+import { formatDbDate } from '../../../utils/formatDateToDisplay';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
 
@@ -68,7 +69,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                                 <td className="px-4 py-2">{transaction.type}</td>
                                 <td className="px-4 py-2">{transaction.categoryName}</td>
                                 <td className="px-4 py-2">{transaction.userName}</td>
-                                <td className="px-4 py-2">{transaction.addedAt}</td>
+                                <td className="px-4 py-2">{formatDbDate(transaction.addedAt)}</td>
                                 {!mainSite && (
                                     <td className="px-4 py-2">
                                         <button

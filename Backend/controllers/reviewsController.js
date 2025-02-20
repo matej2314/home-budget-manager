@@ -16,7 +16,7 @@ exports.addReview = async (req, res) => {
     const id = uuidv4();
 
     try {
-        const [addReviewResult] = await connection.query('INSERT INTO usersReviews (id, rating, content, userName, userId) VALUES (?,?,?,?,?)', [id,rating, content, userName, userId, userAvatar]);
+        const [addReviewResult] = await connection.query('INSERT INTO usersReviews (id, rating, content, userName, userId) VALUES (?,?,?,?,?)', [id,rating, content, userName, userId]);
 
         if (addReviewResult.affectedRows === 0) {
             return res.status(500).json({ status: 'error', message: 'Nie udało się dodać opinii.' });

@@ -69,10 +69,10 @@ const messagesController = require('../controllers/messagesController');
  *                   example: Wystąpił błąd podczas wysyłania wiadomości.
  */
 
-router.post('/send', verifyJWT(), messagesController.sendMessage);
+router.post('/send', verifyJWT, messagesController.sendMessage);
 
-router.put('/readed', verifyJWT(), messagesController.markMessage);
+router.put('/readed', verifyJWT, messagesController.markMessage);
 
-router.delete('/delete', verifyJWT(), messagesController.deleteMessage);
+router.delete('/delete', verifyJWT, messagesController.deleteMessage);
 
 module.exports = router;

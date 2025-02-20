@@ -9,7 +9,7 @@ const deleteFiles = require('../middlewares/deleteFilesInDirectory');
 const saveAvatar = require('../store/avatarStorage');
 
 router.post('/save',
-    verifyJWT(),
+    verifyJWT,
     createUserDirectory,
     saveAvatar.single('avatar'),
     async (req, res) => {
@@ -38,36 +38,51 @@ router.post('/save',
        }
     });
 
-router.get('/avatar/:userId?', verifyJWT(), async (req, res) => {
-    let userId = req.params.userId || req.userId;
-
-    const avatarDir = path.join(__dirname, '../public/user-photos', `${userId}`);
-    const avatarExtensions = ['.jpg', '.jpeg', '.png'];
-    let avatarPath = null;
-
-    for (const ext of avatarExtensions) {
-        const filePath = path.join(avatarDir, `${userId}${ext}`);
-
-        try {
-            
-            await fs.access(filePath); 
-            avatarPath = filePath;
-            break; 
-        } catch (err) {
-            continue;
+    router.get('/avatar/:userId?', async (req, res, next) => {
+        if (req.params.userId) {
+            return next();
         }
-    }
-
-    if (!avatarPath) {
-        return res.sendFile(path.join(__dirname, '../public/user-photos', 'default.jpg'));
-    }
-
-    res.sendFile(avatarPath);
-});
+    
+        return verifyJWT(req,res,next);
+    }, async (req, res) => {
+        try {
+            const userId = req.params.userId || req.userId;
+    
+            if (!userId) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
+    
+            const avatarDir = path.join(__dirname, '../public/user-photos');
+            const avatarExtensions = ['.jpg', '.jpeg', '.png'];
+            let avatarPath = null;
+    
+            for (const ext of avatarExtensions) {
+                const filePath = path.join(avatarDir, `${userId}${ext}`);
+                try {
+                    await access(filePath);
+                    avatarPath = filePath;
+                    break;
+                } catch (err) {
+                    continue;
+                }
+            }
+    
+            if (!avatarPath) {
+                return res.sendFile(path.join(avatarDir, 'default.jpg'));
+            }
+    
+            res.sendFile(avatarPath);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+    
+    
 
     
 router.delete('/delete',
-    verifyJWT(),
+    verifyJWT,
     deleteFiles,
     async (req, res) => {
     try {

@@ -156,7 +156,7 @@ router.post('/login', authController.loginUser);
  *                   type: string
  */
 
-router.post('/logout', verifyJWT(), authController.logoutUser);
+router.post('/logout', verifyJWT, authController.logoutUser);
 
 /**
  * @swagger
@@ -217,7 +217,7 @@ router.post('/logout', verifyJWT(), authController.logoutUser);
  */
 
 
-router.get('/verify', verifyJWT(), (req, res) => {
+router.get('/verify', verifyJWT, (req, res) => {
     res.status(200).json({
         status: 'success',
         userId: req.userId,

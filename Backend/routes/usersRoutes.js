@@ -80,7 +80,7 @@ const usersController = require('../controllers/usersController.js');
  *                   example: 'Błąd pobierania listy użytkowników.'
  */
 
-router.get('/collection', verifyJWT(), verifyRole('superadmin'), usersController.getAllUsers);
+router.get('/collection', verifyJWT, verifyRole('superadmin'), usersController.getAllUsers);
 
 /**
  * @swagger
@@ -152,7 +152,7 @@ router.get('/collection', verifyJWT(), verifyRole('superadmin'), usersController
  *                   example: 'Nie udało się pobrać listy domowników gospodarstwa.'
  */
 
-router.get('/house', verifyJWT(), verifyRole('mates'), usersController.getInhabitants);
+router.get('/house', verifyJWT, verifyRole('mates'), usersController.getInhabitants);
 
 /**
  * @swagger
@@ -238,7 +238,7 @@ router.get('/house', verifyJWT(), verifyRole('mates'), usersController.getInhabi
  *                   example: Błąd podczas usuwania użytkownika.
  */
 
-router.post('/delete/:userId', verifyJWT(), verifyRole('superadmin'), usersController.deleteUser);
+router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersController.deleteUser);
 
 /**
  * @swagger
@@ -324,7 +324,7 @@ router.post('/delete/:userId', verifyJWT(), verifyRole('superadmin'), usersContr
  *                   example: 'Nie udało się usunąć domownika.'
  */
 
-router.delete('/delete/:inhabitant', verifyJWT(), verifyRole('host'), usersController.deleteInhabitant);
+router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersController.deleteInhabitant);
 
 /**
  * @swagger
@@ -410,8 +410,8 @@ router.delete('/delete/:inhabitant', verifyJWT(), verifyRole('host'), usersContr
  *                   example: 'Błąd przetwarzania żądania.'
  */
 
-router.post('/invite', verifyJWT(), verifyRole('host'), usersController.addUserToHouse);
+router.post('/invite', verifyJWT, verifyRole('host'), usersController.addUserToHouse);
 
-router.post('/changemail', verifyJWT(), usersController.changeEmail);
+router.post('/changemail', verifyJWT, usersController.changeEmail);
 
 module.exports = router;
