@@ -7,6 +7,7 @@ import AddUserToHouseModal from '../../modals/AddUserToHouseModal';
 import ChangeEmailModal from "../../modals/ChangeEmailModal";
 import DeclareBudgetModal from "../../modals/DeclareBudgetModal";
 import CookiesModal from '../../modals/CookiesModal';
+import AddReviewModal from "../../modals/AddReviewModal";
 
 export default function FastActions({ profilePage, action }) {
 
@@ -87,6 +88,13 @@ export default function FastActions({ profilePage, action }) {
                     >
                         Cookies settings
                     </button>
+                    <button
+                        className='w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60'
+                        type="button"
+                        onClick={() => handleOpenModal('review')}
+                    >
+                        Add app review
+                    </button>
                 </>}
             </div>
             {modal.isOpen && modal.type === 'message' && (
@@ -101,6 +109,7 @@ export default function FastActions({ profilePage, action }) {
             {modal.isOpen && modal.type === 'email' && (<ChangeEmailModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />)}
             {modal.isOpen && modal.type === 'declare' && user.role === 'host' && <DeclareBudgetModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
             {modal.isOpen && modal.type === 'cookies' && <CookiesModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
+            {modal.isOpen && modal.type === 'review' && <AddReviewModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
         </>
     )
 }

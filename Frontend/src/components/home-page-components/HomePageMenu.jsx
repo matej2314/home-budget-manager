@@ -4,6 +4,7 @@ import { AuthContext } from '../../store/authContext';
 import Modal from 'react-modal';
 import Authorization from './Authorization';
 import LanguageSelector from '../dashboard/dashboard-internal-components/LanguageSelector';
+import { showInfoToast } from '../../configs/toastify';
 
 Modal.setAppElement('#root');
 
@@ -20,6 +21,11 @@ export default function HomePageMenu() {
 
     const handleModeChange = (selectedMode) => {
         setMode(selectedMode);
+    };
+
+
+    const handleDashboardRedirect = () => {
+
     }
     return (
         <div id="mainMenu" className="w-[98vw] h-fit flex border-2 border-y-slate-300 rounded-md shadow-sm shadow-slate-400">

@@ -11,6 +11,7 @@ const { initializeWebSocket } = require('./configs/websocketConfig.js');
 const {clearSocketConnections} = require('./utils/clearSocketConnections.js');
 const http = require('http');
 const app = express();
+const setupRoutes = require('./routes/index.js');
 
 const port = process.env.SERV_PORT || 5053;
 
@@ -41,31 +42,9 @@ app.options('*', (req, res) => {
 	res.status(200).end();
 });
 
+setupRoutes(app);
 swaggerDocs(app);
 
-const authRouter = require('./routes/authRoutes.js');
-const usersRouter = require('./routes/usersRoutes.js');
-const householdRouter = require('./routes/householdRoutes.js');
-const transactionRouter = require('./routes/transactionsRoutes.js');
-const dashboardRouter = require('./routes/dashboardRoutes.js');
-const actionCatRouter = require('./routes/actionCatRoutes.js');
-const messagesRouter = require('./routes/messagesRoutes.js');
-const initialMonthlyBudgetsRouter = require('./routes/initialMonthlyBudgetsRoutes.js');
-const receiptRouter = require('./routes/receiptRoutes.js');
-const avatarsRouter = require('./routes/avatarsRoutes.js');
-const cookiesTourRouter = require('./routes/cookiesTourRoutes.js');
-
-app.use('/auth', authRouter);
-app.use('/users', usersRouter);
-app.use('/house', householdRouter);
-app.use('/action', transactionRouter);
-app.use('/board', dashboardRouter);
-app.use('/actioncat', actionCatRouter);
-app.use('/message', messagesRouter);
-app.use('/initmonthly', initialMonthlyBudgetsRouter);
-app.use('/receipt', receiptRouter);
-app.use('/avatars', avatarsRouter);
-app.use('/cookiestour', cookiesTourRouter);
 
 const server = http.createServer(app);
 

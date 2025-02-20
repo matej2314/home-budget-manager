@@ -38,13 +38,13 @@ router.post('/save',
        }
     });
 
-router.get('/avatar', verifyJWT(), async (req, res) => {
-    const userId = req.userId;
+router.get('/avatar/:userId?', verifyJWT(), async (req, res) => {
+    let userId = req.params.userId || req.userId;
+
     const avatarDir = path.join(__dirname, '../public/user-photos', `${userId}`);
     const avatarExtensions = ['.jpg', '.jpeg', '.png'];
     let avatarPath = null;
 
-    // Iteracja po rozszerzeniach
     for (const ext of avatarExtensions) {
         const filePath = path.join(avatarDir, `${userId}${ext}`);
 

@@ -324,7 +324,7 @@ router.post('/delete/:userId', verifyJWT(), verifyRole('superadmin'), usersContr
  *                   example: 'Nie udało się usunąć domownika.'
  */
 
-router.delete('/delete/inhabitant', verifyJWT(), verifyRole('host'), usersController.deleteInhabitant);
+router.delete('/delete/:inhabitant', verifyJWT(), verifyRole('host'), usersController.deleteInhabitant);
 
 /**
  * @swagger

@@ -54,6 +54,7 @@ export const showCookiesInfo = (part1, part2) => {
         </div>, {
         className: 'text-black h-full flex justify-center',
         position: 'bottom-center',
+        autoClose: 1500,
         style: {
             width: '600px',
             height: '100px',
