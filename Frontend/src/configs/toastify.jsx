@@ -27,7 +27,8 @@ export const showErrorToast = (message) => {
 export const showInfoToast = (message) => {
     toast.info(message, {
         className: toastStyles.info,
-        autoClose: 2000
+        autoClose: 1000,
+
     });
 };
 

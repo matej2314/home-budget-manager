@@ -49,14 +49,14 @@ export default function CookiesModal({ handleOpen, onRequestClose }) {
                 </p>
                 <div className='w-full h-fit flex justify-center gap-3'>
                     <button
-                        className='w-fit h-fit p-2 border-[1px] border-slate-400 rounded-xl'
+                        className='text-base bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500 hover:bg-gray-400'
                         type="button"
                         onClick={() => handleSaveCookieValue(1)}
                     >
                         Accept all
                     </button>
                     <button
-                        className='w-fit h-fit p-2 border-[1px] border-slate-400 rounded-xl'
+                        className='text-base bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500 hover:bg-gray-400'
                         type="button"
                         onClick={() => handleSaveCookieValue(0)}
                     >

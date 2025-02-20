@@ -25,9 +25,9 @@ export default function LoginForm() {
 
     useEffect(() => {
         if (user && !isLoading && !error) {
+            showInfoToast(`Użytkownik ${user.userName} zalogowany pomyślnie!`);
             const timer = setTimeout(() => {
-                showInfoToast(`Użytkownik ${user.userName} zalogowany pomyślnie!`);
-                navigate('dashboard');
+                navigate('/dashboard');
             }, 600);
 
             return () => clearTimeout(timer);

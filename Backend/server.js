@@ -15,7 +15,7 @@ const setupRoutes = require('./routes/index.js');
 
 const port = process.env.SERV_PORT || 5053;
 
-const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107/'];
+const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:*'];
 
 app.use(
 	cors({

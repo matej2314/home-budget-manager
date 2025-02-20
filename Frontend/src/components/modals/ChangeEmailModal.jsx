@@ -70,7 +70,7 @@ export default function ChangeEmailModal({ handleOpen, onRequestClose }) {
                     <button
                         type="submit"
                         disabled={sended}
-                        className='text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500'
+                        className='text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500 hover:bg-slate-400'
                     >
                         Save
                     </button>

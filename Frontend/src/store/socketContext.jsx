@@ -109,7 +109,7 @@ export const SocketProvider = ({ children }) => {
                 setConnected(false);
             }
         }
-    }, [isAuthenticated, socket]);
+    }, [isAuthenticated]);
 
     const sendMessage = (type, message) => {
         if (socket && connected) {
