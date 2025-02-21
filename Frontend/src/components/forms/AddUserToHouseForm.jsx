@@ -44,7 +44,7 @@ export default function AddUserToHouseForm({ onClose }) {
                 >
                     Type invited user name:
                 </label>
-                <input type="text" name="invitedUserName" id="invitedUserName" ref={invitedUser} />
+                <input className="rounded-md" type="text" name="invitedUserName" id="invitedUserName" ref={invitedUser} />
                 <button
                     type="submit"
                     className="bg-gray-300 p-2 rounded-xl hover:bg-slate-300 text-xl border-[1px] border-slate-500"

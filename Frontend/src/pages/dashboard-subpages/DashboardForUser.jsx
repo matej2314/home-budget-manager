@@ -8,7 +8,6 @@ import { showErrorToast, showInfoToast } from "../../configs/toastify";
 export default function DashBoardForUser() {
     const [sended, setIsSended] = useState(false);
     const houseNameRef = useRef();
-    const navigate = useNavigate();
 
     const handleAddHouse = async (e) => {
         e.preventDefault();

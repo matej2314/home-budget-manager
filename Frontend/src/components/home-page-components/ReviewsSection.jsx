@@ -1,24 +1,21 @@
 import { useState, useEffect } from "react";
+import { useHomePageContext } from "../../store/homePageDataContext";
 import StarRating from "../StarRating";
-import fetchData from '../../utils/fetchData';
 import { serverUrl } from '../../url';
 import { formatDbDate } from "../../utils/formatDateToDisplay";
 
 export default function ReviewsSection() {
+
     const [reviews, setReviews] = useState(null);
+    const { homePageData, homePageDataError, isHomePageDataLoading } = useHomePageContext();
 
     useEffect(() => {
-        const fetchReviews = async () => {
-            const reviews = await fetchData(`${serverUrl}/reviews/collection`)
-
-            if (reviews.status === 'error') {
-                console.error(reviews.message);
-            } else if (reviews.status === 'success') {
-                setReviews(() => reviews.reviews);
-            };
+        if (!isHomePageDataLoading && !homePageDataError) {
+            setReviews(homePageData.reviews);
         };
-        fetchReviews();
-    }, []);
+
+    }, [homePageData, isHomePageDataLoading, homePageDataError]);
+
 
     return (
         <div id="app-reviews" className="w-full h-fit flex flex-col justify-start items-center gap-3">

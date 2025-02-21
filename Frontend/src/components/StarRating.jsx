@@ -1,14 +1,15 @@
-import ReactStars from 'react-rating-stars-component';
+import ReactStars from 'react-stars';
 
-export default function StarRating({ rating, edit, action, size }) {
+export default function StarRating({ rating, edit, action = null, size = 22, ...props }) {
     return (
         <ReactStars
             count={5}
             value={rating}
-            size={size ? size : 22}
+            size={size}
             activeColor="#ffd700"
             edit={edit}
-            onChange={action ? action : null}
+            onChange={action}
+            {...props}
         />
     )
 };

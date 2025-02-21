@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/signup`);
 
-            if (response) {
+            if (response.status === 'success') {
                 setMessage(response.message);
             };
 
@@ -58,16 +58,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        setError(null);
+        setError(() => null);
         setIsLoading(true);
-        setMessage(null);
+        setMessage(() => null);
         try {
             const response = await sendRequest('POST', {}, `${serverUrl}/auth/logout`);
 
             if (response.status === 'success') {
-                setMessage(response.message);
+                setMessage(() => response.message);
                 setIsAuthenticated(false);
-                setUser({});
+                setUser(() => { });
             };
 
         } catch (error) {
@@ -83,12 +83,12 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await fetchData(`${serverUrl}/auth/verify`);
 
-            if (response.status === 'success') {
+            if (response && response.status === 'success') {
                 setUser({ userName: response.userName, role: response.role, id: response.userId, avatar: response.avatar });
                 setIsAuthenticated(true);
             } else {
                 setIsAuthenticated(false);
-                setUser(null);
+                setUser({});
             }
         } catch (error) {
             setError(error.message);

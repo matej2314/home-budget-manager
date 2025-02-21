@@ -31,8 +31,7 @@ export default function DashBoardMenu() {
     }
 
     const adminLinksElements = [
-        { path: 'users', label: 'Users', icon: 'mynaui:users' },
-        { path: 'households', label: 'Households', icon: 'lucide-lab:houses' },
+        { path: 'adminpanel', label: 'Admin panel', icon: 'clarity:administrator-solid' },
         { path: 'stats', label: 'Page stats', icon: 'uil:statistics' },
     ];
 

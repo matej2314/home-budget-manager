@@ -3,6 +3,7 @@ import { AuthContext } from "../../../store/authContext";
 import { DataContext } from "../../../store/dataContext";
 import { Icon } from '@iconify/react';
 import SendMessageModal from '../../modals/SendMessageModal';
+import { showInfoToast } from "../../../configs/toastify";
 
 export default function MatesList({ mode }) {
     const { user, isAuthenticated } = useContext(AuthContext);
@@ -80,7 +81,7 @@ export default function MatesList({ mode }) {
                 <SendMessageModal
                     isOpen={isModalOpen}
                     onRequestClose={handleCloseModal}
-                    recipient={recipient} /> : null}
+                    recipient={recipient} /> : showInfoToast('Nie możesz wysłać wiadomości do siebie...')}
         </div>
     );
 }

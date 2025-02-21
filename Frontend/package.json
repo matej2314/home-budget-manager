@@ -24,10 +24,10 @@
     "react-i18next": "^15.4.0",
     "react-joyride": "^2.9.3",
     "react-modal": "^3.16.3",
-    "react-rating-stars-component": "^2.2.0",
     "react-responsive": "^10.0.0",
     "react-router-dom": "^7.1.5",
     "react-select": "^5.10.0",
+    "react-stars": "^2.2.5",
     "react-toastify": "^11.0.2",
     "sitemap": "^8.0.0",
     "socket.io-client": "^4.8.1"

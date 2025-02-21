@@ -1,9 +1,10 @@
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { DataContext } from "../../store/dataContext";
 import TransactionsList from "../../components/dashboard/dashboard-internal-components/TransactionsList";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import AddTransactionModal from "../../components/modals/AddTransactionModal";
 import TransactionsCategoriesModal from "../../components/modals/TransactionsCategoriesModal";
+import useModal from "../../hooks/useModal";
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -19,23 +20,20 @@ export default function TransactionsPage() {
     } = useContext(DataContext);
 
     const transactions = Array.isArray(actionsData) ? actionsData : [];
-    const [modal, setModal] = useState({ isOpen: false, type: null });
+    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
 
     useEffect(() => {
         fetchTransactions(1);
     }, []);
 
     const handleAddTransaction = () => {
-        setModal({ isOpen: true, type: 'transaction' });
+        openModal('transaction');
     };
 
     const handleShowCategories = () => {
-        setModal({ isOpen: true, type: 'categories' });
-    }
-
-    const handleCloseModal = () => {
-        setModal({ isOpen: false, type: null });
+        openModal('categories');
     };
+
 
     return (
         <div id="pagecontent" className="min-h-screen w-screen bg-slate-200 overflow-y-hidden">
@@ -64,8 +62,8 @@ export default function TransactionsPage() {
                     getTransactions={fetchTransactions}
                 />
             </div>
-            {modal.isOpen && modal.type === 'transaction' && <AddTransactionModal handleOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
-            {modal.isOpen && modal.type === 'categories' && <TransactionsCategoriesModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} />}
+            {modal.isOpen && modal.type === 'transaction' && <AddTransactionModal handleOpen={modal.isOpen} onRequestClose={closeModal} />}
+            {modal.isOpen && modal.type === 'categories' && <TransactionsCategoriesModal isOpen={modal.isOpen} onRequestClose={closeModal} />}
         </div>
     );
 }

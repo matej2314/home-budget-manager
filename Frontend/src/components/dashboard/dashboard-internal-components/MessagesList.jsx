@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from "@iconify/react";
-import { DataContext } from "../../../store/dataContext";
 import { AuthContext } from "../../../store/authContext";
 import { useSocket } from '../../../store/socketContext';
 import DisplayMessageDetails from "../../modals/DisplayMessageDetails";
@@ -130,7 +129,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                 </>
             ) : (
                 <p className="w-full h-fit flex justify-center text-2xl">
-                    <p>Nie udało się pobrać wiadomości.</p>
+                    <span>Nie udało się pobrać wiadomości.</span>
                 </p>
             )}
             {modal.isOpen && modal.type === "details" && (

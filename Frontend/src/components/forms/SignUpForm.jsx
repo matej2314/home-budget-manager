@@ -80,7 +80,7 @@ export default function SignUpForm() {
                     id="regUsername"
                     ref={userName}
                     placeholder='Enter your username.'
-                    className='border-[1px] border-slate-400/80 pl-2'
+                    className='border-[1px] border-slate-400/80 pl-2 rounded-md'
                     required />
                 <label htmlFor="regEmail">Enter your email:</label>
                 <input
@@ -89,7 +89,7 @@ export default function SignUpForm() {
                     id="regEmail"
                     ref={userEmail}
                     placeholder='Enter your email.'
-                    className='border-[1px] border-slate-400/80 pl-2'
+                    className='border-[1px] border-slate-400/80 pl-2 rounded-md'
                     required />
                 <label htmlFor="regPass">Enter your password:</label>
                 <input
@@ -98,7 +98,7 @@ export default function SignUpForm() {
                     id="regPass"
                     ref={userPass}
                     placeholder='Enter your password.'
-                    className='border-[1px] border-slate-400/80 pl-2'
+                    className='border-[1px] border-slate-400/80 pl-2 rounded-md'
                     required />
                 <label htmlFor="repPass">Repeat your password:</label>
                 <input
@@ -107,7 +107,7 @@ export default function SignUpForm() {
                     id="repPass"
                     ref={repPass}
                     placeholder='Repeat your password.'
-                    className='border-[1px] border-slate-400/80 pl-2'
+                    className='border-[1px] border-slate-400/80 pl-2 rounded-md'
                     required
                 />
                 <button

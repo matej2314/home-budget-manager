@@ -5,19 +5,31 @@ import HouseInfoPage from '../pages/dashboard-subpages/HouseInfoPage';
 import HouseMatesPage from '../pages/dashboard-subpages/HouseMatesPage';
 import CalendarPage from '../pages/dashboard-subpages/CalendarPage';
 import MessagesPage from '../pages/dashboard-subpages/MessagesPage';
-import UsersPage from '../pages/dashboard-subpages/UsersPage';
-import HouseholdsPage from '../pages/dashboard-subpages/HouseholdsPage';
 import UserProfilePage from '../pages/dashboard-subpages/UserProfilePage';
+import AdminPanelPage from '../pages/dashboard-subpages/AdminPanelPage';
 import StatsPage from '../pages/dashboard-subpages/StatsPage';
 import TransactionsPage from "../pages/dashboard-subpages/TransactionsPage";
 import DashBoardForUser from "../pages/dashboard-subpages/DashboardForUser";
+import ContactPage from '../pages/ContactPage';
+import AboutUs from '../pages/AboutUsPage';
 import ErrorPage from "../pages/ErrorPage";
+import { HomePageDataProvider } from '../store/homePageDataContext';
+import { DataProvider } from '../store/dataContext';
+import { SocketProvider } from '../store/socketContext';
 
 const routes = [
-    { path: '/', element: <HomePage /> },
+    {
+        path: '/', element: <HomePageDataProvider>
+            <HomePage />
+        </HomePageDataProvider>,
+    },
     {
         path: 'dashboard',
-        element: <DashboardPage />,
+        element: <DataProvider>
+            <SocketProvider>
+                <DashboardPage />
+            </SocketProvider>
+        </DataProvider>,
         children: [
             { index: true, element: <DashBoard /> },
             { path: 'myhouse', element: <HouseInfoPage /> },
@@ -27,12 +39,13 @@ const routes = [
             { path: 'calendar', element: <CalendarPage /> },
             { path: 'messages/:filter?', element: <MessagesPage /> },
             { path: 'userDashboard', element: <DashBoardForUser /> },
-            { path: 'users', element: <UsersPage /> },
-            { path: 'households', element: <HouseholdsPage /> },
+            { path: 'adminpanel', element: <AdminPanelPage /> },
             { path: 'stats', element: <StatsPage /> },
             { path: '*', element: <ErrorPage /> },
         ],
     },
+    { path: 'aboutus', element: <AboutUs /> },
+    { path: 'contact', element: <ContactPage /> },
     { path: '*', element: <ErrorPage /> },
 ];
 

@@ -28,7 +28,6 @@ export const DataProvider = ({ children }) => {
     const { isAuthenticated } = useContext(AuthContext);
     const [isMessagesFetched, setIsMessagesFetched] = useState(false);
     const [isTransactionsFetched, setIsTransactionsFetched] = useState(false);
-    const [actionsPage, setActionsPage] = useState(1);
 
     const [data, setData] = useState({
         houseData: [],

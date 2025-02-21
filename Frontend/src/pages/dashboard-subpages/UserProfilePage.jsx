@@ -17,7 +17,7 @@ export default function UserProfilePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sended, setSended] = useState(false);
     const avatarFile = useRef();
-    const uIdParam = null;
+
 
     const handleType = (type) => {
         setType(() => type);

@@ -5,7 +5,7 @@ import { AuthContext } from '../../../store/authContext';
 import { useSocket } from '../../../store/socketContext';
 import { DataContext } from "../../../store/dataContext";
 import LanguageSelector from "../dashboard-internal-components/LanguageSelector";
-import { showInfoToast, showErrorToast } from '../../../configs/toastify';
+import { loggingOut } from "../../../utils/handleLogOut";
 import HeaderIconsContainer from "../dashboard-internal-components/HeaderIconsContainer";
 import LogOutModal from "../../modals/LogOutModal";
 import { serverUrl } from "../../../url";
@@ -23,16 +23,7 @@ export default function DashboardHeader() {
         .filter(message => message.readed === 0);
 
     const handleLogOut = async () => {
-        try {
-            await logout();
-            showInfoToast('Użytkownik wylogowany!');
-            setTimeout(() => {
-                navigate('/');
-            }, 600);
-
-        } catch (error) {
-            showErrorToast(`Błąd wylogowania: ${error.message}`);
-        }
+        await loggingOut(logout, navigate);
     };
 
     const handleOpenModal = () => {

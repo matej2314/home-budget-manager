@@ -1,42 +1,38 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataContext } from '../store/dataContext';
 import { AuthContext } from "../store/authContext";
 import { useSocket } from "../store/socketContext";
 import DashBoardMenu from "../components/dashboard/dashboardComponents/DashBoardMenu";
-import { Outlet } from 'react-router-dom';
-import { showCookiesInfo } from '../configs/toastify';
+import { Outlet } from "react-router-dom";
 
 export default function DashboardPage() {
-    const { user } = useContext(AuthContext);
-    const { connected, messages } = useSocket();
     const navigate = useNavigate();
+    const { user, isLoading, isAuthenticated } = useContext(AuthContext);
+    const { connected, messages } = useSocket();
 
-    const liveMessages = connected && messages.newMessages;
-    const referrer = document.referrer;
-    const domain = window.location.origin;
+    const liveMessages = connected && messages?.newMessages;
+    const isMateOrHost = user?.role === "mate" || user?.role === "host";
+    const isUser = user?.role === "user";
 
     useEffect(() => {
         if (connected && liveMessages?.length > 0) {
-            showMessageToast('Otrzymałeś nową wiadomość!');
-        }
-    }, [liveMessages, connected]);
+            showMessageToast("Otrzymałeś nową wiadomość!");
+        };
 
-    useEffect(() => {
-
-        if (!referrer && !referrer.includes(domain)) {
-            showCookiesInfo('Strona wykorzystuje Cookies.', 'Szczegółowe informacje odnajdziesz w swoim profilu użytkownika')
+        if (!isLoading && isAuthenticated && isUser) {
+            navigate("/userDashboard");
         }
-    }, [referrer]);
+
+    }, [liveMessages, connected, isLoading, isAuthenticated, isUser, navigate]);
+
+    if (isLoading || !isAuthenticated || !user) return null;
 
     return (
-        <>
-            {user.role === 'mate' || user.role === 'host' ? (
-                <main className="w-screen h-full flex flex-row justify-around items-stretch overflow-y-hidden bg-slate-200">
-                    <DashBoardMenu />
-                    <Outlet />
-                </main>
-            ) : user.role === 'user' && navigate('/userDashboard')}
-        </>
-    )
+        isMateOrHost ? (
+            <main className="w-screen h-full flex flex-row justify-around items-stretch overflow-y-hidden bg-slate-200">
+                <DashBoardMenu />
+                <Outlet />
+            </main>
+        ) : null
+    );
 };

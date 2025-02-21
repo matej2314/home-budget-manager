@@ -102,7 +102,7 @@ export default function AddTransactionForm({ onClose }) {
                             id="actionValue"
                             ref={numberValueRef}
                             defaultValue={recognizedValue ? recognizedValue : ''}
-                            className='pl-2 text-black'
+                            className='pl-2 text-black rounded-md'
                             required /> :
                         <input
                             type="file"
