@@ -1,9 +1,9 @@
 const pool = require('../../database/db');
 const { v4: uuidv4 } = require('uuid');
 const actionQueries = require('../../database/transactionsQueries');
-const checkHouse = require('../../utils/checkUserHouse');
+const checkHouse = require('../../utils/checkUtils/checkUserHouse');
 const logger = require('../../configs/logger');
-const { liveUpdateBalance } = require('../../utils/liveUpdateBalance');
+const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
 const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
 const addNewAction = async (userId, type, value, catId) => {

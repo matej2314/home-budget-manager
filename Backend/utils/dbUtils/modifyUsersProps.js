@@ -1,7 +1,7 @@
-const houseQueries = require('../database/householdQueries');
-const logger = require('../configs/logger');
+const houseQueries = require('../../database/householdQueries');
+const logger = require('../../configs/logger');
 
-exports.resetHostProps = async ( userId, connection) => {
+exports.resetHostProps = async (userId, connection) => {
     await connection.execute(houseQueries.hostQuery, [0, 'user', userId]);
     await connection.execute(houseQueries.updateroleHu, ['user', userId]);
     await connection.execute(houseQueries.updatehouseIdHu, [0, userId]);
@@ -9,7 +9,7 @@ exports.resetHostProps = async ( userId, connection) => {
     logger.info(`Parametry użytkownik ${userId} zresetowane.`);
 };
 
-exports.resetInmatesProps = async ( userId, connection) => {
+exports.resetInmatesProps = async (userId, connection) => {
     await connection.execute(houseQueries.mateQuery, [0, 'user', userId]);
     await connection.execute(houseQueries.updateroleHu, ['user', userId]);
     await connection.execute(houseQueries.updatehouseIdHu, [0, userId]);

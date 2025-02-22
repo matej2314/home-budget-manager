@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import sendRequest from '../../utils/sendRequest';
+import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';

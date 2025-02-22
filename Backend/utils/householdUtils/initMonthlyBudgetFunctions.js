@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const logger = require('../configs/logger');
+const logger = require('../../configs/logger');
 
 const addNewBudget = async (connection, value, userHouse) => {
     try {
@@ -61,7 +61,7 @@ const clearExtraValues = async (connection, houseId, lastAddedAt) => {
         };
 
         const [delDailyBudgets] = await connection.query(`DELETE FROM dailyBudget WHERE DATE_FORMAT(date, '%Y-%d-%m') BETWEEN ? AND ? AND houseId=?`,
-            [startPeriod, today, houseId]); 
+            [startPeriod, today, houseId]);
 
         if (delDailyBudgets.affectedRows === 0) {
             logger.error(`Nie usunięto dziennych budżetów.`);

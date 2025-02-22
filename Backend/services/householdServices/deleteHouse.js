@@ -1,7 +1,7 @@
 const pool = require('../../database/db');
 const houseQueries = require('../../database/householdQueries');
 const logger = require('../../configs/logger');
-const { resetHostProps, resetInmatesProps } = require('../../utils/modifyUsersProps');
+const { resetHostProps, resetInmatesProps } = require('../../utils/dbUtils/modifyUsersProps');
 
 exports.deleteHouse = async (userId, houseName) => {
     const connection = await pool.getConnection();
@@ -17,7 +17,7 @@ exports.deleteHouse = async (userId, houseName) => {
             return { status: 'noperm', message: 'Brak uprawnień do usunięcia gospodarstwa.' };
         };
         const houseId = ownership[0].houseId;
-        
+
         const [result] = await connection.query(houseQueries.deleteQuery, [houseId, userId]);
 
         if (result.affectedRows == 0) {
@@ -28,7 +28,7 @@ exports.deleteHouse = async (userId, houseName) => {
             await resetHostProps(userId, connection);
 
             const [inmates] = await connection.query(houseQueries.selectInmates, [houseId]);
-            
+
             for (const inmate of inmates) {
                 const userId = inmate.userId;
                 await resetInmatesProps(userId, connection);

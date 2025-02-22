@@ -1,7 +1,7 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
 const usersQueries = require('../../database/usersQueries');
-const checkUserHouse = require('../../utils/checkUserHouse');
+const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
 const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
 const deleteInhabitant = async (inhabitantId) => {
@@ -28,7 +28,7 @@ const deleteInhabitant = async (inhabitantId) => {
         );
 
         if (deleteHouseIdHu.affectedRows !== 1) logger.error(`Nie udało się zaktualizować houseId użytkownika: ${inhabitantId}`);
-        
+
 
         const [delUserActions] = await connection.query(usersQueries.delUsersActions, [inhabitantId]);
 
@@ -40,7 +40,7 @@ const deleteInhabitant = async (inhabitantId) => {
         );
 
         if (changeRoleHu.affectedRows !== 1) logger.error(`Nie udało się zmienić roli użytkownika: ${inhabitantId}`);
-        
+
 
         await connection.query(
             usersQueries.mateQuery,

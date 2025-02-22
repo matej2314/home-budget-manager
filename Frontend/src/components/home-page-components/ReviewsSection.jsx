@@ -1,6 +1,6 @@
 import StarRating from "../StarRating";
 import { serverUrl } from '../../url';
-import { formatDbDate } from "../../utils/formatDateToDisplay";
+import { formatDbDate } from "../../utils/formattingUtils/formatDateToDisplay";
 
 export default function ReviewsSection({ reviews }) {
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import fetchData from '../../../utils/fetchData';
+import fetchData from '../../../utils/asyncUtils/fetchData';
 
 
 export default function AppGallery() {

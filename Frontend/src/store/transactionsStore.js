@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { serverUrl } from '../url';
-import fetchData from '../utils/fetchData';
+import fetchData from '../utils/asyncUtils/fetchData';
 
 export const useTransactionsStore = create((set) => ({
     actionsData: [],

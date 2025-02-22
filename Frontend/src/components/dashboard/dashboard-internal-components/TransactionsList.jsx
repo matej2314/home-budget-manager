@@ -1,10 +1,10 @@
 import { Icon } from '@iconify/react';
-import sendRequest from '../../../utils/sendRequest';
+import sendRequest from '../../../utils/asyncUtils/sendRequest';
 import { serverUrl } from "../../../url";
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import LoadingModal from '../../modals/LoadingModal';
-import { tableLabels } from '../../../utils/actionsTableLabels';
-import { formatDbDate } from '../../../utils/formatDateToDisplay';
+import { tableLabels } from '../../../utils/arraysUtils/actionsTableLabels';
+import { formatDbDate } from '../../../utils/formattingUtils/formatDateToDisplay';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
 

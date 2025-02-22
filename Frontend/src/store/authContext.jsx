@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import sendRequest from '../utils/sendRequest';
-import fetchData from "../utils/fetchData";
+import sendRequest from '../utils/asyncUtils/sendRequest';
+import fetchData from "../utils/asyncUtils/fetchData";
 import { serverUrl } from '../url';
 
 export const AuthContext = createContext();

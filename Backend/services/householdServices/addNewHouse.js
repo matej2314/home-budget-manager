@@ -1,23 +1,23 @@
 const pool = require('../../database/db');
 const houseQueries = require('../../database/householdQueries');
-const { resetHostProps, resetInmatesProps, setHostProps, setInmateProps } = require('../../utils/modifyUsersProps');
+const { setHostProps, setInmateProps } = require('../../utils/dbUtils/modifyUsersProps');
 const logger = require('../../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const addNewHouse = async (userId, userName, houseName, initBudget) => {
     const houseId = uuidv4();
     const connection = await pool.getConnection();
-    
+
     try {
         await connection.beginTransaction();
 
         const [existingHouse] = await connection.query(houseQueries.checkQuery, [houseName]);
-       
+
         if (existingHouse.length > 0) {
             const existingId = existingHouse[0].houseId;
-            
+
             const [addmate] = await connection.query(houseQueries.mateQuery, [1, 'inmate', userId]);
-            
+
             if (addmate.affectedRows === 1) {
                 setInmateProps(userId, existingId, connection);
             }
@@ -25,9 +25,9 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
             logger.info(`Gospodarstwo ${houseName} istnieje. Użytkownik dodany jako domownik.`);
 
             await connection.commit();
-            return { 
-                status: 'success', 
-                message: `Użytkownik został dodany do gospodarstwa ${houseName}.`, 
+            return {
+                status: 'success',
+                message: `Użytkownik został dodany do gospodarstwa ${houseName}.`,
                 newRole: 'inmate',
             };
 
@@ -44,9 +44,9 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
 
             await connection.commit();
             logger.info(`Nowe gospodarstwo ${houseName} zostało utworzone.`);
-            return { 
-                status: 'success', 
-                message: `Gospodarstwo ${houseName} zostało utworzone.`, 
+            return {
+                status: 'success',
+                message: `Gospodarstwo ${houseName} zostało utworzone.`,
                 newRole: 'host',
             };
         }

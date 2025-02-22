@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const logger = require('../configs/logger');
 const { isValidPassword, isValidEmail, isValidUsername } = require('../utils/validation');
 const jwtCookieOptions = require('../configs/jwtCookieOptions');
-const { checkUserEmail } = require('../utils/checkUserEmail');
+const { checkUserEmail } = require('../utils/checkUtils/checkUserEmail');
 const queries = require('../database/authQueries');
 const socketQueries = require('../database/websocketQueries');
 

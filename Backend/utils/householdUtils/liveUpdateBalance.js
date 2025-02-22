@@ -1,5 +1,5 @@
-const logger = require('../configs/logger');
-const { broadcastToHouseMates } = require('../configs/websocketConfig');
+const logger = require('../../configs/logger');
+const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
 exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => {
 	try {
@@ -37,7 +37,7 @@ exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => 
 			broadcastMessage(userId, {
 				type: 'error',
 				data: {
-                   message: 'Websocket error.',
+					message: 'Websocket error.',
 				}
 			})
 		}

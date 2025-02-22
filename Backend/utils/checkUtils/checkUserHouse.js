@@ -1,4 +1,4 @@
-const actionQueries = require('../database/transactionsQueries');
+const actionQueries = require('../../database/transactionsQueries');
 
 const checkUserHouse = async (connection, userId) => {
     const [result] = await connection.query(actionQueries.checkQuery, [userId]);

@@ -1,6 +1,6 @@
-import { showInfoToast, showErrorToast } from "../configs/toastify"
+import { showInfoToast, showErrorToast } from "../../configs/toastify"
 import sendRequest from './sendRequest';
-import { serverUrl } from "../url";
+import { serverUrl } from "../../url";
 
 export const markMessage = async (message, user, refreshData) => {
     if (user.userName !== message.recipient) {

@@ -1,6 +1,6 @@
 const pool = require('../../database/db');
 const actionQueries = require('../../database/transactionsQueries');
-const checkHouse = require('../../utils/checkUserHouse');
+const checkHouse = require('../../utils/checkUtils/checkUserHouse');
 const logger = require('../../configs/logger');
 
 const getHouseActions = async (userId) => {
@@ -8,7 +8,7 @@ const getHouseActions = async (userId) => {
 
     try {
         const houseData = await checkHouse(connection, userId);
-    
+
         if (!houseData) {
             logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
             return {
@@ -16,10 +16,10 @@ const getHouseActions = async (userId) => {
                 message: `Użytkownik ${userId} nie należy do żadnego gospodarstwa.`,
             };
         }
-    
+
         const houseId = houseData.houseId;
         const [rows] = await connection.query(actionQueries.getQuery, [houseId]);
-    
+
         if (rows.length == 0) {
             logger.error(`Brak transakcji dla gospodarstwa ${houseId}`);
             return {

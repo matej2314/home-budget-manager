@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import sendRequest from '../../utils/sendRequest';
+import sendRequest from '../../utils/asyncUtils/sendRequest';
 
 export default function ContactForm() {
     const [sended, setSended] = useState(false);

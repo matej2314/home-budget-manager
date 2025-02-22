@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { AuthContext } from './authContext';
 import { serverUrl } from "../url";
-import fetchData from '../utils/fetchData';
+import fetchData from '../utils/asyncUtils/fetchData';
 
 export const DataContext = createContext({
     data: {},

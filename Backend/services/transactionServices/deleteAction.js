@@ -1,9 +1,9 @@
 const pool = require('../../database/db');
 const actionQueries = require('../../database/transactionsQueries');
-const checkHouse = require('../../utils/checkUserHouse');
-const { checkTransaction } = require('../../utils/checkTransaction');
+const checkHouse = require('../../utils/checkUtils/checkUserHouse');
+const { checkTransaction } = require('../../utils/checkUtils/checkTransaction');
 const logger = require('../../configs/logger');
-const {liveUpdateBalance} = require('../../utils/liveUpdateBalance');
+const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
 
 const deleteAction = async (transactionId, userId) => {
     const connection = await pool.getConnection();
@@ -39,7 +39,7 @@ const deleteAction = async (transactionId, userId) => {
         }
 
         const value = checkAction.value;
-        
+
         const [result] = await connection.query(actionQueries.deleteQuery, [userId, houseId, transactionId]);
 
         if (result.affectedRows === 0) {

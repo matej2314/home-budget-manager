@@ -1,4 +1,4 @@
-const pool = require('../database/db');
+const pool = require('../../database/db');
 
 const countTotalPages = async (dataType, houseId, userId) => {
     const connection = await pool.getConnection();
@@ -22,10 +22,10 @@ const countTotalPages = async (dataType, houseId, userId) => {
 
             const totalRecords = getPagesCounter[0].total;
             const limit = 10;
-            const totalPages = Math.ceil(totalRecords / limit) ;
+            const totalPages = Math.ceil(totalRecords / limit);
 
             return { status: 'success', type: dataType, pages: totalPages };
-            
+
         } else if (!getPagesCounter.length) {
             return { status: 'success', type: dataType, pages: 0 };
         }

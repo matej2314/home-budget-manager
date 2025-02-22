@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import Modal from 'react-modal';
-import sendRequest from '../../utils/sendRequest';
+import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
-import { CountDeclaredBudgetPeriod } from '../../utils/CountDeclaredBudgetPeriod';
+import { CountDeclaredBudgetPeriod } from '../../utils/countingUtils/CountDeclaredBudgetPeriod';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from './LoadingModal';
 

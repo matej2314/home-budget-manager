@@ -1,15 +1,15 @@
 const pool = require('../database/db');
 const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
-const checkUserHouse = require('../utils/checkUserHouse.js');
+const checkUserHouse = require('../utils/checkUtils/checkUserHouse.js');
 const initialBudgetQueries = require('../database/initialMonthlyBudgetQueries.js');
 const { broadcastToHouseMates } = require('../configs/websocketConfig.js');
-const { addNewBudget, clearExtraValues} = require('../utils/initMonthlyBudgetFunctions.js');
+const { addNewBudget, clearExtraValues } = require('../utils/householdUtils/initMonthlyBudgetFunctions.js');
 
 exports.addNewMonthlyBudget = async (req, res) => {
     const userId = req.userId;
     const { value } = req.body;
-    
+
     if (!value) {
         return res.status(400).json({ status: 'error', message: 'Podaj budżet!' });
     };

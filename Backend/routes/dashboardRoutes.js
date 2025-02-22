@@ -3,7 +3,6 @@ const router = express.Router();
 const pool = require('../database/db');
 const verifyJWT = require('../middlewares/verifyJWT');
 const verifyRole = require('../middlewares/verifyRole');
-const checkUserHouse = require('../utils/checkUserHouse');
 const logger = require('../configs/logger');
 const { getBoardData } = require('../controllers/boardController');
 
@@ -71,12 +70,12 @@ router.get('/data/:filter?/:page?', verifyJWT, verifyRole('mates'), async (req, 
     const userId = req.userId;
     const filter = req.params.filter;
     const page = req.params.page;
-    
+
     try {
         const response = await getBoardData(userId, filter, page);
 
         if (response.status == 'notfound') {
-            return res.status(404).json({status: 'error', message: response.message});
+            return res.status(404).json({ status: 'error', message: response.message });
         } else if (response.status === 'success') {
             return res.status(200).json(response);
         } else if (response.status === 'error') {

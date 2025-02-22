@@ -1,10 +1,10 @@
-const{ checkUserEmail} = require('../../utils/checkUserEmail');
+const { checkUserEmail } = require('../../utils/checkUtils/checkUserEmail');
 const logger = require('../../configs/logger');
 const pool = require('../../database/db');
 
 const changeUserEmail = async (newEmail, userId) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    
+
     if (!newEmail || !emailRegex.test(newEmail)) {
         return { status: 'badreq', message: 'Podaj prawidłowy adres email!' };
     };

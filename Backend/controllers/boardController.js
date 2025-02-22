@@ -1,8 +1,8 @@
 const pool = require('../database/db');
-const checkUserHouse = require('../utils/checkUserHouse');
+const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
 const logger = require('../configs/logger');
 const dashboardQueries = require('../database/dashboardQueries');
-const {countTotalPages} = require('../utils/countTotalPages');
+const { countTotalPages } = require('../utils/dbUtils/countTotalPages');
 
 const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
     const connection = await pool.getConnection();
@@ -11,7 +11,7 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
         await connection.beginTransaction();
 
         const userHouse = await checkUserHouse(connection, userId);
-        
+
         if (!userHouse) {
             logger.error(`Brak gospodarstwa użytkownika ${userId}`);
             return { status: 'notfound', message: 'Brak gospodarstwa użytkownika.' };
@@ -23,32 +23,32 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
 
         if (filter === 'all' || filter === 'house') {
             const [householdData] = await connection.query(dashboardQueries.householdData, [userHouseId]);
-        
+
             if (!householdData) {
-                return {status: 'notfound', message: 'Brak informacji o gospodarstwie.'};
+                return { status: 'notfound', message: 'Brak informacji o gospodarstwie.' };
             }
             boardData.houseData = householdData;
         }
-       
+
         if (filter === 'all' || filter === 'mates') {
-            const [matesData] = await connection.query(dashboardQueries.matesData,[userHouseId]);
+            const [matesData] = await connection.query(dashboardQueries.matesData, [userHouseId]);
 
             boardData.houseMates = matesData;
         };
-       
+
         if (filter === 'transactions') {
             const [transactionsData] = await connection.query(dashboardQueries.transactionsData, [userHouseId, limit, offset]);
             boardData.actionsData = transactionsData;
             const totalPages = await countTotalPages(filter, userHouseId);
-            boardData.totalPages = totalPages ?  totalPages.pages : 0;
+            boardData.totalPages = totalPages ? totalPages.pages : 0;
         };
 
         if (filter === 'all' || filter === 'daily') {
             const [dailyData] = await connection.query(dashboardQueries.dailyData, [userHouseId]);
-            
+
             boardData.dailyData = dailyData;
         }
-       
+
 
         if (filter === 'all' || filter === 'categories') {
             const [actionsCatData] = await connection.query(dashboardQueries.actionCatData);
@@ -58,7 +58,7 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
         if (filter === 'messages') {
             const [messagesData] = await connection.query(dashboardQueries.messagesData, [userId, userId, limit, offset]);
             boardData.messagesData = messagesData;
-            const totalPages = await countTotalPages(filter,userHouseId, userId);
+            const totalPages = await countTotalPages(filter, userHouseId, userId);
             boardData.totalPages = totalPages ? totalPages.pages : 0;
         };
 
@@ -69,7 +69,7 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
 
         await connection.commit();
         boardData.page = page;
-        
+
         return {
             status: 'success',
             message: 'Dane boardu pobrane poprawnie.',

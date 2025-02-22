@@ -6,11 +6,11 @@ import { useSocket } from '../../../store/socketContext';
 import DisplayMessageDetails from "../../modals/DisplayMessageDetails";
 import ReplyMessageModal from "../../modals/ReplyMessageModal";
 import DeleteMessageModal from "../../modals/DeleteMessageModal";
-import { markMessage } from "../../../utils/markMessage";
+import { markMessage } from "../../../utils/asyncUtils/markMessage";
 import MessagesFilterBtns from "./MessagesFilterBtns";
-import { messagesStates, tableHeader } from "../../../utils/messagesMapArrays";
+import { messagesStates, tableHeader } from "../../../utils/arraysUtils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
-import { formatDbDate } from "../../../utils/formatDateToDisplay";
+import { formatDbDate } from "../../../utils/formattingUtils/formatDateToDisplay";
 
 export default function MessagesList({ userMessages, messagesError, loading, getMessages, messagesPages }) {
     const { filter } = useParams();

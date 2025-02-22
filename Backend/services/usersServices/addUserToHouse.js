@@ -1,6 +1,6 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
-const checkUserHouse = require('../../utils/checkUserHouse');
+const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
 const usersQueries = require('../../database/usersQueries');
 const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
@@ -11,11 +11,11 @@ const addUserToHouse = async (userId, userName) => {
         await connection.beginTransaction();
 
         const hostHouse = await checkUserHouse(connection, userId);
-        
+
         const hostHouseId = hostHouse.houseId;
 
         const [getInvitedUser] = await connection.query(usersQueries.selectUserByName, [userName]);
-        
+
         if (getInvitedUser.length > 0) {
             const invitedUser = getInvitedUser[0];
             const invitedUserId = invitedUser.id;
@@ -23,9 +23,9 @@ const addUserToHouse = async (userId, userName) => {
             if (invitedUser.inmate == 0 && invitedUser.host == 0) {
                 const [addMate] = await connection.query(usersQueries.mateQuery, [1, 'inmate', invitedUser.id]);
                 if (addMate.affectedRows == 1) {
-                    
+
                     const [updateHouseId] = await connection.query(usersQueries.updatehouseIdHu, [hostHouseId, invitedUserId]);
-                    
+
                     if (updateHouseId.affectedRows == 1) {
                         await connection.query(usersQueries.updateroleHu, ['inmate', invitedUser.id]);
                     }
