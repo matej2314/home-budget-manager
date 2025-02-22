@@ -13,16 +13,11 @@ import DashBoardForUser from "../pages/dashboard-subpages/DashboardForUser";
 import ContactPage from '../pages/ContactPage';
 import AboutUs from '../pages/AboutUsPage';
 import ErrorPage from "../pages/ErrorPage";
-import { HomePageDataProvider } from '../store/homePageDataContext';
 import { DataProvider } from '../store/dataContext';
 import { SocketProvider } from '../store/socketContext';
 
 const routes = [
-    {
-        path: '/', element: <HomePageDataProvider>
-            <HomePage />
-        </HomePageDataProvider>,
-    },
+    { path: '/', element: <HomePage /> },
     {
         path: 'dashboard',
         element: <DataProvider>

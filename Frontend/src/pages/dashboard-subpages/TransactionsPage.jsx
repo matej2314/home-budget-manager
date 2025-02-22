@@ -1,5 +1,5 @@
-import { useContext, useEffect } from "react";
-import { DataContext } from "../../store/dataContext";
+import { useEffect } from "react";
+import { useTransactionsStore } from "../../store/transactionsStore";
 import TransactionsList from "../../components/dashboard/dashboard-internal-components/TransactionsList";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import AddTransactionModal from "../../components/modals/AddTransactionModal";
@@ -10,21 +10,16 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 export default function TransactionsPage() {
-    const {
-        fetchTransactions,
-        actionsData,
-        actionsError,
-        actionsLoading,
-        isTransactionsFetched,
-        actionsTotalPages,
-    } = useContext(DataContext);
+    const { fetchTransactions, actionsLoading, actionsDataError, actionsData, actionsTotalPages, isTransactionsFetched } = useTransactionsStore();
+
+    useEffect(() => {
+        if (!isTransactionsFetched) {
+            fetchTransactions();
+        };
+    }, [isTransactionsFetched]);
 
     const transactions = Array.isArray(actionsData) ? actionsData : [];
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
-
-    useEffect(() => {
-        fetchTransactions(1);
-    }, []);
 
     const handleAddTransaction = () => {
         openModal('transaction');
@@ -57,7 +52,7 @@ export default function TransactionsPage() {
                     mainSite={false}
                     transactions={actionsData && transactions}
                     actionsLoading={actionsLoading}
-                    actionsError={actionsError}
+                    actionsError={actionsDataError}
                     actionsTotalPages={actionsTotalPages}
                     getTransactions={fetchTransactions}
                 />

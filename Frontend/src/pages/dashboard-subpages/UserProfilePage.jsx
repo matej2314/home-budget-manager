@@ -1,6 +1,6 @@
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import { AuthContext } from '../../store/authContext';
-import { DataContext } from '../../store/dataContext';
+import { useTransactionsStore } from '../../store/transactionsStore';
 import { serverUrl } from '../../url';
 import FastActions from '../../components/dashboard/dashboard-internal-components/FastActionsSection';
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
@@ -10,13 +10,18 @@ import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 
 export default function UserProfilePage() {
-    const { fetchTransactions, actionsData, actionsError, actionsLoading } = useContext(DataContext);
-    const transactions = Array.isArray(actionsData) ? actionsData : [];
+    const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
     const { user, isAutnenticated } = useContext(AuthContext);
     const [type, setType] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sended, setSended] = useState(false);
     const avatarFile = useRef();
+
+    useEffect(() => {
+        if (!isTransactionsFetched) {
+            fetchTransactions();
+        };
+    }, [isTransactionsFetched]);
 
 
     const handleType = (type) => {
@@ -28,11 +33,6 @@ export default function UserProfilePage() {
         setIsModalOpen(true);
 
     };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setType(null);
-    }
 
     const handleChangeAvatar = async (e) => {
         e.preventDefault();
@@ -68,6 +68,8 @@ export default function UserProfilePage() {
             setSended(true);
         }
     };
+
+    const transactions = !actionsDataError && !actionsLoading && Array.isArray(actionsData) ? actionsData : [];
 
     return (
         <>
@@ -110,7 +112,7 @@ export default function UserProfilePage() {
                 ) : (
                     <div className='w-full h-fit flex flex-col justify-center px-5 mb-4'>
                         <h2 className='w-full h-fit flex justify-center text-xl mb-4'>Your transactions:</h2>
-                        <TransactionsList filterId={user.id} transactions={actionsData && transactions} actionsLoading={actionsLoading} actionsError={actionsError} />
+                        <TransactionsList filterId={user.id} transactions={actionsData && transactions} actionsLoading={actionsLoading} actionsError={actionsDataError} />
                     </div>
                 )}
 

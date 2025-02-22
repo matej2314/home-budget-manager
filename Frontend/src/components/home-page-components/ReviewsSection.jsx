@@ -1,21 +1,8 @@
-import { useState, useEffect } from "react";
-import { useHomePageContext } from "../../store/homePageDataContext";
 import StarRating from "../StarRating";
 import { serverUrl } from '../../url';
 import { formatDbDate } from "../../utils/formatDateToDisplay";
 
-export default function ReviewsSection() {
-
-    const [reviews, setReviews] = useState(null);
-    const { homePageData, homePageDataError, isHomePageDataLoading } = useHomePageContext();
-
-    useEffect(() => {
-        if (!isHomePageDataLoading && !homePageDataError) {
-            setReviews(homePageData.reviews);
-        };
-
-    }, [homePageData, isHomePageDataLoading, homePageDataError]);
-
+export default function ReviewsSection({ reviews }) {
 
     return (
         <div id="app-reviews" className="w-full h-fit flex flex-col justify-start items-center gap-3">

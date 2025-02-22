@@ -1,7 +1,9 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { DataContext } from "../../store/dataContext";
 import { AuthContext } from "../../store/authContext";
+import { useTransactionsStore } from '../../store/transactionsStore'
+import { getData } from '../../utils/getData';
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
 import BudgetPerDay from "../../components/dashboard/dashboardComponents/charts-dashboard-components/BudgetPerDay";
@@ -16,22 +18,24 @@ export default function HouseInfoPage() {
     const { data,
         isLoading,
         error: contextError,
-        refreshData,
-        actionsData,
-        actionsError,
-        actionsLoading,
-        isTransactionsFetched } = useContext(DataContext);
-    const { user, isAuthenticated } = useContext(AuthContext);
+    } = useContext(DataContext);
 
+    const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
+    const { user, isAuthenticated } = useContext(AuthContext);
     const { houseData, houseMates, statsData, dailyData } = data;
 
-    const getData = (data, defaultValue) => (!isLoading && !contextError && data) || defaultValue;
 
-    const basicHouseInfo = getData(houseData[0], []);
-    const dailyInfo = getData(dailyData, []);
-    const stats = getData(statsData, []);
-    const matesData = getData(houseMates, []);
-    const transactions = !actionsError && !actionsLoading && isTransactionsFetched && actionsData || [];
+    useEffect(() => {
+        if (!isTransactionsFetched) {
+            fetchTransactions();
+        }
+    }, [isTransactionsFetched]);
+
+    const basicHouseInfo = getData(isLoading, contextError, houseData[0], []);
+    const dailyInfo = getData(isLoading, contextError, dailyData, []);
+    const stats = getData(isLoading, contextError, statsData, []);
+    const matesData = getData(isLoading, contextError, houseMates, []);
+    const transactions = !actionsDataError && !actionsLoading && isTransactionsFetched && actionsData || [];
 
     const { labels, monthlyBalances, definedBudgets, monthlyTransactionCounts, actionCountLabels } = useMemo(() => {
         if (!stats || !stats.length) {

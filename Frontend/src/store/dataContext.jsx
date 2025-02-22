@@ -3,30 +3,22 @@ import { AuthContext } from './authContext';
 import { serverUrl } from "../url";
 import fetchData from '../utils/fetchData';
 
-
 export const DataContext = createContext({
     data: {},
-    messagesData: {},
     actionsData: {},
     isLoading: true,
-    messagesLoading: false,
-    messagesError: null,
-    messagesTotalPages: 1,
     actionsLoading: false,
     actionsError: null,
     actionsTotalPages: 1,
     actionsPage: 1,
-    isMessagesFetched: false,
     isTransactionsFetched: false,
     refreshData: () => { },
-    fetchMessages: () => { },
     fetchTransactions: () => { },
 });
 
 export const DataProvider = ({ children }) => {
 
     const { isAuthenticated } = useContext(AuthContext);
-    const [isMessagesFetched, setIsMessagesFetched] = useState(false);
     const [isTransactionsFetched, setIsTransactionsFetched] = useState(false);
 
     const [data, setData] = useState({
@@ -37,13 +29,6 @@ export const DataProvider = ({ children }) => {
         dailyData: [],
         dataError: null,
         loading: true,
-    });
-    const [messagesData, setMessagesData] = useState({
-        messagesData: [],
-        messagesDataError: null,
-        loading: false,
-        totalPages: 0,
-        page: 1,
     });
 
     const [actionsData, setActionsData] = useState({
@@ -72,26 +57,6 @@ export const DataProvider = ({ children }) => {
             setData(prevData => ({ ...prevData, dataError: error }));
         }
     };
-
-    const fetchMessages = async (page = 1) => {
-        setMessagesData(prevData => ({ ...prevData, loading: true, messagesDataError: null }));
-        setIsMessagesFetched(false);
-
-        try {
-            const result = await fetchData(`${serverUrl}/board/data/messages/${page}`);
-            setMessagesData(prevData => ({
-                ...prevData,
-                messagesData: result.dashboardData.messagesData || [],
-                totalPages: result.dashboardData.totalPages || 1,
-                page: page,
-                loading: false,
-            }));
-            setIsMessagesFetched(true);
-        } catch (error) {
-            setMessagesData(prevData => ({ ...prevData, messagesDataError: error }));
-        }
-    };
-
 
     const fetchTransactions = async (page = 1) => {
         setActionsData(prevData => ({ ...prevData, loading: true, actionsDataError: null }));
@@ -129,19 +94,13 @@ export const DataProvider = ({ children }) => {
         <DataContext.Provider value={{
             data,
             isLoading: data.loading,
-            messagesData: messagesData.messagesData,
-            messagesLoading: messagesData.loading,
-            messagesError: messagesData.messagesDataError,
-            messagesTotalPages: messagesData.totalPages,
             actionsData: actionsData.actionsData,
             actionsLoading: actionsData.loading,
             actionsError: actionsData.actionsDataError,
             actionsTotalPages: actionsData.totalPages,
             actionsPage: actionsData.page,
             refreshData,
-            fetchMessages,
             fetchTransactions,
-            isMessagesFetched,
             isTransactionsFetched,
         }}>
             {children}
