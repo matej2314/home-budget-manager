@@ -1,5 +1,3 @@
-const express = require('express');
-
 const routes = [
     { path: '/auth', file: 'authRoutes.js' },
     { path: '/users', file: 'usersRoutes.js' },
@@ -10,7 +8,7 @@ const routes = [
     { path: '/message', file: 'messagesRoutes.js' },
     { path: '/initmonthly', file: 'initialMonthlyBudgetsRoutes.js' },
     { path: '/receipt', file: 'receiptRoutes.js' },
-    {path: '/homepage', file: 'homePageDataRoutes.js'},
+    { path: '/homepage', file: 'homePageDataRoutes.js' },
     { path: '/avatars', file: 'avatarsRoutes.js' },
     { path: '/cookiestour', file: 'cookiesTourRoutes.js' },
     { path: '/reviews', file: 'reviewsRoutes.js' },

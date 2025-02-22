@@ -1,7 +1,7 @@
 const express = require('express');
-const verifyJWT = require('../middlewares/verifyJWT');
 const router = express.Router();
 const messagesController = require('../controllers/messagesController');
+const verifyJWT = require('../middlewares/verifyJWT');
 
 /**
  * @swagger

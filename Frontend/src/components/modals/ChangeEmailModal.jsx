@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
-import sendRequest from '../../utils/asyncUtils/sendRequest';
 import Modal from 'react-modal';
 import { serverUrl } from '../../url';
+import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
 

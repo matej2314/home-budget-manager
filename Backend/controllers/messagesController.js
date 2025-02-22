@@ -1,4 +1,3 @@
-const pool = require('../database/db');
 const logger = require('../configs/logger');
 const { sendNewMessage } = require('../services/messagesServices/sendNewMessage');
 const { markAsReaded } = require('../services/messagesServices/markAsReaded');
@@ -13,7 +12,7 @@ exports.sendMessage = async (req, res) => {
         logger.error('Brak danych wymaganych do wysłania wiadomości.');
         return res.status(400).json({ status: 'error', message: 'Brak danych wymaganych do wysłania wiadomości.' });
     };
-   
+
     try {
         const sendResult = await sendNewMessage(userId, userName, recipientName, content);
 
@@ -22,7 +21,7 @@ exports.sendMessage = async (req, res) => {
         } else if (sendResult.status === 'error') {
             return res.status(500).json({ status: 'error', message: sendResult.message });
         } else {
-            return res.status(200).json({status: 'success', message: sendResult.message})
+            return res.status(200).json({ status: 'success', message: sendResult.message })
         }
     } catch (error) {
         logger.error(`Błąd w sendMessage: ${error}`);
@@ -31,7 +30,7 @@ exports.sendMessage = async (req, res) => {
 };
 
 exports.markMessage = async (req, res) => {
-    const  messageId  = req.body.messageId;
+    const messageId = req.body.messageId;
     const userId = req.userId;
 
     if (!messageId) {
@@ -41,7 +40,7 @@ exports.markMessage = async (req, res) => {
 
     try {
         const markResult = await markAsReaded(messageId, userId);
-        
+
         if (markResult.status === 'notfound') {
             return res.status(404).json({ status: 'error', message: markResult.message });
         } else if (markResult.status === 'error') {
@@ -57,7 +56,7 @@ exports.markMessage = async (req, res) => {
 
 exports.deleteMessage = async (req, res) => {
     const { messageId } = req.body;
-   
+
     if (!messageId) {
         return res.status(400).json({ status: 'error', message: 'Wskaż wiadomość!' });
     };
@@ -69,7 +68,7 @@ exports.deleteMessage = async (req, res) => {
         if (delResult.status === 'notfound') {
             return res.status(404).json({ status: 'error', message: delResult.message });
         } else if (delResult.status === 'error') {
-            return res.status(500).json({status: 'error', message: ''})
+            return res.status(500).json({ status: 'error', message: '' })
         } else {
             return res.status(200).json({ status: 'success', message: delResult.message });
         }

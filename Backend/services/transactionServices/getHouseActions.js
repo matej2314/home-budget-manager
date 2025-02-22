@@ -1,7 +1,8 @@
 const pool = require('../../database/db');
+const logger = require('../../configs/logger');
 const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUtils/checkUserHouse');
-const logger = require('../../configs/logger');
+
 
 const getHouseActions = async (userId) => {
     const connection = await pool.getConnection();

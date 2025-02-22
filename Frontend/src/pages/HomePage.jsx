@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
 import { showCookiesInfo } from "../configs/toastify";
 import useHomePageStore from "../store/homePageStore";
-
 import HomePageMenu from "../components/home-page-components/HomePageMenu";
 import ShortInfoSection from "../components/home-page-components/ShortInfoSection";
 import FunctionalitiesSection from "../components/home-page-components/FunctionalitiesSection";

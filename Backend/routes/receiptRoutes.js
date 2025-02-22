@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const logger = require('../configs/logger');
-const {extractPhotoData}  = require('../configs/tesseract');
+const { extractPhotoData } = require('../configs/tesseract');
 const { uploadReceipt } = require('../store/receiptStorage');
-const verifyJWT = require('../middlewares/verifyJWT');
+
 
 router.post('/',
     uploadReceipt.single('receipt'),

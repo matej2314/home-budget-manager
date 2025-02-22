@@ -1,5 +1,4 @@
 import { useState, useRef } from "react"
-import { useNavigate } from "react-router-dom"
 import { serverUrl } from "../../url";
 import sendRequest from "../../utils/asyncUtils/sendRequest";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";

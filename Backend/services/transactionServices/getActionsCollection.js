@@ -1,9 +1,9 @@
 const pool = require('../../database/db');
-const actionQueries = require('../../database/transactionsQueries');
 const logger = require('../../configs/logger');
+const actionQueries = require('../../database/transactionsQueries');
 
 const getActionsCollection = async () => {
-    
+
     const connection = await pool.getConnection();
 
     try {

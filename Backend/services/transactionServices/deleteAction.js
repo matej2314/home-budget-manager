@@ -1,8 +1,8 @@
 const pool = require('../../database/db');
+const logger = require('../../configs/logger');
 const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUtils/checkUserHouse');
 const { checkTransaction } = require('../../utils/checkUtils/checkTransaction');
-const logger = require('../../configs/logger');
 const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
 
 const deleteAction = async (transactionId, userId) => {

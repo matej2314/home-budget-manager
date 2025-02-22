@@ -1,6 +1,6 @@
 const cron = require('node-cron');
-const logger = require('../configs/logger');
 const pool = require('../database/db');
+const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const saveDailyBudget = async () => {
@@ -21,9 +21,9 @@ const saveDailyBudget = async () => {
             for (const house of households) {
                 const id = uuidv4();
                 const balanceToDb = house.currentBalance;
-                
+
                 const [addDailyBudget] = await connection.query('INSERT INTO dailyBudget (id, houseId, value) VALUES (?, ?, ?);',
-                    [id, house.houseId,balanceToDb]);
+                    [id, house.houseId, balanceToDb]);
                 if (addDailyBudget.affectedRows === 0) {
                     logger.error('Nie udało się zapisać dziennego budżetu.');
                 } else {
@@ -38,7 +38,7 @@ const saveDailyBudget = async () => {
         } finally {
             if (connection) connection.release();
         }
-        
+
     });
 };
 

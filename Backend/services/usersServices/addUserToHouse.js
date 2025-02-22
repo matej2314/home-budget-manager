@@ -1,7 +1,7 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
-const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
 const usersQueries = require('../../database/usersQueries');
+const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
 const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
 const addUserToHouse = async (userId, userName) => {

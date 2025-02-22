@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSocket } from "../../../store/socketContext";
 import { Link } from "react-router-dom";
-import NotificationDot from "./NotificationDot";
 import { Icon } from '@iconify/react';
+import NotificationDot from "./NotificationDot";
 import NotificationsContainer from "./NotificationsContainer";
 
 export default function HeaderIconsContainer({ filteredDataMessages, socketMessages }) {

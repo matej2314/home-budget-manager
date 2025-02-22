@@ -1,7 +1,7 @@
 const pool = require('../database/db');
-const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
 const logger = require('../configs/logger');
 const dashboardQueries = require('../database/dashboardQueries');
+const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
 const { countTotalPages } = require('../utils/dbUtils/countTotalPages');
 
 const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {

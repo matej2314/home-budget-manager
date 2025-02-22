@@ -1,11 +1,11 @@
 const logger = require('../configs/logger');
+const jwt = require('jsonwebtoken');
+const jwtCookieOptions = require('../configs/jwtCookieOptions');
+const JWT_SECRET = process.env.JWT_SECRET;
 const { addNewHouse } = require('../services/householdServices/addNewHouse');
 const { getHousesCollection } = require('../services/householdServices/getHousesCollection');
 const { getHouseInfo } = require('../services/householdServices/getHouseinfo');
 const { deleteHouse } = require('../services/householdServices/deleteHouse');
-const jwt = require('jsonwebtoken');
-const jwtCookieOptions = require('../configs/jwtCookieOptions');
-const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.addNewHouse = async (req, res) => {
     const userId = req.userId;
@@ -25,7 +25,7 @@ exports.addNewHouse = async (req, res) => {
             res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
             return res.status(200).json(result);
         } else {
-            return res.status(500).json({status: 'error', message: result.message});
+            return res.status(500).json({ status: 'error', message: result.message });
         }
 
     } catch (error) {
@@ -40,7 +40,7 @@ exports.getAllHouses = async (req, res) => {
         const result = await getHousesCollection();
 
         if (result.status === 'error') {
-            return res.status(404).json({status: 'error', message: result.message});
+            return res.status(404).json({ status: 'error', message: result.message });
         } else if (result.status === 'success') {
             return res.status(200).json(result);
         };
@@ -53,7 +53,7 @@ exports.getAllHouses = async (req, res) => {
 
 exports.getHouseInfo = async (req, res) => {
     const userId = req.userId;
-    
+
     try {
         const result = await getHouseInfo(userId);
 
@@ -62,7 +62,7 @@ exports.getHouseInfo = async (req, res) => {
         } else if (result.status === 'success') {
             return res.status(200).json(result);
         };
-       
+
     } catch (error) {
         logger.error(`Błąd w getHouseInfo: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Wystąpił błąd przy przetwarzaniu żądania.' });
@@ -73,7 +73,7 @@ exports.deleteHouse = async (req, res) => {
     const userId = req.userId;
     const { houseName } = req.body;
 
-    if ( !userId || !houseName) {
+    if (!userId || !houseName) {
         logger.error('Podaj prawidłowe dane do usunięcia gospodarstwa.');
         return res.status(400).json({ status: 'error', message: 'Podaj prawidłowe dane do usunięcia gospodarstwa.' });
     };
@@ -84,7 +84,7 @@ exports.deleteHouse = async (req, res) => {
         if (result.status === 'error') {
             return res.status(400).json(result);
         } else if (result.status === 'noperm') {
-            return res.status(403).json({status: 'error', message: result.message});
+            return res.status(403).json({ status: 'error', message: result.message });
         };
         const token = jwt.sign({ id: userId, userName: req.userName, role: result.newRole }, JWT_SECRET, { expiresIn: '24h' });
         res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });

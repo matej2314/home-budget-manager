@@ -1,6 +1,6 @@
 const cron = require('node-cron');
-const logger = require('../configs/logger');
 const pool = require('../database/db');
+const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const saveDailyTransactions = async () => {
@@ -26,7 +26,7 @@ const saveDailyTransactions = async () => {
                 end: endOfDay,
             };
 
-           
+
             const getDailyTransactionsQuery = `
                 SELECT houseId, COUNT(transactionId) AS transactionCount
                 FROM transactions WHERE addedAt BETWEEN ? AND ? AND houseId IN (?)
@@ -51,7 +51,7 @@ const saveDailyTransactions = async () => {
 
             const addActionQuery = 'INSERT INTO dailyTransactions (id, dailyActionCount, houseId, date) VALUES ?';
 
-            const [addActionCount] = await connection.query(addActionQuery,[valuesToInsert]);
+            const [addActionCount] = await connection.query(addActionQuery, [valuesToInsert]);
 
             if (addActionCount.affectedRows === rows.length) {
                 logger.info(`Zapisano ${addActionCount.affectedRows.length} dziennych transakcji.`);

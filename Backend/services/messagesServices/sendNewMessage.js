@@ -1,8 +1,9 @@
 const pool = require('../../database/db');
-const messagesQueries = require('../../database/messagesQueries');
 const logger = require('../../configs/logger');
-const { broadcastMessage } = require('../../configs/websocketConfig');
 const { v4: uuidv4 } = require('uuid');
+const messagesQueries = require('../../database/messagesQueries');
+const { broadcastMessage } = require('../../configs/websocketConfig');
+
 
 const sendNewMessage = async (userId, userName, recipientName, content) => {
     const id = uuidv4();
@@ -38,7 +39,7 @@ const sendNewMessage = async (userId, userName, recipientName, content) => {
         } catch (error) {
             logger.error('Nie udało się wysłać wiadomości do adresata.', error);
         };
-        
+
 
         return {
             status: 'success',

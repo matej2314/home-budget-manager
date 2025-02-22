@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database/db');
-const logger = require('../configs/logger');
+const usersController = require('../controllers/usersController.js');
 const verifyJWT = require('../middlewares/verifyJWT');
 const verifyRole = require('../middlewares/verifyRole.js');
-const usersController = require('../controllers/usersController.js');
+
 
 /**
  * @swagger

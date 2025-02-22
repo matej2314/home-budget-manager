@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
-import LoadingModal from '../modals/LoadingModal';
+
 
 export default function SendMessageForm({ reply, recipientName, onClose }) {
     const [sended, setSended] = useState(false);

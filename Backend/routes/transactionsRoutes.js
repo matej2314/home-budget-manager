@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const actionsController = require('../controllers/transactionsController');
 const verifyJWT = require('../middlewares/verifyJWT');
 const verifyRole = require('../middlewares/verifyRole');
-const actionsController = require('../controllers/transactionsController');
+
 
 /**
  * @swagger

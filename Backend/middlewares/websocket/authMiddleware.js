@@ -1,7 +1,8 @@
 const cookieParser = require('cookie');
 const jwt = require('jsonwebtoken');
-const logger = require('../../configs/logger');
 const JWT_SECRET = process.env.JWT_SECRET;
+const logger = require('../../configs/logger');
+
 
 const authMiddleware = (socket, next) => {
 	try {

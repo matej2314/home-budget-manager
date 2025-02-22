@@ -1,6 +1,5 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
-const usersQueries = require('../../database/usersQueries');
 const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
 
 const deleteUser = async (userId) => {

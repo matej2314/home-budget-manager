@@ -1,14 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
-import { Icon } from '@iconify/react';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
-import useModal from '../../hooks/useModal';
+import { Icon } from '@iconify/react';
 import Modal from 'react-modal';
+import useModal from '../../hooks/useModal';
 import Authorization from './Authorization';
 import LanguageSelector from '../dashboard/dashboard-internal-components/LanguageSelector';
 import { loggingOut } from '../../utils/handleLogOut';
 import LogoOutModal from '../modals/LogOutModal';
-import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import { showInfoToast } from '../../configs/toastify';
 
 Modal.setAppElement('#root');
 

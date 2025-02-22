@@ -1,10 +1,11 @@
 import { useState, useContext, useEffect } from 'react';
 import { DataContext } from '../../store/dataContext';
-import { Calendar } from 'react-big-calendar';
 import localizer from '../../configs/calendarLocalizer';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { Calendar } from 'react-big-calendar';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 import CalendarModal from '../../components/modals/CalendarModal';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 
 export default function CalendarPage() {
     const { actionsData, isTransactionsFetched, actionsError, actionsLoading, fetchTransactions } = useContext(DataContext);

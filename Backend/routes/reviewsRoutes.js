@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const verifyJWT = require('../middlewares/verifyJWT');
 const reviewsController = require('../controllers/reviewsController');
+const verifyJWT = require('../middlewares/verifyJWT');
+
 
 router.post('/new', verifyJWT, reviewsController.addReview);
 

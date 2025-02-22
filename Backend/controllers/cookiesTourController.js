@@ -1,4 +1,3 @@
-const pool = require('../database/db');
 const logger = require('../configs/logger');
 const { setAcceptCookies } = require('../services/cookiesTourServices/setAcceptCookiesValue');
 const { setCompleteTour } = require('../services/cookiesTourServices/setCompleteTourValue');
@@ -6,7 +5,7 @@ const { setCompleteTour } = require('../services/cookiesTourServices/setComplete
 exports.setCookieValue = async (req, res) => {
     const userId = req.userId;
     const cookieValue = req.body.cookieValue;
-   
+
     if (!cookieValue) {
         return res.status(400).json({ status: 'error', message: 'Niepoprawna wartość.' });
     };
@@ -23,14 +22,14 @@ exports.setCookieValue = async (req, res) => {
         logger.error(`Błąd w setCookieValue: ${error}`);
         return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
     };
-    
+
 };
 
 exports.setTourValue = async (req, res) => {
     const userId = req.userId;
-    
+
     if (!tourValue) {
-        return res.status(404).json({status: 'error', message: ''})
+        return res.status(404).json({ status: 'error', message: '' })
     };
 
     try {

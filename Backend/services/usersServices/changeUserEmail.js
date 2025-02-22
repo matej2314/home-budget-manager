@@ -1,6 +1,6 @@
-const { checkUserEmail } = require('../../utils/checkUtils/checkUserEmail');
-const logger = require('../../configs/logger');
 const pool = require('../../database/db');
+const logger = require('../../configs/logger');
+const { checkUserEmail } = require('../../utils/checkUtils/checkUserEmail');
 
 const changeUserEmail = async (newEmail, userId) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

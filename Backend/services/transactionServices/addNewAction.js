@@ -1,8 +1,8 @@
 const pool = require('../../database/db');
+const logger = require('../../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUtils/checkUserHouse');
-const logger = require('../../configs/logger');
 const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
 const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 

@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const householdController = require('../controllers/householdController.js');
 const verifyJWT = require('../middlewares/verifyJWT.js');
 const verifyRole = require('../middlewares/verifyRole.js');
-const householdController = require('../controllers/householdController.js');
+
 
 /**
  * @swagger
@@ -161,7 +162,7 @@ router.post('/new', verifyJWT, verifyRole('user'), householdController.addNewHou
  */
 
 
-router.get('/collection', verifyJWT,verifyRole('superadmin'), householdController.getAllHouses);
+router.get('/collection', verifyJWT, verifyRole('superadmin'), householdController.getAllHouses);
 
 /**
  * @swagger

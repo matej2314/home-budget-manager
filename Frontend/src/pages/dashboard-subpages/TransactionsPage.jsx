@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useTransactionsStore } from "../../store/transactionsStore";
+import Modal from 'react-modal';
 import TransactionsList from "../../components/dashboard/dashboard-internal-components/TransactionsList";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import AddTransactionModal from "../../components/modals/AddTransactionModal";
 import TransactionsCategoriesModal from "../../components/modals/TransactionsCategoriesModal";
 import useModal from "../../hooks/useModal";
-import Modal from 'react-modal';
+
 
 Modal.setAppElement('#root');
 

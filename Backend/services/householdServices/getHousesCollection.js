@@ -1,6 +1,6 @@
 const pool = require('../../database/db');
-const houseQueries = require('../../database/householdQueries');
 const logger = require('../../configs/logger');
+const houseQueries = require('../../database/householdQueries');
 
 exports.getHousesCollection = async () => {
     const connection = await pool.getConnection();

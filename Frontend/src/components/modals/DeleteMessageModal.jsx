@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
-import sendRequest from "../../utils/asyncUtils/sendRequest";
 import { serverUrl } from '../../url';
+import sendRequest from "../../utils/asyncUtils/sendRequest";
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function DeleteMessageModal({ isOpen, onRequestClose, message }) {

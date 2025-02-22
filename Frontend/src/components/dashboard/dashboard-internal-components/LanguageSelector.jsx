@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Select from "react-select";
 import { Icon } from "@iconify/react";
 import i18next from 'i18next';
