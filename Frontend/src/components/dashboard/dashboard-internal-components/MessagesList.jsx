@@ -11,6 +11,7 @@ import { markMessage } from "../../../utils/asyncUtils/markMessage";
 import { messagesStates, tableHeader } from "../../../utils/arraysUtils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
 import { formatDbDate } from "../../../utils/formattingUtils/formatDateToDisplay";
+import { mapArray, filterArray } from "../../../utils/arraysUtils/arraysFunctions";
 
 export default function MessagesList({ userMessages, messagesError, loading, getMessages, messagesPages }) {
     const { filter } = useParams();
@@ -23,12 +24,11 @@ export default function MessagesList({ userMessages, messagesError, loading, get
 
     const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
     const sortedMessages = Array.isArray(userMessages) ? userMessages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
-    const filteredMessages = Array.isArray(userMessages) ? userMessages.filter((msg) => msg.recipient === user.userName) : [];
+    const filteredMessages = Array.isArray(userMessages) && filterArray(userMessages, (msg) => msg.recipient === user.userName);
 
     useEffect(() => {
-
-        const newMessagesSet = new Set(newMessages.map((msg) => msg.id));
-        const uniqueMessages = liveMessages.filter((message) => !newMessagesSet.has(message.id));
+        const newMessagesSet = new Set(mapArray(newMessages, (msg) => msg.id));
+        const uniqueMessages = filterArray(liveMessages, (message) => !newMessagesSet.has(message.id));
 
         if (uniqueMessages.length > 0) {
             setNewMessages((prevMessages) => [...uniqueMessages, ...prevMessages]);
@@ -51,8 +51,8 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     const filterMap = {
         all: sortedMessages,
         new: newMessages,
-        readed: filteredMessages.filter((msg) => msg.readed === 1),
-        sended: sortedMessages.filter((msg) => msg.sender === user.userName),
+        readed: filterArray(filteredMessages, (msg) => msg.readed === 1),
+        sended: filterArray(sortedMessages, (msg) => msg.sender === user.userName),
     };
 
     const handleOpenModal = (type, message = null) => {

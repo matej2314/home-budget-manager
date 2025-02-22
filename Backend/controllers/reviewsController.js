@@ -1,7 +1,7 @@
 const pool = require('../database/db');
 const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
-
+const { StatusCodes } = require('http-status-codes');
 
 exports.addReview = async (req, res) => {
     const userId = req.userId;
@@ -16,7 +16,7 @@ exports.addReview = async (req, res) => {
     const id = uuidv4();
 
     try {
-        const [addReviewResult] = await connection.query('INSERT INTO usersReviews (id, rating, content, userName, userId) VALUES (?,?,?,?,?)', [id,rating, content, userName, userId]);
+        const [addReviewResult] = await connection.query('INSERT INTO usersReviews (id, rating, content, userName, userId) VALUES (?,?,?,?,?)', [id, rating, content, userName, userId]);
 
         if (addReviewResult.affectedRows === 0) {
             return res.status(500).json({ status: 'error', message: 'Nie udało się dodać opinii.' });

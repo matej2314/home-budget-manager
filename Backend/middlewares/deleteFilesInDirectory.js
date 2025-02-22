@@ -4,7 +4,6 @@ const logger = require('../configs/logger');
 
 const deleteFiles = async (req, res, next) => {
     const userId = req.userId;
-
     const userPath = path.join(__dirname, `../public/user-photos/${userId}`);
 
     try {

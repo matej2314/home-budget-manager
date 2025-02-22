@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { DataContext } from "../../store/dataContext";
 import { AuthContext } from "../../store/authContext";
 import { useTransactionsStore } from '../../store/transactionsStore'
+import useProcessedData from '../../hooks/useProcessedData';
 import { getData } from '../../utils/getData';
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
@@ -31,52 +32,33 @@ export default function HouseInfoPage() {
         }
     }, [isTransactionsFetched]);
 
-    const basicHouseInfo = getData(isLoading, contextError, houseData[0], []);
-    const dailyInfo = getData(isLoading, contextError, dailyData, []);
-    const stats = getData(isLoading, contextError, statsData, []);
-    const matesData = getData(isLoading, contextError, houseMates, []);
+    const basicHouseInfo = !isLoading && !contextError && houseData[0] || [];
+    const dailyInfo = getData(isLoading, contextError, true, dailyData, []);
+    const stats = getData(isLoading, contextError, true, statsData, []);
+    const matesData = getData(isLoading, contextError, true, houseMates, []);
     const transactions = !actionsDataError && !actionsLoading && isTransactionsFetched && actionsData || [];
 
-    const { labels, monthlyBalances, definedBudgets, monthlyTransactionCounts, actionCountLabels } = useMemo(() => {
+    const { actionCountLabels } = useMemo(() => {
         if (!stats || !stats.length) {
-            return { labels: [], monthlyBalances: [], definedBudgets: [], monthlyTransactionCounts: [], actionCountLabels: [] };
+            return { actionCountLabels: [] };
         }
-
-        return {
-            labels: stats.map(item => item.monthlyBalanceDate),
-            monthlyBalances: stats.map(item => item.monthlyBalanceValue),
-            definedBudgets: stats.map(item => item.definedMonthlyBudgets),
-            actionCountLabels: stats.map(item => `${item.countStartDate} - ${item.monthlyBalanceDate}`),
-            monthlyTransactionCounts: stats.map(item => item.transactionCount),
-        }
+        return { actionCountLabels: stats.map(item => `${item.countStartDate} - ${item.monthlyBalanceDate}`) }
     }, [stats]);
 
-    const { actionLabels, dailyTransactions, dailyBudgetLabels, dailyBudgetValues } = useMemo(() => {
-        if (!dailyInfo || !dailyInfo.length) {
-            return { actionLabels: [], dailyTransactions: [], dailyBudgetLabels: [], dailyBudgetValues: [] };
-        };
 
-        const uniqueDailyActions = dailyInfo.reduce((acc, item) => {
-            if (!acc.some(el => el.dailyActionsDate.includes(item.dailyActionsDate))) {
-                acc.push(item);
-            }
-            return acc;
-        }, []);
+    const { labels, monthlyBalances, definedBudgets, monthlyTransactionCounts } = useProcessedData(stats, {
+        labels: 'monthlyBalanceDate',
+        monthlyBalances: 'monthlyBalanceValue',
+        definedBudgets: 'definedMonthlyBudgets',
+        monthlyTransactionCounts: 'transactionCount',
+    });
 
-        const uniqueDailyBudgets = dailyInfo.reduce((acc, item) => {
-            if (!acc.some(el => el.dailyBudgetDate.includes(item.dailyBudgetDate))) {
-                acc.push(item);
-            }
-            return acc;
-        }, []);
-
-        return {
-            actionLabels: uniqueDailyActions.map(item => item.dailyActionsDate),
-            dailyTransactions: uniqueDailyActions.map(item => item.dailyActionCount),
-            dailyBudgetLabels: uniqueDailyBudgets.map(item => item.dailyBudgetDate),
-            dailyBudgetValues: uniqueDailyBudgets.map(item => item.dailyBudgetValue),
-        };
-    }, [dailyInfo]);
+    const { actionLabels, dailyTransactions, dailyBudgetLabels, dailyBudgetValues } = useProcessedData(dailyInfo, {
+        actionLabels: 'dailyActionsDate',
+        dailyTransactions: 'dailyActionCount',
+        dailyBudgetLabels: 'dailyBudgetDate',
+        dailyBudgetValues: 'dailyBudgetValue',
+    });
 
     return (
         <>

@@ -6,6 +6,7 @@ const { addNewHouse } = require('../services/householdServices/addNewHouse');
 const { getHousesCollection } = require('../services/householdServices/getHousesCollection');
 const { getHouseInfo } = require('../services/householdServices/getHouseinfo');
 const { deleteHouse } = require('../services/householdServices/deleteHouse');
+const { StatusCodes } = require('http-status-codes');
 
 exports.addNewHouse = async (req, res) => {
     const userId = req.userId;

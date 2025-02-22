@@ -1,6 +1,8 @@
 const logger = require('../configs/logger');
 const { setAcceptCookies } = require('../services/cookiesTourServices/setAcceptCookiesValue');
 const { setCompleteTour } = require('../services/cookiesTourServices/setCompleteTourValue');
+const { StatusCodes } = require('http-status-codes');
+
 
 exports.setCookieValue = async (req, res) => {
     const userId = req.userId;

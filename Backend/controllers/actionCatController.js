@@ -2,10 +2,12 @@ const logger = require('../configs/logger');
 const { addActionCat } = require('../services/actionCatServices/addActionCat');
 const { getActionCatColl } = require('../services/actionCatServices/actionCatCollection');
 const { deleteActionCat } = require('../services/actionCatServices/deleteActionCat');
+const { StatusCodes } = require('http-status-codes');
+
 
 exports.addNewActionCat = async (req, res) => {
     const { name, type } = req.body;
-    
+
     try {
         const response = await addActionCat(name, type);
 
@@ -53,12 +55,12 @@ exports.actionCatCollection = async (req, res) => {
             message: 'Błąd przetwarzania żądania.',
         });
     };
-   
+
 };
 
 exports.deleteActionCat = async (req, res) => {
     const { catName, catId } = req.body;
-   
+
     try {
         const response = await deleteActionCat(catName, catId);
 

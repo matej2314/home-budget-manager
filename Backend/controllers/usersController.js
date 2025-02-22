@@ -5,6 +5,7 @@ const { getInhabitants } = require('../services/usersServices/getInhabitants');
 const { deleteUser } = require('../services/usersServices/deleteUser');
 const { deleteInhabitant } = require('../services/usersServices/deleteInhabitant');
 const { changeUserEmail } = require('../services/usersServices/changeUserEmail');
+const { StatusCodes } = require('http-status-codes');
 
 exports.addUserToHouse = async (req, res) => {
     const userId = req.userId;

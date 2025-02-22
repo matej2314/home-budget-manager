@@ -2,6 +2,7 @@ const logger = require('../configs/logger');
 const { sendNewMessage } = require('../services/messagesServices/sendNewMessage');
 const { markAsReaded } = require('../services/messagesServices/markAsReaded');
 const { delMessage } = require('../services/messagesServices/deleteMessage');
+const { StatusCodes } = require('http-status-codes');
 
 exports.sendMessage = async (req, res) => {
     const userId = req.userId;

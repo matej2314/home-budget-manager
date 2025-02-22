@@ -5,12 +5,13 @@ const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUtils/checkUserHouse');
 const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
 const { broadcastToHouseMates } = require('../../configs/websocketConfig');
+const { validTransactionTypes } = require('../../utils/validation');
 
 const addNewAction = async (userId, type, value, catId) => {
 	const transactionId = uuidv4();
 	const id = uuidv4();
 
-	const validTypes = ['income', 'expense'];
+	const validTypes = validTransactionTypes;
 
 	if (!type || !validTypes.includes(type)) {
 		logger.error('Nieprawidłowe dane wejściowe do dodania transakcji.');

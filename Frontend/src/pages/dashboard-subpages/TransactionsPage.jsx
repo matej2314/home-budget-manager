@@ -12,6 +12,7 @@ Modal.setAppElement('#root');
 
 export default function TransactionsPage() {
     const { fetchTransactions, actionsLoading, actionsDataError, actionsData, actionsTotalPages, isTransactionsFetched } = useTransactionsStore();
+    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
 
     useEffect(() => {
         if (!isTransactionsFetched) {
@@ -20,7 +21,7 @@ export default function TransactionsPage() {
     }, [isTransactionsFetched]);
 
     const transactions = Array.isArray(actionsData) ? actionsData : [];
-    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
+
 
     const handleAddTransaction = () => {
         openModal('transaction');

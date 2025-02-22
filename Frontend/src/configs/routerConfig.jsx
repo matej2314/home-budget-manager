@@ -34,7 +34,7 @@ const routes = [
             { path: 'calendar', element: <CalendarPage /> },
             { path: 'messages/:filter?', element: <MessagesPage /> },
             { path: 'userDashboard', element: <DashBoardForUser /> },
-            { path: 'adminpanel', element: <AdminPanelPage /> },
+            { path: 'adminpanel/:page?', element: <AdminPanelPage /> },
             { path: 'stats', element: <StatsPage /> },
             { path: '*', element: <ErrorPage /> },
         ],

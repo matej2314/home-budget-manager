@@ -4,6 +4,7 @@ import { DataContext } from "../../../store/dataContext";
 import { Icon } from '@iconify/react';
 import SendMessageModal from '../../modals/SendMessageModal';
 import { showInfoToast } from "../../../configs/toastify";
+import { getData } from "../../../utils/getData";
 
 export default function MatesList({ mode }) {
     const { user, isAuthenticated } = useContext(AuthContext);
@@ -11,7 +12,7 @@ export default function MatesList({ mode }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [recipient, setRecipient] = useState(null);
 
-    const houseMates = !isLoading && !error ? data.houseMates : [];
+    const houseMates = getData(isLoading, error, true, data.houseMates, []);
     const thLabels = ['Name', 'Role', 'Actions'];
 
     const handleOpenModal = (recipient) => {

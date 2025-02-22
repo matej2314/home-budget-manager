@@ -1,27 +1,21 @@
-import { useMemo, useContext } from 'react';
+import { useContext } from 'react';
 import { DataContext } from '../../../../store/dataContext';
+import useProcessedData from '../../../../hooks/useProcessedData';
 import BarChart from '../../../charts/BarChart';
+import { getData } from '../../../../utils/getData';
 
 export default function LossOrGainChart() {
 
-    const { data, isLoading, error, refreshData } = useContext(DataContext);
+    const { data, isLoading, error } = useContext(DataContext);
 
-    const { houseData, houseMates, statsData, dailyData } = data;
+    const { statsData } = data;
 
-    const getData = (data, defaultValue) => (!isLoading && !error && data) || defaultValue;
+    const statData = getData(isLoading, error, true, statsData, []);
 
-    const statData = getData(statsData, []);
-
-    const { monthlyBalances, monthlyBalancesLabels } = useMemo(() => {
-        if (!statData || !statData.length) {
-            return { monthlyBalances: [], monthlyBalancesLabels: [] };
-        };
-
-        return {
-            monthlyBalancesLabels: statData.map(item => item.monthlyBalanceDate),
-            monthlyBalances: statData.map(item => item.monthlyBalanceValue),
-        }
-    }, [statData]);
+    const { monthlyBalances, monthlyBalancesLabels } = useProcessedData(statData, {
+        monthlyBalancesLabels: 'monthlyBalanceDate',
+        monthlyBalances: 'monthlyBalanceValue',
+    });
 
     const generateBarColors = (values) => {
         return values.map((value) => {

@@ -2,25 +2,28 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { AuthContext } from '../../../store/authContext';
-import { DataContext } from "../../../store/dataContext";
+import { useMessagesStore } from "../../../store/messagesStore";
 import { useSocket } from '../../../store/socketContext';
 import LanguageSelector from "../dashboard-internal-components/LanguageSelector";
 import { loggingOut } from "../../../utils/handleLogOut";
 import HeaderIconsContainer from "../dashboard-internal-components/HeaderIconsContainer";
 import LogOutModal from "../../modals/LogOutModal";
 import { serverUrl } from "../../../url";
+import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
 
 export default function DashboardHeader() {
     const { user, error, logout, isAuthenticated } = useContext(AuthContext);
     const { connected, messages, error: SocketError } = useSocket();
     const [socketMessages, setSocketMessages] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { data, isLoading } = useContext(DataContext);
+    const { messagesData: data, messagesLoading: isLoading } = useMessagesStore;
     const navigate = useNavigate();
 
     const dataMessages = isAuthenticated && data && !isLoading ? data.messagesData || [] : [];
-    const filteredDataMessages = dataMessages.filter((message) => message.recipient === user.userName)
+    const filteredDataMessages = filterArray(dataMessages, (message) => message.recipient === user.userName)
         .filter(message => message.readed === 0);
+
+
 
     const handleLogOut = async () => {
         await loggingOut(logout, navigate);

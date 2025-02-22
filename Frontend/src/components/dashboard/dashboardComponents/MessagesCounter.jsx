@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom';
 import { useSocket } from '../../../store/socketContext';
+import { filterArray } from '../../../utils/arraysUtils/arraysFunctions'
 
 export default function MessagesCounter() {
 
@@ -9,7 +10,7 @@ export default function MessagesCounter() {
 
     useEffect(() => {
         if (connected && !error && messages.length > 0) {
-            const userMessages = messages.filter((message) => message.type === 'newMessage');
+            const userMessages = filterArray(messages, (message) => message.type === 'newMessage');
 
             if (userMessages) {
                 setUserMessages(userMessages);

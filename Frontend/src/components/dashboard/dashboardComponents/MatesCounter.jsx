@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { DataContext } from "../../../store/dataContext";
+import { getData } from '../../../utils/getData';
 
 export default function MatesCounter() {
     const { data, isLoading, error } = useContext(DataContext);
 
-    const matesData = !error && !isLoading && data.houseMates || 0;
+    const matesData = getData(isLoading, error, true, data.houseMates);
 
     return (
         <div id='housemates' className="w-1/4 h-[8.5rem] bg-red-600/75 text-xl text-white flex flex-col justify-start items-center rounded-md pt-6">

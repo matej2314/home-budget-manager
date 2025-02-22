@@ -1,35 +1,30 @@
 const pool = require('../database/db');
+const logger = require('../configs/logger');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
-const logger = require('../configs/logger');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
 const jwtCookieOptions = require('../configs/jwtCookieOptions');
-const { isValidPassword, isValidEmail, isValidUsername } = require('../utils/validation');
+const { registerValidations, loginValidations } = require('../utils/validation');
 const { checkUserEmail } = require('../utils/checkUtils/checkUserEmail');
 const queries = require('../database/authQueries');
 const socketQueries = require('../database/websocketQueries');
+const { StatusCodes } = require('http-status-codes');
+
 
 exports.registerUser = async (req, res) => {
 	const { reg_username, reg_email, reg_password, role, cookies } = req.body;
-	const allowedRoles = ['superadmin', 'user'];
 
-	const validations = [
-		{ isValid: !!reg_username && isValidUsername(reg_username), message: 'Podaj prawidłowe dane użytkownika.' },
-		{ isValid: !!reg_email && isValidEmail(reg_email), message: 'Podaj prawidłowy adres e-mail.' },
-		{ isValid: !!reg_password && isValidPassword(reg_password), message: 'Podaj prawidłowe hasło.' },
-		{ isValid: allowedRoles.includes(role), message: 'Nieprawidłowa rola użytkownika!' },
-	];
+	const validations = registerValidations(reg_username, reg_email, reg_password, role)
 
 	const connection = await pool.getConnection();
 
-	const checkEmail = await checkUserEmail(connection, reg_email);
-
-	if (checkEmail && checkEmail.email === reg_email) {
-		return res.status(400).json({ status: 'error', message: 'Użytkownik o takim adresie e-mail istnieje.' });
-	}
-
 	try {
+		const checkEmail = await checkUserEmail(connection, reg_email);
+
+		if (checkEmail && checkEmail.email === reg_email) {
+			return res.status(400).json({ status: 'error', message: 'Użytkownik o takim adresie e-mail istnieje.' });
+		}
 		for (const validation of validations) {
 			if (!validation.isValid) {
 				logger.error(validation.message);
@@ -86,10 +81,7 @@ exports.loginUser = async (req, res) => {
 	const { email, password } = req.body;
 	const connection = await pool.getConnection();
 
-	const validations = [
-		{ isValid: email && email.trim() !== '', message: 'Podaj prawidłowy adres e-mail.' },
-		{ isValid: password && password.trim() !== '', message: 'Podaj prawidłowe hasło.' },
-	];
+	const validations = loginValidations(email, password);
 
 	for (const validation of validations) {
 		if (!validation.isValid) {

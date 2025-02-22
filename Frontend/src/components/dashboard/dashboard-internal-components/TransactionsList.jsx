@@ -5,10 +5,10 @@ import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import LoadingModal from '../../modals/LoadingModal';
 import { tableLabels } from '../../../utils/arraysUtils/actionsTableLabels';
 import { formatDbDate } from '../../../utils/formattingUtils/formatDateToDisplay';
+import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
-
-    const filteredTransactions = filterId ? [...transactions].filter((transaction) => transaction.userId === filterId) : transactions;
+    const filteredTransactions = filterId ? filterArray(transactions, (transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)
         ? [...filteredTransactions].sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
         : [];

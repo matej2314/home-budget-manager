@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSocket } from "../../../store/socketContext";
 import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
+import { getData } from "../../../utils/getData";
 import NotificationDot from "./NotificationDot";
 import NotificationsContainer from "./NotificationsContainer";
 
@@ -9,7 +10,7 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
     const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
     const [isNotifications, setIsNotifications] = useState(false);
     const { connected, messages, error } = useSocket();
-    const notifications = !error && connected && messages.notifications ? messages.notifications : {};
+    const notifications = getData(true, error, connected, messages.notifications, []);
 
     const toggleNotifications = () => {
         setIsNotificationsVisible(prevState => !prevState);

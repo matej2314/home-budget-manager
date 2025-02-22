@@ -4,6 +4,7 @@ const checkUserHouse = require('../utils/checkUtils/checkUserHouse.js');
 const { broadcastToHouseMates } = require('../configs/websocketConfig.js');
 const { addNewBudget, clearExtraValues } = require('../utils/householdUtils/initMonthlyBudgetFunctions.js');
 const initialBudgetQueries = require('../database/initialMonthlyBudgetQueries.js');
+const { StatusCodes } = require('http-status-codes');
 
 exports.addNewMonthlyBudget = async (req, res) => {
     const userId = req.userId;

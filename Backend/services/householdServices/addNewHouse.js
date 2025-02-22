@@ -4,8 +4,6 @@ const { v4: uuidv4 } = require('uuid');
 const houseQueries = require('../../database/householdQueries');
 const { setHostProps, setInmateProps } = require('../../utils/dbUtils/modifyUsersProps');
 
-
-
 const addNewHouse = async (userId, userName, houseName, initBudget) => {
     const houseId = uuidv4();
     const connection = await pool.getConnection();

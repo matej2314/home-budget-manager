@@ -1,1 +1,1 @@
-export const getData = (isLoading, contextError, data, defaultValue) => (!isLoading && !contextError && data) || defaultValue;
+export const getData = (isLoading, error, extraVal = true, data, defaultValue) => (!isLoading && !error && extraVal && data) || defaultValue;
