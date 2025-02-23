@@ -3,11 +3,6 @@ const logger = require('../../configs/logger');
 const { checkUserEmail } = require('../../utils/checkUtils/checkUserEmail');
 
 const changeUserEmail = async (newEmail, userId) => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    if (!newEmail || !emailRegex.test(newEmail)) {
-        return { status: 'badreq', message: 'Podaj prawidłowy adres email!' };
-    };
 
     const connection = await pool.getConnection();
 

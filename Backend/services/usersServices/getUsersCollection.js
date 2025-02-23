@@ -7,6 +7,14 @@ const getUsersCollection = async () => {
     try {
         const [rows] = await pool.query(usersQueries.allUsersQuery);
         logger.info('Lista wszystkich użytkowników pobrana poprawnie.');
+
+        if (rows.affectedRows === 0) {
+            return {
+                status: 'notfound',
+                message: 'Brak użytkowników',
+            };
+        };
+
         return {
             status: 'success',
             message: 'Lista wszystkich użytkowników pobrana poprawnie',

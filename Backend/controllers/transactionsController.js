@@ -4,13 +4,17 @@ const { deleteAction } = require('../services/transactionServices/deleteAction')
 const { getActionsCollection } = require('../services/transactionServices/getActionsCollection');
 const { getHouseActions } = require('../services/transactionServices/getHouseActions');
 const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 exports.addNewAction = async (req, res) => {
     const { type, value, catId } = req.body;
     const userId = req.userId;
 
     if (!type || !value || !catId) {
-        return res.status(400).json({ status: 'error', message: 'Brak odpowiednich danych.' });
+        return res.status(statusCode.BAD_REQUEST).json({
+            status: 'error',
+            message: 'Brak odpowiednich danych.'
+        });
     };
 
     try {
@@ -18,17 +22,26 @@ exports.addNewAction = async (req, res) => {
 
         switch (response.status) {
             case 'success':
-                return res.status(200).json(response);
+                return res.status(statusCode.OK).json(response);
             case 'nodata':
-                return res.status(404).json({ status: 'error', message: response.message });
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: response.message
+                });
             case 'error':
-                return res.status(500).json(response);
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
             default:
-                return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+                return res.status(statusCode.BAD_REQUEST).json({
+                    status: 'error',
+                    message: 'Błąd przetwarzania żądania.'
+                });
         }
     } catch (error) {
         logger.error(error);
-        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania.'
+        });
     }
 
 };
@@ -39,17 +52,26 @@ exports.getAllActions = async (req, res) => {
 
         switch (result.status) {
             case 'notfound':
-                return res.status(404).json({ status: 'error', message: result.message });
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: result.message
+                });
             case 'error':
-                return res.status(500).json(result);
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(result);
             case 'success':
-                return res.status(200).json(result);
+                return res.status(statusCode.OK).json(result);
             default:
-                return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+                return res.status(statusCode.BAD_REQUEST).json({
+                    status: 'error',
+                    message: 'Błąd przetwarzania żądania.'
+                });
         };
     } catch (error) {
         logger.error(`Błąd przetwarzania getAllActions: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania.'
+        });
     };
 };
 
@@ -59,16 +81,33 @@ exports.getHouseActions = async (req, res) => {
     try {
         const response = await getHouseActions(userId);
 
-        if (response.status === 'notfound') {
-            return res.status(404).json({ status: 'error', message: response.message });
-        } else if (response.status === 'error') {
-            return res.status(500).json({ status: 'error', message: response.message });
-        } if (response.status === 'success') {
-            return res.status(200).json(response);
-        }
+
+        switch (response.status) {
+            case 'notfound':
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: response.message
+                });
+            case 'error':
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+                    status: 'error',
+                    message: response.message
+                });
+            case 'success':
+                return res.status(statusCode.OK).json(response);
+            default:
+                return res.status(statusCode.BAD_REQUEST).json({
+                    status: 'error',
+                    message: 'Błąd przetwarzania żądania.',
+                });
+        };
+
     } catch (error) {
         logger.error(`Błąd getHouseActions: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania.'
+        });
     };
 };
 
@@ -79,17 +118,33 @@ exports.deleteAction = async (req, res) => {
     try {
         const response = await deleteAction(transactionId, userId);
 
-        if (response.status === 'badreq') {
-            return res.status(400).json({ status: 'error', message: response.message });
-        } else if (response.status === 'notfound') {
-            return res.status(404).json({ status: 'error', message: response.message });
-        } else if (response.status === 'error') {
-            return res.status(500).json(response);
-        } else {
-            return res.status(200).json(response);
-        }
+        switch (response.status) {
+            case 'badreq':
+                return res.status(statusCode.BAD_REQUEST).json({
+                    status: 'error',
+                    message: response.message
+                });
+            case 'notfound':
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: response.message,
+                });
+            case 'error':
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
+            case 'success':
+                return res.status(statusCode.OK).json(response);
+            default:
+                return res.status(statusCode.BAD_REQUEST).json({
+                    status: 'error',
+                    message: 'Błąd przetwarzania żądania.',
+                });
+        };
+
     } catch (error) {
         logger.error(`Błąd przetwarzania deleteAction: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania.'
+        });
     }
 };

@@ -4,6 +4,8 @@ const logger = require('../configs/logger');
 const verifyJWT = require('../middlewares/verifyJWT');
 const verifyRole = require('../middlewares/verifyRole');
 const { getBoardData } = require('../controllers/boardController');
+const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 /**
  * @swagger
@@ -73,16 +75,25 @@ router.get('/data/:filter?/:page?', verifyJWT, verifyRole('mates'), async (req, 
     try {
         const response = await getBoardData(userId, filter, page);
 
-        if (response.status == 'notfound') {
-            return res.status(404).json({ status: 'error', message: response.message });
-        } else if (response.status === 'success') {
-            return res.status(200).json(response);
-        } else if (response.status === 'error') {
-            return res.status(500).json(response);
-        }
+        switch (response.status) {
+            case 'notfound':
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: response.message
+                });
+            case 'error':
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
+            case 'success':
+                return res.status(statusCode.OK).json(response);
+            default:
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: 'Podany adres nie istnieje.',
+                });
+        };
     } catch (error) {
         logger.error(`Błąd w board/data: ${error}`);
-        return res.status(500).json({
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
             message: 'Błąd przetwarzania danych.',
         });

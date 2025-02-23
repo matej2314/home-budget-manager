@@ -10,7 +10,7 @@ const { checkUserEmail } = require('../utils/checkUtils/checkUserEmail');
 const queries = require('../database/authQueries');
 const socketQueries = require('../database/websocketQueries');
 const { StatusCodes } = require('http-status-codes');
-
+const statusCode = StatusCodes;
 
 exports.registerUser = async (req, res) => {
 	const { reg_username, reg_email, reg_password, role, cookies } = req.body;
@@ -23,19 +23,28 @@ exports.registerUser = async (req, res) => {
 		const checkEmail = await checkUserEmail(connection, reg_email);
 
 		if (checkEmail && checkEmail.email === reg_email) {
-			return res.status(400).json({ status: 'error', message: 'Użytkownik o takim adresie e-mail istnieje.' });
+			return res.status(statusCode.CONFLICT).json({
+				status: 'error',
+				message: 'Użytkownik o takim adresie e-mail istnieje.'
+			});
 		}
 		for (const validation of validations) {
 			if (!validation.isValid) {
 				logger.error(validation.message);
-				return res.status(400).json({ status: 'error', message: validation.message });
+				return res.status(statusCode.BAD_REQUEST).json({
+					status: 'error',
+					message: validation.message
+				});
 			}
 		}
 
 		if (role === 'superadmin') {
 			const [rows] = await connection.query(queries.registerAdminCheck);
 			if (rows.length > 0) {
-				return res.status(400).json({ status: 'error', message: 'Konto superadmina już istnieje' });
+				return res.status(statusCode.BAD_REQUEST).json({
+					status: 'error',
+					message: 'Konto superadmina już istnieje'
+				});
 			}
 		}
 
@@ -68,10 +77,16 @@ exports.registerUser = async (req, res) => {
 			maxAge: 60 * 60 * 1000,
 		});
 
-		return res.status(200).json({ status: 'success', message: 'Użytkownik zarejestrowany. Możesz się zalogować' });
+		return res.status(statusCode.OK).json({
+			status: 'success',
+			message: 'Użytkownik zarejestrowany. Możesz się zalogować'
+		});
 	} catch (error) {
 		logger.error('Błąd podczas rejestracji użytkownika: ', error);
-		return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
+		return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+			status: 'error',
+			message: 'Błąd serwera.'
+		});
 	} finally {
 		connection.release();
 	}
@@ -86,7 +101,10 @@ exports.loginUser = async (req, res) => {
 	for (const validation of validations) {
 		if (!validation.isValid) {
 			logger.error(validation.message);
-			return res.status(400).json({ status: 'error', message: validation.message });
+			return res.status(statusCode.BAD_REQUEST).json({
+				status: 'error',
+				message: validation.message
+			});
 		}
 	}
 
@@ -95,7 +113,10 @@ exports.loginUser = async (req, res) => {
 
 		if (rows.length === 0) {
 			logger.error('Nieprawidłowy adres e-mail.');
-			return res.status(401).json({ status: 'error', message: 'Nieprawidłowe dane logowania.' });
+			return res.status(statusCode.UNAUTHORIZED).json({
+				status: 'error',
+				message: 'Nieprawidłowe dane logowania.'
+			});
 		}
 
 		const user = rows[0];
@@ -103,7 +124,10 @@ exports.loginUser = async (req, res) => {
 
 		if (!isValidPassword) {
 			logger.error('Nieprawidłowe hasło.');
-			return res.status(401).json({ status: 'error', message: 'Nieprawidłowe dane logowania.' });
+			return res.status(statusCode.UNAUTHORIZED).json({
+				status: 'error',
+				message: 'Nieprawidłowe dane logowania.'
+			});
 		}
 
 		const token = jwt.sign({ id: user.id, role: user.role, userName: user.name }, JWT_SECRET, { expiresIn: '24h' });
@@ -115,7 +139,7 @@ exports.loginUser = async (req, res) => {
 
 		logger.info(`Użytkownik ${user.name} zalogowany pomyślnie.`);
 
-		return res.status(200).json({
+		return res.status(statusCode.OK).json({
 			status: 'success',
 			message: 'Użytkownik zalogowany pomyślnie.',
 			userName: user.name,
@@ -127,7 +151,10 @@ exports.loginUser = async (req, res) => {
 		});
 	} catch (error) {
 		logger.error(`Błąd podczas logowania użytkownika: ${error.message}`);
-		return res.status(500).json({ status: 'error', message: 'Błąd serwera.' });
+		return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+			status: 'error',
+			message: 'Błąd serwera.'
+		});
 	} finally {
 		connection.release();
 	}
@@ -142,5 +169,5 @@ exports.logoutUser = async (req, res) => {
 		secure: false,
 		sameSite: 'lax',
 	});
-	res.status(200).json({ status: 'success', message: 'Wylogowano pomyślnie.' });
+	res.status(statusCode.OK).json({ status: 'success', message: 'Wylogowano pomyślnie.' });
 };

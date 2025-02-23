@@ -7,6 +7,7 @@ const { getHousesCollection } = require('../services/householdServices/getHouses
 const { getHouseInfo } = require('../services/householdServices/getHouseinfo');
 const { deleteHouse } = require('../services/householdServices/deleteHouse');
 const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 exports.addNewHouse = async (req, res) => {
     const userId = req.userId;
@@ -15,40 +16,68 @@ exports.addNewHouse = async (req, res) => {
 
     if (!userId || !houseName) {
         logger.error('Brak danych: userId lub houseName są puste.');
-        return res.status(400).json({ status: 'error', message: 'Podaj wszystkie niezbędne informacje.' });
+        return res.status(statusCode.BAD_REQUEST).json({
+            status: 'error',
+            message: 'Podaj wszystkie niezbędne informacje.'
+        });
     }
 
     try {
         const result = await addNewHouse(userId, userName, houseName, initBudget);
 
-        if (result.status === 'success') {
-            const token = jwt.sign({ id: userId, userName: userName, role: result.newRole }, JWT_SECRET, { expiresIn: '24h' });
-            res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
-            return res.status(200).json(result);
-        } else {
-            return res.status(500).json({ status: 'error', message: result.message });
-        }
-
+        switch (result.status) {
+            case 'success':
+                const token = jwt.sign({
+                    id: userId,
+                    userName: userName,
+                    role: result.newRole
+                }, JWT_SECRET, { expiresIn: '24h' });
+                res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
+                return res.status(statusCode.OK).json(result);
+            case 'error':
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+                    status: 'error',
+                    message: result.message
+                });
+            default:
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: 'Podany adres nie istnieje.',
+                });
+        };
     } catch (error) {
         logger.error(`Błąd w addNewHouse: ${error.message}`);
-        return res.status(500).json({ status: 'error', message: 'Wystąpił błąd podczas dodawania nowego gospodarstwa.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Wystąpił błąd podczas dodawania nowego gospodarstwa.'
+        });
     }
 };
-
 
 exports.getAllHouses = async (req, res) => {
     try {
         const result = await getHousesCollection();
 
-        if (result.status === 'error') {
-            return res.status(404).json({ status: 'error', message: result.message });
-        } else if (result.status === 'success') {
-            return res.status(200).json(result);
+        switch (result.status) {
+            case 'error':
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: result.message
+                });
+            case 'success':
+                return res.status(statusCode.OK).json(result);
+            default:
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: 'Podany adres nie istnieje.',
+                });
         };
-
     } catch (error) {
         logger.error(`Błąd w getAllHouses: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Wystąpił błąd podczas przetwarzania żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Wystąpił błąd podczas przetwarzania żądania.'
+        });
     }
 };
 
@@ -58,15 +87,23 @@ exports.getHouseInfo = async (req, res) => {
     try {
         const result = await getHouseInfo(userId);
 
-        if (result.status === 'error') {
-            return res.status(400).json(result);
-        } else if (result.status === 'success') {
-            return res.status(200).json(result);
+        switch (result.status) {
+            case 'error':
+                return res.status(statusCode.BAD_REQUEST).json(result);
+            case 'success':
+                return res.status(statusCode.OK).json(result);
+            default:
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: 'Podany adres nie istnieje.',
+                });
         };
-
     } catch (error) {
         logger.error(`Błąd w getHouseInfo: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Wystąpił błąd przy przetwarzaniu żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Wystąpił błąd przy przetwarzaniu żądania.'
+        });
     };
 };
 
@@ -76,22 +113,43 @@ exports.deleteHouse = async (req, res) => {
 
     if (!userId || !houseName) {
         logger.error('Podaj prawidłowe dane do usunięcia gospodarstwa.');
-        return res.status(400).json({ status: 'error', message: 'Podaj prawidłowe dane do usunięcia gospodarstwa.' });
+        return res.status(statusCode.BAD_REQUEST).json({
+            status: 'error',
+            message: 'Podaj prawidłowe dane wymagane do usunięcia gospodarstwa.'
+        });
     };
 
     try {
         const result = await deleteHouse(userId, houseName);
 
-        if (result.status === 'error') {
-            return res.status(400).json(result);
-        } else if (result.status === 'noperm') {
-            return res.status(403).json({ status: 'error', message: result.message });
+        switch (result.status) {
+            case 'error':
+                return res.status(statusCode.BAD_REQUEST).json(result);
+            case 'noperm':
+                return res.status(statusCode.FORBIDDEN).json({
+                    status: 'error',
+                    message: result.message
+                });
+            case 'success':
+                const token = jwt.sign({
+                    id: userId,
+                    userName: req.userName,
+                    role: result.newRole
+                }, JWT_SECRET, { expiresIn: '24h' });
+
+                res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
+                return res.status(statusCode.OK).json(result);
+            default:
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: 'Podany adres nie istnieje.',
+                });
         };
-        const token = jwt.sign({ id: userId, userName: req.userName, role: result.newRole }, JWT_SECRET, { expiresIn: '24h' });
-        res.cookie('SESSID', token, { ...jwtCookieOptions, maxAge: 86400000 });
-        return res.status(200).json(result);
     } catch (error) {
         logger.error(`Błąd w deleteHouse: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania.'
+        });
     };
 };

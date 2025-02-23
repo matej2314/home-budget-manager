@@ -5,13 +5,17 @@ const { broadcastToHouseMates } = require('../configs/websocketConfig.js');
 const { addNewBudget, clearExtraValues } = require('../utils/householdUtils/initMonthlyBudgetFunctions.js');
 const initialBudgetQueries = require('../database/initialMonthlyBudgetQueries.js');
 const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 exports.addNewMonthlyBudget = async (req, res) => {
     const userId = req.userId;
     const { value } = req.body;
 
     if (!value) {
-        return res.status(400).json({ status: 'error', message: 'Podaj budżet!' });
+        return res.status(statusCode.BAD_REQUEST).json({
+            status: 'error',
+            message: 'Podaj budżet!'
+        });
     };
 
     const connection = await pool.getConnection();
@@ -21,7 +25,10 @@ exports.addNewMonthlyBudget = async (req, res) => {
         const checkHouse = await checkUserHouse(connection, userId);
         if (!checkHouse) {
             logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
-            return res.status(400).json({ status: 'error', message: 'Użytkownik nie należy do żadnego gospodarstwa.' });
+            return res.status(statusCode.BAD_REQUEST).json({
+                status: 'error',
+                message: 'Użytkownik nie należy do żadnego gospodarstwa.'
+            });
         };
 
         const userHouse = checkHouse.houseId;
@@ -56,9 +63,12 @@ exports.addNewMonthlyBudget = async (req, res) => {
                     }
                 });
 
-                return res.status(201).json({ status: 'success', message: 'Budżet miesięczny dodany!' });
+                return res.status(statusCode.CREATED).json({
+                    status: 'success',
+                    message: 'Budżet miesięczny dodany!'
+                });
             } else {
-                return res.status(400).json({
+                return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
                     message: 'Nowy budżet można dodać tylko do 7 dni lub po minięciu 30 dni od daty ostatnio zdefiniowanego budżetu.',
                 });
@@ -82,13 +92,19 @@ exports.addNewMonthlyBudget = async (req, res) => {
                 }
             });
 
-            return res.status(201).json({ status: 'success', message: 'Budżet miesięczny dodany!' });
+            return res.status(statusCode.CREATED).json({
+                status: 'success',
+                message: 'Budżet miesięczny dodany!'
+            });
         }
 
     } catch (error) {
         logger.error(`Wystąpił błąd podczas dodawania budżetu miesięcznego: ${error.message}`);
         await connection.rollback();
-        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania.'
+        });
     } finally {
         if (connection) connection.release();
     }

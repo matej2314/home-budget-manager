@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const logger = require('../configs/logger');
+const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 
 const createUserDirectory = (req, res, next) => {
@@ -17,7 +19,10 @@ const createUserDirectory = (req, res, next) => {
         next();
     } catch (error) {
         logger.error(`Błąd podczas tworzenia katalogu użytkownika: ${userId}`);
-        return res.status(500).json({ status: 'error', message: `Nie udało się utworzyć katalogu użytkownika.` });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: `Nie udało się utworzyć katalogu użytkownika.`
+        });
     }
 };
 

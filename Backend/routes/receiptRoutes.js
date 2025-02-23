@@ -3,13 +3,17 @@ const router = express.Router();
 const logger = require('../configs/logger');
 const { extractPhotoData } = require('../configs/tesseract');
 const { uploadReceipt } = require('../store/receiptStorage');
-
+const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 router.post('/',
     uploadReceipt.single('receipt'),
     async (req, res) => {
         if (!req.file) {
-            return res.status(400).json({ status: 'error', message: 'Prześlij poprawny plik.' });
+            return res.status(statusCode.BAD_REQUEST).json({
+                status: 'error',
+                message: 'Prześlij poprawny plik.'
+            });
         }
 
         try {
@@ -18,13 +22,23 @@ router.post('/',
             req.file.buffer = null;
 
             if (!totalAmount) {
-                return res.status(400).json({ status: 'error', message: 'Brak oczekiwanej wartości.' });
+                return res.status(statusCode.BAD_REQUEST).json({
+                    status: 'error',
+                    message: 'Brak oczekiwanej wartości.'
+                });
             }
 
-            res.status(200).json({ status: 'success', message: `Kwota z paragonu: ${totalAmount} PLN`, value: totalAmount });
+            res.status(statusCode.OK).json({
+                status: 'success',
+                message: `Kwota z paragonu: ${totalAmount} PLN`,
+                value: totalAmount
+            });
         } catch (error) {
             logger.error(`Błąd przetwarzania obrazu: ${error}`);
-            res.status(500).json({ status: 'error', message: 'Błąd przetwarzania obrazu.' });
+            res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+                status: 'error',
+                message: 'Błąd przetwarzania obrazu.'
+            });
         }
     }
 );

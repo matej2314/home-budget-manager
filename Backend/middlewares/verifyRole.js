@@ -1,9 +1,15 @@
+const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
+
 const verifyRole = (reqRole) => {
     return (req, res, next) => {
         const userRole = req.role;
-       
-        if (!userRole) return res.status(403).json({ status: 'error', message: 'Użytkownik nie ma przypisanej roli.' });
-        
+
+        if (!userRole) return res.status(statusCode.FORBIDDEN).json({
+            status: 'error',
+            message: 'Użytkownik nie ma przypisanej roli.'
+        });
+
         const permissions = {
             mates: ['host', 'inmate'],
             host: ['host'],
@@ -11,8 +17,6 @@ const verifyRole = (reqRole) => {
             superadmin: ['superadmin'],
             user: ['user'],
         };
-
-        if (permissions[reqRole] && permissions[reqRole].includes(userRole)) return next();
 
         const customMessages = {
             mates: {
@@ -39,9 +43,14 @@ const verifyRole = (reqRole) => {
             },
         };
 
+        if (permissions[reqRole] && permissions[reqRole].includes(userRole)) return next();
+
         const message = customMessages[reqRole]?.[userRole] || 'Brak uprawnień do wykonania akcji';
 
-        return res.status(403).json({ status: 'error', message });
+        return res.status(statusCode.FORBIDDEN).json({
+            status: 'error',
+            message,
+        });
     };
 };
 

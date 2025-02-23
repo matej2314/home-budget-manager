@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const verifyJWT = require('../middlewares/verifyJWT');
-
+const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 /**
  * @swagger
@@ -218,7 +219,7 @@ router.post('/logout', verifyJWT, authController.logoutUser);
 
 
 router.get('/verify', verifyJWT, (req, res) => {
-    res.status(200).json({
+    res.status(statusCode.OK).json({
         status: 'success',
         userId: req.userId,
         userName: req.userName,

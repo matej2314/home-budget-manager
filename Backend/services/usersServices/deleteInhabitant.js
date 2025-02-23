@@ -6,13 +6,6 @@ const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 
 const deleteInhabitant = async (inhabitantId) => {
 
-    if (!inhabitantId) {
-        return {
-            status: 'badreq',
-            message: 'Brak wymaganych danych: inhabitantId.',
-        };
-    }
-
     const connection = await pool.getConnection();
 
     try {

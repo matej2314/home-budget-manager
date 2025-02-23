@@ -3,6 +3,7 @@ const { sendNewMessage } = require('../services/messagesServices/sendNewMessage'
 const { markAsReaded } = require('../services/messagesServices/markAsReaded');
 const { delMessage } = require('../services/messagesServices/deleteMessage');
 const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 exports.sendMessage = async (req, res) => {
     const userId = req.userId;
@@ -11,22 +12,43 @@ exports.sendMessage = async (req, res) => {
 
     if (!recipientName || !content) {
         logger.error('Brak danych wymaganych do wysłania wiadomości.');
-        return res.status(400).json({ status: 'error', message: 'Brak danych wymaganych do wysłania wiadomości.' });
+        return res.status(statusCode.BAD_REQUEST).json({
+            status: 'error',
+            message: 'Brak danych wymaganych do wysłania wiadomości.'
+        });
     };
 
     try {
         const sendResult = await sendNewMessage(userId, userName, recipientName, content);
 
-        if (sendResult.status === 'badreq') {
-            return res.status(400).json({ status: 'error', message: sendResult.message });
-        } else if (sendResult.status === 'error') {
-            return res.status(500).json({ status: 'error', message: sendResult.message });
-        } else {
-            return res.status(200).json({ status: 'success', message: sendResult.message })
-        }
+        switch (sendResult.status) {
+            case 'badreq':
+                return res.status(statusCode.BAD_REQUEST).json({
+                    status: 'error',
+                    message: sendResult.message
+                });
+            case 'error':
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+                    status: 'error',
+                    message: sendResult.message
+                });
+            case 'success':
+                return res.status(statusCode.OK).json({
+                    status: 'success',
+                    message: sendResult.message
+                })
+            default:
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: 'Podany adres nie istnieje.',
+                });
+        };
     } catch (error) {
         logger.error(`Błąd w sendMessage: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania.'
+        });
     };
 };
 
@@ -42,16 +64,35 @@ exports.markMessage = async (req, res) => {
     try {
         const markResult = await markAsReaded(messageId, userId);
 
-        if (markResult.status === 'notfound') {
-            return res.status(404).json({ status: 'error', message: markResult.message });
-        } else if (markResult.status === 'error') {
-            return res.status(500).json({ status: 'error', message: markResult.message });
+        switch (markResult.status) {
+            case 'notfound':
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: markResult.message
+                });
+            case 'error':
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+                    status: 'error',
+                    message: markResult.message
+                });
+            case 'success':
+                return res.status(statusCode.OK).json({
+                    status: 'success',
+                    message: markResult.message
+                });
+            default:
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: 'Podany adres nie istnieje.',
+                });
         };
-
-        return res.status(200).json({ status: 'success', message: markResult.message });
 
     } catch (error) {
         logger.error(`Błąd w markMessage: ${error}`);
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania.',
+        })
     };
 };
 
@@ -59,22 +100,43 @@ exports.deleteMessage = async (req, res) => {
     const { messageId } = req.body;
 
     if (!messageId) {
-        return res.status(400).json({ status: 'error', message: 'Wskaż wiadomość!' });
+        return res.status(statusCode.BAD_REQUEST).json({
+            status: 'error',
+            message: 'Wskaż wiadomość!'
+        });
     };
 
     try {
-
         const delResult = await delMessage(messageId);
 
-        if (delResult.status === 'notfound') {
-            return res.status(404).json({ status: 'error', message: delResult.message });
-        } else if (delResult.status === 'error') {
-            return res.status(500).json({ status: 'error', message: '' })
-        } else {
-            return res.status(200).json({ status: 'success', message: delResult.message });
+        switch (delResult.status) {
+            case 'notfound':
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: delResult.message
+                });
+            case 'error':
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+                    status: 'error',
+                    message: 'Nie udało się usunąć wiadomości',
+                });
+            case 'success':
+                return res.status(statusCode.OK).json({
+                    status: 'success',
+                    message: delResult.message
+                });
+            default:
+                return res.status(statusCode.NOT_FOUND).json({
+                    status: 'error',
+                    message: 'Podany adres nie istnieje.',
+                })
         }
 
     } catch (error) {
-
-    }
-}
+        logger.error(`Błąd w messagesController/deleteMessage: ${error}`);
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+            status: 'error',
+            message: 'Błąd przetwarzania żądania',
+        });
+    };
+};
