@@ -8,7 +8,7 @@ export default function TopCategoriesList({ main }) {
 
     const transactions = !actionsLoading && !actionsError && isTransactionsFetched && Array.isArray(actionsData) ? actionsData : [];
 
-    const { labels, dataValues } = getCategoryPercentages(transactions);
+    const categoryData = getCategoryPercentages(transactions);
 
     const groupedTransactions = transactions.reduce((acc, transaction) => {
         const { categoryName, type, value } = transaction;
@@ -34,15 +34,15 @@ export default function TopCategoriesList({ main }) {
             <div>
                 <h2 className="text-xl mb-4">Top categories of transactions:</h2>
                 <ul className="mb-4">
-                    {categoryPercentages.map((cat) => (
-                        <li key={cat.label}>
-                            {cat.label} : {cat.value} %
+                    {categoryData.labels.map((label, index) => (
+                        <li key={label}>
+                            {label} : {getCategoryPercentages(transactions).dataValues[index]} %
                         </li>
                     ))}
                 </ul>
                 <BarChart
-                    labels={labels}
-                    dataValues={dataValues}
+                    labels={categoryData.labels}
+                    dataValues={categoryData.dataValues}
                     title="Transaction Categories"
                     colors={['rgba(255, 99, 132, 0.2)']}
                     borderColors={['rgba(255, 99, 132, 1)']}

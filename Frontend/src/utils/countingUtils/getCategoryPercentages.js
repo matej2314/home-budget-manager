@@ -1,4 +1,4 @@
-const { mapArray, filterArray } = require('../arraysUtils/arraysFunctions');
+import { mapArray, filterArray } from "../arraysUtils/arraysFunctions";
 
 export const getCategoryPercentages = (transactions) => {
     const transactionsCategories = mapArray(transactions, (action) => action.categoryName);

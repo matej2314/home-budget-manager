@@ -9,8 +9,21 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState(null);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({
+        id: '',
+        userName: '',
+        role: '',
+        avatar: '',
+        cookiesConsent: false
+    });
     const [error, setError] = useState(null);
+
+    const updateUser = (updates) => {
+        setUser((prevUser) => ({
+            ...prevUser,
+            ...updates,
+        }));
+    };
 
     const register = async (data) => {
         setError(null);
@@ -39,10 +52,10 @@ export const AuthProvider = ({ children }) => {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/login`);
 
             if (response.status === 'success') {
-                setUser({
+                updateUser({
+                    id: response.id,
                     userName: response.userName,
                     role: response.role,
-                    id: response.id,
                     avatar: response.avatar,
                     cookiesConsent: response.cookies,
                 });
@@ -67,7 +80,13 @@ export const AuthProvider = ({ children }) => {
             if (response.status === 'success') {
                 setMessage(() => response.message);
                 setIsAuthenticated(false);
-                setUser(() => { });
+                setUser({
+                    id: '',
+                    userName: '',
+                    role: '',
+                    avatar: '',
+                    cookiesConsent: false,
+                });
             };
 
         } catch (error) {
@@ -84,11 +103,22 @@ export const AuthProvider = ({ children }) => {
             const response = await fetchData(`${serverUrl}/auth/verify`);
 
             if (response && response.status === 'success') {
-                setUser({ userName: response.userName, role: response.role, id: response.userId, avatar: response.avatar });
+                updateUser({
+                    userName: response.userName,
+                    role: response.role,
+                    id: response.userId,
+                    avatar: response.avatar,
+                });
                 setIsAuthenticated(true);
             } else {
                 setIsAuthenticated(false);
-                setUser({});
+                setUser({
+                    id: '',
+                    userName: '',
+                    role: '',
+                    avatar: '',
+                    cookiesConsent: false,
+                });
             }
         } catch (error) {
             setError(error.message);
