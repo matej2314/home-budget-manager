@@ -72,16 +72,16 @@ export default function HouseInfoPage() {
                                     <BasicHouseInfo basicHouseInfo={basicHouseInfo} />
                                 </div>
                             </div>
-                            <div id="dailyData-container" className="w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto text-md px-3 py-3">
+                            <div id="dailyData-container" className="w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto text-xs lg:text-md px-3 py-3">
                                 <div id="dailyShortInfo" className="flex gap-4">
-                                    <p className="flex text-md gap-1">
-                                        <span className="font-bold">Previous day's transactions:</span>
-                                        <span>{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyActionCount : '00'}</span>
+                                    <p className="flex flex-col lg:flex-row text-md gap-1">
+                                        <span className="lg:text-base font-bold">Previous day's transactions:</span>
+                                        <span className="flex justify-center text-xs lg:text-base">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyActionCount : '00'}</span>
                                     </p>
-                                    <span className="text-md h-full flex items-center">&#124;</span>
-                                    <p className="flex text-md gap-1">
-                                        <span className="font-bold">Previous day's budget:</span>
-                                        <span>{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyBudgetValue : '0000'}</span>
+                                    <span className="text-xs lg:text-md h-full flex items-center">&#124;</span>
+                                    <p className="flex flex-col lg:flex-row text-md gap-1">
+                                        <span className="font-bold text-xs lg:text-base">Previous day's budget:</span>
+                                        <span className="text-xs lg:text-base">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyBudgetValue : '0000'}</span>
                                     </p>
                                 </div>
                             </div>

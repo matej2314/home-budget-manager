@@ -2,16 +2,15 @@ import { useContext, useState, useRef, useEffect } from 'react';
 import { AuthContext } from '../../store/authContext';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import { serverUrl } from '../../url';
+import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 import FastActions from '../../components/dashboard/dashboard-internal-components/FastActionsSection';
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
 import MatesList from '../../components/dashboard/dashboard-internal-components/MatesList';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
-import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
-
 export default function UserProfilePage() {
     const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
-    const { user, isAutnenticated } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [type, setType] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sended, setSended] = useState(false);
@@ -58,7 +57,9 @@ export default function UserProfilePage() {
 
             if (avatarResponse.status === 'success') {
                 showInfoToast(avatarResponse.message);
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 600);
             } else if (avatarResponse.status === 'error') {
                 showErrorToast(avatarResponse.message);
             }
@@ -78,7 +79,7 @@ export default function UserProfilePage() {
                 <div id="middle-content" className="w-full flex flex-col gap-5 py-4 px-5">
                     <div id='page-header' className='w-full h-fit flex justify-center items-center gap-7'>
                         <div className='w-28 h-28 flex rounded-full'>
-                            <img src={user && `${serverUrl}/avatars/avatar`} className="rounded-full w-full h-full border-2 border-slate-100" />
+                            <img src={user && `${serverUrl}/avatars/avatar/${user.id}`} className="rounded-full w-full h-full border-2 border-slate-100" />
                         </div>
                         <div className='flex flex-col items-center'>
                             <p className='text-xl'>{user.userName}</p>

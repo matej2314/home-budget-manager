@@ -1,12 +1,14 @@
 import { useContext } from 'react';
 import { DataContext } from '../../../../store/dataContext';
 import useProcessedData from '../../../../hooks/useProcessedData';
+import { useIsMobile } from '../../../../hooks/useIsMobile';
 import BarChart from '../../../charts/BarChart';
 import { getData } from '../../../../utils/getData';
 
 export default function LossOrGainChart() {
 
     const { data, isLoading, error } = useContext(DataContext);
+    const isMobile = useIsMobile();
 
     const { statsData } = data;
 
@@ -31,7 +33,7 @@ export default function LossOrGainChart() {
     const barColors = generateBarColors(monthlyBalances);
 
     return (
-        <div id="lossOrGain" className="w-full h-full shadow shadow-slate-500 pt-2 mb-3 flex flex-col justify-start items-center gap-4 mt-3">
+        <div id="lossOrGain" className="w-full h-[15rem] lg:h-full shadow shadow-slate-500 pt-2 mb-3 flex flex-col justify-start items-center gap-4 mt-3">
             <h2 className="w-full h-fit flex justify-center text-[1.22rem]">Loss or gain:</h2>
             <BarChart
                 labels={monthlyBalancesLabels}
@@ -40,7 +42,7 @@ export default function LossOrGainChart() {
                 colors={barColors}
                 borderColors={barColors.map(color => color.replace('0.5', '0'))}
                 width={1250}
-                height={250}
+                height={isMobile ? 450 : 220}
 
             />
         </div>

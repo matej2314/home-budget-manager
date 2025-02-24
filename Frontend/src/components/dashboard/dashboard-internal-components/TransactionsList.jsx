@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import { useMediaQuery } from 'react-responsive';
 import sendRequest from '../../../utils/asyncUtils/sendRequest';
 import { serverUrl } from "../../../url";
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
@@ -8,6 +9,8 @@ import { formatDbDate } from '../../../utils/formattingUtils/formatDateToDisplay
 import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
+    const isMobile = useMediaQuery({ maxWidth: 768 });
+
     const filteredTransactions = filterId ? filterArray(transactions, (transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)
         ? [...filteredTransactions].sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
@@ -45,13 +48,13 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                 ))}
             </div>
             {!actionsLoading && !actionsError ? (
-                <table className={`${mainSite ? 'w-[97%] mx-auto' : 'w-full'} h-full table-fixed border-collapse text-sm border-b-[1px] border-slate-400 pb-6`}>
+                <table className={`${mainSite ? 'w-[97%] mx-auto' : 'w-full'} h-full table-fixed border-collapse text-xs lg:text-sm border-b-[1px] border-slate-400 pb-6`}>
                     <thead>
                         <tr className={`border-b ${mainSite ? 'bg-slate-400/50' : 'bg-slate-400/80'}`}>
                             {tableLabels.map((label, index) => (
                                 <th
                                     key={index}
-                                    className={`px-4 py-2 text-left 
+                                    className={`px-2 lg:px-4 py-2 text-left 
                                     ${index === 0 ? 'rounded-tl-xl' : ''} 
                                     ${mainSite && index === tableLabels.length - 1 ? 'rounded-tr-xl' : ''}`}
                                 >
@@ -65,11 +68,11 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                         {transactionsToDisplay.map((transaction) => (
                             <tr key={transaction.transactionId}
                                 className={`border-b ${transaction.transactionId === transactionsToDisplay.length - 1 ? 'border-b-2 border-slate-400' : 'border-none'}`}>
-                                <td className="px-4 py-2">{`${transaction.value} zł`}</td>
-                                <td className="px-4 py-2">{transaction.type}</td>
-                                <td className="px-4 py-2">{transaction.categoryName}</td>
-                                <td className="px-4 py-2">{transaction.userName}</td>
-                                <td className="px-4 py-2">{formatDbDate(transaction.addedAt)}</td>
+                                <td className="pl-2 lg:px-4 py-2">{`${transaction.value} zł`}</td>
+                                <td className="lg:px-4 py-2">{transaction.type}</td>
+                                <td className="lg:px-4 py-2">{transaction.categoryName}</td>
+                                <td className="lg:px-4 py-2">{transaction.userName}</td>
+                                <td className="lg:px-4 py-2">{!isMobile ? formatDbDate(transaction.addedAt) : formatDbDate(transaction.addedAt, 'split')}</td>
                                 {!mainSite && (
                                     <td className="px-4 py-2">
                                         <button

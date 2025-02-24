@@ -1,7 +1,8 @@
-import BarChart from "../../../charts/BarChart"
+import BarChart from "../../../charts/BarChart";
+import { useIsMobile } from '../../../../hooks/useIsMobile';
 
 export default function CategoriesValuesChart({ labels, values }) {
-
+    const isMobile = useIsMobile();
 
     return (
         <div className="w-full h-fit flex flex-col items-center justify-center gap-7">

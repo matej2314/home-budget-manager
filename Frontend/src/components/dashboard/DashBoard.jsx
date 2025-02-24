@@ -20,7 +20,7 @@ export default function DashBoard() {
 
         <div id="pagecontent" className="w-full h-full min-w-screen bg-slate-200 overflow-y-auto no-scrollbar pb-4">
             <DashboardHeader />
-            <div id="house-info-blocks" className="flex gap-5 border-2 border-b-slate-800/5 py-4 pl-5 pr-9">
+            <div id="house-info-blocks" className="grid grid-cols-2 lg:flex lg:flex-row gap-5 border-2 border-b-slate-800/5 py-4 pl-5 pr-9">
                 <MatesCounter />
                 <MonthlyBudget />
                 <DisplayLiveBalance />

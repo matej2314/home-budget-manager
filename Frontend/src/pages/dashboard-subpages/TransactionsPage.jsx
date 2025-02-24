@@ -36,7 +36,7 @@ export default function TransactionsPage() {
         <div id="pagecontent" className="min-h-screen w-screen bg-slate-200 overflow-y-hidden">
             <DashboardHeader />
             <div id="middle-content" className="flex flex-col gap-4 border-2 border-b-slate-800/5 pt-3 pb-4 px-5">
-                <div id='actionBtns' className="w-[75vw] h-fit flex justify-center items-center rounded-md gap-3">
+                <div id='actionBtns' className="w-[75vw] h-fit flex flex-col md:flex-row justify-center items-center rounded-md gap-3">
                     <button
                         onClick={handleAddTransaction}
                         className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"

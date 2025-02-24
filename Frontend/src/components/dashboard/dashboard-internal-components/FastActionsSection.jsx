@@ -23,7 +23,7 @@ export default function FastActions({ profilePage, action }) {
 
     return (
         <>
-            <div id='fastActions' className='w-full flex justify-start items-center gap-3 ml-10 py-2'>
+            <div id='fastActions' className='grid grid-cols-3 lg:flex lg:flex-row justify-start items-center gap-3 ml-10 py-2'>
                 {!profilePage && <button
                     onClick={() => openModal('declare')}
                     className={`w-fit h-fit bg-slate-300/40 p-2 rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60 ${user.role !== 'host' && 'hidden'}`}

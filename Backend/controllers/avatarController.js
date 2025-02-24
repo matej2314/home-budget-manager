@@ -1,5 +1,6 @@
 const logger = require('../configs/logger');
 const path = require('path');
+const fs = require('fs/promises')
 const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
@@ -35,9 +36,9 @@ exports.getAvatar = async (req, res) => {
         let avatarPath = null;
 
         for (const ext of avatarExtensions) {
-            const filePath = path.join(avatarDir, `${userId}${ext}`);
+            const filePath = `${avatarDir}/${userId}/${userId}${ext}`;
             try {
-                await access(filePath);
+                await fs.access(filePath);
                 avatarPath = filePath;
                 break;
             } catch (err) {

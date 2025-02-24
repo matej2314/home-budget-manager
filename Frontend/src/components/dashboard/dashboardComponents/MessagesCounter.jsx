@@ -21,7 +21,7 @@ export default function MessagesCounter() {
     return (
         <Link to='messages/new'
             id='newMessages'
-            className={`w-1/4 h-[8.5rem] bg-sky-700/85 flex flex-row text-white justify-center items-start rounded-md gap-3 pt-5 ${userMessages.length == 0 ? 'pointer-events-none' : null}`}
+            className={`md:w-1/4 h-[8.5rem] bg-sky-700/85 flex flex-row text-white justify-center items-start rounded-md gap-3 pt-5 ${userMessages.length == 0 ? 'pointer-events-none' : null}`}
         >
             <div className="w-full flex flex-col items-center justify-start -translate-y-1 translate-x-1 gap-5">
                 <h2 className="text-xl">New messages:</h2>

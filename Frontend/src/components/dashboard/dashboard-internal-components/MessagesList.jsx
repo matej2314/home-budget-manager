@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import { AuthContext } from "../../../store/authContext";
 import { useSocket } from '../../../store/socketContext';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import MessagesFilterBtns from "./MessagesFilterBtns";
 import DisplayMessageDetails from "../../modals/DisplayMessageDetails";
 import ReplyMessageModal from "../../modals/ReplyMessageModal";
@@ -21,6 +22,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     const [messagesType, setMessagesType] = useState(filter || "all");
     const [newMessages, setNewMessages] = useState([]);
     const navigate = useNavigate();
+    const isMobile = useIsMobile();
 
     const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
     const sortedMessages = Array.isArray(userMessages) ? userMessages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
@@ -80,7 +82,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                             </button>
                         ))}
                     </div>
-                    <table className="w-[80rem] h-full table-fixed border-collapse text-sm border-b-[1px] border-slate-400 rounded-b-xl">
+                    <table className=" w-11/12 mx-auto lg:w-[80rem] h-full table-fixed border-collapse text-xs lg:text-base border-b-[1px] border-slate-400 rounded-b-xl">
                         <thead>
                             <tr className="border-b bg-slate-400">
                                 {tableHeader.map((header, index) => (
@@ -96,30 +98,30 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                         </thead>
                         <tbody className="border-x-[1px] border-slate-400">
                             {filterMap[messagesType]?.map((message) => (
-                                <tr key={message.id}>
-                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.sender}</td>
-                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.recipient}</td>
-                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.message}</td>
-                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{formatDbDate(message.date)}</td>
-                                    <td className="min-w-full py-2 whitespace-nowrap text-center">{message.readed ? "Readed" : "Unreaded"}</td>
-                                    <td className="min-w-full py-2 flex items-center justify-center gap-3">
+                                <tr key={message.id} className="flex justify-around lg:gap-3 text-xs md:text-base py-2">
+                                    <td className="min-w-full whitespace-nowrap text-center">{message.sender}</td>
+                                    <td className="min-w-full whitespace-nowrap text-center">{message.recipient}</td>
+                                    <td className="min-w-full whitespace-nowrap text-center">{message.message}</td>
+                                    <td className="min-w-full whitespace-nowrap text-center">{!isMobile ? formatDbDate(message.date) : formatDbDate(message.date, 'split')}</td>
+                                    <td className="min-w-full whitespace-nowrap text-center">{message.readed ? "Readed" : "Unreaded"}</td>
+                                    <td className="min-w-full flex items-center justify-center gap-3 md:text-base">
                                         <button onClick={() => handleOpenModal("details", message)} title="Open message">
-                                            <Icon icon="lets-icons:message-open-light" width={20} height={20} />
+                                            <Icon icon="lets-icons:message-open-light" width={!isMobile ? 20 : 14} height={!isMobile ? 20 : 14} />
                                         </button>
                                         <button
                                             title="Delete message"
                                             onClick={() => handleOpenModal('delete', message)}
                                         >
-                                            <Icon icon="mdi-light:delete" width={22} height={22} />
+                                            <Icon icon="mdi-light:delete" width={!isMobile ? 22 : 14} height={!isMobile ? 22 : 14} />
                                         </button>
                                         <button
                                             title="Mark as readed"
                                             onClick={() => handleMarkMessage(message)}
                                         >
-                                            <Icon icon="iconoir:mail-opened" width={20} height={20} />
+                                            <Icon icon="iconoir:mail-opened" width={!isMobile ? 20 : 14} height={!isMobile ? 20 : 14} />
                                         </button>
                                         {message.sender !== user.userName && <button onClick={() => handleOpenModal("reply", message)} title="Reply">
-                                            <Icon icon="iconoir:reply-to-message" width={22} height={22} />
+                                            <Icon icon="iconoir:reply-to-message" width={!isMobile ? 22 : 14} height={!isMobile ? 22 : 14} />
                                         </button>}
                                     </td>
                                 </tr>
