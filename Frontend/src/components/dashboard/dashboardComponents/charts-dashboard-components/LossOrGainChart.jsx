@@ -42,7 +42,7 @@ export default function LossOrGainChart() {
                 colors={barColors}
                 borderColors={barColors.map(color => color.replace('0.5', '0'))}
                 width={1250}
-                height={isMobile ? 450 : 220}
+                height={isMobile ? 450 : 170}
 
             />
         </div>

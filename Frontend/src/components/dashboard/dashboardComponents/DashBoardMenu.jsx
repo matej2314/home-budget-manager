@@ -6,6 +6,7 @@ import { useSocket } from '../../../store/socketContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { motion } from 'framer-motion';
 import NotificationDot from "../dashboard-internal-components/NotificationDot";
+import OpenMenuButton from '../dashboard-internal-components/OpenMenuButton';
 import { linksElements, adminLinksElements } from '../../../utils/arraysUtils/dashBoardMenuArrays';
 import { locationEffect } from '../../../utils/locationEffect';
 
@@ -24,22 +25,7 @@ export default function DashBoardMenu() {
 
     return (
         <>
-            {isMobile && (
-                <motion.button
-                    id='openMenuBtn'
-                    initial={{ x: 0 }}
-                    animate={{ x: isOpened ? '16rem' : 0 }}
-                    transition={{ duration: 0.3, type: 'tween' }}
-                    onDragStart={handleToggleMenu}
-                    className={`absolute top-0 left-0 p-2 border-2 border-slate-300 text-slate-100 rounded-md bg-customGray z-20`}
-                >
-                    <div className='flex flex-col gap-1'>
-                        <span className='w-5 h-0.5 bg-slate-100'></span>
-                        <span className='w-5 h-0.5 bg-slate-100'></span>
-                        <span className='w-5 h-0.5 bg-slate-100'></span>
-                    </div>
-                </motion.button>
-            )}
+            {isMobile && <OpenMenuButton isOpened={isOpened} actionCallback={handleToggleMenu} />}
             <motion.div
                 id='dashboardMenu'
                 initial={{ x: isMobile ? '-100%' : 0 }}
@@ -54,8 +40,17 @@ export default function DashBoardMenu() {
                                 key={index}
                                 className={`w-full h-fit flex flex-row justify-center items-center ${!isMobile ? 'text-base' : 'text-sm'} border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3 ${locationEffect(link, location)}`}
                             >
-                                <Icon icon={link.icon} width={23} height={23} />
-                                <Link to={link.path}>{link.label}</Link>
+                                <Icon
+                                    icon={link.icon}
+                                    width={23}
+                                    height={23}
+                                />
+                                <Link
+                                    to={link.path}
+                                    onClick={() => setIsOpened(false)}
+                                >
+                                    {link.label}
+                                </Link>
                                 {link.dot && newMessages?.length > 0 ? <NotificationDot color={'bg-green-700'} data={newMessages.length} /> : null}
                             </li>
                         ))}
@@ -66,8 +61,16 @@ export default function DashBoardMenu() {
                                         key={index}
                                         className={`w-full h-fit flex flex-row justify-center items-center border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3 ${locationEffect(link, location)}`}
                                     >
-                                        <Icon icon={link.icon} width={23} height={23} />
-                                        <Link to={link.path}>{link.label}</Link>
+                                        <Icon
+                                            icon={link.icon}
+                                            width={23}
+                                            height={23}
+                                        />
+                                        <Link
+                                            to={link.path}
+                                        >
+                                            {link.label}
+                                        </Link>
                                     </li>
                                 ))}
                             </>

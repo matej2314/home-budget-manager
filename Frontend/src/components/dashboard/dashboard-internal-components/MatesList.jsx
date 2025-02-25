@@ -25,11 +25,11 @@ export default function MatesList({ mode }) {
     };
 
     return (
-        <div className={`${mode === 'subpage' && 'w-11/12'} h-full overflow-auto`}>
+        <div className={`${mode === 'subpage' ? 'w-11/12' : 'w-full'} h-full overflow-auto`}>
             {error ? (
                 <p>Wystąpił błąd podczas ładowania danych.</p>
             ) : houseMates.length > 0 ? (
-                <table className={`${mode === 'subpage' ? 'w-11/12' : 'w-[100%]'} h-full table-auto text-sm`}>
+                <table className={`${mode === 'subpage' ? 'w-11/12 mx-auto' : 'w-[100%] mx-auto'} h-full table-auto text-sm`}>
                     <thead>
                         <tr className={`w-full ${mode === 'subpage' ? 'bg-slate-400/80' : 'bg-slate-400/50'}`}>
                             {thLabels.map((label, index) => (

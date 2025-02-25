@@ -1,18 +1,18 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from "@iconify/react";
-import { AuthContext } from "../../../store/authContext";
 import { useSocket } from '../../../store/socketContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import useModal from '../../../hooks/useModal';
+import { AuthContext } from "../../../store/authContext";
+import { mapArray, filterArray } from "../../../utils/arraysUtils/arraysFunctions";
+import { formatDbDate } from "../../../utils/formattingUtils/formatDateToDisplay";
 import MessagesFilterBtns from "./MessagesFilterBtns";
 import ModalComponent from '../dashboard-internal-components/ModalComponent';
 import { DisplayMessageDetails, ReplyMessageModal, DeleteMessageModal } from "../../modals/messagesModals/messagesModals";
 import { markMessage } from "../../../utils/asyncUtils/markMessage";
 import { messagesStates, tableHeader } from "../../../utils/arraysUtils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
-import { formatDbDate } from "../../../utils/formattingUtils/formatDateToDisplay";
-import { mapArray, filterArray } from "../../../utils/arraysUtils/arraysFunctions";
 import { messagesBtnsArr } from "../../../utils/arraysUtils/messagesBtnsArray";
 
 export default function MessagesList({ userMessages, messagesError, loading, getMessages, messagesPages }) {
@@ -80,70 +80,72 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     };
 
     return (
-        <div className="mx-auto min-h-full">
-            {userMessages && < MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />}
-            {!loading ? (
-                <>
-                    <div className="w-full h-fit flex justify-end mb-2 pr-8">
-                        {Array.from({ length: messagesPages }, (_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => getMessages(index + 1)}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
-                    </div>
-                    <table className=" w-11/12 mx-auto lg:w-[80rem] h-full table-fixed border-collapse text-xs lg:text-base border-b-[1px] border-slate-400 rounded-b-xl">
-                        <thead>
-                            <tr className="border-b bg-slate-400">
-                                {tableHeader.map((header, index) => (
-                                    <th key={index}
-                                        className={`px-4 py-2 text-center
+        <>
+            {userMessages && <div className="mx-auto min-h-full">
+                <MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />
+                {!loading ? (
+                    <>
+                        <div className="w-full h-fit flex justify-end mb-2 pr-8">
+                            {Array.from({ length: messagesPages }, (_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => getMessages(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
+                        <table className=" w-11/12 mx-auto lg:w-[80rem] h-full table-fixed border-collapse text-xs lg:text-base border-b-[1px] border-slate-400 rounded-b-xl">
+                            <thead>
+                                <tr className="border-b bg-slate-400">
+                                    {tableHeader.map((header, index) => (
+                                        <th key={index}
+                                            className={`px-4 py-2 text-center
                                     ${index === 0 ? 'rounded-tl-xl' : ''}
                                     ${index === tableHeader.length - 1 ? 'rounded-tr-xl' : ''}`}
-                                    >
-                                        {header}
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody className="border-x-[1px] border-slate-400">
-                            {filterMap[messagesType]?.map((message) => (
-                                <tr key={message.id} className="flex justify-around lg:gap-3 text-xs md:text-base py-2">
-                                    <td className="min-w-full whitespace-nowrap text-center">{message.sender}</td>
-                                    <td className="min-w-full whitespace-nowrap text-center">{message.recipient}</td>
-                                    <td className="min-w-full whitespace-nowrap text-center">{message.message}</td>
-                                    <td className="min-w-full whitespace-nowrap text-center">{!isMobile ? formatDbDate(message.date) : formatDbDate(message.date, 'split')}</td>
-                                    <td className="min-w-full whitespace-nowrap text-center">{message.readed ? "Readed" : "Unreaded"}</td>
-                                    <td className="min-w-full flex items-center justify-center gap-3 md:text-base">
-                                        {mapArray(
-                                            filterArray(messagesBtnsArr, item => item.condition === undefined || item.condition(message, user)),
-                                            ({ label, icon, actionType }) => (
-                                                <button key={actionType} onClick={getClickHandler(actionType, message)} title={label}>
-                                                    <Icon icon={icon} width={22} height={22} />
-                                                </button>
-                                            )
-                                        )}
-                                    </td>
+                                        >
+                                            {header}
+                                        </th>
+                                    ))}
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </>
-            ) : (
-                <p className="w-full h-fit flex justify-center text-2xl">
-                    <span>Nie udało się pobrać wiadomości.</span>
-                </p>
-            )}
-            {modal.isOpen && <ModalComponent
-                Component={modalComponents[modal.type]}
-                isOpen={modal.isOpen}
-                onRequestClose={closeModal}
-                message={modal.data}
-            />}
-            {loading && <LoadingModal isOpen={loading} />}
-        </div>
+                            </thead>
+                            <tbody className="border-x-[1px] border-slate-400">
+                                {filterMap[messagesType]?.map((message) => (
+                                    <tr key={message.id} className="flex justify-around lg:gap-3 text-xs md:text-base py-2">
+                                        <td className="min-w-full whitespace-nowrap text-center">{message.sender}</td>
+                                        <td className="min-w-full whitespace-nowrap text-center">{message.recipient}</td>
+                                        <td className="min-w-full whitespace-nowrap text-center">{message.message}</td>
+                                        <td className="min-w-full whitespace-nowrap text-center">{!isMobile ? formatDbDate(message.date) : formatDbDate(message.date, 'split')}</td>
+                                        <td className="min-w-full whitespace-nowrap text-center">{message.readed ? "Readed" : "Unreaded"}</td>
+                                        <td className="min-w-full flex items-center justify-center gap-3 md:text-base">
+                                            {mapArray(
+                                                filterArray(messagesBtnsArr, item => item.condition === undefined || item.condition(message, user)),
+                                                ({ label, icon, actionType }) => (
+                                                    <button key={actionType} onClick={getClickHandler(actionType, message)} title={label}>
+                                                        <Icon icon={icon} width={22} height={22} />
+                                                    </button>
+                                                )
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </>
+                ) : (
+                    <p className="w-full h-fit flex justify-center text-2xl">
+                        <span>Nie udało się pobrać wiadomości.</span>
+                    </p>
+                )}
+                {modal.isOpen && <ModalComponent
+                    Component={modalComponents[modal.type]}
+                    isOpen={modal.isOpen}
+                    onRequestClose={closeModal}
+                    message={modal.data}
+                />}
+                {loading && <LoadingModal isOpen={loading} />}
+            </div>}
+        </>
     );
 }
 

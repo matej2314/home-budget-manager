@@ -1,5 +1,5 @@
 export const dashboardBtnsArray = [
-    { label: 'Declare new budget', actionType: 'declare', profilePage: false },
+    { label: 'Declare budget', actionType: 'declare', profilePage: false },
     { label: 'Add transaction', actionType: 'transaction', profilePage: false },
     { label: 'Send message', actionType: 'message' },
     { label: 'Add housemate', actionType: 'addUser', profilePage: false },

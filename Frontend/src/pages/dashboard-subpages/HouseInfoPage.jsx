@@ -4,6 +4,7 @@ import { DataContext } from "../../store/dataContext";
 import { AuthContext } from "../../store/authContext";
 import { useTransactionsStore } from '../../store/transactionsStore'
 import useProcessedData from '../../hooks/useProcessedData';
+import { useIsMobile } from "../../hooks/useIsMobile";
 import { getData } from '../../utils/getData';
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
@@ -24,7 +25,7 @@ export default function HouseInfoPage() {
     const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
     const { user, isAuthenticated } = useContext(AuthContext);
     const { houseData, houseMates, statsData, dailyData } = data;
-
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         if (!isTransactionsFetched) {
@@ -67,28 +68,28 @@ export default function HouseInfoPage() {
                     <DashboardHeader />
                     <div id="middle-content" className="w-full h-full border-2 border-b-slate-800/5 flex flex-col flex-wrap items-center gap-5 mt-2">
                         <div id="content-header" className="w-full flex flex-col items-start justify-start gap-2">
-                            <div className="w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto">
-                                <div className="w-full h-fit flex justify-center items-center px-3 py-3 gap-4">
+                            <div className="w-10/12 h-full lg:w-7/12 lg:h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto">
+                                <div className="w-full flex justify-center items-center px-3 py-3 gap-4">
                                     <BasicHouseInfo basicHouseInfo={basicHouseInfo} />
                                 </div>
                             </div>
-                            <div id="dailyData-container" className="w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto text-xs lg:text-md px-3 py-3">
-                                <div id="dailyShortInfo" className="w-full h-full flex justify-center items-center gap-3">
-                                    <p className="flex flex-col lg:flex-row text-md gap-1">
-                                        <span className="lg:text-base font-bold">Previous day's transactions:</span>
-                                        <span className="flex justify-center text-xs lg:text-base">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyActionCount : '00'}</span>
+                            <div id="dailyData-container" className="lg:w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto text-xs lg:text-md px-3 py-3">
+                                <div id="dailyShortInfo" className="w-full h-full flex flex-row justify-center items-center gap-3">
+                                    <p className="flex flex-col lg:flex-row text-md lg:gap-1">
+                                        <span className="w-fit h-fit flex items-center justify-center lg:text-base font-bold">Previous day's transactions:</span>
+                                        <span className="flex justify-center text-xs lg:text-base ml-2">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyActionCount : '00'}</span>
                                     </p>
-                                    <span className="text-sm lg:text-md flex items-center -translate-y-0.5">&#124;</span>
+                                    <span className="text-xl lg:text-md flex items-center -translate-y-1 lg:-translate-y-0.5">&#124;</span>
                                     <p className="flex flex-col lg:flex-row lg:items-center text-md gap-1">
                                         <span className="font-bold text-xs lg:text-base">Previous day's budget:</span>
-                                        <span className="text-xs lg:text-base">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyBudgetValue : '0000'}</span>
+                                        <span className="flex justify-center ml-2 text-xs lg:text-base">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyBudgetValue : '0000'}</span>
                                     </p>
                                 </div>
                             </div>
-                            <div id="housemates-container" className="w-fit h-fit flex border-2 border-slate-400 rounded-xl mx-auto gap-2 p-3">
-                                <p className="font-bold">Housemates:</p>
-                                <p>{houseMates.length || '1'}</p>
-                                <Link to='/dashboard/housemates' className="font-semibold text-slate-500 hover:text-slate-800">- View housemates list</Link>
+                            <div id="housemates-container" className="w-fit h-fit flex items-center border-2 border-slate-400 rounded-xl mx-auto gap-2 p-3">
+                                <p className="font-bold text-sm lg:text-base">Housemates:</p>
+                                <p className="flex items-center">{houseMates.length || '1'}</p>
+                                <Link to='/dashboard/housemates' className="flex items-center font-semibold text-slate-500 hover:text-slate-800">- View housemates list</Link>
                             </div>
                             <MostActiveMates isLoading={isLoading} matesData={matesData} />
                         </div>
@@ -97,13 +98,13 @@ export default function HouseInfoPage() {
                                 <h2 className="text-xl flex justify-center">Last 5 transactions:</h2>
                                 <TransactionsList limit={5} mainSite={true} transactions={actionsData && transactions} />
                             </div>
-                            <div id="charts1" className="w-full h-full flex flex-col flex-wrap justify-around items-center mb-5 flex-grow ml-4 gap-y-4 gap-x-4">
-                                <div className="w-full h-fit flex justify-around gap-5">
+                            <div id="charts1" className="w-full h-full flex flex-col flex-wrap justify-around items-center mb-5 flex-grow px-5 gap-y-4 gap-x-4">
+                                <div className="max-w-screen lg:w-full h-fit flex flex-col lg:flex-row items-center lg:justify-around gap-5">
                                     <BalanceBudgetComparison data={{ labels: labels, dataValues: monthlyBalances, definedBudgets: definedBudgets }} />
                                     <TransactionsOverTime data={{ labels: actionCountLabels, dataValues: monthlyTransactionCounts }} />
                                 </div>
 
-                                <div className="w-full h-full flex justify-between gap-x-5 pr-5">
+                                <div className="w-full h-full flex flex-col items-center lg:flex-row justify-between lg:gap-x-5 lg:pr-5">
                                     <TransactionsPerDay data={{ labels: actionLabels, dataValues: dailyTransactions }} />
                                     <BudgetPerDay data={{ labels: dailyBudgetLabels, dataValues: dailyBudgetValues }} />
                                 </div>

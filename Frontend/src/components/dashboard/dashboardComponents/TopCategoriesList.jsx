@@ -2,11 +2,14 @@ import { useTransactionsStore } from "../../../store/transactionsStore";
 import BarChart from '../../charts/BarChart';
 import CategoriesValuesChart from "./charts-dashboard-components/CategoriesValuesChart";
 import { getCategoryPercentages } from "../../../utils/countingUtils/getCategoryPercentages";
+import { useIsMobile } from "../../../hooks/useIsMobile";
+import { getData } from '../../../utils/getData';
 
 export default function TopCategoriesList({ main }) {
     const { actionsLoading, actionsData, isTransactionsFetched, actionsDataError: actionsError } = useTransactionsStore();
+    const isMobile = useIsMobile();
 
-    const transactions = !actionsLoading && !actionsError && isTransactionsFetched && Array.isArray(actionsData) ? actionsData : [];
+    const transactions = getData(actionsLoading, actionsError, isTransactionsFetched && Array.isArray(actionsData), actionsData, []);
 
     const categoryData = getCategoryPercentages(transactions);
 
@@ -30,10 +33,10 @@ export default function TopCategoriesList({ main }) {
     }, {});
 
     return (
-        <div className={`w-full h-fit flex flex-row justify-around shadow-md shadow-slate-500 ${main ? 'mt-4' : 'mt-0'} pb-8 gap-4 pt-5`}>
+        <div className={`w-full h-fit flex flex-col lg:flex-row justify-around shadow-md shadow-slate-500 ${main ? 'mt-4' : 'mt-0'} pb-8 gap-4 pt-5`}>
             <div>
-                <h2 className="text-xl mb-4">Top categories of transactions:</h2>
-                <ul className="mb-4">
+                <h2 className="w-full h-fit flex justify-center text-xl mb-4">Top categories of transactions:</h2>
+                <ul className="mb-4 flex justify-center">
                     {categoryData.labels.map((label, index) => (
                         <li key={label}>
                             {label} : {getCategoryPercentages(transactions).dataValues[index]} %
@@ -47,7 +50,7 @@ export default function TopCategoriesList({ main }) {
                     colors={['rgba(255, 99, 132, 0.2)']}
                     borderColors={['rgba(255, 99, 132, 1)']}
                     width={500}
-                    height={450}
+                    height={isMobile ? 250 : 450}
                 />
             </div>
             <div>

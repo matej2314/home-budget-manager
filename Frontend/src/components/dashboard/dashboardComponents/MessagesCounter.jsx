@@ -4,7 +4,6 @@ import { useSocket } from '../../../store/socketContext';
 import { filterArray } from '../../../utils/arraysUtils/arraysFunctions'
 
 export default function MessagesCounter() {
-
     const { connected, messages, error } = useSocket();
     const [userMessages, setUserMessages] = useState([]);
 
