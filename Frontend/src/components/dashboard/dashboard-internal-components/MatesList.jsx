@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../../store/authContext";
 import { DataContext } from "../../../store/dataContext";
 import { Icon } from '@iconify/react';
-import SendMessageModal from '../../modals/SendMessageModal';
+import { SendMessageModal } from "../../modals/messagesModals/messagesModals";
 import { showInfoToast } from "../../../configs/toastify";
 import { getData } from "../../../utils/getData";
 

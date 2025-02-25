@@ -1,21 +1,16 @@
 export default function BasicHouseInfo({ basicHouseInfo }) {
-
+    const keysToDisplay = ['houseName', 'host', 'lastBalanceDate'];
     return (
-        <div id="basicHouseInfo" className="lg:w-full h-full text-xs lg:text-base flex items-center gap-4">
-            <span className="flex flex-col lg:flex-row gap-2">
-                <span className="text-xs lg:text-base font-bold">House name:</span>
-                <span>{basicHouseInfo.houseName || 'brak danych :('}</span>
-            </span>
-            <span className="text-md">&#124;</span>
-            <span className="flex flex-col lg:flex-row gap-2">
-                <span className="text-xs lg:text-base font-bold">Host's username:</span>
-                <span>{basicHouseInfo.host || 'brak danych :('}</span>
-            </span>
-            <span className="text-md">&#124;</span>
-            <div className="w-fit flex flex-col lg:flex-row gap-1">
-                <span className="font-bold">Last balance date:</span>
-                <span>{basicHouseInfo.lastBalanceDate || 'Not found'}</span>
-            </div>
+        <div id="basicHouseInfo" className="lg:w-full h-full text-xs lg:text-base flex justify-center items-center gap-4">
+            {keysToDisplay.map((key, index) => (
+                <div key={key} className="flex flex-col lg:flex-row gap-2">
+                    <span className="text-xs lg:text-base font-bold">
+                        {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:
+                    </span>
+                    <span>{basicHouseInfo[key] || 'brak danych :('}</span>
+                    {index < keysToDisplay.length - 1 && <span className="text-md -translate-y-0.5">&#124;</span>}
+                </div>
+            ))}
         </div>
-    )
+    );
 }

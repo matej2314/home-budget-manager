@@ -6,7 +6,7 @@ import { showErrorToast, showInfoToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
 
 
-export default function ChangeEmailModal({ handleOpen, onRequestClose }) {
+export default function ChangeEmailModal({ isOpen, onRequestClose }) {
     const [sended, setSended] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const newEmailAddr = useRef();
@@ -48,7 +48,7 @@ export default function ChangeEmailModal({ handleOpen, onRequestClose }) {
 
     return (
         <Modal
-            isOpen={handleOpen}
+            isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Add New Transaction"
             className="w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-x-[40vw] translate-y-[30vh]"

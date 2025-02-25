@@ -6,7 +6,7 @@ import DashboardHeader from "../../components/dashboard/dashboardComponents/Dash
 import AddTransactionModal from "../../components/modals/AddTransactionModal";
 import TransactionsCategoriesModal from "../../components/modals/TransactionsCategoriesModal";
 import useModal from "../../hooks/useModal";
-
+import ModalComponent from "../../components/dashboard/dashboard-internal-components/ModalComponent";
 
 Modal.setAppElement('#root');
 
@@ -22,15 +22,14 @@ export default function TransactionsPage() {
 
     const transactions = Array.isArray(actionsData) ? actionsData : [];
 
+    const handleOpenModal = (type) => {
+        openModal(type);
+    }
 
-    const handleAddTransaction = () => {
-        openModal('transaction');
+    const modalComponents = {
+        transaction: AddTransactionModal,
+        categories: TransactionsCategoriesModal,
     };
-
-    const handleShowCategories = () => {
-        openModal('categories');
-    };
-
 
     return (
         <div id="pagecontent" className="min-h-screen w-screen bg-slate-200 overflow-y-hidden">
@@ -38,14 +37,14 @@ export default function TransactionsPage() {
             <div id="middle-content" className="flex flex-col gap-4 border-2 border-b-slate-800/5 pt-3 pb-4 px-5">
                 <div id='actionBtns' className="w-[75vw] h-fit flex flex-col md:flex-row justify-center items-center rounded-md gap-3">
                     <button
-                        onClick={handleAddTransaction}
+                        onClick={() => openModal('transaction')}
                         className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"
                     >
                         Add new transaction
                     </button>
                     <button
                         className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"
-                        onClick={handleShowCategories}
+                        onClick={() => openModal('categories')}
                     >
                         Vew all categories
                     </button>
@@ -59,8 +58,12 @@ export default function TransactionsPage() {
                     getTransactions={fetchTransactions}
                 />
             </div>
-            {modal.isOpen && modal.type === 'transaction' && <AddTransactionModal handleOpen={modal.isOpen} onRequestClose={closeModal} />}
-            {modal.isOpen && modal.type === 'categories' && <TransactionsCategoriesModal isOpen={modal.isOpen} onRequestClose={closeModal} />}
+            {modal.isOpen && <ModalComponent
+                Component={modalComponents[modal.type]}
+                isOpen={modal.isOpen}
+                onRequestClose={closeModal}
+            />}
+
         </div>
     );
 }

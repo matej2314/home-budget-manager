@@ -11,7 +11,6 @@ import TopCategoriesList from './dashboardComponents/TopCategoriesList';
 import FastActions from './dashboard-internal-components/FastActionsSection';
 import LossOrGainChart from './dashboardComponents/charts-dashboard-components/LossOrGainChart';
 
-
 export default function DashBoard() {
 
     const { user } = useContext(AuthContext);
@@ -27,7 +26,7 @@ export default function DashBoard() {
                 <MessagesCounter />
             </div>
             <div className='mt-1'>
-                <FastActions />
+                <FastActions profilePage={false} />
             </div>
             <div id='chartsPart' className="max-w-screen h-fit mb-4 mx-5 flex flex-col gap-3">
                 <LossOrGainChart />

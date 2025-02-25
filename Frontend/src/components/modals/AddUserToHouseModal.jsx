@@ -1,11 +1,11 @@
 import Modal from 'react-modal';
 import AddUserToHouseForm from '../forms/AddUserToHouseForm';
 
-export default function AddUserToHouseModal({ handleOpen, onRequestClose }) {
+export default function AddUserToHouseModal({ isOpen, onRequestClose }) {
 
     return (
         <Modal
-            isOpen={handleOpen}
+            isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Add New Transaction"
             className="w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-x-[40vw] translate-y-[30vh]"

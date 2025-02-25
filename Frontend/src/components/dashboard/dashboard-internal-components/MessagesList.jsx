@@ -4,21 +4,22 @@ import { Icon } from "@iconify/react";
 import { AuthContext } from "../../../store/authContext";
 import { useSocket } from '../../../store/socketContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
+import useModal from '../../../hooks/useModal';
 import MessagesFilterBtns from "./MessagesFilterBtns";
-import DisplayMessageDetails from "../../modals/DisplayMessageDetails";
-import ReplyMessageModal from "../../modals/ReplyMessageModal";
-import DeleteMessageModal from "../../modals/DeleteMessageModal";
+import ModalComponent from '../dashboard-internal-components/ModalComponent';
+import { DisplayMessageDetails, ReplyMessageModal, DeleteMessageModal } from "../../modals/messagesModals/messagesModals";
 import { markMessage } from "../../../utils/asyncUtils/markMessage";
 import { messagesStates, tableHeader } from "../../../utils/arraysUtils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
 import { formatDbDate } from "../../../utils/formattingUtils/formatDateToDisplay";
 import { mapArray, filterArray } from "../../../utils/arraysUtils/arraysFunctions";
+import { messagesBtnsArr } from "../../../utils/arraysUtils/messagesBtnsArray";
 
 export default function MessagesList({ userMessages, messagesError, loading, getMessages, messagesPages }) {
     const { filter } = useParams();
     const { user } = useContext(AuthContext);
     const { connected, messages: socketMessages } = useSocket();
-    const [modal, setModal] = useState({ isOpen: false, type: null, message: null });
+    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null, data: null });
     const [messagesType, setMessagesType] = useState(filter || "all");
     const [newMessages, setNewMessages] = useState([]);
     const navigate = useNavigate();
@@ -45,7 +46,6 @@ export default function MessagesList({ userMessages, messagesError, loading, get
 
     }, [liveMessages, filter, navigate]);
 
-
     const handleChangeFilter = (type) => {
         navigate(`/dashboard/messages/${type}`);
     }
@@ -57,15 +57,27 @@ export default function MessagesList({ userMessages, messagesError, loading, get
         sended: filterArray(sortedMessages, (msg) => msg.sender === user.userName),
     };
 
-    const handleOpenModal = (type, message = null) => {
-        setModal({ isOpen: true, type, message });
-    };
-
-    const handleCloseModal = () => {
-        setModal({ isOpen: false, type: null, message: null });
-    };
-
+    const refreshData = getMessages;
     const handleMarkMessage = (message) => markMessage(message, user, refreshData);
+
+    const getClickHandler = (actionType, message) => {
+        switch (actionType) {
+            case 'open':
+                return () => openModal('details', message);
+            case 'delete':
+                return () => openModal('delete', message);
+            case 'mark':
+                return () => handleMarkMessage(message);
+            case 'reply':
+                return () => openModal('reply', message);
+        };
+    };
+
+    const modalComponents = {
+        open: DisplayMessageDetails,
+        delete: DeleteMessageModal,
+        reply: ReplyMessageModal,
+    };
 
     return (
         <div className="mx-auto min-h-full">
@@ -105,24 +117,14 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                                     <td className="min-w-full whitespace-nowrap text-center">{!isMobile ? formatDbDate(message.date) : formatDbDate(message.date, 'split')}</td>
                                     <td className="min-w-full whitespace-nowrap text-center">{message.readed ? "Readed" : "Unreaded"}</td>
                                     <td className="min-w-full flex items-center justify-center gap-3 md:text-base">
-                                        <button onClick={() => handleOpenModal("details", message)} title="Open message">
-                                            <Icon icon="lets-icons:message-open-light" width={!isMobile ? 20 : 14} height={!isMobile ? 20 : 14} />
-                                        </button>
-                                        <button
-                                            title="Delete message"
-                                            onClick={() => handleOpenModal('delete', message)}
-                                        >
-                                            <Icon icon="mdi-light:delete" width={!isMobile ? 22 : 14} height={!isMobile ? 22 : 14} />
-                                        </button>
-                                        <button
-                                            title="Mark as readed"
-                                            onClick={() => handleMarkMessage(message)}
-                                        >
-                                            <Icon icon="iconoir:mail-opened" width={!isMobile ? 20 : 14} height={!isMobile ? 20 : 14} />
-                                        </button>
-                                        {message.sender !== user.userName && <button onClick={() => handleOpenModal("reply", message)} title="Reply">
-                                            <Icon icon="iconoir:reply-to-message" width={!isMobile ? 22 : 14} height={!isMobile ? 22 : 14} />
-                                        </button>}
+                                        {mapArray(
+                                            filterArray(messagesBtnsArr, item => item.condition === undefined || item.condition(message, user)),
+                                            ({ label, icon, actionType }) => (
+                                                <button key={actionType} onClick={getClickHandler(actionType, message)} title={label}>
+                                                    <Icon icon={icon} width={22} height={22} />
+                                                </button>
+                                            )
+                                        )}
                                     </td>
                                 </tr>
                             ))}
@@ -134,15 +136,12 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                     <span>Nie udało się pobrać wiadomości.</span>
                 </p>
             )}
-            {modal.isOpen && modal.type === "details" && (
-                <DisplayMessageDetails isOpen={modal.isOpen} onRequestClose={handleCloseModal} message={modal.message} />
-            )}
-            {modal.isOpen && modal.type === "reply" && (
-                <ReplyMessageModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} message={modal.message} />
-            )}
-            {modal.isOpen && modal.type === 'delete' && (
-                <DeleteMessageModal isOpen={modal.isOpen} onRequestClose={handleCloseModal} message={modal.message} />
-            )}
+            {modal.isOpen && <ModalComponent
+                Component={modalComponents[modal.type]}
+                isOpen={modal.isOpen}
+                onRequestClose={closeModal}
+                message={modal.data}
+            />}
             {loading && <LoadingModal isOpen={loading} />}
         </div>
     );
