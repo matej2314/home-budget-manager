@@ -12,13 +12,13 @@ const initializeWebSocket = (server) => {
 	ioInstance = io(server, {
 		cors: {
 			origin: (origin, callback) => {
-                const allowedOrigins = ['http://localhost:5173'];
-                if (allowedOrigins.includes(origin)) {
-                    callback(null, true);
-                } else {
-                    callback(new Error('Nieautoryzowany origin'), false);
-                }
-            },
+				const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:5052'];
+				if (allowedOrigins.includes(origin)) {
+					callback(null, true);
+				} else {
+					callback(new Error('Nieautoryzowany origin'), false);
+				}
+			},
 			credentials: true,
 		},
 		pingInterval: 15000,
@@ -29,7 +29,7 @@ const initializeWebSocket = (server) => {
 		reconnectionDelayMax: 10000,
 		randomizationFactor: 0.5,
 		connectionStateRecovery: true,
-		
+
 	});
 
 	ioInstance.use(authMiddleware);
@@ -38,35 +38,35 @@ const initializeWebSocket = (server) => {
 		const id = uuidv4();
 		const userId = socket.user.id;
 		const expireDate = getMysqlExpireDate();
-	
+
 		try {
 			const [checkConnection] = await pool.query(socketQueries.checkIfConnection, [userId]);
-	
+
 			if (checkConnection.length > 0) {
 				const existingConnection = checkConnection[0];
 				const existingExpireDate = new Date(existingConnection.expireDate);
-	
+
 				if (existingExpireDate > new Date()) {
 					socket.emit('connect_success', { message: 'Połączenie zostało przywrócone.' });
-	
+
 					return;
 				} else {
 					logger.error(`Połączenie dla użytkownika ${userId} wygasło. Usuwamy stare połączenie.`);
 					await pool.query(socketQueries.deleteConnection, [userId]);
 				}
 			}
-	
+
 			await pool.query(socketQueries.saveConnection, [id, userId, socket.id, expireDate]);
-	
+
 			socket.on('disconnect', async (reason) => {
 				await pool.query(socketQueries.deleteConnection, [userId]);
 				logger.info(`Połączenie WebSocket zamknięte. Powód: ${reason}`);
 			});
-	
+
 			socket.on('error', (error) => {
 				logger.error(`Błąd WebSocket: ${error.message}`);
 			});
-	
+
 		} catch (error) {
 			logger.error(`Błąd przy inicjalizacji połączenia: ${error.message}`);
 			socket.emit('error', {
@@ -75,7 +75,7 @@ const initializeWebSocket = (server) => {
 			socket.disconnect();
 		}
 	});
-	
+
 	logger.info('Serwer WebSocket zainicjalizowany.');
 	console.log('Serwer WebSocket zainicjalizowany.');
 };
@@ -130,15 +130,15 @@ const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
 		};
 
 
-			const [usersConnections] = await connection.query(`SELECT connectionId FROM socketConnections WHERE userId IN (?)`, 
-				[houseMates.map(mate => mate.userId)]
-			);
+		const [usersConnections] = await connection.query(`SELECT connectionId FROM socketConnections WHERE userId IN (?)`,
+			[houseMates.map(mate => mate.userId)]
+		);
 
 		if (!usersConnections || usersConnections.length === 0) {
 			logger.error(`Nie znaleziono połączeń dla domowników gospodarstwa ${houseId}`);
 			return;
 		};
-				
+
 		usersConnections.forEach((connection) => {
 			const socket = ioInstance.sockets.sockets.get(connection.connectionId);
 
