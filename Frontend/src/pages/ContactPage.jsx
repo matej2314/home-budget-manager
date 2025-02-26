@@ -5,7 +5,7 @@ export default function ContactPage() {
 
 
     return (
-        <main className="w-full h-screen flex flex-col justify-center items-center text-black">
+        <main className="w-full h-screen flex flex-col justify-center items-center text-black pt-1">
             <HomePageMenu />
             <div className='w-full h-full flex justify-center items-center'>
                 <ContactForm />

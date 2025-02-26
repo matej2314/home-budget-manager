@@ -13,7 +13,7 @@ export default function ContactForm() {
     return (
         <form
             onSubmit={handleContactForm}
-            className='w-1/3 h-fit flex flex-col justify-start items-center gap-3 border-2 border-slate-400 bg-slate-400/25 rounded-md py-5 shadow-md shadow-slate-400'
+            className='w-7/12 md:w-1/3 h-fit flex flex-col justify-start items-center gap-3 border-2 border-slate-400 bg-slate-400/25 rounded-md py-5 shadow-md shadow-slate-400'
         >
             <h2 className='w-full h-fit flex justify-center items-center font-semibold text-xl mb-3'>Contact us:</h2>
             <label className='w-full h-fit flex justify-center items-center' htmlFor="userName">Type your name:</label>

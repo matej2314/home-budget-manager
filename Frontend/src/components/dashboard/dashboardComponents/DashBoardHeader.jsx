@@ -23,8 +23,6 @@ export default function DashboardHeader() {
     const filteredDataMessages = filterArray(dataMessages, (message) => message.recipient === user.userName)
         .filter(message => message.readed === 0);
 
-
-
     const handleLogOut = async () => {
         await loggingOut(logout, navigate);
     };

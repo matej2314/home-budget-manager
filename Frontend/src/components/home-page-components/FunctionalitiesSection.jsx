@@ -37,8 +37,7 @@ export default function FunctionalitiesSection({ isLoading, error, functionsData
                     <div className="w-full h-fit flex justify-center items-center mb-4">
                         <AnimatePresence>
                             <div
-
-                                className="w-[300vw] h-fit flex flex-row items-center gap-3 p-2"
+                                className="w-[100vw] h-fit flex flex-row items-center gap-3 p-2"
                             >
                                 {functionsData && Array.isArray(functionsData) && functionsData.map((func) => {
                                     return (
@@ -47,9 +46,9 @@ export default function FunctionalitiesSection({ isLoading, error, functionsData
                                             variants={itemVariants}
                                             initial="initial"
                                             animate="animate"
-                                            className="w-1/3 h-[10rem] flex flex-col gap-3 items-center bg-slate-400 rounded-md border-2 border-slate-500 p-2"
+                                            className="w-1/3 h-[20rem] md:h-[10rem] flex flex-col gap-3 items-center bg-slate-400 rounded-md border-2 border-slate-500 p-2"
                                         >
-                                            <h2 className="text-2xl">{func.functionTitle}</h2>
+                                            <h2 className="w-full h-fit text-md font-semibold text-justify md:text-2xl">{func.functionTitle}</h2>
                                             <p>{func.functionContent}</p>
                                         </motion.div>
                                     );

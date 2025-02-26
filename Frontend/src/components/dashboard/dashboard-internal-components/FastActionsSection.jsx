@@ -60,13 +60,13 @@ export default function FastActions({ profilePage, action }) {
 
     return (
         <>
-            <div id='fastActions' className='grid grid-cols-3 lg:flex lg:flex-row justify-start items-center gap-3 ml-10 py-2'>
+            <div id='fastActions' className='grid grid-cols-3 gap-y-2 px-5 md:flex md:flex-row justify-start items-center md:gap-3 md:ml-10 py-2'>
                 {mapArray(filterArray(dashboardBtnsArray, (btn) => btn.profilePage === profilePage || btn.profilePage === undefined),
                     ({ label, actionType }) => (
                         <button
                             key={actionType}
                             onClick={getClickHandler(actionType)}
-                            className={`w-fit h-fit bg-slate-300/40 p-2 text-sm lg:text-base rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60`}
+                            className={`w-fit h-fit bg-slate-300/40 p-2 text-sm md:text-base rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60`}
                         >
                             {label}
                         </button>

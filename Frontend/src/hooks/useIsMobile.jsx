@@ -7,7 +7,6 @@ export const useIsMobile = () => {
 
     useEffect(() => {
         setIsMobileState(isMobile);
-        console.log('Mobile user.');
     }, [isMobile]);
 
     return isMobileState;

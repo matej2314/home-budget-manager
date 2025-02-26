@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-/** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme';
+
 export default {
   content: [
     "./index.html",
@@ -9,6 +10,10 @@ export default {
     extend: {
       colors: {
         customGray: '#303641',
+      },
+      screens: {
+        ...defaultTheme.screens,
+        indirect: '450px',
       }
     },
   },

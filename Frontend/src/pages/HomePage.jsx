@@ -39,8 +39,9 @@ export default function HomePage() {
             {!isHomePageDataLoading && !homePageDataError && homePageData && (
                 <main className="w-full h-fit flex flex-col justify-start items-center gap-4 pt-1 px-5">
                     <HomePageMenu />
-                    <div id="mainPageContent" className="w-[99%] h-full flex flex-col gap-3 pb-1">
+                    <div id="mainPageContent" className="w-[99%] h-fit flex flex-col gap-3 pb-1">
                         <div id="short-info-boxes" className="w-full h-fit flex flex-col gap-5 px-5">
+                            <h2 className="w-full h-fit flex justify-center text-xl font-bold">TEST LOGIN DATA: testuser@email.pl / Test123456!! </h2>
                             <ShortInfoSection infoData={homePageData.shortInfo} isLoading={isHomePageDataLoading} error={homePageDataError} />
                             <FunctionalitiesSection isLoading={isHomePageDataLoading} error={homePageDataError} functionsData={homePageData.functionalities} />
                         </div>

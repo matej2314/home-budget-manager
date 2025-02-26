@@ -52,13 +52,13 @@ export default function CalendarPage() {
     return (
         <div id="pagecontent" className="w-full min-h-screen bg-slate-200 flex flex-col gap-5 items-stretch z-0">
             <DashboardHeader />
-            <div style={{ height: '500px', width: '97%' }}>
+            <div style={{ height: '500px', width: '97%', marginInline: 'auto' }}>
                 <Calendar
                     localizer={localizer}
                     events={events}
                     startAccessor="start"
                     endAccessor="end"
-                    className="h-[550px] border-[2px] border-slate-300 rounded-md"
+                    className="h-[550px] border-[2px] border-slate-300 rounded-md gap-2"
                     onSelectEvent={handleEventClick}
                     onSelectSlot={handleDateClick}
                     onView={setView}
