@@ -59,7 +59,7 @@ export default function HomePageMenu() {
                 </li>
                 <li><Link to='/contact'>Contact</Link></li>
                 <li className='h-full w-fit flex items-center gap-3'>
-                    <LanguageSelector />
+                    {/* <LanguageSelector /> */}
                     {!isLoading && isAuthenticated && user && <p className=' h-full flex justify-center items-center'>User: {user.userName}</p>}
                     {isAuthenticated &&
                         <button

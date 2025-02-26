@@ -1,7 +1,7 @@
 const jwtCookieOptions = {
 	httpOnly: true,
 	secure: false,
-	sameSite: 'lax',
+	sameSite: 'none',
 };
 
 module.exports = jwtCookieOptions;
