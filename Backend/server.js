@@ -8,14 +8,14 @@ const balanceHouseActions = require('./tasks/balanceHouseTransactions.js');
 const saveDailyTransactions = require('./tasks/saveDailyTransactions.js');
 const saveDailyBudget = require('./tasks/saveDailyBudget.js');
 const { initializeWebSocket } = require('./configs/websocketConfig.js');
-const {clearSocketConnections} = require('./utils/clearSocketConnections.js');
+const { clearSocketConnections } = require('./utils/clearSocketConnections.js');
 const http = require('http');
 const app = express();
 const setupRoutes = require('./routes/index.js');
 
 const port = process.env.SERV_PORT || 5053;
 
-const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:*'];
+const allowedOrigins = ['https://budgetapp.msliwowski.net', 'https://budgetapi.msliwowski.net', 'http://localhost:5173', 'http://185.170.196.107:5052'];
 
 app.use(
 	cors({
@@ -56,7 +56,7 @@ try {
 		saveDailyTransactions();
 		saveDailyBudget();
 		balanceHouseActions();
-		
+
 	});
 	server.setTimeout(0);
 

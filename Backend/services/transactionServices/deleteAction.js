@@ -4,6 +4,7 @@ const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUtils/checkUserHouse');
 const { checkTransaction } = require('../../utils/checkUtils/checkTransaction');
 const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
+const { broadcastToHouseMates } = require('../../configs/websocketConfig.js');
 
 const deleteAction = async (transactionId, userId) => {
     const connection = await pool.getConnection();
@@ -46,7 +47,7 @@ const deleteAction = async (transactionId, userId) => {
             logger.error(`Nie znaleziono transakcji ${transactionId} do usunięcia.`);
             return { status: 'notfound', message: 'Nie znaleziono transakcji.' };
         }
-        await liveUpdateBalance('expense', value, houseId);
+        await liveUpdateBalance('expense', value, houseId, userId, connection);
 
         await connection.commit();
 

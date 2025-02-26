@@ -23,6 +23,9 @@ export default function AddUserToHouseForm({ onClose }) {
             if (inviteUser.status === 'success') {
                 showInfoToast(inviteUser.message);
                 inviteUser.current.value = '';
+                setTimeout(() => {
+                    onClose();
+                }, 500);
             } else if (inviteUser.status === 'error') {
                 showErrorToast(inviteUser.message);
             }

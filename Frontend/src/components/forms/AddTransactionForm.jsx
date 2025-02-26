@@ -2,6 +2,7 @@ import { useRef, useContext, useState } from 'react';
 import { DataContext } from '../../store/dataContext';
 import { Icon } from '@iconify/react';
 import { serverUrl } from '../../url';
+import { useTransactionsStore } from '../../store/transactionsStore';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
@@ -9,6 +10,7 @@ import LoadingModal from '../modals/LoadingModal';
 export default function AddTransactionForm({ onClose }) {
     const { data, isLoading, error } = useContext(DataContext);
     const actionCategories = !isLoading && !error && data.actionsCatData || [];
+    const { fetchTransactions } = useTransactionsStore();
     const [imageMode, setImageMode] = useState(false);
     const [loadingImage, setLoadingImage] = useState(false);
     const [recognizedValue, setRecognizedValue] = useState();
@@ -16,8 +18,6 @@ export default function AddTransactionForm({ onClose }) {
     const numberValueRef = useRef();
     const fileValueRef = useRef();
     const catIdRef = useRef();
-
-
 
     const recognizeValue = async (e) => {
         e.preventDefault();
@@ -75,6 +75,7 @@ export default function AddTransactionForm({ onClose }) {
 
         if (saveAction.status === 'success') {
             showInfoToast(saveAction.message);
+            await fetchTransactions();
             setTimeout(() => {
                 onClose();
             }, 500);

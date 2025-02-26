@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
+import { showInfoToast } from '../../configs/toastify';
 
 export default function ContactForm() {
     const [sended, setSended] = useState(false);
@@ -9,6 +10,7 @@ export default function ContactForm() {
 
     const handleContactForm = async (e) => {
         e.preventDefault();
+        showInfoToast('Jeszcze nie działa :)');
     };
     return (
         <form

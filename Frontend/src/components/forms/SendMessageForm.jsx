@@ -1,12 +1,13 @@
 import { useRef, useState } from "react";
+import { useMessagesStore } from '../../store/messagesStore';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
-
 export default function SendMessageForm({ reply, recipientName, onClose }) {
     const [sended, setSended] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { fetchMessages } = useMessagesStore();
     const recipientRef = useRef();
     const messageContentRef = useRef();
 
@@ -25,6 +26,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 
             if (sendMessage.status === 'success') {
                 showInfoToast(sendMessage.message);
+                await fetchMessages();
                 messageContentRef.current.value = "";
                 setTimeout(() => {
                     onClose();

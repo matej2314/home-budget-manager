@@ -11,7 +11,7 @@ export default function DashboardPage() {
     const { connected, messages } = useSocket();
 
     const liveMessages = connected && messages?.newMessages;
-    const isMateOrHost = user?.role === "mate" || user?.role === "host";
+    const isMateOrHost = user?.role === "inmate" || user?.role === "host";
     const isUser = user?.role === "user";
 
     useEffect(() => {

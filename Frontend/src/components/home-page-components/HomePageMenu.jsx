@@ -25,6 +25,7 @@ export default function HomePageMenu() {
     const handleLogOut = async () => {
         await loggingOut(logout, navigate);
         closeModal();
+        window.location.reload();
     };
 
     const handleDashboardRedirect = () => {

@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import { AuthContext } from '../../../store/authContext';
+import { useTransactionsStore } from '../../../store/transactionsStore';
 import { Icon } from '@iconify/react';
 import { useMediaQuery } from 'react-responsive';
 import sendRequest from '../../../utils/asyncUtils/sendRequest';
@@ -10,6 +13,8 @@ import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
     const isMobile = useMediaQuery({ maxWidth: 768 });
+    const { user } = useContext(AuthContext);
+    const { fetchTransactions } = useTransactionsStore();
 
     const filteredTransactions = filterId ? filterArray(transactions, (transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)
@@ -18,13 +23,19 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
     const transactionsToDisplay = limit ? sortedTransactions.slice(0, limit) : sortedTransactions;
 
     const handleDeleteAction = async (transaction) => {
+
+        if (transaction.userName !== user.userName) {
+            showErrorToast('Nie dodałeś tej transakcji!');
+            return;
+        };
+
         try {
             const actionData = { transactionId: transaction.transactionId };
             const deleteAction = await sendRequest('DELETE', actionData, `${serverUrl}/action`);
 
             if (deleteAction.status === 'success') {
                 showInfoToast('Transakcja usunięta.');
-                refreshData();
+                fetchTransactions();
             } else {
                 showErrorToast('Nie udało się usunąć transakcji.');
             }

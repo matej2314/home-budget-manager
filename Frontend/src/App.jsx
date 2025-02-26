@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <>
-      {/* <BackToUsMessage /> */}
+      <BackToUsMessage />
       <RouterProvider router={router} />
       <ToastContainer
         position='top-center'

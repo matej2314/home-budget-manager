@@ -7,19 +7,13 @@ export const DataContext = createContext({
     data: {},
     actionsData: {},
     isLoading: true,
-    actionsLoading: false,
-    actionsError: null,
-    actionsTotalPages: 1,
-    actionsPage: 1,
-    isTransactionsFetched: false,
     refreshData: () => { },
-    fetchTransactions: () => { },
+
 });
 
 export const DataProvider = ({ children }) => {
 
     const { isAuthenticated } = useContext(AuthContext);
-    const [isTransactionsFetched, setIsTransactionsFetched] = useState(false);
 
     const [data, setData] = useState({
         houseData: [],
@@ -29,14 +23,6 @@ export const DataProvider = ({ children }) => {
         dailyData: [],
         dataError: null,
         loading: true,
-    });
-
-    const [actionsData, setActionsData] = useState({
-        actionsData: [],
-        actionsDataError: null,
-        loading: false,
-        totalPages: 0,
-        page: 1,
     });
 
     const fetchBoardData = async (filter = 'all') => {
@@ -58,28 +44,6 @@ export const DataProvider = ({ children }) => {
         }
     };
 
-    const fetchTransactions = async (page = 1) => {
-        setActionsData(prevData => ({ ...prevData, loading: true, actionsDataError: null }));
-        setIsTransactionsFetched(false);
-
-        try {
-            const result = await fetchData(`${serverUrl}/board/data/transactions/${page}`);
-            setActionsData(prevData => ({
-                ...prevData,
-                actionsData: result.dashboardData.actionsData,
-                totalPages: result.dashboardData.totalPages,
-                page: result.dashboardData.page,
-                loading: false,
-            }));
-            setIsTransactionsFetched(true);
-
-        } catch (error) {
-            setActionsData(prevData => ({ ...prevData, actionsDataError: error }));
-        } finally {
-            setActionsData(prevData => ({ ...prevData, loading: false }));
-        }
-    };
-
     const refreshData = async (filter = 'all') => {
         fetchBoardData(filter);
     };
@@ -94,14 +58,7 @@ export const DataProvider = ({ children }) => {
         <DataContext.Provider value={{
             data,
             isLoading: data.loading,
-            actionsData: actionsData.actionsData,
-            actionsLoading: actionsData.loading,
-            actionsError: actionsData.actionsDataError,
-            actionsTotalPages: actionsData.totalPages,
-            actionsPage: actionsData.page,
             refreshData,
-            fetchTransactions,
-            isTransactionsFetched,
         }}>
             {children}
         </DataContext.Provider>

@@ -15,14 +15,15 @@ services:
       # - /root/main/budgetApp/backend/emaildata.js:/app/emaildata.js
     environment:
       - DB_HOST=main_db
-  # app:
-  #     context: ./Frontend
-  #   container_name: budgetApp-frontend
-  #   restart: always
-  #   networks:
-  #     - main_network
-  #   ports:
-  #     - "5052:80"
+  app:
+    build:
+      context: ./Frontend
+    container_name: budgetApp-frontend
+    restart: always
+    networks:
+      - main_network
+    ports:
+      - "5052:80"
     
 
 networks:
