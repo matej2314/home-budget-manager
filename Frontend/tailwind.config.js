@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        urbanist: ['Urbanist', 'sans-serif'],
+      },
       colors: {
         customGray: '#303641',
       },

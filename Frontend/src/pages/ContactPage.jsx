@@ -1,15 +1,12 @@
-import HomePageMenu from '../components/home-page-components/HomePageMenu';
 import ContactForm from '../components/forms/ContactForm';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 export default function ContactPage() {
-
+    useDocumentTitle('Contact');
 
     return (
-        <main className="w-full h-screen flex flex-col justify-center items-center text-black pt-1">
-            <HomePageMenu />
-            <div className='w-full h-full flex justify-center items-center'>
-                <ContactForm />
-            </div>
-        </main>
+        <div className='w-full h-full flex justify-center items-center'>
+            <ContactForm />
+        </div>
     )
 }

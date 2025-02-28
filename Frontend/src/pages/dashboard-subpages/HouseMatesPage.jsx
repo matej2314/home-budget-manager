@@ -1,7 +1,10 @@
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 import MatesList from '../../components/dashboard/dashboard-internal-components/MatesList';
 
+
 export default function HouseMatesPage() {
+    useDocumentTitle('Housemates');
 
     return (
         <div id="pagecontent" className="bg-slate-200 w-full min-h-screen">

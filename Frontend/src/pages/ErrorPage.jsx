@@ -1,8 +1,10 @@
 import { Icon } from '@iconify/react';
 import { Link, useLocation } from 'react-router-dom';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 export default function ErrorPage() {
     const location = useLocation();
+    useDocumentTitle('Error!');
     const isDashboardPath = location.pathname.startsWith('/dashboard');
 
     return (

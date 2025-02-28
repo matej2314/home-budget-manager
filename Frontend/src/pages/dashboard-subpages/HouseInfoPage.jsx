@@ -5,6 +5,7 @@ import { AuthContext } from "../../store/authContext";
 import { useTransactionsStore } from '../../store/transactionsStore'
 import useProcessedData from '../../hooks/useProcessedData';
 import { useIsMobile } from "../../hooks/useIsMobile";
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { getData } from '../../utils/getData';
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
@@ -26,6 +27,7 @@ export default function HouseInfoPage() {
     const { user, isAuthenticated } = useContext(AuthContext);
     const { houseData, houseMates, statsData, dailyData } = data;
     const isMobile = useIsMobile();
+    useDocumentTitle('House info');
 
     useEffect(() => {
         if (!isTransactionsFetched) {

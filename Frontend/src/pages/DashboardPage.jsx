@@ -2,13 +2,16 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
 import { useSocket } from "../store/socketContext";
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import DashBoardMenu from "../components/dashboard/dashboardComponents/DashBoardMenu";
 import { Outlet } from "react-router-dom";
 
 export default function DashboardPage() {
+    useDocumentTitle('Dashboard');
     const navigate = useNavigate();
     const { user, isLoading, isAuthenticated } = useContext(AuthContext);
     const { connected, messages } = useSocket();
+
 
     const liveMessages = connected && messages?.newMessages;
     const isMateOrHost = user?.role === "inmate" || user?.role === "host";

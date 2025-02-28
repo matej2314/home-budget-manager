@@ -1,14 +1,19 @@
-import { useState, useContext, useEffect } from 'react';
-import { DataContext } from '../../store/dataContext';
+import { useState, useEffect } from 'react';
+import { useTransactionsStore } from '../../store/transactionsStore';
 import localizer from '../../configs/calendarLocalizer';
 import { Calendar } from 'react-big-calendar';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CalendarModal from '../../components/modals/CalendarModal';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 
 export default function CalendarPage() {
-    const { actionsData, isTransactionsFetched, actionsError, actionsLoading, fetchTransactions } = useContext(DataContext);
+    const { actionsData, isTransactionsFetched, actionsDataError, actionsLoading, fetchTransactions } = useTransactionsStore();
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [view, setView] = useState('month');
+    const [selectedDate, setSelectedDate] = useState(null);
+    useDocumentTitle('Calendar');
 
     useEffect(() => {
         if (!isTransactionsFetched) {
@@ -16,7 +21,7 @@ export default function CalendarPage() {
         }
     }, [isTransactionsFetched]);
 
-    const transactions = !actionsError && !actionsLoading && isTransactionsFetched && actionsData || [];
+    const transactions = !actionsDataError && !actionsLoading && isTransactionsFetched && actionsData || [];
 
     const events = transactions.map(transaction => {
         const startDate = new Date(transaction.addedAt);
@@ -30,9 +35,7 @@ export default function CalendarPage() {
         };
     });
 
-    const [selectedEvent, setSelectedEvent] = useState(null);
-    const [view, setView] = useState('month');
-    const [selectedDate, setSelectedDate] = useState(null);
+
 
     const handleEventClick = (event) => {
         setSelectedEvent(event);

@@ -10,14 +10,24 @@ import AdminPanelPage from '../pages/dashboard-subpages/AdminPanelPage';
 import StatsPage from '../pages/dashboard-subpages/StatsPage';
 import TransactionsPage from "../pages/dashboard-subpages/TransactionsPage";
 import DashBoardForUser from "../pages/dashboard-subpages/DashboardForUser";
-import ContactPage from '../pages/ContactPage';
+import Home from '../components/home-page-components/Home';
 import AboutUs from '../pages/AboutUsPage';
-import ErrorPage from "../pages/ErrorPage";
+import ContactPage from '../pages/ContactPage';
+import ErrorPage from '../pages/ErrorPage';
 import { DataProvider } from '../store/dataContext';
 import { SocketProvider } from '../store/socketContext';
 
 const routes = [
-    { path: '/', element: <HomePage /> },
+    {
+        path: '/',
+        element: <HomePage />,
+        children: [
+            { index: true, element: <Home /> },
+            { path: 'aboutus', element: <AboutUs /> },
+            { path: 'contact', element: <ContactPage /> },
+
+        ],
+    },
     {
         path: 'dashboard',
         element: <DataProvider>
@@ -39,8 +49,6 @@ const routes = [
             { path: '*', element: <ErrorPage /> },
         ],
     },
-    { path: 'aboutus', element: <AboutUs /> },
-    { path: 'contact', element: <ContactPage /> },
     { path: '*', element: <ErrorPage /> },
 ];
 

@@ -1,6 +1,7 @@
 import { useContext, useState, useRef, useEffect } from 'react';
 import { AuthContext } from '../../store/authContext';
 import { useTransactionsStore } from '../../store/transactionsStore';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { serverUrl } from '../../url';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 import FastActions from '../../components/dashboard/dashboard-internal-components/FastActionsSection';
@@ -15,6 +16,7 @@ export default function UserProfilePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sended, setSended] = useState(false);
     const avatarFile = useRef();
+    useDocumentTitle('Housemate profile');
 
     useEffect(() => {
         if (!isTransactionsFetched) {

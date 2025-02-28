@@ -6,6 +6,7 @@ import DashboardHeader from "../../components/dashboard/dashboardComponents/Dash
 import AddTransactionModal from "../../components/modals/AddTransactionModal";
 import TransactionsCategoriesModal from "../../components/modals/TransactionsCategoriesModal";
 import useModal from "../../hooks/useModal";
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import ModalComponent from "../../components/dashboard/dashboard-internal-components/ModalComponent";
 
 Modal.setAppElement('#root');
@@ -13,6 +14,7 @@ Modal.setAppElement('#root');
 export default function TransactionsPage() {
     const { fetchTransactions, actionsLoading, actionsDataError, actionsData, actionsTotalPages, isTransactionsFetched } = useTransactionsStore();
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
+    useDocumentTitle('Transactions');
 
     useEffect(() => {
         if (!isTransactionsFetched) {

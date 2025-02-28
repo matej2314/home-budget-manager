@@ -1,15 +1,18 @@
 import { useEffect, useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
 import { showCookiesInfo } from "../configs/toastify";
 import useHomePageStore from "../store/homePageStore";
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import HomePageMenu from "../components/home-page-components/HomePageMenu";
-import ShortInfoSection from "../components/home-page-components/ShortInfoSection";
-import FunctionalitiesSection from "../components/home-page-components/FunctionalitiesSection";
-import GallerySection from "../components/home-page-components/GallerySection";
-import ReviewsSection from "../components/home-page-components/ReviewsSection";
+import Home from "../components/home-page-components/Home";
+// import ShortInfoSection from "../components/home-page-components/ShortInfoSection";
+// import FunctionalitiesSection from "../components/home-page-components/FunctionalitiesSection";
+// import GallerySection from "../components/home-page-components/GallerySection";
+// import ReviewsSection from "../components/home-page-components/ReviewsSection";
 
 export default function HomePage() {
+    useDocumentTitle('Home');
     const { isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
@@ -20,6 +23,8 @@ export default function HomePage() {
     useEffect(() => {
         fetchHomePageData();
     }, []);
+
+
 
     useEffect(() => {
         if (isAuthenticated && referrer.origin === "http://localhost:5173") {
@@ -37,25 +42,16 @@ export default function HomePage() {
     return (
         <>
             {!isHomePageDataLoading && !homePageDataError && homePageData && (
-                <main className="w-full h-fit flex flex-col justify-start items-center gap-4 pt-1 px-5">
-                    <HomePageMenu />
-                    <div id="mainPageContent" className="w-[99%] h-fit flex flex-col gap-3 pb-1">
-                        <div id="short-info-boxes" className="w-full h-fit flex flex-col gap-5 px-5">
-                            <h2 className="w-full h-fit flex justify-center text-xl font-bold">TEST LOGIN DATA: testuser@email.pl / Test123456!! </h2>
-                            <ShortInfoSection infoData={homePageData.shortInfo} isLoading={isHomePageDataLoading} error={homePageDataError} />
-                            <FunctionalitiesSection isLoading={isHomePageDataLoading} error={homePageDataError} functionsData={homePageData.functionalities} />
-                        </div>
-                        <GallerySection />
-                        <ReviewsSection reviews={homePageData.reviews} />
-                        <div
-                            id="footer"
-                            className="w-full h-fit flex flex-row justify-center items-center text-md py-2 rounded-md shadow-sm shadow-slate-400 border-2 border-slate-300 mb-4"
-                        >
-                            <p>Copyright@mateo2314 2025</p>
+                <main className="w-screen h-screen flex flex-row justify-center items-center gap-2">
+                    <div className="w-11/12 h-[90%]  rounded-md flex items-start shadow-lg border-t-2 bg-customGray/5 border-slate-400/30 shadow-customGray/30 flex-wrap">
+                        <HomePageMenu />
+                        <div className="w-full h-full flex flex-col justify-center items-center text-slate-800">
+                            <Outlet />
                         </div>
                     </div>
-                </main>
-            )}
+                </main >
+            )
+            }
         </>
     );
 }
