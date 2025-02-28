@@ -16,7 +16,7 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
         if (existingHouse.length > 0) {
             const existingId = existingHouse[0].houseId;
 
-            const [addmate] = await connection.query(houseQueries.mateQuery, [1, 'inmate', userId]);
+            const [addmate] = await connection.query(houseQueries.mateQuery, [1, 'mate', userId]);
 
             if (addmate.affectedRows === 1) {
                 setInmateProps(userId, existingId, connection);

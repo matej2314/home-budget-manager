@@ -11,9 +11,9 @@ const verifyRole = (reqRole) => {
         });
 
         const permissions = {
-            mates: ['host', 'inmate'],
+            mates: ['host', 'mate'],
             host: ['host'],
-            inmate: ['inmate'],
+            inmate: ['mate'],
             superadmin: ['superadmin'],
             user: ['user'],
         };

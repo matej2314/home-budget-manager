@@ -65,7 +65,7 @@ export default function HouseInfoPage() {
 
     return (
         <>
-            {user.role === 'host' || user.role === 'inmate' ? (
+            {user.role === 'host' || user.role === 'mate' ? (
                 <div id="pagecontent" className="h-full min-w-screen bg-slate-200 overflow-y-auto no-scrollbar">
                     <DashboardHeader />
                     <div id="middle-content" className="w-full h-full border-2 border-b-slate-800/5 flex flex-col flex-wrap items-center gap-5 mt-2">

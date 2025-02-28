@@ -33,7 +33,6 @@ export default function HomePageMenu() {
 
     return (
         <div id="mainMenu" className="w-full h-fit flex rounded-md">
-            <img className="h-full max-w-[2rem] max-h-[2rem] flex mt-2 ml-1 opacity-60 rounded-full" src="../../public/budgetapp-600-logo.webp" alt="" />
             <ul className="w-full h-fit flex justify-between items-center py-1 text-slate-800 text-md px-2">
                 <li><Link to='/'>Home Page</Link></li>
                 <li><Link to='/aboutus'>About us</Link></li>
