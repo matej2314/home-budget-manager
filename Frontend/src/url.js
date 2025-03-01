@@ -1,6 +1,3 @@
-// export const serverUrl = 'http://185.170.196.107:5053';
-// export const socketPath = 'ws://185.170.196.107:5053';
-
 export const serverUrl = 'http://budgetapi.msliwowski.net:5053';
 export const socketPath = 'ws://budgetapi.msliwowski.net:5053';
 

@@ -58,7 +58,7 @@ export default function HomePageMenu() {
         <>
             {<motion.div
                 id="mainMenu"
-                className="absolute w-full h-fit flex rounded-md"
+                className="absolute w-full h-fit flex rounded-md z-10"
                 variants={isTablet || isMobile ? menuVariants.mobile : menuVariants.desktop}
                 initial='initial'
                 animate='animate'
