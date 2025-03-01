@@ -52,7 +52,7 @@ export default function OpenMenuButton({ isOpened, actionCallback, home }) {
             animate='animate'
             onDragStart={actionCallback}
             onClick={actionCallback}
-            className={`absolute ${!home ? 'top-[4rem] left-0' : 'top-0'} p-2 border-2 border-slate-300 text-slate-100 rounded-md ${home ? 'bg-slate-500' : 'bg-customGray z-20'}`}
+            className={`absolute ${!home ? 'top-[4rem] left-0' : 'top-0'} p-2 border-2 border-slate-300 text-slate-100 rounded-md z-10 ${home ? 'bg-slate-500' : 'bg-customGray z-20'}`}
         >
             <div className='flex flex-col gap-1'>
                 <span className='w-5 h-0.5 bg-slate-100'></span>
