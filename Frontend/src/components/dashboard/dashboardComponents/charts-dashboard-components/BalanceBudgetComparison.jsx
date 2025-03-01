@@ -2,7 +2,7 @@ import BarChart from "../../../charts/BarChart"
 import { useIsMobile } from '../../../../hooks/useIsMobile';
 
 export default function BalanceBudgetComparison({ data }) {
-    const isMobile = useIsMobile();
+    const { isMobile } = useIsMobile();
 
     return (
         <div id="balanceBudgetcompare" className="max-w-screen-lg lg:w-1/2 h-fit flex flex-col justify-center items-start border-2 border-slate-300 pt-3 px-3 flex-grow flex-shrink">

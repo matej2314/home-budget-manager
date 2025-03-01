@@ -1,26 +1,49 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
 import { Icon } from '@iconify/react';
+import { motion } from 'framer-motion';
 import Modal from 'react-modal';
 import useModal from '../../hooks/useModal';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import AuthModal from '../modals/AuthModal';
 import LanguageSelector from '../dashboard/dashboard-internal-components/LanguageSelector';
 import { loggingOut } from '../../utils/handleLogOut';
 import LogoOutModal from '../modals/LogOutModal';
 import { showInfoToast } from '../../configs/toastify';
+import OpenMenuButton from '../dashboard/dashboard-internal-components/OpenMenuButton';
 
 Modal.setAppElement('#root');
 
 export default function HomePageMenu() {
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
     const { user, isLoading, isAuthenticated, logout } = useContext(AuthContext);
+    const [isOpened, setIsOpened] = useState(false);
     const navigate = useNavigate();
+    const { isMobile, isTablet } = useIsMobile();
+
+    const menuVariants = {
+        mobile: {
+            initial: { opacity: 0, x: '-100%' },
+            animate: { opacity: 1, x: isOpened ? 0 : '-100%' },
+            transition: { type: 'tween', duration: 0.3, delay: 0.2 },
+        },
+        desktop: {
+            initial: { opacity: 1, x: 0 },
+            animate: { opacity: 1, x: 0 },
+            transition: { type: 'tween', duration: 0.3 },
+        }
+    };
+
 
     const handleLogOut = async () => {
         await loggingOut(logout, navigate);
         closeModal();
         window.location.reload();
+    };
+
+    const handleToggleMenu = () => {
+        setIsOpened(prevState => !prevState);
     };
 
     const handleDashboardRedirect = () => {
@@ -32,53 +55,66 @@ export default function HomePageMenu() {
     };
 
     return (
-        <div id="mainMenu" className="w-full h-fit flex rounded-md">
-            <ul className="w-full h-fit flex justify-between items-center py-1 text-slate-800 text-md px-2">
-                <li><Link to='/'>Home Page</Link></li>
-                <li><Link to='/aboutus'>About us</Link></li>
-                <li>
-                    <button
-                        onClick={handleDashboardRedirect}
-                        type="button"
-                    >
-                        Dashboard
-                    </button>
-                </li>
-                <li >
-                    <button
-                        onClick={() => openModal('auth')}
-                        className='cursor-pointer'
-                    >
-                        SignUp/Login
-                    </button>
-                </li>
-                <li><Link to='/contact'>Contact</Link></li>
-                <li className='h-full w-fit flex items-center gap-3'>
-                    <LanguageSelector />
-                    {!isLoading && isAuthenticated && user && (
-                        <p className=' h-full flex justify-center items-center'>
-                            User: {user.userName}
-                        </p>
-                    )
-                    }
-                    {isAuthenticated &&
+        <>
+            {<motion.div
+                id="mainMenu"
+                className="absolute w-full h-fit flex rounded-md"
+                variants={isTablet || isMobile ? menuVariants.mobile : menuVariants.desktop}
+                initial='initial'
+                animate='animate'
+
+            >
+                <ul className="w-full h-fit flex gap-2 items-center py-1 text-slate-200 text-[0.55rem] indirect:gap-2.5 indirectxl:text-[0.93rem] md:gap-0 indirect:text-[0.8rem] sm:text-[0.95rem] md:text-sm md:justify-between lg:text-base px-2 transition-all duration-300">
+                    <li><Link to='/'>Home Page</Link></li>
+                    <li><Link to='/aboutus'>About us</Link></li>
+                    <li>
                         <button
+                            onClick={handleDashboardRedirect}
                             type="button"
-                            className='w-fit h-fit'
-                            onClick={() => openModal('logout')}
                         >
-                            <Icon icon='mdi:logout' width={20} height={20} />
-                        </button>}
-                </li>
-            </ul>
-            {modal.isOpen && modal.type === 'auth' && <AuthModal isOpen={modal.isOpen} onRequestClose={closeModal} />}
-            {modal.isOpen && modal.type === 'logout' && (
-                <LogoOutModal
-                    isOpen={modal.isOpen}
-                    onRequestClose={closeModal}
-                    handleLogOut={handleLogOut}
-                />
-            )}
-        </div>
+                            Dashboard
+                        </button>
+                    </li>
+                    <li >
+                        <button
+                            onClick={() => openModal('auth')}
+                            className='cursor-pointer'
+                        >
+                            SignUp/Login
+                        </button>
+                    </li>
+                    <li><Link to='/contact'>Contact</Link></li>
+                    <li className='h-full w-fit flex items-center gap-2 md:gap-3'>
+                        <span className={`${isMobile && !isOpened ? 'hidden' : 'block'}`}>
+                            < LanguageSelector />
+                        </span>
+                        {!isLoading && isAuthenticated && user && (
+                            <p className=' h-full flex md:justify-center items-center'>
+                                User: {user.userName}
+                            </p>
+                        )
+                        }
+                        {isAuthenticated &&
+                            <button
+                                type="button"
+                                className='w-fit h-fit'
+                                onClick={() => openModal('logout')}
+                            >
+                                <Icon icon='mdi:logout' width={20} height={20} />
+                            </button>}
+                    </li>
+                </ul>
+                {modal.isOpen && modal.type === 'auth' && <AuthModal isOpen={modal.isOpen} onRequestClose={closeModal} />}
+                {modal.isOpen && modal.type === 'logout' && (
+                    <LogoOutModal
+                        isOpen={modal.isOpen}
+                        onRequestClose={closeModal}
+                        handleLogOut={handleLogOut}
+                    />
+                )}
+            </motion.div>}
+            {isMobile && <OpenMenuButton isOpened={isOpened} actionCallback={handleToggleMenu} home={true} />}
+        </>
+
     )
 }

@@ -2,7 +2,7 @@ import { motion } from "framer-motion"
 import { useIsMobile } from '../../../hooks/useIsMobile';
 
 export default function MostActiveMates({ isLoading, matesData }) {
-    const isMobile = useIsMobile();
+    const { isMobile } = useIsMobile();
 
     return (
         <div id="most-active-mates" className="w-1/2 flex flex-col justify-start items-center border-2 border-slate-400 mx-auto overflow-hidden">

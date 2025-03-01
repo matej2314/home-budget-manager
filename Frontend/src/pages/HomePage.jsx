@@ -42,9 +42,12 @@ export default function HomePage() {
     return (
         <>
             {!isHomePageDataLoading && !homePageDataError && homePageData && (
-                <main className="w-screen h-screen flex flex-row justify-center items-center gap-2">
-                    <div className="w-11/12 h-[90%]  rounded-md flex items-start shadow-lg border-t-2 bg-customGray/5 border-slate-400/30 shadow-customGray/30 flex-wrap">
-                        <HomePageMenu />
+                <main className="max-w-screen h-screen flex flex-row justify-center items-center gap-2">
+                    <div className="w-11/12 h-[90%]  rounded-md flex items-start shadow-lg border-t-2 bg-slate-700/80 border-slate-400/30 shadow-customGray/85 mx-auto md:mx-0 flex-wrap">
+                        <div className="relative w-full">
+                            <HomePageMenu />
+                        </div>
+
                         <div className="w-full h-full flex flex-col justify-center items-center text-slate-800">
                             <Outlet />
                         </div>

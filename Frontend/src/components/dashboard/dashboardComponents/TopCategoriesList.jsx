@@ -7,7 +7,7 @@ import { getData } from '../../../utils/getData';
 
 export default function TopCategoriesList({ main }) {
     const { actionsLoading, actionsData, isTransactionsFetched, actionsDataError: actionsError } = useTransactionsStore();
-    const isMobile = useIsMobile();
+    const { isMobile } = useIsMobile();
 
     const transactions = getData(actionsLoading, actionsError, isTransactionsFetched && Array.isArray(actionsData), actionsData, []);
 

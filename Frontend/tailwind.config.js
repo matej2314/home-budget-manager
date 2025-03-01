@@ -17,6 +17,7 @@ export default {
       screens: {
         ...defaultTheme.screens,
         indirect: '450px',
+        indirectxl: '550px'
       }
     },
   },

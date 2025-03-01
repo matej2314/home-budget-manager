@@ -23,7 +23,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     const [messagesType, setMessagesType] = useState(filter || "all");
     const [newMessages, setNewMessages] = useState([]);
     const navigate = useNavigate();
-    const isMobile = useIsMobile();
+    const { isMobile } = useIsMobile();
 
     const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
     const sortedMessages = Array.isArray(userMessages) ? userMessages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
