@@ -96,11 +96,11 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                             ))}
                         </div>
                         <table className=" w-fit mx-2 lg:w-[80rem] h-full table-fixed border-collapse text-xs lg:text-base rounded-b-xl">
-                            <thead>
-                                <tr className="border-b bg-slate-400">
+                            <thead className="text-[0.6rem] indirect:text-sm md:text-base">
+                                <tr className=" bg-slate-400">
                                     {tableHeader.map((header, index) => (
                                         <th key={index}
-                                            className={`px-4 py-2 text-center
+                                            className={`px-4 py-2 mr-2 text-center
                                     ${index === 0 ? 'rounded-tl-xl' : ''}
                                     ${index === tableHeader.length - 1 ? 'rounded-tr-xl' : ''}`}
                                         >
@@ -109,23 +109,24 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                                     ))}
                                 </tr>
                             </thead>
-                            <tbody className="border-x-[1px] border-slate-400">
+                            <tbody className="w-full border-x-[1px] border-slate-400 text-[0.6rem] indirect:text-sm md:text-base">
                                 {filterMap[messagesType]?.map((message, index) => (
-                                    <tr key={message.id}
-                                        className={`border-b border-slate-400 ${index === filterMap[messagesType].length - 1 ? 'border-b-[1px]' : ''}`}>
-                                        <td className="px-4 py-2 text-center">{message.sender}</td>
+                                    <tr
+                                        key={message.id}
+                                        className={`border-b border-slate-400 ${index === filterMap[messagesType].length - 1 ? 'border-b-[1px]' : ''} indirect:text-sm`}>
+                                        <td className="px-4 py-2 text-center indirect:text-base">{message.sender}</td>
                                         <td className="px-4 py-2 text-center">{message.recipient}</td>
                                         <td className="px-4 py-2 text-center">{message.message}</td>
                                         <td className="px-4 py-2 text-center">
                                             {!isMobile ? formatDbDate(message.date) : formatDbDate(message.date, 'split')}
                                         </td>
                                         <td className="px-4 py-2 text-center">{message.readed ? "Readed" : "Unreaded"}</td>
-                                        <td className="px-4 py-2 text-center flex justify-center gap-2">
+                                        <td className="px-4 py-2 text-center flex justify-center items-center gap-2 indirect:text-base md:text-lg pt-3 md:pt-2.5">
                                             {mapArray(
                                                 filterArray(messagesBtnsArr, item => item.condition === undefined || item.condition(message, user)),
                                                 ({ label, icon, actionType }) => (
                                                     <button key={actionType} onClick={getClickHandler(actionType, message)} title={label}>
-                                                        <Icon icon={icon} width={!isMobile ? 22 : 18} height={!isMobile ? 22 : 18} />
+                                                        <Icon icon={icon} />
                                                     </button>
                                                 )
                                             )}
