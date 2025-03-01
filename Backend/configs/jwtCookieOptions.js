@@ -1,6 +1,6 @@
 const jwtCookieOptions = {
 	httpOnly: true,
-	secure: false,
+	secure: true,
 	sameSite: 'lax',
 };
 
