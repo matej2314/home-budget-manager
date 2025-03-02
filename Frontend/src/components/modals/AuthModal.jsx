@@ -13,7 +13,7 @@ export default function AuthModal({ isOpen, onRequestClose }) {
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='bg-white rounded-lg p-6 w-1/3 mx-auto mt-4 shadow-lg border-4 border-slate-400'
+            className='bg-white rounded-lg p-6 w-9/12 md:w-1/3 mx-auto mt-4 shadow-lg border-4 border-slate-400'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
             {mode ? (

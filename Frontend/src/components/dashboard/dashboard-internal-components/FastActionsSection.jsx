@@ -67,6 +67,7 @@ export default function FastActions({ profilePage, action }) {
                             key={actionType}
                             onClick={getClickHandler(actionType)}
                             className={`w-fit h-fit bg-slate-300/40 p-2 text-[0.8rem] md:text-base rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60`}
+                            style={{ boxShadow: 'inset 0 0 1px 2px rgba(0, 0, 0, 0.15)' }}
                         >
                             {label}
                         </button>

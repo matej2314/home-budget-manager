@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react"
 import { useSocket } from "../../../store/socketContext";
 import { DataContext } from '../../../store/dataContext';
+import { Icon } from '@iconify/react';
 
 export default function MonthlyBudget() {
     const { data, isLoading, error } = useContext(DataContext);
@@ -29,7 +30,13 @@ export default function MonthlyBudget() {
     }, [socketError, connected, messages]);
 
     return (
-        <div id="monthlyBudget" className="lg:w-1/4 h-[8.5rem] bg-green-600/80 lg:text-xl text-white flex flex-col justify-start items-center rounded-md pt-4">
+        <div id="monthlyBudget"
+            className="lg:w-1/4 h-[8.5rem] bg-gradient-to-br backdrop-blur-xl from-green-500/50 via-green-500/90 to-green-600/75 lg:text-xl text-white flex flex-col justify-start items-center rounded-md pt-4"
+            style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
+        >
+            <div className="absolute bottom-0 right-0 flex justify-center items-center">
+                <Icon icon='emojione-monotone:money-bag' width={100} style={{ opacity: 0.2, position: 'relative', top: '0.5rem', left: '0.3rem' }} />
+            </div>
             <div className="h-11/12 w-11/12 flex flex-col justify-center items-center gap-2 lg:gap-4">
                 <h2 className="lg:text-xl">Declared monthly budget:</h2>
                 <span className="lg:text-xl text-white">{currentInitBudget} zł</span>

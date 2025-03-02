@@ -7,7 +7,7 @@ const baseStyles = 'p-4 rounded-lg shadow-md text-slate-700';
 const toastStyles = {
     success: `text-red-700`,
     error: `color: #E91616`,
-    info: ``,
+    info: `absolute w-5 h-fit text-xs md:text-base`,
     message: ''
 };
 
@@ -48,7 +48,7 @@ export const showCookiesInfo = (part1, part2) => {
     toast(
         <div className='w-full h-full flex justify-center items-center gap-3'>
             <Icon icon='fluent:cookies-32-regular' width={75} height={75} color='#cda43c' />
-            <div className='w-full h-fit flex flex-col items-center gap-2'>
+            <div className='w-full lg:w-[600px] h-fit flex flex-col items-center gap-2'>
                 <p>{part1}</p>
                 <p>{part2}</p>
             </div>
@@ -57,11 +57,13 @@ export const showCookiesInfo = (part1, part2) => {
         position: 'bottom-center',
         autoClose: 1500,
         style: {
-            width: '600px',
-            height: '100px',
+            width: '90%',
+            maxWidth: '600px',
+            height: 'auto',
+            padding: '10px',
         }
-
     }
     )
 }
+
 

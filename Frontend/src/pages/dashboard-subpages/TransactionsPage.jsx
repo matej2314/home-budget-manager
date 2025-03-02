@@ -41,12 +41,14 @@ export default function TransactionsPage() {
                     <button
                         onClick={() => openModal('transaction')}
                         className="w-fit h-fit border-2 border-slate-400 text-sm lg:text-base rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"
+                        style={{ boxShadow: 'inset 0 0 2px 2px rgba(0, 0, 0, 0.15)' }}
                     >
                         Add new transaction
                     </button>
                     <button
                         className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"
                         onClick={() => openModal('categories')}
+                        style={{ boxShadow: 'inset 0 0 2px 2px rgba(0, 0, 0, 0.15)' }}
                     >
                         Vew all categories
                     </button>

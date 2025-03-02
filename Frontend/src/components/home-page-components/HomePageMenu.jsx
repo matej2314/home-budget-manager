@@ -25,8 +25,8 @@ export default function HomePageMenu() {
     const menuVariants = {
         mobile: {
             initial: { opacity: 0, x: '-100%' },
-            animate: { opacity: 1, x: isOpened ? 0 : '-100%' },
-            transition: { type: 'tween', duration: 0.3, delay: 0.2 },
+            animate: { opacity: 1, x: isOpened ? -11 : '-100%' },
+            transition: { type: 'tween', stiffness: 250, damping: 100, duration: 0.6, delay: 0.5 },
         },
         desktop: {
             initial: { opacity: 1, x: 0 },
@@ -58,13 +58,13 @@ export default function HomePageMenu() {
         <>
             {<motion.div
                 id="mainMenu"
-                className="absolute w-full h-fit flex rounded-md z-10"
+                className=" w-full h-fit flex rounded-md z-10"
                 variants={isTablet || isMobile ? menuVariants.mobile : menuVariants.desktop}
                 initial='initial'
                 animate='animate'
 
             >
-                <ul className="w-full h-fit flex gap-2 items-center py-1 text-slate-200 text-[0.55rem] indirect:gap-2.5 indirectxl:text-[0.93rem] md:gap-0 indirect:text-[0.8rem] sm:text-[0.95rem] md:text-sm md:justify-between lg:text-base px-2 transition-all duration-300">
+                <ul className={`w-full h-fit flex gap-2 justify-center items-center py-1 text-slate-200 text-[0.65rem] indirect:gap-2.5 indirectxl:text-[1.05rem] md:gap-0 indirect:text-[0.85rem] sm:text-[1.2rem] md:text-sm md:justify-around lg:text-lg px-2 transition-all duration-300`}>
                     <li><Link to='/'>Home Page</Link></li>
                     <li><Link to='/aboutus'>About us</Link></li>
                     <li>
@@ -86,9 +86,9 @@ export default function HomePageMenu() {
                     <li><Link to='/contact'>Contact</Link></li>
                     <li className='h-full w-fit flex items-center gap-2 md:gap-3'>
                         <span className={`${isMobile && !isOpened ? 'hidden' : 'block'}`}>
-                            < LanguageSelector />
+                            {/* < LanguageSelector /> */}
                         </span>
-                        {!isLoading && isAuthenticated && user && (
+                        {!isLoading && isAuthenticated && user && !isMobile && (
                             <p className=' h-full flex md:justify-center items-center'>
                                 User: {user.userName}
                             </p>
@@ -113,8 +113,7 @@ export default function HomePageMenu() {
                     />
                 )}
             </motion.div>}
-            {isMobile && <OpenMenuButton isOpened={isOpened} actionCallback={handleToggleMenu} home={true} />}
+            {(isTablet || isMobile) && <OpenMenuButton isOpened={isOpened} actionCallback={handleToggleMenu} home={true} />}
         </>
-
     )
 }

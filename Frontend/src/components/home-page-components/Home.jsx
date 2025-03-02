@@ -1,20 +1,37 @@
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence, delay } from "framer-motion";
 import { useState, useEffect } from 'react';
+import useModal from '../../hooks/useModal';
+import AuthModal from '../modals/AuthModal';
 
 export default function Home() {
     const [currentText, setCurrentText] = useState(null);
+    const [hasVisited, setHasVisited] = useState(false);
+    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'auth' });
 
     useEffect(() => {
-        const timer1 = setTimeout(() => setCurrentText(0), 500);
-        const timer2 = setTimeout(() => setCurrentText(1), 3500);
-        const timer3 = setTimeout(() => setCurrentText(2), 5700);
+        const visited = sessionStorage.getItem('hasVisited');
 
-        return () => {
-            clearTimeout(timer1);
-            clearTimeout(timer2);
-            clearTimeout(timer3);
+        if (visited) {
+            setHasVisited(true);
+        } else {
+            sessionStorage.setItem('hasVisited', 'true');
         };
+
+        if (!visited) {
+            const timer1 = setTimeout(() => setCurrentText(0), 500);
+            const timer2 = setTimeout(() => setCurrentText(1), 3500);
+            const timer3 = setTimeout(() => setCurrentText(2), 5700);
+
+            return () => {
+                clearTimeout(timer1);
+                clearTimeout(timer2);
+                clearTimeout(timer3);
+            };
+
+        } else {
+            setCurrentText(2);
+        }
     }, []);
 
     const wrapperVariants = {
@@ -49,10 +66,10 @@ export default function Home() {
             variants={wrapperVariants}
             initial="initial"
             animate="animate"
-            className="w-full h-full flex flex-col text-slate-200 justify-around items-center gap-3 pt-[5rem] relative z-0"
+            className="w-full h-full flex flex-col text-slate-200 justify-center items-center gap-3 z-0"
         >
             <div>
-                <h2 className="text-center text-2xl indirect:text-3xl sm:text-4xl lg:text-5xl font-urbanist font-normal mb-[10rem]">
+                <h2 className="text-center text-2xl indirect:text-3xl sm:text-4xl lg:text-5xl font-urbanist font-normal mb-28 lg:mb-[12rem]">
                     Web household budget manager
                 </h2>
             </div>
@@ -95,6 +112,7 @@ export default function Home() {
                                 <button
                                     className="w-fit h-fit text-sm border-[3px] border-slate-300 p-2 rounded-xl shadow-md shadow-slate-400 active:shadow-sm"
                                     type="button"
+                                    onClick={() => openModal('auth')}
                                 >
                                     <NavLink className="w-fit h-fit flex items-center gap-1">
                                         Discover
@@ -108,6 +126,7 @@ export default function Home() {
                     )}
                 </motion.span>
             </AnimatePresence>
+            {modal && modal.type === 'auth' && <AuthModal isOpen={modal.isOpen} onRequestClose={closeModal} />}
         </motion.div>
     );
 }

@@ -42,8 +42,8 @@ export default function HomePage() {
     return (
         <>
             {!isHomePageDataLoading && !homePageDataError && homePageData && (
-                <main className="max-w-screen h-screen flex flex-row justify-center items-center gap-2">
-                    <div className="w-11/12 h-[90%]  rounded-md flex items-start border-t-2 bg-gradient-to-br from-[rgba(71,85,105,0.85)] via-[rgba(51,65,85,0.9)] to-[rgba(30,41,59,0.95)] backdrop-blur-[2px] shadow-[inset_0_0_12px_rgba(255,255,255,0.03),0_0_8px_rgba(255,255,255,0.02)]  bg-slate-700/90 border-slate-400/30 mx-auto md:mx-0 flex-wrap">
+                <main className="w-screen h-screen flex flex-row justify-center items-center gap-2 bg-slate-300">
+                    <div className="w-full h-full lg:w-11/12 lg:h-[90%] overflow-hidden lg:rounded-md flex items-start border-t-2 bg-gradient-to-br from-[rgba(71,85,105,0.85)] via-[rgba(51,65,85,0.9)] to-[rgba(30,41,59,0.95)] backdrop-blur-[2px] shadow-[inset_0_0_12px_rgba(255,255,255,0.03),0_0_8px_rgba(255,255,255,0.02)]  bg-slate-700/90 border-slate-400/30 mx-auto md:mx-0 flex-wrap">
                         <div className="relative w-full">
                             <HomePageMenu />
                         </div>
