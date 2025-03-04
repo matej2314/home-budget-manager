@@ -16,15 +16,15 @@ function isValidUsername(username) {
 const allowedRoles = ['superadmin', 'user'];
 
 const registerValidations = (reg_username, reg_email, reg_password, role) => [
-	{ isValid: reg_username?.trim().length >= 5 && isValidUsername(reg_username), message: 'Podaj prawidłowe dane użytkownika.' },
-	{ isValid: reg_email?.trim().length > 0 && isValidEmail(reg_email), message: 'Podaj prawidłowy adres e-mail.' },
-	{ isValid: reg_password?.trim().length >= 10 && isValidPassword(reg_password), message: 'Podaj prawidłowe hasło.' },
-	{ isValid: allowedRoles.includes(role), message: 'Nieprawidłowa rola użytkownika!' },
+	{ isValid: reg_username?.trim().length >= 5 && isValidUsername(reg_username), message: 'Enter correct user data.' },
+	{ isValid: reg_email?.trim().length > 0 && isValidEmail(reg_email), message: 'Enter correct e-mail address.' },
+	{ isValid: reg_password?.trim().length >= 10 && isValidPassword(reg_password), message: 'Enter correct password.' },
+	{ isValid: allowedRoles.includes(role), message: 'Incorrect user role!' },
 ];
 
 const loginValidations = (email, password) => [
-	{ isValid: email && email.trim() !== '', message: 'Podaj prawidłowy adres e-mail.' },
-	{ isValid: password && password.trim() !== '', message: 'Podaj prawidłowe hasło.' },
+	{ isValid: email && email.trim() !== '', message: 'Enter correct e-mail address.' },
+	{ isValid: password && password.trim() !== '', message: 'Enter correct password.' },
 ];
 
 const validTransactionTypes = ['income', 'expense'];

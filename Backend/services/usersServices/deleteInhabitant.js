@@ -20,19 +20,19 @@ const deleteInhabitant = async (inhabitantId) => {
             [0, inhabitantId]
         );
 
-        if (deleteHouseIdHu.affectedRows !== 1) logger.error(`Nie udało się zaktualizować houseId użytkownika: ${inhabitantId}`);
+        if (deleteHouseIdHu.affectedRows !== 1) logger.error(`Failed to update houseId for user: ${inhabitantId}`);
 
 
         const [delUserActions] = await connection.query(usersQueries.delUsersActions, [inhabitantId]);
 
-        if (delUserActions.affectedRows == 0) logger.error(`Nie udało się usunąć transakcji użytkownika: ${inhabitantId}`);
+        if (delUserActions.affectedRows == 0) logger.error(`Failed to delete transactions of user: ${inhabitantId}`);
 
         const [changeRoleHu] = await connection.query(
             usersQueries.updateroleHu,
             ['user', inhabitantId]
         );
 
-        if (changeRoleHu.affectedRows !== 1) logger.error(`Nie udało się zmienić roli użytkownika: ${inhabitantId}`);
+        if (changeRoleHu.affectedRows !== 1) logger.error(`Failed to change role for user: ${inhabitantId}`);
 
 
         await connection.query(
@@ -46,20 +46,20 @@ const deleteInhabitant = async (inhabitantId) => {
             type: 'notification',
             data: {
                 category: 'usersActions',
-                message: 'Usunięto domownika.',
+                message: 'Housemate deleted correctly.',
             },
         });
 
         return {
             status: 'success',
-            message: 'Domownik został pomyślnie usunięty.',
+            message: 'Housemate deleted correctly.',
         };
     } catch (error) {
         await connection.rollback();
-        logger.error(`Nie udało się usunąć domownika: ${error.message}`);
+        logger.error(`Failed to deleting housemate: ${error.message}`);
         return {
             status: 'error',
-            message: 'Nie udało się usunąć domownika.',
+            message: 'Failed to delete housemate.',
         };
     } finally {
         if (connection) connection.release();

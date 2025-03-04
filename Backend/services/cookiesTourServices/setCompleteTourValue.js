@@ -8,19 +8,19 @@ const setCompleteTour = async (userId) => {
         const [saveTourValue] = await connection.query('UPDATE users SET completeTour=? WHERE id=?', [1, userId]);
 
         if (saveTourValue.affectedRows === 0) {
-            logger.error(`Zapis info o samouczku użytkownika ${userId} nieudany.`);
-            return { status: 'error', message: 'Wystąpił błąd serwera.' };
+            logger.error(`User  ${userId} tutorial info saved failed.`);
+            return { status: 'error', message: 'Internal server error.' };
 
         } else if (saveTourValue.affectedRows === 1) {
             return {
                 status: 'success',
-                message: 'Gratulujemy przejścia samouczka!',
+                message: 'Congratulations for passing the tutorial!',
             };
         };
 
     } catch (error) {
-        logger.error(`Błąd w setTourValue: ${error}`);
-        return { status: 'error', mesage: 'Błąd serwera.' };
+        logger.error(`setTourValue error: ${error}`);
+        return { status: 'error', mesage: 'Internal server error.' };
     };
 };
 

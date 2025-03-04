@@ -10,19 +10,19 @@ exports.addAvatar = async (req, res) => {
         if (!req.file) {
             return res.status(statusCode.BAD_REQUEST).json({
                 status: 'error',
-                message: 'Nie przesłano poprawnego pliku.',
+                message: 'Upload the correct file.',
             });
         }
         res.status(statusCode.OK).json({
             status: 'success',
-            message: 'Avatar zapisany pomyślnie.',
+            message: 'Avatar saved correctly.',
             avatarName: req.file.filename,
         })
     } catch (error) {
-        logger.error(`Błąd podczass zapisywania avatara: ${error}`)
+        logger.error(`Saving avatar error: ${error}`)
         res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Wystąpił błąd podczas zapisywania avatara.',
+            message: 'Saving avatar error.',
         });
     }
 };
@@ -63,13 +63,13 @@ exports.deleteAvatar = async (req, res) => {
 
         res.status(statusCode.OK).json({
             status: 'success',
-            message: `Avatar użytkownika ${userName} usunięty.`
+            message: `User's  ${userName} avatar removed correctly.`
         })
     } catch (error) {
-        logger.error(`Błąd podczas usuwania avatara: ${error}`);
+        logger.error(`Removing avatar error: ${error}`);
         res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: `Wystąpił błąd podczas usuwania avatara.`
+            message: `Removing avatar error.`
         });
     };
 };

@@ -12,18 +12,18 @@ exports.deleteHouse = async (userId, houseName) => {
         const [ownership] = await connection.query(houseQueries.ownershipQuery, [houseName]);
 
         if (ownership.length === 0) {
-            logger.error('Brak uprawnień do usunięcia gospodarstwa.');
+            logger.error('No permissions.');
             await connection.rollback();
-            return { status: 'noperm', message: 'Brak uprawnień do usunięcia gospodarstwa.' };
+            return { status: 'noperm', message: 'No permissions to delete household.' };
         };
         const houseId = ownership[0].houseId;
 
         const [result] = await connection.query(houseQueries.deleteQuery, [houseId, userId]);
 
         if (result.affectedRows == 0) {
-            logger.info('Nie znaleziono gospodarstwa.');
+            logger.info('Household not found.');
             await connection.rollback();
-            return { status: 'error', message: 'Nie znaleziono gospodarstwa.' };
+            return { status: 'error', message: 'Household not found.' };
         } else if (result.affectedRows == 1) {
             await resetHostProps(userId, connection);
 
@@ -35,20 +35,20 @@ exports.deleteHouse = async (userId, houseName) => {
             };
 
             await connection.query(houseQueries.deleteHouseActions, [houseId]);
-            logger.info(`Gospodarstwo ${houseName} w pełni usunięte.`);
+            logger.info(`Household ${houseName} successfully deleted.`);
         };
 
         await connection.commit();
 
         return {
             status: 'success',
-            message: `Gospodarstwo ${houseName} usunięte.`,
+            message: `Household ${houseName} deleted.`,
             newRole: 'user'
         };
     } catch (error) {
-        logger.error(`Błąd podczas usuwania gospodarstwa: ${error.message}`);
+        logger.error(`Deleting household error: ${error.message}`);
         await connection.rollback();
-        return { status: 'error', message: 'Nie udało się usunąć gospodarstwa.' };
+        return { status: 'error', message: 'Failed to deleting household.' };
     } finally {
         if (connection) connection.release();
     };

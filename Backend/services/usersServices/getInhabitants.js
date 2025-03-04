@@ -7,18 +7,18 @@ const getInhabitants = async (houseId) => {
 
     try {
         const [rows] = await pool.query(usersQueries.inhabitantsQuery, [houseId]);
-        logger.info(`Lista domowników gospodarstwa ${houseId} pobrana poprawnie`);
+        logger.info(`List of housemates of household ${houseId} fetched correctly.`);
         return {
             status: 'success',
-            message: `Lista domowników gospodarstwa ${houseId} pobrana poprawnie`,
+            message: `List of housemates of household ${houseId} fetched correctly.`,
             users: rows,
         };
 
     } catch (error) {
-        logger.error(`Nie udało się pobrać listy domowników gospodarstwa ${houseId}`);
+        logger.error(`Failed to fetch housemates of household ${houseId}`);
         return {
             status: 'error',
-            message: 'Nie udało się pobrać listy domowników gospodarstwa.',
+            message: 'Failed to fetch housemates.',
         };
     } finally {
         if (connection) connection.release();

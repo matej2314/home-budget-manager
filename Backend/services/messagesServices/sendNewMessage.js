@@ -13,7 +13,7 @@ const sendNewMessage = async (userId, userName, recipientName, content) => {
         const [checkUserId] = await connection.query(messagesQueries.checkUserIdQuery, [recipientName]);
 
         if (checkUserId.length == 0) {
-            return { status: 'badreq', message: 'Nie znaleziono nadawcy.' };
+            return { status: 'badreq', message: 'Sender not found.' };
         };
 
         const recipientId = checkUserId[0].id;
@@ -21,8 +21,8 @@ const sendNewMessage = async (userId, userName, recipientName, content) => {
         const result = await connection.query(messagesQueries.saveMessage, [id, userId, recipientId, content, false]);
 
         if (result.affectedRows === 0) {
-            logger.error(`Nie udało się zapisać wiadomości od użytkownika ${userId} do użytkownika ${recipientId}`);
-            return { status: 'error', message: 'Nie udało się zapisać wiadomości.' };
+            logger.error(`Failed to save message from user ${userId} to user ${recipientId}`);
+            return { status: 'error', message: 'Failed to save message.' };
         }
         try {
             broadcastMessage(recipientId, {
@@ -37,17 +37,17 @@ const sendNewMessage = async (userId, userName, recipientName, content) => {
                 }
             });
         } catch (error) {
-            logger.error('Nie udało się wysłać wiadomości do adresata.', error);
+            logger.error('Failed to send message to receiver.', error);
         };
 
 
         return {
             status: 'success',
-            message: 'Wiadomość wysłana.',
+            message: 'Message sent successfully.',
         };
     } catch (error) {
-        logger.error(`Błąd podczas wysyłania wiadomości: ${error}`);
-        return { status: 'error', message: 'Wystąpił błąd podczas wysyłania wiadomości.' };
+        logger.error(`Sending message error: ${error}`);
+        return { status: 'error', message: 'An error occured during sending message.' };
     } finally {
         connection && connection.release();
     }

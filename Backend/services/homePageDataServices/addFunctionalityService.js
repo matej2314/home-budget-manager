@@ -10,11 +10,11 @@ exports.addFunctionalityContent = async (title, content) => {
         const addFunctionality = connection.query('INSERT INTO functionalities (id, functiontitle, functionContent) VALUES (?,?,?)', [id, title, content]);
 
         if (addFunctionality.affectedRows === 0) {
-            return { status: 'error', message: 'Nie udało się dodać funkcjonalności.' };
+            return { status: 'error', message: 'Failed to adding new functionality.' };
         };
-        return { status: 'success', message: `Dodano funkcjonalność ${title}` };
+        return { status: 'success', message: `Functionality ${title} added correctly.` };
     } catch (error) {
-        logger.error(`Błąd w addFunctionality: ${error}`);
-        return { status: 'error', message: 'Błąd przetwarzania żądania.' };
+        logger.error(`addFunctionality error: ${error}`);
+        return { status: 'error', message: 'Internal server error.' };
     }
 };

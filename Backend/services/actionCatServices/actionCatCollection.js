@@ -10,24 +10,24 @@ const getActionCatColl = async () => {
         const [categories] = await connection.query(actionCatQueries.collectionQuery);
 
         if (categories.length == 0) {
-            logger.error('Nie znaleziono kategorii transakcji w bazie danych.');
+            logger.error('Transactions categories not found.');
             return {
                 status: 'notfound',
-                message: 'Nie znaleziono kategorii transakcji.',
+                message: 'Transactions categories not found.',
             };
         };
 
         return {
             status: 'success',
-            message: 'Kategorie transakcji pobrane poprawnie.',
+            message: 'Transactions categories fetched correctly.',
             actionCategories: categories,
         };
 
     } catch (error) {
-        logger.error('Nie udało się pobrać kategorii transakcji.', error);
+        logger.error('Failed to fetch transactions categories.', error);
         return {
             status: 'error',
-            message: 'Błąd przetwarzania żądania.',
+            message: 'Internal server error.',
         };
     } finally {
         if (connection) connection.release();

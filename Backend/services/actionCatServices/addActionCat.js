@@ -9,31 +9,31 @@ const addActionCat = async (name, type) => {
 
     try {
         if (!name || !name.trim() || !type || !type.trim()) {
-            logger.error(`Brak danych do dodania kategorii transakcji.`);
+            logger.error(`No required transaction category details.`);
             return {
                 status: 'badreq',
-                message: 'Brak wymaganych danych.',
+                message: 'No required data.',
             };
         }
 
         const addCat = await connection.query(actionCatQueries.addQuery, [id, name, type]);
 
         if (addCat.affectedRows == 0) {
-            logger.error(`Nie udało się dodać kategorii transakcji ${name}`);
-            return { status: 'badreq', message: 'Nie udało się dodać nowej kategorii transakcji.' };
+            logger.error(`Failed to add transaction category ${name}`);
+            return { status: 'badreq', message: 'Failed to add new transaction category.' };
         };
 
         return {
             status: 'success',
-            message: `Kategoria transakcji ${name} dodana poprawnie.`,
+            message: `Transaction category ${name} added correctly.`,
             catId: id,
         };
 
     } catch (error) {
-        logger.error(`Błąd w actioncat/new: ${error}`);
+        logger.error(`actioncat/new error: ${error}`);
         return {
             status: 'error',
-            message: 'Błąd dodawania nowej kategorii transakcji',
+            message: 'Adding new transaction category error.',
         };
 
     } finally {

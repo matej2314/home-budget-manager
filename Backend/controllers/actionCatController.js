@@ -27,14 +27,14 @@ exports.addNewActionCat = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w AddNewActionCat: ${error}`);
+        logger.error(`addNewActionCat error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd podczas dodawania nowej kategorii transakcji.'
+            message: 'Addin transaction category error.'
         });
     };
 };
@@ -59,14 +59,14 @@ exports.actionCatCollection = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Bład w actionCatCollection: ${error}`);
+        logger.error(`actionCatCollection error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.',
+            message: 'Internal server error.',
         });
     };
 
@@ -99,14 +99,14 @@ exports.deleteActionCat = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         }
     } catch (error) {
-        logger.error(`Błąd w deleteActionCat: ${error}`);
+        logger.error(`deleteActionCat error:: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania',
+            message: 'Internal server error.',
         });
     };
 };

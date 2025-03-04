@@ -8,17 +8,17 @@ const setAcceptCookies = async (cookieValue, userId) => {
         const [saveCookiesValue] = await connection.query('UPDATE users SET acceptCookies =? WHERE id =?', [cookieValue, userId]);
 
         if (saveCookiesValue.affectedRows === 0) {
-            logger.error(`Zapis zgody cookies użytkownika ${userId} nieudany.`);
-            return { status: 'error', message: 'Wystąpił błąd serwera.' };
+            logger.error(`User's ${userId} cookie consent saved failed.`);
+            return { status: 'error', message: 'Internal server error.' };
         } else if (saveCookiesValue.affectedRows === 1) {
             return {
                 status: 'success',
-                message: 'Twoja zgoda została zapisana.',
+                message: 'Your consent saved correctly.',
             };
         };
     } catch (error) {
-        logger.error(`Błąd setCookieValue: ${error}`);
-        return { status: 'error', message: 'Błąd przetwarzania żądania.' };
+        logger.error(`setCookieValue error: ${error}`);
+        return { status: 'error', message: 'Internal server error.' };
     };
 };
 

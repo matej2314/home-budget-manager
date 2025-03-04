@@ -6,24 +6,24 @@ const getUsersCollection = async () => {
     const connection = await pool.getConnection();
     try {
         const [rows] = await pool.query(usersQueries.allUsersQuery);
-        logger.info('Lista wszystkich użytkowników pobrana poprawnie.');
+        logger.info(`All user's list fetched correctly.`);
 
         if (rows.affectedRows === 0) {
             return {
                 status: 'notfound',
-                message: 'Brak użytkowników',
+                message: 'Users not found.',
             };
         };
 
         return {
             status: 'success',
-            message: 'Lista wszystkich użytkowników pobrana poprawnie',
+            message: `User's list fetched correctly.`,
             users: rows,
         };
 
     } catch (error) {
-        logger.error(`Błąd podczas pobierania listy użytkowników: ${error}`);
-        return { status: 'error', mesage: 'Bląd pobierania listy użytkowników' };
+        logger.error(`An error occured user's list: ${error}`);
+        return { status: 'error', mesage: `Failed to fetch user's list.` };
     } finally {
         if (connection) connection.release();
     }

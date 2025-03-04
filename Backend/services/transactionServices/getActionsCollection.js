@@ -10,22 +10,22 @@ const getActionsCollection = async () => {
         const [rows] = await connection.query(actionQueries.allQuery);
 
         if (rows.length == 0) {
-            logger.error(`Nie znaleziono żadnych transakcji.`);
+            logger.error(`Transactions not found.`);
             return {
                 status: 'notfound',
-                message: 'Brak transakcji',
+                message: 'Transactions not found.',
             };
         };
-        logger.info(`Wszystkie transakcje pobrano poprawnie.`);
+        logger.info(`Transactions fetched correctly.`);
         return {
             status: 'success',
-            message: 'Transakcje pobrane poprawnie',
+            message: 'Transactions fetched correctly.',
             actions: rows,
         };
 
     } catch (error) {
-        logger.error(`Błąd w getAllActions: ${error}`);
-        return { status: 'error', message: 'Błąd podczas pobierania transakcji.' };
+        logger.error(`getAllActions error: ${error}`);
+        return { status: 'error', message: 'An error occured during deleting transaction.' };
     } finally {
         if (connection) connection.release();
     };

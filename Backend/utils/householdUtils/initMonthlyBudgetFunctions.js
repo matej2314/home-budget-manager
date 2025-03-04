@@ -29,11 +29,11 @@ const changeMonthlyBudget = async (connection, addedAt, value, userHouse) => {
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
         if (new Date(budgetAddedAt) < new Date(sevenDaysAgo)) {
-            throw new Error('Nie udało się znaleźć wskazanego budżetu.');
+            throw new Error('Failed to find budget.');
         } else {
             const { addedAtFormatted, validUntilFormatted, valueToDb } = await addNewBudget(connection, value, userHouse);
 
-            logger.info(`Nowy budżet dodany dla gospodarstwa ${userHouse} z wartością ${valueToDb}.`);
+            logger.info(`New budget added to household ${userHouse} with value ${valueToDb}.`);
             return { addedAtFormatted, validUntilFormatted, valueToDb };
         }
     } catch (error) {
@@ -50,24 +50,24 @@ const clearExtraValues = async (connection, houseId, lastAddedAt) => {
             [startPeriod, today, houseId]);
 
         if (delActions.affectedRows === 0) {
-            logger.error(`Brak transakcji we wskazanym zakresie.`);
+            logger.error(`No transactions in indicated range.`);
         };
 
         const [delDailyActions] = await connection.query(`DELETE FROM dailyTransactions WHERE DATE_FORMAT(date, '%Y-%m-%d') BETWEEN ? AND ? AND houseId=?`,
             [startPeriod, today, houseId]);
 
         if (delDailyActions.affectedRows === 0) {
-            logger.error(`Brak dziennych transakcji do usunięcia.`);
+            logger.error(`No daily transactions to delete.`);
         };
 
         const [delDailyBudgets] = await connection.query(`DELETE FROM dailyBudget WHERE DATE_FORMAT(date, '%Y-%d-%m') BETWEEN ? AND ? AND houseId=?`,
             [startPeriod, today, houseId]);
 
         if (delDailyBudgets.affectedRows === 0) {
-            logger.error(`Nie usunięto dziennych budżetów.`);
+            logger.error(`Daily budgets not remove.`);
         };
     } catch (error) {
-        logger.error(`ERROR in clearExtraValues: ${error}`);
+        logger.error(`clearExtraValues error: ${error}`);
         throw error;
     }
 };

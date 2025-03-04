@@ -13,18 +13,18 @@ const deleteAction = async (transactionId, userId) => {
         await connection.beginTransaction();
 
         if (!transactionId) {
-            logger.error('Brak ID transakcji, którą chcesz usunąć.');
+            logger.error('Transaction ID not found.');
             return {
                 status: 'badreq',
-                message: 'Brak ID transakcji, którą chcesz usunąć',
+                message: 'Transaction ID not found.',
             };
         }
 
         const houseData = await checkHouse(connection, userId);
 
         if (!houseData) {
-            logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
-            return { status: 'notfound', message: 'Użytkownik nie należy do żadnego gospodarstwa.' };
+            logger.error(`User ${userId} does not belong to any household.`);
+            return { status: 'notfound', message: 'User does not belong to any household.' };
         }
 
         const houseId = houseData.houseId;
@@ -32,10 +32,10 @@ const deleteAction = async (transactionId, userId) => {
         const checkAction = await checkTransaction(connection, transactionId);
 
         if (!checkAction) {
-            logger.error(`Użytkownik ${userId} próbuje usunąć cudzą transakcję.`);
+            logger.error(`User ${userId} tries to delete someone else's transaction.`);
             return {
                 status: 'badreq',
-                message: 'Usuwasz nie swoją transakcję!',
+                message: 'You are deleting a transaction that is not yours!',
             };
         }
 
@@ -44,8 +44,8 @@ const deleteAction = async (transactionId, userId) => {
         const [result] = await connection.query(actionQueries.deleteQuery, [userId, houseId, transactionId]);
 
         if (result.affectedRows === 0) {
-            logger.error(`Nie znaleziono transakcji ${transactionId} do usunięcia.`);
-            return { status: 'notfound', message: 'Nie znaleziono transakcji.' };
+            logger.error(`Transaction ${transactionId} not found.`);
+            return { status: 'notfound', message: 'Transaction not found.' };
         }
         await liveUpdateBalance('expense', value, houseId, userId, connection);
 
@@ -56,23 +56,23 @@ const deleteAction = async (transactionId, userId) => {
             data: {
                 category: 'transactions',
                 action: 'deleteTransaction',
-                message: 'Usunięto transakcję.',
+                message: 'Transaction deleted successfully.',
                 user: userId
             }
         });
 
-        logger.info(`Udało się usunąć transakcję ${transactionId}.`);
+        logger.info(`Transaction ${transactionId} deleted correctly.`);
 
         return {
             status: 'success',
-            message: `Transakcja ${transactionId} usunięta.`,
+            message: `Transaction ${transactionId} deleted correctly.`,
         };
     } catch (error) {
         await connection.rollback();
-        logger.error(`Błąd w deleteAction: ${error}`);
+        logger.error(`deleteAction error: ${error}`);
         return {
             status: 'error',
-            message: 'Nie udało się usunąć transakcji.',
+            message: 'Failed to deleting transaction.',
         };
     } finally {
         if (connection) connection.release();

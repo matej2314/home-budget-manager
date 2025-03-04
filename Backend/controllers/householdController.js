@@ -15,10 +15,10 @@ exports.addNewHouse = async (req, res) => {
     const { houseName, initBudget = null } = req.body;
 
     if (!userId || !houseName) {
-        logger.error('Brak danych: userId lub houseName są puste.');
+        logger.error('Empty input data.');
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Podaj wszystkie niezbędne informacje.'
+            message: 'Enter every required value.'
         });
     }
 
@@ -42,14 +42,14 @@ exports.addNewHouse = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w addNewHouse: ${error.message}`);
+        logger.error(`addNewHouse error: ${error.message}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Wystąpił błąd podczas dodawania nowego gospodarstwa.'
+            message: 'Adding new household error.'
         });
     }
 };
@@ -69,14 +69,14 @@ exports.getAllHouses = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w getAllHouses: ${error}`);
+        logger.error(`getAllHouses error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Wystąpił błąd podczas przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     }
 };
@@ -95,14 +95,14 @@ exports.getHouseInfo = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w getHouseInfo: ${error}`);
+        logger.error(`getHouseInfo error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Wystąpił błąd przy przetwarzaniu żądania.'
+            message: 'Internal server error.'
         });
     };
 };
@@ -112,10 +112,10 @@ exports.deleteHouse = async (req, res) => {
     const { houseName } = req.body;
 
     if (!userId || !houseName) {
-        logger.error('Podaj prawidłowe dane do usunięcia gospodarstwa.');
+        logger.error('Enter required data.');
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Podaj prawidłowe dane wymagane do usunięcia gospodarstwa.'
+            message: 'Enter required data.'
         });
     };
 
@@ -142,14 +142,14 @@ exports.deleteHouse = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w deleteHouse: ${error}`);
+        logger.error(`deleteHouse error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     };
 };

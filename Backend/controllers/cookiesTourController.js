@@ -11,7 +11,7 @@ exports.setCookieValue = async (req, res) => {
     if (!cookieValue) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Niepoprawna wartość.'
+            message: 'Incorrect value.'
         });
     };
 
@@ -22,7 +22,7 @@ exports.setCookieValue = async (req, res) => {
             case 'error':
                 return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
                     status: 'error',
-                    message: setResult.mesage
+                    message: setResult.message
                 });
             case 'success':
                 return res.status(statusCode.OK).json({
@@ -32,14 +32,14 @@ exports.setCookieValue = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w setCookieValue: ${error}`);
+        logger.error(`setCookieValue error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     };
 
@@ -65,14 +65,14 @@ exports.setTourValue = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`ERROR w setTourValue: ${error}`);
+        logger.error(`setTourValue error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     };
 };

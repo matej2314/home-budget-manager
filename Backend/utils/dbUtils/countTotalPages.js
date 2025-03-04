@@ -30,7 +30,7 @@ const countTotalPages = async (dataType, houseId, userId) => {
             return { status: 'success', type: dataType, pages: 0 };
         }
     } catch (error) {
-        return { status: 'error', message: 'Nie udało się obliczyć liczby stron' }
+        return { status: 'error', message: 'The number of pages could not be calculated.' }
     } finally {
         if (connection) connection.release();
     }

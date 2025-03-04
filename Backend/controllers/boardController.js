@@ -13,8 +13,8 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
         const userHouse = await checkUserHouse(connection, userId);
 
         if (!userHouse) {
-            logger.error(`Brak gospodarstwa użytkownika ${userId}`);
-            return { status: 'notfound', message: 'Brak gospodarstwa użytkownika.' };
+            logger.error(`No user's ${userId} household.`);
+            return { status: 'notfound', message: `No user's household.` };
         }
         const userHouseId = userHouse.houseId;
 
@@ -25,7 +25,7 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
             const [householdData] = await connection.query(dashboardQueries.householdData, [userHouseId]);
 
             if (!householdData) {
-                return { status: 'notfound', message: 'Brak informacji o gospodarstwie.' };
+                return { status: 'notfound', message: 'No household information.' };
             }
             boardData.houseData = householdData;
         }
@@ -72,16 +72,16 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
 
         return {
             status: 'success',
-            message: 'Dane boardu pobrane poprawnie.',
+            message: 'Dashboard data fetched correctly.',
             dashboardData: boardData,
         };
 
     } catch (error) {
         await connection.rollback();
-        logger.error(`Błąd w dashboardRoutes: ${error.message}`);
+        logger.error(`dashboardRoutes error: ${error.message}`);
         return {
             status: 'error',
-            message: error.message || 'Błąd przetwarzania danych.',
+            message: error.message || 'Internal server error.',
         };
     } finally {
         connection.release();

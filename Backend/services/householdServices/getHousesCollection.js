@@ -9,19 +9,19 @@ exports.getHousesCollection = async () => {
         const [result] = await connection.execute(houseQueries.getAllHousesQuery);
 
         if (result.length === 0) {
-            logger.info('Brak gospodarstw.');
-            return { status: 'error', message: 'Brak gospodarstw.' };
+            logger.info('Households not found.');
+            return { status: 'error', message: 'Households not found.' };
         }
 
-        logger.info('Gospodarstwa pobrane poprawnie.');
+        logger.info('Households fetched correctly.');
         return {
             status: 'success',
-            message: 'Gospodarstwa pobrane poprawnie.',
+            message: 'Households fetched correctly.',
             houses: result,
         };
     } catch (error) {
-        logger.error(`Błąd podczas pobierania gospodarstw: ${error.stack}`);
-        return { status: 'error', message: 'Błąd podczas pobierania gospodarstw.' };
+        logger.error(`Fetching households error: ${error.stack}`);
+        return { status: 'error', message: 'Fetching households error.' };
     } finally {
         if (connection) connection.release();
     }

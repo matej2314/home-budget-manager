@@ -8,7 +8,7 @@ import { getData } from '../../../../utils/getData';
 export default function LossOrGainChart() {
 
     const { data, isLoading, error } = useContext(DataContext);
-    const isMobile = useIsMobile();
+    const { isMobile, isTablet } = useIsMobile();
 
     const { statsData } = data;
 
@@ -34,18 +34,17 @@ export default function LossOrGainChart() {
 
     return (
         <>
-            {data && <div id="lossOrGain" className="w-full h-[15rem] lg:h-full shadow shadow-slate-500 pt-2 mb-3 flex flex-col justify-start items-center gap-4 mt-3">
-                <h2 className="w-full h-fit flex justify-center text-[1.22rem]">Loss or gain:</h2>
-                <BarChart
-                    labels={monthlyBalancesLabels}
-                    dataValues={monthlyBalances}
-                    title={barColors === `rgba(5, 169, 10, 0.5)` ? 'loss' : 'gain'}
-                    colors={barColors}
-                    borderColors={barColors.map(color => color.replace('0.5', '0'))}
-                    width={1250}
-                    height={isMobile ? 450 : 170}
-
-                />
+            {data && <div id="lossOrGain" className="w-full shadow shadow-slate-500 pt-2 mb-3 flex flex-col justify-start items-center gap-4 mt-3">
+                <h2 className="w-full flex justify-center text-[1.22rem]">Loss or gain:</h2>
+                <div className="w-full h-[15rem] lg:h-[35rem] lg:w-[80rem] flex justify-center">
+                    <BarChart
+                        labels={monthlyBalancesLabels}
+                        dataValues={monthlyBalances}
+                        title={barColors === `rgba(5, 169, 10, 0.5)` ? 'loss' : 'gain'}
+                        colors={barColors}
+                        borderColors={barColors.map(color => color.replace('0.5', '0'))}
+                    />
+                </div>
             </div>}
         </>
 

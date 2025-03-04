@@ -13,7 +13,7 @@ const saveDailyTransactions = async () => {
             const [households] = await connection.query('SELECT houseId from households');
 
             if (households.length === 0) {
-                logger.error('Nie znaleziono gospodarstw w bazie danych.');
+                logger.error('No households found.');
                 return;
             }
 
@@ -38,7 +38,7 @@ const saveDailyTransactions = async () => {
             const [rows] = await connection.query(getDailyTransactionsQuery, [timeInterval.start, timeInterval.end, houseIdMap]);
 
             if (rows.length === 0) {
-                logger.error('Brak nowych transakcji.');
+                logger.error('No new transactions.');
                 return;
             }
 
@@ -54,14 +54,14 @@ const saveDailyTransactions = async () => {
             const [addActionCount] = await connection.query(addActionQuery, [valuesToInsert]);
 
             if (addActionCount.affectedRows === rows.length) {
-                logger.info(`Zapisano ${addActionCount.affectedRows.length} dziennych transakcji.`);
+                logger.info(`Saved ${addActionCount.affectedRows.length} daily transactions.`);
             } else {
-                logger.error(`Nie zapisano dziennych transakcji.`);
+                logger.error(`No daily transactions saved.`);
             };
 
             await connection.commit();
         } catch (error) {
-            logger.error(`Błąd w saveDailyTransactions: ${error}`);
+            logger.error(`saveDailyTransactions error: ${error}`);
             await connection.rollback();
         } finally {
             if (connection) connection.release();

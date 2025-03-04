@@ -22,14 +22,14 @@ exports.getHomePageCollection = async () => {
 
         return {
             status: 'success',
-            message: 'Dane pobrane poprawnie.',
+            message: 'Home page data fetched correctly.',
             homePageData
         };
 
     } catch (error) {
         await connection.rollback();
-        logger.error(`Błąd w getDataCollection: ${error}`);
-        return { status: 'error', message: 'Błąd przetwarzania żądania.' };
+        logger.error(`getDataCollection error: ${error}`);
+        return { status: 'error', message: 'Internal server error.' };
     } finally {
         if (connection) connection.release();
     }

@@ -51,6 +51,7 @@ const BarChart = ({
 
     const defaultOptions = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top',

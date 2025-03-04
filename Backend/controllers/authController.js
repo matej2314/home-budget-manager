@@ -25,7 +25,7 @@ exports.registerUser = async (req, res) => {
 		if (checkEmail && checkEmail.email === reg_email) {
 			return res.status(statusCode.CONFLICT).json({
 				status: 'error',
-				message: 'Użytkownik o takim adresie e-mail istnieje.'
+				message: 'Entered e-mail address already exists.'
 			});
 		}
 		for (const validation of validations) {
@@ -43,7 +43,7 @@ exports.registerUser = async (req, res) => {
 			if (rows.length > 0) {
 				return res.status(statusCode.BAD_REQUEST).json({
 					status: 'error',
-					message: 'Konto superadmina już istnieje'
+					message: 'Superadmin account already exists.'
 				});
 			}
 		}
@@ -79,13 +79,13 @@ exports.registerUser = async (req, res) => {
 
 		return res.status(statusCode.OK).json({
 			status: 'success',
-			message: 'Użytkownik zarejestrowany. Możesz się zalogować'
+			message: 'User successfully registered. Now you can sign in.'
 		});
 	} catch (error) {
-		logger.error('Błąd podczas rejestracji użytkownika: ', error);
+		logger.error('Register error: ', error);
 		return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
 			status: 'error',
-			message: 'Błąd serwera.'
+			message: 'Internal server error.'
 		});
 	} finally {
 		connection.release();
@@ -112,10 +112,10 @@ exports.loginUser = async (req, res) => {
 		const [rows] = await connection.query(queries.login, [email]);
 
 		if (rows.length === 0) {
-			logger.error('Nieprawidłowy adres e-mail.');
+			logger.error('Incorrect e-mail address.');
 			return res.status(statusCode.UNAUTHORIZED).json({
 				status: 'error',
-				message: 'Nieprawidłowe dane logowania.'
+				message: 'Incorrect user data.'
 			});
 		}
 
@@ -123,10 +123,10 @@ exports.loginUser = async (req, res) => {
 		const isValidPassword = await bcrypt.compare(password, user.password);
 
 		if (!isValidPassword) {
-			logger.error('Nieprawidłowe hasło.');
+			logger.error('incorrect password.');
 			return res.status(statusCode.UNAUTHORIZED).json({
 				status: 'error',
-				message: 'Nieprawidłowe dane logowania.'
+				message: 'Incorrect login data.'
 			});
 		}
 
@@ -137,11 +137,11 @@ exports.loginUser = async (req, res) => {
 			maxAge: 86400000,
 		});
 
-		logger.info(`Użytkownik ${user.name} zalogowany pomyślnie.`);
+		logger.info(`User ${user.name} logged in correctly.`);
 
 		return res.status(statusCode.OK).json({
 			status: 'success',
-			message: 'Użytkownik zalogowany pomyślnie.',
+			message: 'User logged in correctly.',
 			userName: user.name,
 			role: user.role,
 			id: user.id,
@@ -150,10 +150,10 @@ exports.loginUser = async (req, res) => {
 			avatar: user.avatarName,
 		});
 	} catch (error) {
-		logger.error(`Błąd podczas logowania użytkownika: ${error.message}`);
+		logger.error(`Log in error: ${error.message}`);
 		return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
 			status: 'error',
-			message: 'Błąd serwera.'
+			message: 'Internal server error.'
 		});
 	} finally {
 		connection.release();
@@ -169,5 +169,5 @@ exports.logoutUser = async (req, res) => {
 		secure: false,
 		sameSite: 'lax',
 	});
-	res.status(statusCode.OK).json({ status: 'success', message: 'Wylogowano pomyślnie.' });
+	res.status(statusCode.OK).json({ status: 'success', message: 'Logged out correctly.' });
 };

@@ -5,8 +5,8 @@ const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
 
 exports.getHouseInfo = async (userId) => {
     if (!userId) {
-        logger.error('Brak danych do pobrania informacji o gospodarstwie.');
-        return { status: 'error', message: 'Brak poprawnych informacji.' };
+        logger.error('Enter correctly household data.');
+        return { status: 'error', message: 'Enter correctly data.' };
     }
 
     const connection = await pool.getConnection();
@@ -20,23 +20,23 @@ exports.getHouseInfo = async (userId) => {
         const [basicData] = await connection.execute(houseQueries.dataQuery, [householdId]);
 
         if (basicData.length === 0) {
-            logger.error('Nie znaleziono gospodarstwa.');
-            return { status: 'error', message: 'Nie znaleziono gospodarstwa.' };
+            logger.error('Household not found.');
+            return { status: 'error', message: 'Household not found.' };
         }
 
         await connection.commit();
 
-        logger.info(`Informacje o gospodarstwie ${householdId} pobrane poprawnie.`);
+        logger.info(`Household data ${householdId} fetched successfully.`);
         return {
             status: 'success',
-            message: 'Informacje o gospodarstwie pobrane poprawnie.',
+            message: 'Household data fetched successfully.',
             info: basicData,
             stats: statsData,
         };
     } catch (error) {
         await connection.rollback();
-        logger.error(`Błąd podczas pobierania informacji o gospodarstwie: ${error.stack}`);
-        return { status: 'error', message: 'Nie udało się pobrać danych o gospodarstwie.' };
+        logger.error(`Fetching household data error: ${error.stack}`);
+        return { status: 'error', message: 'Failed to fetching household data.' };
     } finally {
         if (connection) connection.release();
     }

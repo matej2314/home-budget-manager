@@ -14,7 +14,7 @@ exports.addUserToHouse = async (req, res) => {
     if (!userName) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Podaj login użytkownika!',
+            message: 'Enter correct invited user username!',
         });
     };
 
@@ -39,14 +39,14 @@ exports.addUserToHouse = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
         logger.error(error);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     };
 
@@ -65,14 +65,14 @@ exports.getAllUsers = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd pobierania listy użytkowników: ${error}`);
+        logger.error(`Error fetching user's list: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd pobierania listy użytkowników.'
+            message: `Error fetching user's list.`
         });
     };
 };
@@ -90,10 +90,10 @@ exports.deleteUser = async (req, res) => {
                 return res.status(statusCode.OK).json(response);
         };
     } catch (error) {
-        logger.error(`Błąd podczas usuwania użytkownika ${userId}: ${error}`);
+        logger.error(`deleteUser error: ${userId}: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd podczas usuwania użytkownika.'
+            message: 'Deleting user error.'
         });
     };
 
@@ -105,7 +105,7 @@ exports.deleteInhabitant = async (req, res) => {
     if (!inhabitantId) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Podaj prawidłowe dane!',
+            message: 'Enter correctly data!',
         });
     };
 
@@ -120,14 +120,14 @@ exports.deleteInhabitant = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd deleteInhabitant: ${error}`);
+        logger.error(`deleteInhabitant error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Nie udało się usunąć domownika.'
+            message: 'Failed to delete housemate.'
         });
     };
 };
@@ -141,7 +141,7 @@ exports.changeEmail = async (req, res) => {
     if (!newEmail || !emailRegex.test(newEmail)) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Podaj prawidłowy adres email!'
+            message: 'Enter correctly e-mail address!'
         });
     };
 
@@ -164,14 +164,14 @@ exports.changeEmail = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w changeEmail: ${error}`);
+        logger.error(`changeEmail error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     };
 };

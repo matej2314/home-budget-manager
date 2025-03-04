@@ -12,7 +12,7 @@ exports.addReview = async (req, res) => {
     if (!content || content.trim().length === 0 || !rating) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Prześlij poprawną opinię!'
+            message: 'Enter corrently opinion!'
         });
     };
 
@@ -26,19 +26,19 @@ exports.addReview = async (req, res) => {
             case 0:
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'Nie udało się dodać opinii.'
+                    message: 'Failed to add opinion.'
                 });
             case 1:
                 return res.status(statusCode.CREATED).json({
                     status: 'success',
-                    message: 'Opinia dodana poprawnie.'
+                    message: 'Opinion added correctly.'
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w addReview: ${error}`);
+        logger.error(`addReview error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     } finally {
         connection.release();
@@ -54,21 +54,21 @@ exports.getReviewsCollection = async (req, res) => {
         if (reviews.length === 0) {
             return res.status(statusCode.NOT_FOUND).json({
                 status: 'error',
-                message: 'Nie znaleziono opinii o aplikacji.'
+                message: 'Opinions not found.'
             });
         }
 
         return res.status(statusCode.OK).json({
             status: 'success',
-            message: 'Opinie pobrano poprawnie.',
+            message: 'Opinions fetched correctly.',
             reviews,
         });
 
     } catch (error) {
-        logger.error(`Błąd w getReviewsCollection: ${error}`);
+        logger.error(`getReviewsCollection error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     } finally {
         connection.release();

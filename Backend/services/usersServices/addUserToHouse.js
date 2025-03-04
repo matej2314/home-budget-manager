@@ -35,36 +35,36 @@ const addUserToHouse = async (userId, userName) => {
                     type: 'notification',
                     data: {
                         category: 'usersActions',
-                        message: 'Nowy domownik w gospodarstwie!',
+                        message: 'New housemate added!',
                     }
                 });
 
                 await connection.commit();
-                logger.info(`Użytkownik ${userName} został dodany do gospodarstwa.`);
+                logger.info(`User ${userName} correctly added to household.`);
                 return {
                     status: 'success',
-                    message: `Użytkownik ${userName} został dodany do gospodarstwa.`,
+                    message: `User ${userName} correctly added to household.`,
                 };
             } else {
-                logger.info(`Użytkownik ${userName} jest już domownikiem lub gospodarzem.`);
+                logger.info(`User ${userName} already is housemate or host.`);
                 await connection.rollback();
                 return {
                     status: 'inmate',
-                    message: `Użytkownik ${userName} jest już domownikiem lub gospodarzem.`,
+                    message: `User ${userName} already is housemate or host.`,
                 };
             }
         } else {
-            logger.error(`Brak użytkownika ${userName}`);
+            logger.error(`User ${userName} not found.`);
             await connection.rollback();
             return {
                 status: 'badreq',
-                message: `Brak użytkownika ${userName}`,
+                message: `User ${userName} not found.`,
             };
         }
     } catch (error) {
         await connection.rollback();
-        logger.error(`Error w inviteUser: ${error}`);
-        return { status: 'error', message: 'Błąd przetwarzania żądania.' };
+        logger.error(`inviteUser error: ${error}`);
+        return { status: 'error', message: 'Internal server error.' };
     } finally {
         if (connection) connection.release();
     }

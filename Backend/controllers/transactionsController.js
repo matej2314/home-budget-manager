@@ -13,7 +13,7 @@ exports.addNewAction = async (req, res) => {
     if (!type || !value || !catId) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Brak odpowiednich danych.'
+            message: 'No required details.'
         });
     };
 
@@ -33,14 +33,14 @@ exports.addNewAction = async (req, res) => {
             default:
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'Błąd przetwarzania żądania.'
+                    message: 'URL not found.'
                 });
         }
     } catch (error) {
         logger.error(error);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     }
 
@@ -63,14 +63,14 @@ exports.getAllActions = async (req, res) => {
             default:
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'Błąd przetwarzania żądania.'
+                    message: 'URL not found.'
                 });
         };
     } catch (error) {
-        logger.error(`Błąd przetwarzania getAllActions: ${error}`);
+        logger.error(`getAllActions error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     };
 };
@@ -98,15 +98,15 @@ exports.getHouseActions = async (req, res) => {
             default:
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'Błąd przetwarzania żądania.',
+                    message: 'URL not found.',
                 });
         };
 
     } catch (error) {
-        logger.error(`Błąd getHouseActions: ${error}`);
+        logger.error(`getHouseActions error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     };
 };
@@ -136,15 +136,15 @@ exports.deleteAction = async (req, res) => {
             default:
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'Błąd przetwarzania żądania.',
+                    message: 'URL not found.',
                 });
         };
 
     } catch (error) {
-        logger.error(`Błąd przetwarzania deleteAction: ${error}`);
+        logger.error(`deleteAction error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     }
 };

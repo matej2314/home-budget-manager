@@ -24,10 +24,10 @@ exports.addNewMonthlyBudget = async (req, res) => {
         await connection.beginTransaction();
         const checkHouse = await checkUserHouse(connection, userId);
         if (!checkHouse) {
-            logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
+            logger.error(`User ${userId} does not belong to any household.`);
             return res.status(statusCode.BAD_REQUEST).json({
                 status: 'error',
-                message: 'Użytkownik nie należy do żadnego gospodarstwa.'
+                message: 'User does not belong to any household.'
             });
         };
 
@@ -47,10 +47,10 @@ exports.addNewMonthlyBudget = async (req, res) => {
 
                 if (diffDays <= 7) {
                     await clearExtraValues(connection, userHouse, lastAddedAt);
-                    logger.info(`Usunięto dodatkowe wartości dla gospodarstwa ${userHouse}`);
+                    logger.info(`Deleted extra values for household: ${userHouse}`);
                 }
 
-                logger.info(`Budżet miesięczny gospodarstwa ${userHouse} został dodany dnia ${new Date().toLocaleString()}`);
+                logger.info(`Monthly budget of household ${userHouse} added on ${new Date().toLocaleString()}`);
 
                 await connection.commit();
 
@@ -59,18 +59,18 @@ exports.addNewMonthlyBudget = async (req, res) => {
                     data: {
                         initBudget: valueToDb,
                         budgetPeriod: `${addedAtFormatted} - ${validUntilFormatted}`,
-                        message: 'Zadeklarowano budżet na nowy miesiąc!',
+                        message: `New month's budget declared!`,
                     }
                 });
 
                 return res.status(statusCode.CREATED).json({
                     status: 'success',
-                    message: 'Budżet miesięczny dodany!'
+                    message: `New month's budget declared!`
                 });
             } else {
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'Nowy budżet można dodać tylko do 7 dni lub po minięciu 30 dni od daty ostatnio zdefiniowanego budżetu.',
+                    message: 'You can add a new budget within 7 days of the last budget or after 30 days from its date.',
                 });
             }
 
@@ -79,7 +79,7 @@ exports.addNewMonthlyBudget = async (req, res) => {
 
             await connection.query('UPDATE households SET initBudget = ? WHERE houseId =?', [valueToDb, userHouse]);
 
-            logger.info(`Budżet miesięczny gospodarstwa ${userHouse} został dodany dnia ${new Date().toLocaleString()}`);
+            logger.info(`Monthly budget of household ${userHouse} added on ${new Date().toLocaleString()}`);
 
             await connection.commit();
 
@@ -88,22 +88,22 @@ exports.addNewMonthlyBudget = async (req, res) => {
                 data: {
                     initBudget: valueToDb,
                     budgetPeriod: `${addedAtFormatted} - ${validUntilFormatted}`,
-                    message: 'Zadeklarowano budżet na nowy miesiąc!',
+                    message: 'New monthly budget declared!',
                 }
             });
 
             return res.status(statusCode.CREATED).json({
                 status: 'success',
-                message: 'Budżet miesięczny dodany!'
+                message: 'New monthly budget declared!'
             });
         }
 
     } catch (error) {
-        logger.error(`Wystąpił błąd podczas dodawania budżetu miesięcznego: ${error.message}`);
+        logger.error(`An error occured during declaring new monthly budget: ${error.message}`);
         await connection.rollback();
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     } finally {
         if (connection) connection.release();

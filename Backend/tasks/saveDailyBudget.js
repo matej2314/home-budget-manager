@@ -12,7 +12,7 @@ const saveDailyBudget = async () => {
 
             const [households] = await connection.query('SELECT houseId, currentBalance FROM households');
 
-            logger.info(`Znaleziono ${households.length} gospodarstw.`);
+            logger.info(`Finded ${households.length} households.`);
 
             if (households.length === 0) {
                 return;
@@ -25,9 +25,9 @@ const saveDailyBudget = async () => {
                 const [addDailyBudget] = await connection.query('INSERT INTO dailyBudget (id, houseId, value) VALUES (?, ?, ?);',
                     [id, house.houseId, balanceToDb]);
                 if (addDailyBudget.affectedRows === 0) {
-                    logger.error('Nie udało się zapisać dziennego budżetu.');
+                    logger.error('Failed to save daily budget.');
                 } else {
-                    logger.info('Dzienny budżet wszystkich gospodarstw został zapisany.');
+                    logger.info('The daily budget of all households has been saved.');
                 }
             };
 

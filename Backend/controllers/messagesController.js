@@ -11,10 +11,10 @@ exports.sendMessage = async (req, res) => {
     const { recipientName, content } = req.body;
 
     if (!recipientName || !content) {
-        logger.error('Brak danych wymaganych do wysłania wiadomości.');
+        logger.error('No required message data.');
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Brak danych wymaganych do wysłania wiadomości.'
+            message: 'Enter required message data.'
         });
     };
 
@@ -40,14 +40,14 @@ exports.sendMessage = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w sendMessage: ${error}`);
+        logger.error(`sendMessage error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     };
 };
@@ -57,8 +57,8 @@ exports.markMessage = async (req, res) => {
     const userId = req.userId;
 
     if (!messageId) {
-        logger.error('Brak danych wiadomości do oznaczenia!');
-        return res.status(400).json({ status: 'error', message: 'Prześlij poprawne dane wiadomości.' });
+        logger.error('No message data.');
+        return res.status(400).json({ status: 'error', message: 'Enter correctly message data.' });
     };
 
     try {
@@ -83,15 +83,15 @@ exports.markMessage = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
 
     } catch (error) {
-        logger.error(`Błąd w markMessage: ${error}`);
+        logger.error(`markMessage error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.',
+            message: 'Internal server error.',
         })
     };
 };
@@ -102,7 +102,7 @@ exports.deleteMessage = async (req, res) => {
     if (!messageId) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Wskaż wiadomość!'
+            message: 'Point out the message!'
         });
     };
 
@@ -118,7 +118,7 @@ exports.deleteMessage = async (req, res) => {
             case 'error':
                 return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
                     status: 'error',
-                    message: 'Nie udało się usunąć wiadomości',
+                    message: 'Deleting message error.',
                 });
             case 'success':
                 return res.status(statusCode.OK).json({
@@ -128,15 +128,15 @@ exports.deleteMessage = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 })
         }
 
     } catch (error) {
-        logger.error(`Błąd w messagesController/deleteMessage: ${error}`);
+        logger.error(`messagesController/deleteMessage error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania',
+            message: 'Internal server error.',
         });
     };
 };

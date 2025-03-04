@@ -4,7 +4,7 @@ const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 
 const balanceHouseActions = async () => {
-    cron.schedule('58 23 * * *', async () => { 
+    cron.schedule('58 23 * * *', async () => {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -14,7 +14,7 @@ const balanceHouseActions = async () => {
                 `SELECT houseId, initBudget, monthlyBalanceDate, createdAt FROM households`
             );
 
-            logger.info(`Znaleziono ${households.length} gospodarstw w bazie.`);
+            logger.info(`Finded ${households.length} households in database.`);
 
             if (households.length === 0) {
                 return;
@@ -27,24 +27,24 @@ const balanceHouseActions = async () => {
 
                 const formattedBalanceDate = monthlyBalanceDate ? new Date(monthlyBalanceDate).toISOString().split('T')[0] : null;
                 const formattedCreatedAt = new Date(createdAt).toISOString().split('T')[0];
-                
+
                 const dateLimit = formattedBalanceDate || formattedCreatedAt;
 
-                logger.info(`Obliczanie daty dla gospodarstwa ${houseId}, balanceDate: ${monthlyBalanceDate}, createdAt: ${createdAt}`);
+                logger.info(`Calculating the date for household ${houseId}, balanceDate: ${monthlyBalanceDate}, createdAt: ${createdAt}`);
 
                 const nextBalanceDate = new Date(dateLimit);
                 nextBalanceDate.setDate(nextBalanceDate.getDate() + 1);
                 const nextBalanceDateStr = nextBalanceDate.toISOString().split('T')[0];
-                
+
                 if (today === nextBalanceDateStr) {
-                    logger.info(`Sprawdzamy transakcje dla gospodarstwa ${houseId} od ${dateLimit}.`);
+                    logger.info(`Check transactions for household ${houseId} from ${dateLimit}.`);
 
                     const [transactions] = await connection.query(
                         `SELECT value, type FROM transactions WHERE houseId = ? AND DATE(addedAt) BETWEEN ? AND ?`,
                         [houseId, dateLimit, nextBalanceDateStr]
                     );
-                    
-                    logger.info(`Znaleziono ${transactions.length} transakcji dla gospodarstwa ${houseId}.`);
+
+                    logger.info(`Finded ${transactions.length} transactions for household ${houseId}.`);
                     const transactionCountId = uuidv4();
 
                     const transactionsCount = transactions.length;
@@ -88,16 +88,16 @@ const balanceHouseActions = async () => {
                         await connection.query('UPDATE households SET monthlyBalanceDate = NOW() WHERE houseId=?', [houseId]);
                     }
 
-                    logger.info(`Bilans gospodarstwa ${houseId} zaktualizowany.`);
+                    logger.info(`Balance for household ${houseId} updated.`);
                 } else {
-                    logger.info(`Gospodarstwo ${houseId} nie wymaga bilansowania przed ${nextBalanceDateStr}.`);
+                    logger.info(`Household ${houseId} do not require finance balancing before ${nextBalanceDateStr}.`);
                 }
             }
 
             await connection.commit();
         } catch (error) {
             await connection.rollback();
-            logger.error(`Błąd podczas bilansowania gospodarstw: ${error}`);
+            logger.error(`An error occured during households finance balancing: ${error}`);
         } finally {
             if (connection) connection.release();
         }

@@ -8,14 +8,14 @@ const delMessage = async (messageId) => {
         const [delMessage] = await connection.query('DELETE FROM messages WHERE id=?', [messageId]);
 
         if (delMessage.affectedRows == 0) {
-            return { status: 'notfound', message: 'Nie udało się odnależć wiadomości w bazie danych.' };
+            return { status: 'notfound', message: 'Messages not found.' };
         };
-        logger.info(`Usunięto wiadomość ${messageId}`);
-        return { status: 'success', message: `Wiadomość usunięta poprawnie.` };
-        
+        logger.info(`Delete message: ${messageId}`);
+        return { status: 'success', message: `Message deleted correctly.` };
+
     } catch (error) {
-        logger.error(`Błąd podczas usuwania wiadomości: ${error}`);
-        return { status: 'error', message: 'Błąd serwera.' };
+        logger.error(`Deleting message error: ${error}`);
+        return { status: 'error', message: 'Internal server error.' };
     };
 };
 

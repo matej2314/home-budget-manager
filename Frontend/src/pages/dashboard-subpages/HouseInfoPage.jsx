@@ -101,15 +101,16 @@ export default function HouseInfoPage() {
                                 <TransactionsList limit={5} mainSite={true} transactions={actionsData && transactions} />
                             </div>
                             <div id="charts1" className="w-full h-full flex flex-col flex-wrap justify-around items-center mb-5 flex-grow px-5 gap-y-4 gap-x-4">
-                                <div className="max-w-screen lg:w-full h-fit flex flex-col lg:flex-row items-center lg:justify-around gap-5">
+                                <div className="w-full indirect:w-full md:w-full h-fit flex flex-col lg:flex-col xl:flex-row justicy-center items-center gap-5">
                                     <BalanceBudgetComparison data={{ labels: labels, dataValues: monthlyBalances, definedBudgets: definedBudgets }} />
                                     <TransactionsOverTime data={{ labels: actionCountLabels, dataValues: monthlyTransactionCounts }} />
                                 </div>
 
-                                <div className="w-full h-full flex flex-col items-center lg:flex-row justify-between lg:gap-x-5 lg:pr-5">
+                                <div className="w-full h-fit flex flex-col md:flex-row justify-center gap-3 px-5">
                                     <TransactionsPerDay data={{ labels: actionLabels, dataValues: dailyTransactions }} />
                                     <BudgetPerDay data={{ labels: dailyBudgetLabels, dataValues: dailyBudgetValues }} />
                                 </div>
+
                             </div>
                         </div>
                     </div>

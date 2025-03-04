@@ -11,10 +11,10 @@ const getHouseActions = async (userId) => {
         const houseData = await checkHouse(connection, userId);
 
         if (!houseData) {
-            logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
+            logger.error(`User ${userId} does not belong to any household.`);
             return {
                 status: 'notfound',
-                message: `Użytkownik ${userId} nie należy do żadnego gospodarstwa.`,
+                message: `User ${userId} does not belong to any household`,
             };
         }
 
@@ -22,23 +22,23 @@ const getHouseActions = async (userId) => {
         const [rows] = await connection.query(actionQueries.getQuery, [houseId]);
 
         if (rows.length == 0) {
-            logger.error(`Brak transakcji dla gospodarstwa ${houseId}`);
+            logger.error(`Not found any transactions for household: ${houseId}`);
             return {
                 status: 'notfound',
-                message: 'Brak transakcji dla gospodarstwa.',
+                message: 'Transactions not found.',
             };
         }
-        logger.info(`Pobranie wszystkich transakcji dla gospodarstwa zakończyło się sukcesem.`);
+        logger.info(`Transactions for household fetched correctly.`);
         return {
             status: 'success',
-            message: 'Transakcje dla gospodarstwa pobrane poprawnie',
+            message: 'Transactions for household fetched correctly.',
             actions: rows,
         };
     } catch (error) {
-        logger.error(`Błąd podczas pobierania transakcji gospodarstwa: ${error.message}`);
+        logger.error(`An error occured during fetching transactions for household: ${error.message}`);
         return {
             status: 'error',
-            message: 'Błąd podczas pobierania transakcji dla gospodarstwa.',
+            message: 'An error occured during fetching transactions for household.',
         };
     } finally {
         if (connection) connection.release();

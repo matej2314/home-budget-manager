@@ -21,13 +21,13 @@ exports.getDataCollection = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 })
         }
 
     } catch (error) {
-        logger.error(`Błąd w homePageDataController/getDataCollection: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Błąd przetwarzania żądania.' });
+        logger.error(`homePageDataController/getDataCollection error: ${error}`);
+        return res.status(500).json({ status: 'error', message: 'Internal server error.' });
     }
 };
 
@@ -37,7 +37,7 @@ exports.addFunctionality = async (req, res) => {
     if (!title || !content) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Podaj szczegóły funkcjonalności!'
+            message: 'Enter functionality details!'
         });
     };
 
@@ -58,14 +58,14 @@ exports.addFunctionality = async (req, res) => {
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w homePageDataController/addFunctionality: ${error}`);
+        logger.error(`homePageDataController/addFunctionality error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania żądania.'
+            message: 'Internal server error.'
         });
     }
 

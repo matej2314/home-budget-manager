@@ -8,9 +8,9 @@ const BackToUsMessage = () => {
         const handleVisibilityChange = () => {
             if (document.hidden) {
                 textInterval = setInterval(() => {
-                    document.title = document.title === 'Wracaj do nas!'
+                    document.title = document.title === ' Hey! Back to us!'
                         ? originalTitle
-                        : 'Wracaj do nas!';
+                        : 'Hey! Back to us!';
                 }, 1500);
             } else {
                 clearInterval(textInterval);

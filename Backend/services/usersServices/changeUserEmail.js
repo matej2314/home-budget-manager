@@ -12,25 +12,25 @@ const changeUserEmail = async (newEmail, userId) => {
         const checkEmail = await checkUserEmail(connection, newEmail);
 
         if (checkEmail) {
-            return { status: 'emailexist', message: 'Podany adres e-mail jest już zarejestrowany.' };
+            return { status: 'emailexist', message: 'Entered e-mail address already exists.' };
         };
 
         const [changeEmail] = await connection.query('UPDATE users SET email =? WHERE id =? ', [newEmail, userId]);
 
         if (changeEmail.affectedRows === 0) {
-            return { status: 'error', message: 'Nie udało się zapisać nowego adresu e-mail' };
+            return { status: 'error', message: 'Failed to change e-mail address.' };
         };
 
         connection.commit();
 
         return {
             status: 'success',
-            message: `Twój nowy adres e-mail: ${newEmail}`,
+            message: `Your new e-mail address: ${newEmail}`,
         };
     } catch (error) {
         await connection.rollback();
-        logger.error(`Błąd w changeEmail: ${error}`);
-        return { status: 'error', message: 'Błąd przetwarzania żądania.' };
+        logger.error(`changeEmail error: ${error}`);
+        return { status: 'error', message: 'Internal server error.' };
     } finally {
         if (connection) connection.release();
     }

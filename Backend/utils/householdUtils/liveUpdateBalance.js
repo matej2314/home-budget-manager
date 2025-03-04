@@ -33,7 +33,7 @@ exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => 
 			});
 
 		} catch (error) {
-			logger.error(`Błąd websocket w liveupdate: ${error.message}`);
+			logger.error(`liveupdate websocket error: ${error.message}`);
 			broadcastMessage(userId, {
 				type: 'error',
 				data: {
@@ -42,7 +42,7 @@ exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => 
 			})
 		}
 	} catch (error) {
-		logger.error(`Nie udało się zaktualizować salda gospodarstwa ${houseId}: ${error.message}`);
+		logger.error(`Failed to update balance of household ${houseId}: ${error.message}`);
 	} finally {
 		if (connection) connection.release();
 	}

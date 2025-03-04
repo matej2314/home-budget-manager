@@ -22,12 +22,12 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
                 setInmateProps(userId, existingId, connection);
             }
 
-            logger.info(`Gospodarstwo ${houseName} istnieje. Użytkownik dodany jako domownik.`);
+            logger.info(`Household ${houseName} already exists. User attributed as housemate.`);
 
             await connection.commit();
             return {
                 status: 'success',
-                message: `Użytkownik został dodany do gospodarstwa ${houseName}.`,
+                message: `User addedd to household ${houseName}.`,
                 newRole: 'inmate',
             };
 
@@ -43,17 +43,17 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
             }
 
             await connection.commit();
-            logger.info(`Nowe gospodarstwo ${houseName} zostało utworzone.`);
+            logger.info(`New household ${houseName} created.`);
             return {
                 status: 'success',
-                message: `Gospodarstwo ${houseName} zostało utworzone.`,
+                message: `Household ${houseName} created.`,
                 newRole: 'host',
             };
         }
     } catch (error) {
         await connection.rollback();
-        logger.error(`Błąd przy dodawaniu nowego gospodarstwa: ${error.message}`);
-        return { status: 'error', message: 'Wystąpił błąd podczas przetwarzania żądania.' };
+        logger.error(`Error adding new household: ${error.message}`);
+        return { status: 'error', message: 'Internal server error.' };
     } finally {
         if (connection) connection.release();
     }

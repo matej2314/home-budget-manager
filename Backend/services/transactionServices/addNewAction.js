@@ -14,10 +14,10 @@ const addNewAction = async (userId, type, value, catId) => {
 	const validTypes = validTransactionTypes;
 
 	if (!type || !validTypes.includes(type)) {
-		logger.error('Nieprawidłowe dane wejściowe do dodania transakcji.');
+		logger.error('Invalid input data.');
 		return {
 			status: 'nodata',
-			message: 'Nieprawidłowe dane wejściowe. Sprawdź typ i wartość.',
+			message: 'Invalid input data.',
 		};
 	}
 
@@ -29,10 +29,10 @@ const addNewAction = async (userId, type, value, catId) => {
 		const houseData = await checkHouse(connection, userId);
 
 		if (!houseData) {
-			logger.error(`Użytkownik ${userId} nie należy do żadnego gospodarstwa.`);
+			logger.error(`User ${userId} does not belong to any household.`);
 			return {
 				status: 'error',
-				message: `Użytkownik ${userId} nie należy do żadnego gospodarstwa.`,
+				message: `User ${userId} does not belong to any household.`,
 			};
 		}
 
@@ -42,7 +42,7 @@ const addNewAction = async (userId, type, value, catId) => {
 		const addActionQuery = actionQueries.newitemQuery;
 		await connection.query(addActionQuery, [id, transactionId, userId, houseId, catId, type, valueToDb]);
 
-		logger.info(`Transakcja ${transactionId} została pomyślnie dodana dla gospodarstwa ${houseId}.`);
+		logger.info(`Transaction ${transactionId} successfully added to household: ${houseId}.`);
 
 		await liveUpdateBalance(type, value, houseId, userId, connection);
 
@@ -53,22 +53,22 @@ const addNewAction = async (userId, type, value, catId) => {
 			data: {
 				category: 'transactions',
 				action: 'addTransaction',
-				message: 'Dodano nową transakcję.',
+				message: 'Transaction added correctly.',
 				user: userId
 			}
 		});
 
 		return {
 			status: 'success',
-			message: 'Transakcja dodana poprawnie.',
+			message: 'Transaction added correctly.',
 			transactionId,
 		};
 	} catch (error) {
 		await connection.rollback();
-		logger.error(`Błąd podczas dodawania transakcji: ${error.message}`);
+		logger.error(`An error occured during adding transaction: ${error.message}`);
 		return {
 			status: 'error',
-			message: 'Wystąpił błąd podczas dodawania transakcji. Spróbuj ponownie.',
+			message: 'An error occured during adding transaction.',
 		};
 	} finally {
 		if (connection) connection.release();

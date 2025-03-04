@@ -88,14 +88,14 @@ router.get('/data/:filter?/:page?', verifyJWT, verifyRole('mates'), async (req, 
             default:
                 return res.status(statusCode.NOT_FOUND).json({
                     status: 'error',
-                    message: 'Podany adres nie istnieje.',
+                    message: 'URL not found.',
                 });
         };
     } catch (error) {
-        logger.error(`Błąd w board/data: ${error}`);
+        logger.error(`board/data error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Błąd przetwarzania danych.',
+            message: 'Internal server error.',
         });
     };
 });

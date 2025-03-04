@@ -10,7 +10,7 @@ const checkTransaction = async (connection, transactionId) => {
         };
         return false;
     } catch (error) {
-        logger.error(`Błąd w checkTransaction: ${error.message}`);
+        logger.error(`checkTransaction error: ${error.message}`);
         return false;
     }
 

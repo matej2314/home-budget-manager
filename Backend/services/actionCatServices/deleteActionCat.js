@@ -6,14 +6,14 @@ const deleteActionCat = async (catName, catId) => {
     const connection = await pool.getConnection();
 
     try {
-        
+
         const [rows] = await connection.query(
             'SELECT id, name FROM actionCategories WHERE name = ? OR id = ?',
             [catName, catId]
         );
 
         if (rows.length === 0) {
-            return { status: 'notfound', message: 'Kategoria nie została znaleziona.' };
+            return { status: 'notfound', message: 'Transaction category not found.' };
         }
 
         const fetchedCatName = rows[0].name;
@@ -34,19 +34,19 @@ const deleteActionCat = async (catName, catId) => {
         const [result] = await connection.query(query, params);
 
         if (result.affectedRows === 0) {
-            logger.info(`Nie udało się usunąć kategorii transakcji ${fetchedCatName}`);
-            return { status: 'notfound', message: 'Nie udało się usunąć kategorii transakcji.' };
+            logger.info(`Failed to delete transaction category: ${fetchedCatName}`);
+            return { status: 'notfound', message: 'Failed to delete transaction category.' };
         }
 
         return {
             status: 'success',
-            message: `Kategoria transakcji ${fetchedCatName} została poprawnie usunięta.`,
+            message: `Transaction category ${fetchedCatName} deleted correctly.`,
         };
     } catch (error) {
-        logger.error(`Błąd w /actioncat/delete: ${error}`);
+        logger.error(`/actioncat/delete error: ${error}`);
         return {
             status: 'error',
-            message: `Nie udało się usunąć kategorii.`,
+            message: `Failed to delete transaction category.`,
         };
     } finally {
         if (connection) connection.release();

@@ -12,7 +12,7 @@ router.post('/',
         if (!req.file) {
             return res.status(statusCode.BAD_REQUEST).json({
                 status: 'error',
-                message: 'Prześlij poprawny plik.'
+                message: 'Upload correct file.'
             });
         }
 
@@ -24,20 +24,20 @@ router.post('/',
             if (!totalAmount) {
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'Brak oczekiwanej wartości.'
+                    message: 'No expected value.'
                 });
             }
 
             res.status(statusCode.OK).json({
                 status: 'success',
-                message: `Kwota z paragonu: ${totalAmount} PLN`,
+                message: `Value from receipt: ${totalAmount} PLN`,
                 value: totalAmount
             });
         } catch (error) {
-            logger.error(`Błąd przetwarzania obrazu: ${error}`);
+            logger.error(`Image processing error: ${error}`);
             res.status(statusCode.INTERNAL_SERVER_ERROR).json({
                 status: 'error',
-                message: 'Błąd przetwarzania obrazu.'
+                message: 'Image processing error.'
             });
         }
     }

@@ -1,20 +1,20 @@
 const pool = require('../database/db');
 
-const clearSocketConnections = async  () => {
+const clearSocketConnections = async () => {
 
     const connection = await pool.getConnection();
     try {
         const [clearConnections] = await connection.query('DELETE FROM socketConnections');
 
         if (clearConnections.affectedRows === 1) {
-            console.log('Wszystkie połączenia websocket zostały usunięte.')
+            console.log('All websocket connections was deleted correctly.')
             return true;
         } else if (clearConnections.affectedRows === 0) {
-            console.log('Nie udało się usunąć połączeń websocket.');
+            console.log('Failed to delete websocket connections.');
             return null;
         };
     } catch (error) {
-       console.log(`Błąd w clearSocketConnections: ${error}`);
+        console.log(`clearSocketConnections error: ${error}`);
     };
 };
 
