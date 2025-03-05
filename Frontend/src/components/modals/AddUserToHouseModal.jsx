@@ -18,7 +18,6 @@ export default function AddUserToHouseModal({ isOpen, onRequestClose }) {
                     X
                 </button>
             </div>
-
             <h2 className="w-full h-fit flex justify-center text-2xl mb-7">Invite new user to household</h2>
             <AddUserToHouseForm onClose={onRequestClose} />
             <div className="flex justify-end mt-4">

@@ -56,7 +56,7 @@ export default function DeclareBudgetForm() {
                 className='w-full h-fit flex flex-col items-center gap-3 mt-3'
             >
                 <label htmlFor="initBudget">Type value of new monthly budget:</label>
-                <div className="relative w-full flex justify-center">
+                <div className="relative w-fit">
                     <input
                         type="text"
                         name="initBudget"
@@ -68,7 +68,7 @@ export default function DeclareBudgetForm() {
                     />
                     <Icon
                         icon='tdesign:money'
-                        className="absolute inset-y-1 right-9 lg:right-[12rem] xl:right-[8.5rem] text-gray-500 text-xl pointer-events-none text-opacity-40"
+                        className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none text-opacity-40"
                     />
                 </div>
 

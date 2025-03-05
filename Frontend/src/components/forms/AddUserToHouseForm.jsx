@@ -48,7 +48,7 @@ export default function AddUserToHouseForm({ onClose }) {
                 >
                     Type invited user name:
                 </label>
-                <div className="relative w-1/2">
+                <div className="relative w-fit">
                     <input
                         className="w-full pl-2 rounded-md border-2 border-slate-300 flex items-center"
                         type="text"
@@ -60,7 +60,7 @@ export default function AddUserToHouseForm({ onClose }) {
                     />
                     <Icon
                         icon='mage:user-fill'
-                        className="absolute inset-y-1 left-[7rem] indirect:left-[9.7rem] indirectxl:left-[12.7rem] sm:left-[11.7rem] lg:left-[16rem] xl:left-[12.7rem] text-gray-500 text-xl pointer-events-none text-opacity-55"
+                        className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none text-opacity-55"
                     />
                 </div>
 

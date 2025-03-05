@@ -7,14 +7,20 @@ import LoadingModal from '../modals/LoadingModal';
 
 
 export default function LoginForm() {
-    const { login, isLoading, error, message, user } = useContext(AuthContext);
+    const { login, isLoading, error, message, user, isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
-
     const email = useRef();
     const password = useRef();
+    const disabledValue = isLoading || isAuthenticated;
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (disabledValue) {
+            showInfoToast('You are currently logged in!');
+            return;
+        };
 
         const data = {
             email: email.current.value,
@@ -26,7 +32,7 @@ export default function LoginForm() {
 
     useEffect(() => {
         if (user && !isLoading && !error) {
-            showInfoToast(`Użytkownik ${user.userName} zalogowany pomyślnie!`);
+            showInfoToast(`User ${user.userName} logged in successfully!`);
             const timer = setTimeout(() => {
                 navigate('/dashboard');
             }, 600);
@@ -52,7 +58,7 @@ export default function LoginForm() {
                         ref={email}
                         placeholder='email'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className='border-[1px] border-slate-400/80 pl-2 bg-slate-400/30 text-slate-900 placeholder-slate-800/45 rounded-md'
+                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
                         required
                     />
                     <Icon
@@ -70,7 +76,7 @@ export default function LoginForm() {
                         ref={password}
                         placeholder='password'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className='border-[1px] border-slate-400/80 pl-2  bg-slate-400/30 text-slate-900 placeholder-slate-800/45 rounded-md'
+                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
                         required
                     />
                     <Icon
@@ -82,7 +88,7 @@ export default function LoginForm() {
 
                 <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={disabledValue}
                     className="bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-700 active:shadow"
                 >
                     {isLoading ? 'Logging in' : 'Login'}

@@ -51,7 +51,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
                 className="w-full h-full flex flex-col items-center justify-center gap-3"
             >
                 <label className="w-full h-fit flex justify-center" htmlFor="recipientName">Type recipient name:</label>
-                <div className="relative w-1/2 flex justify-center">
+                <div className="relative w-fit flex justify-center">
                     <input
                         type="text"
                         name="recipientName"
@@ -66,7 +66,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
                     />
                     <Icon
                         icon='mage:user-fill'
-                        className="absolute inset-y-1 left-[9rem] indirect:left-[10rem] indirectxl:left-[11.5rem] sm:left-[14rem] md:left-[15.5rem] lg:left-[18rem] xl:left-[11.5rem] text-gray-500 text-xl pointer-events-none text-opacity-40"
+                        className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none text-opacity-40"
                     />
                 </div>
                 <label className="w-full h-fit flex justify-center" htmlFor="messageContent">Type your message:</label>

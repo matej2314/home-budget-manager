@@ -81,14 +81,17 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
             className='bg-slate-300 rounded-lg p-6 w-11/12 indirectxl:w-11/12 sm:w-1/2 xl:w-1/3 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
-            <button onClick={onRequestClose}
-                className='relative left-[28.7rem] bottom-6 text-black hover:text-gray-600'
-            >X</button>
+            <div className='relative w-full flex justify-end'>
+                <button onClick={onRequestClose}
+                    className='absolute -translate-y-6 translate-x-4 text-black hover:text-gray-600'
+                >X</button>
+            </div>
+
             <div className="w-full h-fit flex flex-col items-center gap-3 border-b-2 border-slate-400/20 pb-3">
                 <h2 className="text-2xl">Details:</h2>
                 <form className='w-full h-fit flex flex-col items-center gap-3'>
                     <label className="w-full h-fit flex justify-center" htmlFor="senderName">From:</label>
-                    <div className='relative w-full flex justify-center'>
+                    <div className='relative w-fit'>
                         <input
                             className="bg-slate-200 pl-2 border-2 border-slate-400 rounded-md" type="text"
                             name="senderName"
@@ -99,12 +102,12 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
                         <Icon
                             icon='mage:user-fill'
                             color='#0e63d6'
-                            className="absolute inset-y-1 left-[13rem] indirect:left-[15.7rem] indirectxl:left-[18.5rem] sm:left-[13rem] md:left-[14.7rem] lg:left-[19rem] xl:left-[18.7rem] text-gray-500 text-xl pointer-events-none text-opacity-40"
+                            className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none text-opacity-40"
                         />
                     </div>
 
                     <label className="w-full h-fit flex justify-center" htmlFor="recipientName">For:</label>
-                    <div className='relative w-full flex justify-center'>
+                    <div className='relative w-fit'>
                         <input
                             className="bg-slate-200 pl-2 border-2 border-slate-400 rounded-md" type="text"
                             name="recipientName"
@@ -115,7 +118,7 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
                         <Icon
                             icon='mage:user-fill'
                             color='#168709'
-                            className="absolute inset-y-1 left-[13rem] indirect:left-[15.7rem] indirectxl:left-[18.5rem] sm:left-[13rem] md:left-[14.7rem] lg:left-[19rem] xl:left-[18.7rem] text-gray-500 text-xl pointer-events-none"
+                            className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none"
                         />
                     </div>
 

@@ -28,18 +28,18 @@ export default function SignUpForm() {
         setSended(false);
 
         if (userPass.current.value !== repPass.current.value) {
-            alert('Hasła muszą być identyczne!');
+            showErrorToast('Passwords must match!');
             return;
         };
 
         if (userPass.current.value.length < 10) {
-            alert('Hasło musi mieć co najmniej 10 znaków!');
+            showErrorToast('The password must be at least 10 characters long!');
             return;
         };
 
         const specialCharRegex = /[*#!@%^]/;
         if (!specialCharRegex.test(userPass.current.value)) {
-            alert('Hasło musi zawierać przynajmniej jeden znak specjalny (*,@,%,!,^)');
+            showErrorToast('Password must contain at least one special character(*, @,%, !,^)');
             return;
         }
 
@@ -84,7 +84,7 @@ export default function SignUpForm() {
                         ref={userName}
                         placeholder='username'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className='border-[1px] border-slate-400/80 pl-2 rounded-md'
+                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
                         required
                     />
                     <Icon
@@ -101,7 +101,7 @@ export default function SignUpForm() {
                         ref={userEmail}
                         placeholder='email'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className='border-[1px] border-slate-400/80 pl-2 rounded-md'
+                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
                         required
                     />
                     <Icon
@@ -117,7 +117,7 @@ export default function SignUpForm() {
                         id="regPass"
                         ref={userPass}
                         placeholder='password'
-                        className='border-[1px] border-slate-400/80 pl-2 rounded-md'
+                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
                         required
                     />
                     <Icon
@@ -134,7 +134,7 @@ export default function SignUpForm() {
                         id="repPass"
                         ref={repPass}
                         placeholder='repeat password'
-                        className='border-[1px] border-slate-400/80 pl-2 rounded-md'
+                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
                         required
                     />
