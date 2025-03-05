@@ -84,7 +84,7 @@ export default function SignUpForm() {
                         ref={userName}
                         placeholder='username'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
+                        className='auth-input'
                         required
                     />
                     <Icon
@@ -101,7 +101,7 @@ export default function SignUpForm() {
                         ref={userEmail}
                         placeholder='email'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
+                        className='auth-input'
                         required
                     />
                     <Icon
@@ -117,7 +117,8 @@ export default function SignUpForm() {
                         id="regPass"
                         ref={userPass}
                         placeholder='password'
-                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
+                        className='auth-input'
+                        onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
                         required
                     />
                     <Icon
@@ -134,7 +135,7 @@ export default function SignUpForm() {
                         id="repPass"
                         ref={repPass}
                         placeholder='repeat password'
-                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
+                        className='auth-input'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
                         required
                     />
@@ -146,7 +147,7 @@ export default function SignUpForm() {
 
                 <button
                     type="button"
-                    className="bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow"
+                    className="form-submit-modal-btn"
                     onClick={handleCookiesSettings}
                 >
                     Cookies settings
@@ -155,7 +156,7 @@ export default function SignUpForm() {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow"
+                    className="signup-form-submit-btn"
                 >
                     Register
                 </button>

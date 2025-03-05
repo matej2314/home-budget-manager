@@ -58,13 +58,13 @@ export default function LoginForm() {
                         ref={email}
                         placeholder='email'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
+                        className='auth-input'
                         required
                     />
                     <Icon
                         icon='wpf:name'
                         width={15}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-45"
+                        className="icon-base text-gray-500 text-xl text-opacity-45"
                     />
                 </div>
                 <label htmlFor="password">Password:</label>
@@ -76,20 +76,20 @@ export default function LoginForm() {
                         ref={password}
                         placeholder='password'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className='border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md'
+                        className='auth-input'
                         required
                     />
                     <Icon
                         icon='carbon:password'
                         width={15}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-80"
+                        className="icon-base text-gray-500 text-xl text-opacity-80"
                     />
                 </div>
 
                 <button
                     type="submit"
                     disabled={disabledValue}
-                    className="bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-700 active:shadow"
+                    className="login-form-submit-btn"
                 >
                     {isLoading ? 'Logging in' : 'Login'}
                 </button>

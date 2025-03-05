@@ -108,7 +108,7 @@ export default function AddTransactionForm({ onClose }) {
                             id="actionValue"
                             ref={numberValueRef}
                             defaultValue={recognizedValue ? recognizedValue : ''}
-                            className='pl-2 text-black rounded-md border-2 border-slate-300'
+                            className='input-base text-black'
                             placeholder='value'
                             required /> :
                         <input
@@ -138,14 +138,14 @@ export default function AddTransactionForm({ onClose }) {
                 {imageMode && <button
                     type="button"
                     onClick={recognizeValue}
-                    className='text-base indirect:text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500'
+                    className="form-submit-modal-btn"
                 >
                     Recognize
                 </button>}
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className='text-lg indirect:text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500'
+                    className="form-submit-modal-btn"
                 >
                     Save transaction
                 </button>

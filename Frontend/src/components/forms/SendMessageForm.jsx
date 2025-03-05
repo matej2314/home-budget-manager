@@ -62,16 +62,16 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
                         required
                         disabled={recipientName}
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className={`${recipientName ? "bg-gray-300 cursor-not-allowed" : ""} pl-2 border-2 border-slate-300 rounded-md`}
+                        className={`${recipientName ? "bg-gray-300 cursor-not-allowed" : ""} input-base`}
                     />
                     <Icon
                         icon='mage:user-fill'
-                        className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none text-opacity-40"
+                        className="icon-base text-gray-500 text-xl text-opacity-40"
                     />
                 </div>
                 <label className="w-full h-fit flex justify-center" htmlFor="messageContent">Type your message:</label>
                 <textarea
-                    className="w-full md:w-1/2 resize-none border-2 border-slate-300 rounded-md pl-2"
+                    className=" md:w-1/2 resize-none input-base"
                     name="messageContent"
                     id="messageContent"
                     placeholder="message"
@@ -79,7 +79,10 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
                     required
                 />
 
-                <button type="submit" className="bg-slate-300 p-2 rounded-xl hover:bg-slate-400/45 border-[1px] border-slate-500" disabled={sended}>
+                <button
+                    type="submit"
+                    className="form-submit-modal-btn"
+                    disabled={sended}>
                     Send message
                 </button>
             </form>

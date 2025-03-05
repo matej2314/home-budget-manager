@@ -14,7 +14,7 @@ export default function LogOutModal({ isOpen, onRequestClose, handleLogOut }) {
                 <h2 className="w-full h-fit flex justify-center text-xl font-bold">Czy na pewno chcesz się wylogować?</h2>
                 <div className="w-full h-fit flex flex-row justify-center gap-14 md:gap-[6rem]">
                     <button
-                        className="w-fit h-fit flex justify-center items-center p-3 bg-slate-300 hover:bg-slate-400/35 rounded-xl border-2 border-slate-500/35"
+                        className="form-submit-modal-btn"
                         onClick={handleLogOut}
                         type="button"
                     >
@@ -22,7 +22,7 @@ export default function LogOutModal({ isOpen, onRequestClose, handleLogOut }) {
                     </button>
                     <button
                         onClick={onRequestClose}
-                        className="w-fit h-fit flex justify-center items-center p-3 bg-slate-300 hover:bg-slate-400/35 rounded-xl border-2 border-slate-500/35"
+                        className="form-submit-modal-btn"
                         type="button"
                     >
                         Nie

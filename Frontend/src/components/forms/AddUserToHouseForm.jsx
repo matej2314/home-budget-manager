@@ -50,7 +50,7 @@ export default function AddUserToHouseForm({ onClose }) {
                 </label>
                 <div className="relative w-fit">
                     <input
-                        className="w-full pl-2 rounded-md border-2 border-slate-300 flex items-center"
+                        className="input-base flex items-center"
                         type="text"
                         name="invitedUserName"
                         id="invitedUserName"
@@ -60,13 +60,13 @@ export default function AddUserToHouseForm({ onClose }) {
                     />
                     <Icon
                         icon='mage:user-fill'
-                        className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none text-opacity-55"
+                        className="icon-base text-gray-500 text-xl text-opacity-55"
                     />
                 </div>
 
                 <button
                     type="submit"
-                    className="bg-gray-300 p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 text-xl border-2 border-slate-500/45"
+                    className="form-submit-modal-btn"
                     disabled={sended}
                 >
                     Invite

@@ -12,14 +12,14 @@ export default function SignUpCookiesSettings({ clickAction }) {
                 <p className='w-full h-fit flex justify-center font-semibold'>Akceptuję:</p>
                 <div className='w-full h-fit flex justify-center gap-3 pl-14'>
                     <button
-                        className="bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow"
+                        className="form-submit-modal-btn"
                         type="button"
                         onClick={() => clickAction(1)}
                     >
                         Wszystkie
                     </button>
                     <button
-                        className="bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow"
+                        className="form-submit-modal-btn"
                         type="button"
                         onClick={() => clickAction(0)}
                     >

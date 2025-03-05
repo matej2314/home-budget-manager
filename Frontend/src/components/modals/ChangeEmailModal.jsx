@@ -78,7 +78,7 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
                         />
                         <Icon
                             icon='entypo:email'
-                            className="absolute inset-y-1 right-2 text-gray-500 text-xl pointer-events-none text-opacity-30"
+                            className="icon-base text-gray-500 text-xl text-opacity-30"
                         />
                     </div>
 
@@ -86,7 +86,7 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
                     <button
                         type="submit"
                         disabled={sended}
-                        className='text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500 hover:bg-slate-400'
+                        className="form-submit-modal-btn"
                     >
                         Save new e-mail
                     </button>

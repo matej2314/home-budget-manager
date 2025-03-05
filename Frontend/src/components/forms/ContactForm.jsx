@@ -16,7 +16,7 @@ export default function ContactForm() {
     return (
         <form
             onSubmit={handleContactForm}
-            className='w-9/12 text-sm indirect:w-9/12 indirect:text-base indirectxl:w-8/12 md:w-1/3 h-fit flex flex-col justify-start items-center bg-slate-300/15 gap-3 border-2 border-slate-300 text-slate-200 shadow-md shadow-customGray/55 rounded-md py-3'
+            className='contact-form'
         >
             <h2 className='w-full h-fit flex justify-center items-center font-semibold text-xl mb-3'>Contact us:</h2>
             <label className='w-full h-fit flex justify-center items-center' htmlFor="userName">Type your name:</label>
@@ -33,7 +33,7 @@ export default function ContactForm() {
                 />
                 <Icon
                     icon='tdesign:user-filled'
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-45 pointer-events-none"
+                    className="icon-base text-gray-500 text-xl text-opacity-45"
                 />
             </div>
 
@@ -41,7 +41,7 @@ export default function ContactForm() {
             <div className='relative w-10/12'>
                 <input
                     type="email"
-                    className='w-full h-fit flex justify-center items-center pl-2 rounded-md border-2 border-slate-600 text-slate-800'
+                    className='contact-form-input'
                     name="userEmail"
                     id="userEmail"
                     placeholder='email'
@@ -51,7 +51,7 @@ export default function ContactForm() {
                 />
                 <Icon
                     icon='ic:baseline-alternate-email'
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-55 pointer-events-none"
+                    className="icon-base text-gray-500 text-xl text-opacity-55"
                 />
             </div>
 
@@ -69,13 +69,13 @@ export default function ContactForm() {
                 />
                 <Icon
                     icon='ic:outline-message'
-                    className="absolute right-2 top-4 transform -translate-y-1/2 text-gray-500 text-xl pointer-events-none text-opacity-55"
+                    className="icon-base text-gray-500 text-xl text-opacity-55"
                 />
             </div>
 
             <button
                 type="submit"
-                className="bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-md shadow-slate-700 active:shadow-sm"
+                className="contact-form-submit-btn"
 
             >Send message
             </button>

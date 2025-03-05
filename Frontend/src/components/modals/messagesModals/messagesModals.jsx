@@ -46,7 +46,7 @@ export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='bg-slate-200 rounded-lg p-6 w-11/12 indirectxl:w-1/3 mx-auto mt-20 shadow-lg border-4 border-slate-400'
+            className='del-msg-modal'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
             <div className='w-full h-fit flex flex-col justify-center items-center gap-5'>
@@ -54,7 +54,7 @@ export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
                 <div id='btnsDiv' className='w-full h-fit flex justify-around'>
                     <button
                         type="button"
-                        className='w-fit h-fit bg-slate-400/45 p-2 rounded-xl shadow-sm shadow-black active:shadow'
+                        className="form-submit-modal-btn"
                         onClick={() => handleDeleteMessage(message.id)}
                     >
                         Yes
@@ -62,7 +62,7 @@ export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
                     <button
                         onClick={onRequestClose}
                         type="button"
-                        className='w-fit h-fit bg-slate-400/45 p-2 rounded-xl shadow-sm shadow-black active:shadow'
+                        className="form-submit-modal-btn"
                     >
                         No
                     </button>
@@ -78,7 +78,7 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='bg-slate-300 rounded-lg p-6 w-11/12 indirectxl:w-11/12 sm:w-1/2 xl:w-1/3 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400'
+            className='display-msg-modal'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
             <div className='relative w-full flex justify-end'>
@@ -93,7 +93,7 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
                     <label className="w-full h-fit flex justify-center" htmlFor="senderName">From:</label>
                     <div className='relative w-fit'>
                         <input
-                            className="bg-slate-200 pl-2 border-2 border-slate-400 rounded-md" type="text"
+                            className="bg-slate-200 input-display-msg" type="text"
                             name="senderName"
                             id="senderName"
                             defaultValue={message.sender}
@@ -102,14 +102,14 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
                         <Icon
                             icon='mage:user-fill'
                             color='#0e63d6'
-                            className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none text-opacity-40"
+                            className="icon-base text-gray-500 text-xl text-opacity-40"
                         />
                     </div>
 
                     <label className="w-full h-fit flex justify-center" htmlFor="recipientName">For:</label>
                     <div className='relative w-fit'>
                         <input
-                            className="bg-slate-200 pl-2 border-2 border-slate-400 rounded-md" type="text"
+                            className="bg-slate-200 input-display-msg" type="text"
                             name="recipientName"
                             id="recipientName"
                             defaultValue={message.recipient}
@@ -118,13 +118,13 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
                         <Icon
                             icon='mage:user-fill'
                             color='#168709'
-                            className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none"
+                            className="icon-base text-gray-500 text-xl"
                         />
                     </div>
 
                     <label className="w-full h-fit flex justify-center" htmlFor="receivedMessage">Message:</label>
                     <textarea
-                        className="bg-slate-200 w-fit h-fit resize-none pl-2 border-2 border-slate-400 rounded-md"
+                        className="bg-slate-200 w-fit h-fit resize-none input-display-msg"
                         type="text"
                         name="receivedMessage"
                         rows={4}

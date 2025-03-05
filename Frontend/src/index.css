@@ -14,14 +14,67 @@
         scrollbar-width: none;  /* Firefox */
   }
 
-  .clip-slant-left {
-    -webkit-clip-path: polygon(0% 20%, 100% 0%, 100% 100%, 0% 100%);
-    clip-path: polygon(0% 20%, 100% 0%, 100% 100%, 0% 100%);
-  }
-  
-  .clip-slant-right {
-    -webkit-clip-path: polygon(0% 0%, 100% 15%, 100% 100%, 0% 100%);
-    clip-path: polygon(0% 0%, 100% 15%, 100% 100%, 0% 100%);
-  }
-
+.input-base {
+    @apply w-full pl-2 rounded-md border-2 border-slate-300
 }
+
+.auth-input {
+    @apply border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md;
+   }
+
+.login-form-submit-btn {
+    @apply bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-700 active:shadow
+}
+
+.signup-form-submit-btn {
+    @apply bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow
+}
+
+   .msgs-filter-btn {
+    @apply border-2 border-slate-300 text-slate-700 bg-slate-300/40 py-1 px-2 rounded-xl hover:bg-inherit hover:text-slate-800 shadow-lg hover:shadow-sm
+   }
+
+.display-msg-modal {
+    @apply bg-slate-300 rounded-lg p-6 w-11/12 indirectxl:w-11/12 sm:w-1/2 xl:w-1/3 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400;
+}
+
+.del-msg-modal {
+    @apply bg-slate-200 rounded-lg p-6 w-11/12 indirectxl:w-1/3 mx-auto mt-20 shadow-lg border-4 border-slate-400
+}
+
+.input-display-msg {
+    @apply pl-2 border-2 border-slate-400 rounded-md
+}
+
+.del-msg-btn {
+    @apply w-fit h-fit bg-slate-400/45 p-2 rounded-xl shadow-sm shadow-black active:shadow
+}
+
+.fast-actions-btn {
+    @apply w-fit h-fit bg-slate-300/40 p-2 text-[0.8rem] md:text-base rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60
+}
+
+.icon-base {
+    @apply absolute right-1 top-1 pointer-events-none
+}
+
+.form-submit-modal-btn {
+    @apply bg-gray-300 p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 text-lg border-2 border-slate-500/45
+}
+
+.contact-form {
+@apply w-9/12 text-sm indirect:w-9/12 indirect:text-base indirectxl:w-8/12 md:w-1/3 h-fit flex flex-col justify-start items-center bg-slate-300/15 gap-3 border-2 border-slate-300 text-slate-200 shadow-md shadow-customGray/55 rounded-md py-3
+}
+
+.contact-form-input {
+    @apply w-full h-fit flex justify-center items-center pl-2 rounded-md border-2 border-slate-600 text-slate-800
+}
+
+.contact-form-submit-btn {
+    @apply bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-md shadow-slate-700 active:shadow-sm
+}
+
+ 
+
+ 
+};

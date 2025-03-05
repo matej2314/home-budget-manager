@@ -22,12 +22,15 @@ export default function CalendarModal({ selectedEvent, handleCloseModal }) {
                         <p><strong>Addition date:</strong> {new Date(selectedEvent.details.addedAt).toLocaleString()}</p>
                     </div>
 
-                    <button
-                        onClick={handleCloseModal}
-                        className="w-fit h-fit flex justify-self-center text-black p-2 rounded-md border-[1px] border-slate-500 hover:bg-gray-400 hover:text-slate-200 mt-4"
-                    >
-                        Cancel
-                    </button>
+                    <div className='w-full flex justify-center'>
+                        <button
+                            onClick={handleCloseModal}
+                            className="form-submit-modal-btn"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+
                 </>
             )}
         </Modal>

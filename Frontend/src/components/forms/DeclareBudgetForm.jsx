@@ -64,11 +64,11 @@ export default function DeclareBudgetForm() {
                         ref={declaredBudgetRef}
                         placeholder="budget value"
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className="pl-2 border-2 border-slate-300 rounded-md"
+                        className="input-base"
                     />
                     <Icon
                         icon='tdesign:money'
-                        className="absolute inset-y-1 right-1 text-gray-500 text-xl pointer-events-none text-opacity-40"
+                        className="icon-base text-gray-500 text-xl text-opacity-40"
                     />
                 </div>
 
