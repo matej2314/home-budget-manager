@@ -2,6 +2,8 @@ import { useRef, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import { Icon } from '@iconify/react';
+import SignUpCookiesSettings from '../SignUpCookiesSettings';
 
 export default function SignUpForm() {
     const { register, isLoading, error, message, user } = useContext(AuthContext);
@@ -74,80 +76,86 @@ export default function SignUpForm() {
             <h2 className='text-xl'>Sign up</h2>
             <form onSubmit={handleSubmit} className='w-fit h-fit flex flex-col justify-center items-center gap-3'>
                 <label htmlFor="regUsername">Enter your username:</label>
-                <input
-                    type="text"
-                    name="regUsername"
-                    id="regUsername"
-                    ref={userName}
-                    placeholder='Enter your username.'
-                    className='border-[1px] border-slate-400/80 pl-2 rounded-md'
-                    required />
+                <div className='relative w-full'>
+                    <input
+                        type="text"
+                        name="regUsername"
+                        id="regUsername"
+                        ref={userName}
+                        placeholder='username'
+                        onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
+                        className='border-[1px] border-slate-400/80 pl-2 rounded-md'
+                        required
+                    />
+                    <Icon
+                        icon='mage:user-fill'
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-60"
+                    />
+                </div>
                 <label htmlFor="regEmail">Enter your email:</label>
-                <input
-                    type="email"
-                    name="regEmail"
-                    id="regEmail"
-                    ref={userEmail}
-                    placeholder='Enter your email.'
-                    className='border-[1px] border-slate-400/80 pl-2 rounded-md'
-                    required />
+                <div className='relative w-full'>
+                    <input
+                        type="email"
+                        name="regEmail"
+                        id="regEmail"
+                        ref={userEmail}
+                        placeholder='email'
+                        onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
+                        className='border-[1px] border-slate-400/80 pl-2 rounded-md'
+                        required
+                    />
+                    <Icon
+                        icon='entypo:email'
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-60"
+                    />
+                </div>
                 <label htmlFor="regPass">Enter your password:</label>
-                <input
-                    type="password"
-                    name="regPass"
-                    id="regPass"
-                    ref={userPass}
-                    placeholder='Enter your password.'
-                    className='border-[1px] border-slate-400/80 pl-2 rounded-md'
-                    required />
+                <div className='relative w-full'>
+                    <input
+                        type="password"
+                        name="regPass"
+                        id="regPass"
+                        ref={userPass}
+                        placeholder='password'
+                        className='border-[1px] border-slate-400/80 pl-2 rounded-md'
+                        required
+                    />
+                    <Icon
+                        icon='carbon:password'
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-60"
+                    />
+                </div>
+
                 <label htmlFor="repPass">Repeat your password:</label>
-                <input
-                    type="password"
-                    name="repPass"
-                    id="repPass"
-                    ref={repPass}
-                    placeholder='Repeat your password.'
-                    className='border-[1px] border-slate-400/80 pl-2 rounded-md'
-                    required
-                />
+                <div className='relative w-full'>
+                    <input
+                        type="password"
+                        name="repPass"
+                        id="repPass"
+                        ref={repPass}
+                        placeholder='repeat password'
+                        className='border-[1px] border-slate-400/80 pl-2 rounded-md'
+                        onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
+                        required
+                    />
+                    <Icon
+                        icon='mdi:password-reset'
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-60"
+                    />
+                </div>
+
                 <button
                     type="button"
-                    className='w-fit h-fit p-2 border-[1px] border-slate-400/80 rounded-xl'
+                    className="bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow"
                     onClick={handleCookiesSettings}
                 >
                     Cookies settings
                 </button>
-                {showCookiesSettings && <div>
-                    <p className='text-sm w-full h-fit flex flex-col justify-center text-pretty'>
-                        Na tej stronie wykorzystujemy pliki cookies w celu uwierzytelniania użytkowników oraz zbierania anonimowych statystyk
-                        dotyczących ruchu i sposobu korzystania ze strony (Google Analytics).
-                        <span className='mt-2'>Nie przechowujemy żadnych danych reklamowych ani
-                            śledzących. Wybrane ustawienie zostanie zapisane w bazie danych.</span>
-                    </p>
-                    <div className='w-full h-fit flex flex-col gap-3 mt-2'>
-                        <p className='w-full h-fit flex justify-center font-semibold'>Akceptuję:</p>
-                        <div className='w-full h-fit flex justify-center gap-3 pl-14'>
-                            <button
-                                className='w-fit h-fit p-2 border-[1px] border-slate-400/80 rounded-xl'
-                                type="button"
-                                onClick={() => setCookiesConsent(1)}
-                            >
-                                Wszystkie
-                            </button>
-                            <button
-                                className='w-fit h-fit p-2 border-[1px] border-slate-400/80 rounded-xl'
-                                type="button"
-                                onClick={() => setCookiesConsent(0)}
-                            >
-                                Tylko obowiązkowe
-                            </button>
-                        </div>
-                    </div>
-                </div>}
+                {showCookiesSettings && <SignUpCookiesSettings clickAction={setCookiesConsent} />}
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className='w-fit h-fit flex justify-self-center border-2 border-slate-300 rounded-xl py-2 px-3'
+                    className="bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow"
                 >
                     Register
                 </button>

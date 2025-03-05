@@ -39,7 +39,7 @@ export default function CookiesModal({ isOpen, onRequestClose }) {
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className="w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-x-[40vw] translate-y-[10vh]"
+            className="w-11/12 xl:w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-y-1/2 mx-auto"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
             <div className='w-full h-fit flex flex-col items-center gap-4'>
@@ -49,14 +49,14 @@ export default function CookiesModal({ isOpen, onRequestClose }) {
                 </p>
                 <div className='w-full h-fit flex justify-center gap-3'>
                     <button
-                        className='text-base bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500 hover:bg-gray-400'
+                        className="bg-gray-300 text-black p-2 rounded-md border-[1px] border-slate-500 hover:bg-gray-400 hover:text-slate-200"
                         type="button"
                         onClick={() => handleSaveCookieValue(1)}
                     >
                         Accept all
                     </button>
                     <button
-                        className='text-base bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500 hover:bg-gray-400'
+                        className="bg-gray-300 text-black p-2 rounded-md border-[1px] border-slate-500 hover:bg-gray-400 hover:text-slate-200"
                         type="button"
                         onClick={() => handleSaveCookieValue(0)}
                     >

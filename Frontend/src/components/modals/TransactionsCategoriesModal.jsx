@@ -16,20 +16,28 @@ export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) 
             className='bg-slate-300 rounded-lg p-6 w-9/12 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
-            <button type="button" onClick={onRequestClose}>X</button>
+            <div className='w-full flex justify-end -translate-y-[1.5rem] translate-x-4'>
+                <button
+                    type="button"
+                    onClick={onRequestClose}
+                >
+                    X
+                </button>
+            </div>
+
             <div id="categories-list" className='flex flex-col justify-center items-center'>
                 <button
                     className="bg-slate-300 p-2 rounded-xl hover:bg-slate-400/45 border-[1px] border-slate-500"
                 >
                     Add new category
                 </button>
-                <ul className="w-full grid grid-cols-2 grid-rows-auto gap-y-2 mt-5">
+                <ul className="w-full grid grid-cols-4 lg:grid-cols-2 grid-rows-auto gap-y-2 mt-5">
                     {!isLoading && !error && data ? (
                         actionCats.map((cat) => (
-                            <li key={cat.id} data-id={cat.id} className="w-6/12 h-fit flex justify-between items-center gap-3 mx-auto">
+                            <li key={cat.id} data-id={cat.id} className="w-6/12 h-fit flex justify-between items-center gap-3 mx-auto text-sm lg:text-base">
                                 <span className='w-full h-fit flex'>{cat.name}</span> -
-                                <span className='w-fit h-fit'>{cat.type}</span> -
-                                <button type="button" className='w-fit h-fit p-2 bg-slate-400 rounded-xl hover:bg-slate-300 border-[1px] border-slate-600'>Delete</button>
+                                <span className='w-fit h-fit'>{cat.type}</span>
+                                {user && user.role === 'superadmin' && -<button type="button" className='w-fit h-fit p-2 bg-slate-400 rounded-xl hover:bg-slate-300 border-[1px] border-slate-600'>Delete</button>}
                             </li>
                         ))
                     ) : (

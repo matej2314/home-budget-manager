@@ -50,7 +50,7 @@ export default function LoginForm() {
                         name="email"
                         id="email"
                         ref={email}
-                        placeholder='E-mail'
+                        placeholder='email'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
                         className='border-[1px] border-slate-400/80 pl-2 bg-slate-400/30 text-slate-900 placeholder-slate-800/45 rounded-md'
                         required
@@ -68,7 +68,7 @@ export default function LoginForm() {
                         name="password"
                         id="password"
                         ref={password}
-                        placeholder='Password'
+                        placeholder='password'
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
                         className='border-[1px] border-slate-400/80 pl-2  bg-slate-400/30 text-slate-900 placeholder-slate-800/45 rounded-md'
                         required
@@ -83,7 +83,7 @@ export default function LoginForm() {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className='w-fit h-fit border-2 border-slate-300 rounded-2xl py-2 px-3'
+                    className="bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-700 active:shadow"
                 >
                     {isLoading ? 'Logging in' : 'Login'}
                 </button>

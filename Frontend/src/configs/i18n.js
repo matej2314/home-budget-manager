@@ -8,7 +8,7 @@ i18next.use(httpApi)
     .use(initReactI18next)
     .init({
         fallbackLng: 'en',
-        debug: true,
+        debug: false,
         detection: {
             order: ['querystring', 'cookie', 'localStorage', 'navigator'],
             caches: ['cookie'],

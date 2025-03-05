@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from "../../configs/toastify";
+import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
 
 export default function AddUserToHouseForm({ onClose }) {
@@ -47,10 +48,25 @@ export default function AddUserToHouseForm({ onClose }) {
                 >
                     Type invited user name:
                 </label>
-                <input className="rounded-md" type="text" name="invitedUserName" id="invitedUserName" ref={invitedUser} />
+                <div className="relative w-1/2">
+                    <input
+                        className="w-full pl-2 rounded-md border-2 border-slate-300 flex items-center"
+                        type="text"
+                        name="invitedUserName"
+                        id="invitedUserName"
+                        ref={invitedUser}
+                        placeholder="username"
+                        onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
+                    />
+                    <Icon
+                        icon='mage:user-fill'
+                        className="absolute inset-y-1 left-[7rem] indirect:left-[9.7rem] indirectxl:left-[12.7rem] sm:left-[11.7rem] lg:left-[16rem] xl:left-[12.7rem] text-gray-500 text-xl pointer-events-none text-opacity-55"
+                    />
+                </div>
+
                 <button
                     type="submit"
-                    className="bg-gray-300 p-2 rounded-xl hover:bg-slate-300 text-xl border-[1px] border-slate-500"
+                    className="bg-gray-300 p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 text-xl border-2 border-slate-500/45"
                     disabled={sended}
                 >
                     Invite

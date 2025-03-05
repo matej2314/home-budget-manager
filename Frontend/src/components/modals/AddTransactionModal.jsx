@@ -1,7 +1,6 @@
 import Modal from 'react-modal';
 import AddTransactionForm from '../forms/AddTransactionForm';
 
-
 export default function AddTransactionModal({ isOpen, onRequestClose }) {
 
     return (
@@ -9,8 +8,8 @@ export default function AddTransactionModal({ isOpen, onRequestClose }) {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Add New Transaction"
-            className="w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-x-[40vw] translate-y-[10vh]"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            className='bg-slate-200 rounded-lg p-6 mx-auto mt-10 shadow-lg border-4 border-slate-400'
+            overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
             <h2 className="w-full h-fit flex justify-center text-2xl mb-7">Add New Transaction</h2>
             <AddTransactionForm onClose={onRequestClose} />

@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
+import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
 
 
@@ -51,28 +52,43 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Add New Transaction"
-            className="w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-x-[40vw] translate-y-[30vh]"
+            className='w-11/12 md:w-1/3 mt-[19rem] md:mt-[17rem] bg-slate-200 rounded-lg p-6 mx-auto shadow-lg border-4 border-slate-400'
             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
+            <div className='w-full flex justify-end'>
+                <button onClick={onRequestClose}
+                    className='relative left-3 bottom-6 text-black hover:text-gray-600'
+                >X</button>
+            </div>
             <h2 className='w-full h-fit flex justify-center text-xl font-semibold'>Change your e-mail</h2>
-            <div>
+            <div className='w-full flex justify-center'>
                 <form
                     onSubmit={handleSaveNewEmail}
-                    className='w-full h-fit flex flex-col justify-start items-center gap-4 mt-5'
+                    className='w-3/4 h-fit flex flex-col justify-start items-center gap-4 mt-5'
                 >
                     <label htmlFor="newEmailAddr">Type your new e-mail address:</label>
-                    <input
-                        type="email"
-                        name="newEmailAddr"
-                        id="newEmailAddr"
-                        ref={newEmailAddr}
-                    />
+                    <div className='relative w-full flex justify-center items-center'>
+                        <input
+                            type="email"
+                            name="newEmailAddr"
+                            id="newEmailAddr"
+                            placeholder='new e-mail'
+                            className='pl-2 pr-10 w-full border-2 border-slate-300 rounded-md'
+                            ref={newEmailAddr}
+                        />
+                        <Icon
+                            icon='entypo:email'
+                            className="absolute inset-y-1 right-2 text-gray-500 text-xl pointer-events-none text-opacity-30"
+                        />
+                    </div>
+
+
                     <button
                         type="submit"
                         disabled={sended}
                         className='text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500 hover:bg-slate-400'
                     >
-                        Save
+                        Save new e-mail
                     </button>
                 </form>
                 {isLoading && <LoadingModal isOpen={isLoading} />}

@@ -61,7 +61,7 @@ export default function AddTransactionForm({ onClose }) {
         const parsedValue = parseFloat(rawValue);
 
         if (isNaN(parsedValue)) {
-            showErrorToast('Nieprawidłowa wartość liczby');
+            showErrorToast('Incorrect numbeer value.');
             return;
         }
 
@@ -88,9 +88,14 @@ export default function AddTransactionForm({ onClose }) {
 
     return (
         <div className='w-full h-fit flex flex-col items-center'>
-            <form onSubmit={handleSaveAction} className='w-full h-fit flex flex-col items-center gap-5'>
+            <form onSubmit={handleSaveAction} className='w-full h-fit flex flex-col items-center gap-5 text-xs indirect:text-base'>
                 <label htmlFor="actionType" className='text-lg font-semibold'>Select type of transaction:</label>
-                <select name="actionType" id="actionType" ref={typeRef} required>
+                <select
+                    name="actionType"
+                    id="actionType"
+                    ref={typeRef}
+                    className='border-2 border-slate-300 rounded-md'
+                    required>
                     <option value="income">income</option>
                     <option value="expense">expense</option>
                 </select>
@@ -103,7 +108,8 @@ export default function AddTransactionForm({ onClose }) {
                             id="actionValue"
                             ref={numberValueRef}
                             defaultValue={recognizedValue ? recognizedValue : ''}
-                            className='pl-2 text-black rounded-md'
+                            className='pl-2 text-black rounded-md border-2 border-slate-300'
+                            placeholder='value'
                             required /> :
                         <input
                             type="file"
@@ -115,12 +121,12 @@ export default function AddTransactionForm({ onClose }) {
                     <button
                         type="button"
                         onClick={handleToggleImageMode}
-                        className='w-fit h-fit bg-gray-300 p-1 rounded-md border-[1px] border-slate-500 hover:bg-gray-400'
+                        className="bg-gray-300 p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 text-xl border-2 border-slate-500/45"
                     >
                         <Icon icon='flat-color-icons:compact-camera' width={20} height={20} />
                     </button>
                 </div>
-                <select name="actionCat" id="actionCat" ref={catIdRef}>
+                <select name="actionCat" id="actionCat" ref={catIdRef} className='border-2 border-slate-300 rounded-md'>
                     {!isLoading && !error ? (
                         actionCategories.map((cat) => (
                             <option key={cat.id} data-id={cat.id} value={cat.name}>{cat.name}</option>
@@ -129,8 +135,20 @@ export default function AddTransactionForm({ onClose }) {
                         <option value="error">error</option>
                     )}
                 </select>
-                {imageMode && <button type="button" onClick={recognizeValue} className='text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500'>Recognize</button>}
-                <button type="submit" disabled={isLoading} className='text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500'>Save</button>
+                {imageMode && <button
+                    type="button"
+                    onClick={recognizeValue}
+                    className='text-base indirect:text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500'
+                >
+                    Recognize
+                </button>}
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className='text-lg indirect:text-xl bg-gray-300 text-black p-2 rounded-xl border-[1px] border-slate-500'
+                >
+                    Save transaction
+                </button>
             </form>
             {loadingImage && <LoadingModal isOpen={loadingImage} />}
         </div>

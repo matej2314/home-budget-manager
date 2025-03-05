@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useMessagesStore } from '../../store/messagesStore';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
+import { Icon } from '@iconify/react';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function SendMessageForm({ reply, recipientName, onClose }) {
@@ -50,22 +51,30 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
                 className="w-full h-full flex flex-col items-center justify-center gap-3"
             >
                 <label className="w-full h-fit flex justify-center" htmlFor="recipientName">Type recipient name:</label>
-                <input
-                    type="text"
-                    name="recipientName"
-                    id="recipientName"
-                    ref={recipientRef}
-                    defaultValue={recipientName || ""}
-                    required
-                    disabled={recipientName}
-                    className={`${recipientName ? "bg-gray-300 cursor-not-allowed" : ""} w-1/2 pl-2`}
-                />
-
+                <div className="relative w-1/2 flex justify-center">
+                    <input
+                        type="text"
+                        name="recipientName"
+                        id="recipientName"
+                        placeholder="recipient name"
+                        ref={recipientRef}
+                        defaultValue={recipientName || ""}
+                        required
+                        disabled={recipientName}
+                        onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
+                        className={`${recipientName ? "bg-gray-300 cursor-not-allowed" : ""} pl-2 border-2 border-slate-300 rounded-md`}
+                    />
+                    <Icon
+                        icon='mage:user-fill'
+                        className="absolute inset-y-1 left-[9rem] indirect:left-[10rem] indirectxl:left-[11.5rem] sm:left-[14rem] md:left-[15.5rem] lg:left-[18rem] xl:left-[11.5rem] text-gray-500 text-xl pointer-events-none text-opacity-40"
+                    />
+                </div>
                 <label className="w-full h-fit flex justify-center" htmlFor="messageContent">Type your message:</label>
                 <textarea
-                    className="w-1/2 resize-none"
+                    className="w-full md:w-1/2 resize-none border-2 border-slate-300 rounded-md pl-2"
                     name="messageContent"
                     id="messageContent"
+                    placeholder="message"
                     ref={messageContentRef}
                     required
                 />

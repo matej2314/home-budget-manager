@@ -63,7 +63,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     const getClickHandler = (actionType, message) => {
         switch (actionType) {
             case 'open':
-                return () => openModal('details', message);
+                return () => openModal('open', message);
             case 'delete':
                 return () => openModal('delete', message);
             case 'mark':

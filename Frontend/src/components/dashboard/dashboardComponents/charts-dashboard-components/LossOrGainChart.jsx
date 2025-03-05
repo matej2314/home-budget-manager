@@ -36,7 +36,7 @@ export default function LossOrGainChart() {
         <>
             {data && <div id="lossOrGain" className="w-full shadow shadow-slate-500 pt-2 mb-3 flex flex-col justify-start items-center gap-4 mt-3">
                 <h2 className="w-full flex justify-center text-[1.22rem]">Loss or gain:</h2>
-                <div className="w-full h-[15rem] lg:h-[35rem] lg:w-[80rem] flex justify-center">
+                <div className="w-full h-[15rem] lg:h-[20rem] lg:w-[80rem] flex justify-center">
                     <BarChart
                         labels={monthlyBalancesLabels}
                         dataValues={monthlyBalances}
