@@ -94,7 +94,7 @@ export default function UserProfilePage() {
                     <>
                         <form
                             onSubmit={handleChangeAvatar}
-                            className='w-1/2 h-fit flex flex-col items-center gap-3 mx-auto mt-5 border-2 border-slate-300 py-3 rounded-md shadow-lg shadow-slate-400'
+                            className='avatar-form'
                         >
                             <label htmlFor="avatar" className='text-lg font-semibold'>Select your avatar file:</label>
                             <input type="file" name="avatar" id="avatar" limit={1} accept='image/*' ref={avatarFile} />

@@ -55,9 +55,9 @@ export default function OpenMenuButton({ isOpened, actionCallback, home }) {
             className={`absolute ${!home ? 'top-[4rem] left-0' : 'top-0.5'} ${home ? 'p-1' : 'p-2'} border-2 border-slate-300 text-slate-100 rounded-md z-10 ${home ? 'bg-slate-500' : 'bg-customGray z-20'}`}
         >
             <div className='flex flex-col gap-1'>
-                <span className='md:w-5 w-3 h-[0.12rem] md:h-0.5 bg-slate-100'></span>
-                <span className='md:w-5 w-3 h-[0.12rem] md:h-0.5 bg-slate-100'></span>
-                <span className='md:w-5 w-3 h-[0.12rem] md:h-0.5 bg-slate-100'></span>
+                <span className='open-menu-btn-span'></span>
+                <span className='open-menu-btn-span'></span>
+                <span className='open-menu-btn-span'></span>
             </div>
         </motion.button>
     )

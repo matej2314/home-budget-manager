@@ -3,10 +3,12 @@ export default function SignUpCookiesSettings({ clickAction }) {
     return (
         <div>
             <p className='text-sm w-full h-fit flex flex-col justify-center text-pretty'>
-                Na tej stronie wykorzystujemy pliki cookies w celu uwierzytelniania użytkowników oraz zbierania anonimowych statystyk
-                dotyczących ruchu i sposobu korzystania ze strony (Google Analytics).
-                <span className='mt-2'>Nie przechowujemy żadnych danych reklamowych ani
-                    śledzących. Wybrane ustawienie zostanie zapisane w bazie danych.</span>
+                On this site, we use cookies to authenticate users and collect anonymous statistics regarding traffic and usage of the site (Google Analytics).
+                <span
+                    className='mt-2'
+                >
+                    We do not store any advertising or tracking data. The selected setting will be stored in the database.
+                </span>
             </p>
             <div className='w-full h-fit flex flex-col gap-3 mt-2'>
                 <p className='w-full h-fit flex justify-center font-semibold'>Akceptuję:</p>

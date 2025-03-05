@@ -41,7 +41,7 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Add New Transaction"
-            className="w-11/12 indirectxl:w-8/12 sm:w-8/12 md:w-7/12 lg:w-8/12 xl:w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-y-1/3 mx-auto xl:translate-y-[10vh]"
+            className="add-review-modal"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
             <div className='w-full h-full flex flex-col justify-center items-center'>

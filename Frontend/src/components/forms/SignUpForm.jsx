@@ -89,7 +89,7 @@ export default function SignUpForm() {
                     />
                     <Icon
                         icon='mage:user-fill'
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-60"
+                        className="absolute right-1 top-0.5 text-gray-500 text-xl pointer-events-none text-opacity-60"
                     />
                 </div>
                 <label htmlFor="regEmail">Enter your email:</label>
@@ -106,7 +106,7 @@ export default function SignUpForm() {
                     />
                     <Icon
                         icon='entypo:email'
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-60"
+                        className="icon-base text-gray-500 text-xl text-opacity-60 -translate-y-1"
                     />
                 </div>
                 <label htmlFor="regPass">Enter your password:</label>
@@ -123,7 +123,7 @@ export default function SignUpForm() {
                     />
                     <Icon
                         icon='carbon:password'
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-60"
+                        className="icon-base text-gray-500 text-xl text-opacity-60 -translate-y-1"
                     />
                 </div>
 
@@ -141,7 +141,7 @@ export default function SignUpForm() {
                     />
                     <Icon
                         icon='mdi:password-reset'
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl cursor-pointer text-opacity-60"
+                        className="icon-base text-gray-500 text-xl pointer-events-none text-opacity-60 -translate-y-1"
                     />
                 </div>
 

@@ -58,7 +58,7 @@ export default function ContactForm() {
             <label className='w-full h-fit flex justify-center items-center' htmlFor="userMessage">Type your message:</label>
             <div className='relative w-10/12'>
                 <textarea
-                    className='w-full h-fit flex justify-center items-center pl-2 resize-none rounded-md border-2 border-slate-600 text-slate-800'
+                    className='contact-form-textarea'
                     name="userMessage"
                     id="userMessage"
                     placeholder='message'

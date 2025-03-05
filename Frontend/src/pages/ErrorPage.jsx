@@ -14,7 +14,7 @@ export default function ErrorPage() {
             <div className='w-full h-fit flex justify-center items-center gap-3'>
                 <span className='text-4xl'>&#10132;</span>
                 <Link to={isDashboardPath ? '/dashboard' : '/'} className='text-3xl text-red-600'>
-                    {isDashboardPath ? 'Przejdź do panelu.' : 'Przejdź do strony głównej.'}
+                    {isDashboardPath ? 'Go to dashboard.' : 'Go to home page.'}
                 </Link>
             </div>
         </div>

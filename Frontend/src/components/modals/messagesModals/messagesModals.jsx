@@ -12,7 +12,7 @@ export function SendMessageModal({ isOpen, onRequestClose, recipient }) {
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='bg-slate-200 rounded-lg p-6 w-11/12 xl:w-1/3 mx-auto mt-20 shadow-lg border-4 border-slate-400'
+            className='bg-slate-200 rounded-lg p-6 w-10/12 xl:w-1/3 mx-auto mt-20 shadow-lg border-4 border-slate-400'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
             <div className='w-full flex justify-end'>

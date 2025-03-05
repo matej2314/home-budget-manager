@@ -5,11 +5,6 @@ import { showCookiesInfo } from "../configs/toastify";
 import useHomePageStore from "../store/homePageStore";
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import HomePageMenu from "../components/home-page-components/HomePageMenu";
-import Home from "../components/home-page-components/Home";
-// import ShortInfoSection from "../components/home-page-components/ShortInfoSection";
-// import FunctionalitiesSection from "../components/home-page-components/FunctionalitiesSection";
-// import GallerySection from "../components/home-page-components/GallerySection";
-// import ReviewsSection from "../components/home-page-components/ReviewsSection";
 
 export default function HomePage() {
     useDocumentTitle('Home');
@@ -28,14 +23,14 @@ export default function HomePage() {
 
     useEffect(() => {
         if (isAuthenticated && referrer.origin === "http://localhost:5173") {
-            showCookiesInfo("Ta strona korzysta z Cookies.", " Szczegóły poznasz w Polityce Prywatności lub w panelu użytkownika");
+            showCookiesInfo("This site uses Cookies.", "You can find out the details in the Privacy Policy or in the dashboard panel.");
             setTimeout(() => {
                 navigate("dashboard");
             }, 600);
         }
 
         if (!isAuthenticated && location.state?.from !== "http://localhost:5173") {
-            showCookiesInfo("Ta strona korzysta z Cookies.", " Szczegóły poznasz w Polityce Prywatności lub w panelu użytkownika");
+            showCookiesInfo("This site uses Cookies.", " You can find out the details in the Privacy Policy or in the dashboard panel");
         }
     }, [isAuthenticated, referrer, navigate]);
 
@@ -43,7 +38,8 @@ export default function HomePage() {
         <>
             {!isHomePageDataLoading && !homePageDataError && homePageData && (
                 <main className="w-screen h-screen flex flex-row justify-center items-center gap-2 bg-slate-300">
-                    <div className="w-full h-full lg:w-11/12 lg:h-[90%] overflow-hidden lg:rounded-md flex items-start border-t-2 bg-gradient-to-br from-[rgba(71,85,105,0.85)] via-[rgba(51,65,85,0.9)] to-[rgba(30,41,59,0.95)] backdrop-blur-[2px] shadow-[inset_0_0_12px_rgba(255,255,255,0.03),0_0_8px_rgba(255,255,255,0.02)]  bg-slate-700/90 border-slate-400/30 mx-auto md:mx-0 flex-wrap">
+                    <div
+                        className="home-page-content-div">
                         <div className="relative w-full">
                             <HomePageMenu />
                         </div>

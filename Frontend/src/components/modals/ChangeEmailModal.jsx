@@ -73,7 +73,7 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
                             name="newEmailAddr"
                             id="newEmailAddr"
                             placeholder='new e-mail'
-                            className='pl-2 pr-10 w-full border-2 border-slate-300 rounded-md'
+                            className='input-base'
                             ref={newEmailAddr}
                         />
                         <Icon

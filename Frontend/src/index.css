@@ -15,7 +15,11 @@
   }
 
 .input-base {
-    @apply w-full pl-2 rounded-md border-2 border-slate-300
+    @apply w-full pl-2 rounded-md border-b-[1px] border-t-[1px] border-slate-300 shadow-sm shadow-slate-500
+}
+
+.auth-modal-mode-btn {
+    @apply px-4 py-3 bg-slate-500/90 text-white rounded-lg hover:bg-slate-400 hover:text-slate-800
 }
 
 .auth-input {
@@ -30,9 +34,9 @@
     @apply bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow
 }
 
-   .msgs-filter-btn {
+.msgs-filter-btn {
     @apply border-2 border-slate-300 text-slate-700 bg-slate-300/40 py-1 px-2 rounded-xl hover:bg-inherit hover:text-slate-800 shadow-lg hover:shadow-sm
-   }
+}
 
 .display-msg-modal {
     @apply bg-slate-300 rounded-lg p-6 w-11/12 indirectxl:w-11/12 sm:w-1/2 xl:w-1/3 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400;
@@ -43,11 +47,15 @@
 }
 
 .input-display-msg {
-    @apply pl-2 border-2 border-slate-400 rounded-md
+    @apply pl-2 border-b-[1px] border-t-[1px] border-slate-400 rounded-md
 }
 
 .del-msg-btn {
     @apply w-fit h-fit bg-slate-400/45 p-2 rounded-xl shadow-sm shadow-black active:shadow
+}
+
+.fast-actions {
+    @apply grid grid-cols-3 gap-y-2 gap-x-2 px-5 md:flex md:flex-row justify-start items-center md:gap-3 md:ml-10 py-2
 }
 
 .fast-actions-btn {
@@ -70,11 +78,60 @@
     @apply w-full h-fit flex justify-center items-center pl-2 rounded-md border-2 border-slate-600 text-slate-800
 }
 
+.contact-form-textarea {
+    @apply w-full h-fit flex justify-center items-center pl-2 resize-none rounded-md border-2 border-slate-600 text-slate-800
+}
+
 .contact-form-submit-btn {
     @apply bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-md shadow-slate-700 active:shadow-sm
 }
 
- 
+.avatar-form {
+    @apply w-11/12 indirectxl:w-1/2 h-fit flex flex-col items-center gap-3 mx-auto mt-5 border-2 border-slate-300 py-3 rounded-md shadow-lg shadow-slate-400
+}
 
+.add-review-modal {
+    @apply w-11/12 indirectxl:w-8/12 sm:w-8/12 md:w-7/12 lg:w-8/12 xl:w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-y-1/3 mx-auto xl:translate-y-[10vh]
+}
+
+.add-user-to-house-modal {
+    @apply bg-slate-200 rounded-lg p-6 w-10/12 mt-[10rem] sm:w-7/12 md:w-1/2 md:mb-[25rem] lg:mb-[40rem] xl:mb-[13rem] xl:w-1/3 mx-auto  shadow-lg border-4 border-slate-400
+}
+
+.open-menu-btn-span {
+    @apply md:w-5 w-3 h-[0.12rem] md:h-0.5 bg-slate-100
+}
+
+.transactions-list-table {
+    @apply h-full table-fixed border-collapse text-xs lg:text-sm border-b-[1px] border-slate-400 pb-6
+}
+
+.transactions-list-table-data {
+    @apply lg:px-4 py-2
+}
+
+.home-page-content-div {
+    @apply w-full h-full lg:w-11/12 lg:h-[90%] overflow-hidden lg:rounded-md flex items-start border-t-2 bg-gradient-to-br from-[rgba(71,85,105,0.85)] via-[rgba(51,65,85,0.9)] to-[rgba(30,41,59,0.95)] backdrop-blur-[2px] shadow-[inset_0_0_12px_rgba(255,255,255,0.03),0_0_8px_rgba(255,255,255,0.02)]  bg-slate-700/90 border-slate-400/30 mx-auto md:mx-0 flex-wrap
+}
+
+.transactions-page-select-modal-btn {
+    @apply w-fit h-fit border-2 border-slate-400 text-sm lg:text-base rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60
+}
+
+.messages-list-table {
+    @apply w-fit mx-2 lg:w-[80rem] h-full table-fixed border-collapse text-xs lg:text-base rounded-b-xl
+}
+
+.messages-list-table-body {
+    @apply w-full border-x-[1px] border-slate-400 text-[0.6rem] indirect:text-sm md:text-base
+}
+
+.messages-list-table-data {
+    @apply px-4 py-2 text-center;
+}
+
+.mates-list-table-data-base {
+    @apply mx-auto py-2
+}
  
 };

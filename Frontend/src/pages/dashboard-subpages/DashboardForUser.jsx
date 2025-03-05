@@ -39,7 +39,9 @@ export default function DashBoardForUser() {
             <DashboardHeader />
             <h2 className="w-full h-fit flex justify-center text-2xl font-semibold">To use website functions, add your household:</h2>
             <div className="w-full h-fit flex flex-col justify-start items-center">
-                <form onSubmit={handleAddHouse} className="w-1/3 h-fit flex flex-col justify-start items-center mt-5 border-2 border-slate-500 rounded-md py-2">
+                <form
+                    onSubmit={handleAddHouse}
+                    className="w-1/3 h-fit flex flex-col justify-start items-center mt-5 border-2 border-slate-500 rounded-md py-2">
                     <label htmlFor="houseName" className="text-lg">Type name of your household:</label>
                     <p className="text-xs mb-5">If household exists, you will be added to it</p>
                     <input type="text" name="houseName" id="houseName" className="bg-slate-200" ref={houseNameRef} />

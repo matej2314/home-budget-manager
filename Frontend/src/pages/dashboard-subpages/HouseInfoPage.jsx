@@ -75,7 +75,9 @@ export default function HouseInfoPage() {
                                     <BasicHouseInfo basicHouseInfo={basicHouseInfo} />
                                 </div>
                             </div>
-                            <div id="dailyData-container" className="lg:w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto text-xs lg:text-md px-3 py-3">
+                            <div
+                                id="dailyData-container"
+                                className="lg:w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto text-xs lg:text-md px-3 py-3">
                                 <div id="dailyShortInfo" className="w-full h-full flex flex-row justify-center items-center gap-3">
                                     <p className="flex flex-col lg:flex-row text-md lg:gap-1">
                                         <span className="w-fit h-fit flex items-center justify-center lg:text-base font-bold">Previous day's transactions:</span>

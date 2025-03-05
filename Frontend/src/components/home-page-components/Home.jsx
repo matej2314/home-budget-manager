@@ -102,7 +102,7 @@ export default function Home() {
                             </h3>
                             <div className="w-full h-fit flex justify-center items-start gap-3">
                                 <button
-                                    className="w-fit h-fit border-[3px] border-slate-300 text-sm px-2 py-3 rounded-xl shadow-md shadow-slate-400 active:shadow-sm"
+                                    className="w-fit h-fit border-[3px] border-slate-300 text-sm px-2 py-3 rounded-xl shadow-md shadow-slate-400 hover:text-slate-300 hover:shadow-slate-800 active:shadow-sm"
                                     type="button"
                                 >
                                     <NavLink to="aboutus">
@@ -110,7 +110,7 @@ export default function Home() {
                                     </NavLink>
                                 </button>
                                 <button
-                                    className="w-fit h-fit text-sm border-[3px] border-slate-300 p-2 rounded-xl shadow-md shadow-slate-400 active:shadow-sm"
+                                    className="w-fit h-fit text-sm border-[3px] border-slate-300 p-2 rounded-xl shadow-md shadow-slate-400 hover:text-slate-300 hover:shadow-slate-800 active:shadow-sm"
                                     type="button"
                                     onClick={() => openModal('auth')}
                                 >

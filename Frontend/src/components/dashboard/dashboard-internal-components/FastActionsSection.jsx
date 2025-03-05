@@ -60,7 +60,7 @@ export default function FastActions({ profilePage, action }) {
 
     return (
         <>
-            <div id='fastActions' className='grid grid-cols-3 gap-y-2 gap-x-2 px-5 md:flex md:flex-row justify-start items-center md:gap-3 md:ml-10 py-2'>
+            <div id='fastActions' className='fast-actions'>
                 {mapArray(filterArray(dashboardBtnsArray, (btn) => btn.profilePage === profilePage || btn.profilePage === undefined),
                     ({ label, actionType }) => (
                         <button

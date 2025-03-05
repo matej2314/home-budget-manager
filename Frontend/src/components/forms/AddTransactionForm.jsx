@@ -99,7 +99,8 @@ export default function AddTransactionForm({ onClose }) {
                     <option value="income">income</option>
                     <option value="expense">expense</option>
                 </select>
-                <label htmlFor="actionValue" className='text-lg font-semibold'>{imageMode ? 'Select image of receipt:' : 'Type value of transaction:'}</label>
+                <label htmlFor="actionValue" className='text-lg font-semibold'>{imageMode ? 'Select image of receipt:' :
+                    'Type value of transaction:'}</label>
                 <div className='w-full h-fit flex justify-center items-center gap-3'>
                     {!imageMode ?
                         <input
@@ -121,7 +122,7 @@ export default function AddTransactionForm({ onClose }) {
                     <button
                         type="button"
                         onClick={handleToggleImageMode}
-                        className="bg-gray-300 p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 text-xl border-2 border-slate-500/45"
+                        className="form-submit-modal-btn"
                     >
                         <Icon icon='flat-color-icons:compact-camera' width={20} height={20} />
                     </button>

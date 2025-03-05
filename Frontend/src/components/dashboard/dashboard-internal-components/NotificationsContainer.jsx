@@ -36,7 +36,8 @@ export default function NotificationsContainer({ onClick }) {
                                 className='w-full h-fit flex items-center gap-2'
                             >
                                 <Icon icon={iconsMap[category]} width={25} height={25} />
-                                <p className='w-full h-fit flex items-center justify-center text-nowrap'><span className='font-bold mr-2'>{houseName} :</span><span>{notification.message}</span></p>
+                                <p className='w-full h-fit flex items-center justify-center text-nowrap'>
+                                    <span className='font-bold mr-2'>{houseName} :</span><span>{notification.message}</span></p>
                             </li>
                         ))
                         )}

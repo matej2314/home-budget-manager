@@ -18,7 +18,9 @@ export default function AuthModal({ isOpen, onRequestClose }) {
         >
             {mode ? (
                 <>
-                    <button onClick={onRequestClose} className='absolute top-2 right-2 text-gray-400 hover:text-gray-600'>X</button>
+                    <button onClick={onRequestClose} className='absolute top-2 right-2 text-gray-400 hover:text-gray-600'>
+                        X
+                    </button>
                     <Authorization mode={mode} />
                 </>
             ) : (
@@ -26,13 +28,13 @@ export default function AuthModal({ isOpen, onRequestClose }) {
                     <div className='flex justify-around'>
                         <button
                             onClick={() => handleModeChange('login')}
-                            className='px-4 py-3 bg-slate-500/80 text-white rounded-lg hover:bg-slate-300 hover:text-slate-600'
+                            className='auth-modal-mode-btn'
                         >
                             Login
                         </button>
                         <button
                             onClick={() => handleModeChange('register')}
-                            className='px-4 py-2 bg-slate-500/90 text-white rounded-lg hover:bg-slate-400 hover:text-slate-800'
+                            className='auth-modal-mode-btn'
                         >
                             SignUp
                         </button>

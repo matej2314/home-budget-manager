@@ -75,7 +75,7 @@ export default function DeclareBudgetForm() {
                 <button
                     type="submit"
                     disabled={sended}
-                    className="bg-gray-300 p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 text-xl border-2 border-slate-500/45"
+                    className="form-submit-modal-btn"
                 >
                     Declare
                 </button>

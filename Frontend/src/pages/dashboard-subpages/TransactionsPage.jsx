@@ -40,13 +40,13 @@ export default function TransactionsPage() {
                 <div id='actionBtns' className="w-[75vw] h-fit flex  md:flex-row justify-center items-center rounded-md gap-3">
                     <button
                         onClick={() => openModal('transaction')}
-                        className="w-fit h-fit border-2 border-slate-400 text-sm lg:text-base rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"
+                        className="transactions-page-select-modal-btn"
                         style={{ boxShadow: 'inset 0 0 2px 2px rgba(0, 0, 0, 0.15)' }}
                     >
                         Add new transaction
                     </button>
                     <button
-                        className="w-fit h-fit border-2 border-slate-400 rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60"
+                        className="transactions-page-select-modal-btn"
                         onClick={() => openModal('categories')}
                         style={{ boxShadow: 'inset 0 0 2px 2px rgba(0, 0, 0, 0.15)' }}
                     >

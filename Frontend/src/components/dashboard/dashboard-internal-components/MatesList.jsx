@@ -47,9 +47,9 @@ export default function MatesList({ mode }) {
                     <tbody className="w-full">
                         {houseMates.map((mate, index) => (
                             <tr key={index} className="w-11/12 border-[1px] border-slate-400">
-                                <td className="mx-auto py-2 text-center">{mate.userName}</td>
-                                <td className="mx-auto py-2 text-center">{mate.role}</td>
-                                <td className="mx-auto py-2 flex justify-center gap-3">
+                                <td className="mates-list-table-data-base text-center">{mate.userName}</td>
+                                <td className="mates-list-table-data-base text-center">{mate.role}</td>
+                                <td className="mates-list-table-data-base flex justify-center gap-3">
                                     <button type="button"
                                         onClick={() => handleOpenModal(mate.userName)}
                                         className="w-fit h-fit" title='Send message'>
