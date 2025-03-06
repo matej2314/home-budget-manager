@@ -13,7 +13,7 @@ exports.addNewAction = async (req, res) => {
     if (!type || !value || !catId) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'No required details.'
+            message: 'Invalid input data.'
         });
     };
 

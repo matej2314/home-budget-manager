@@ -7,7 +7,7 @@ const deleteUser = async (userId) => {
 
     if (!userId) {
         logger.error(`No user ID.`);
-        return { status: 'badreq', message: 'No user data.' };
+        return { status: 'badreq', message: 'Invalid input data.' };
     };
 
     try {

@@ -24,7 +24,7 @@ router.post('/',
             if (!totalAmount) {
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'No expected value.'
+                    message: 'Invalid input data.'
                 });
             }
 

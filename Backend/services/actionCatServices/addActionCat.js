@@ -12,7 +12,7 @@ const addActionCat = async (name, type) => {
             logger.error(`No required transaction category details.`);
             return {
                 status: 'badreq',
-                message: 'No required data.',
+                message: 'Invalid input data.',
             };
         }
 

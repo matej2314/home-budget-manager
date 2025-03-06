@@ -16,7 +16,7 @@ const deleteAction = async (transactionId, userId) => {
             logger.error('Transaction ID not found.');
             return {
                 status: 'badreq',
-                message: 'Transaction ID not found.',
+                message: 'Invalid input data.',
             };
         }
 

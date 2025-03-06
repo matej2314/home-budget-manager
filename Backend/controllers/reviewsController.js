@@ -12,7 +12,7 @@ exports.addReview = async (req, res) => {
     if (!content || content.trim().length === 0 || !rating) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Enter corrently opinion!'
+            message: 'Invalid input data!'
         });
     };
 

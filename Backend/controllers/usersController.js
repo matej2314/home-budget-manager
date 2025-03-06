@@ -14,7 +14,7 @@ exports.addUserToHouse = async (req, res) => {
     if (!userName) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Enter correct invited user username!',
+            message: 'Invalid input user data.',
         });
     };
 
