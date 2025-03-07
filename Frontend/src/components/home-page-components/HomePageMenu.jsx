@@ -86,7 +86,7 @@ export default function HomePageMenu() {
                     <li><Link to='/contact'>Contact</Link></li>
                     <li className='h-full w-fit flex items-center gap-2 md:gap-3'>
                         <span className={`${isMobile && !isOpened ? 'hidden' : 'block'}`}>
-                            {/* < LanguageSelector /> */}
+                            < LanguageSelector isHomepage={true} />
                         </span>
                         {!isLoading && isAuthenticated && user && !isMobile && (
                             <p className=' h-full flex md:justify-center items-center'>

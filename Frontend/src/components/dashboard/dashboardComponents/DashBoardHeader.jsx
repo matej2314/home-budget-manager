@@ -55,7 +55,7 @@ export default function DashboardHeader() {
             </div>
             <HeaderIconsContainer filteredDataMessages={filteredDataMessages} socketMessages={socketMessages} />
             <div id="user-opts" className="w-full h-full flex justify-end items-center gap-4">
-                {/* <LanguageSelector /> */}
+                <LanguageSelector />
                 <button type="button" title="Logout" onClick={handleOpenModal}><Icon icon='mdi:logout' width={20} height={20} /></button>
             </div>
             <LogOutModal isOpen={isModalOpen} onRequestClose={handleCloseModal} handleLogOut={handleLogOut} />
