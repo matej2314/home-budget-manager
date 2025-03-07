@@ -5,6 +5,7 @@ import { showCookiesInfo } from "../configs/toastify";
 import useHomePageStore from "../store/homePageStore";
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import HomePageMenu from "../components/home-page-components/HomePageMenu";
+import { getSessionStorage, setSessionStorage } from "../utils/storageUtils";
 
 export default function HomePage() {
     useDocumentTitle('Home');

@@ -3,6 +3,7 @@ import { motion, AnimatePresence, delay } from "framer-motion";
 import { useState, useEffect } from 'react';
 import useModal from '../../hooks/useModal';
 import AuthModal from '../modals/AuthModal';
+import { getSessionStorage, setSessionStorage } from '../../utils/storageUtils';
 
 export default function Home() {
     const [currentText, setCurrentText] = useState(null);
@@ -10,12 +11,12 @@ export default function Home() {
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'auth' });
 
     useEffect(() => {
-        const visited = sessionStorage.getItem('hasVisited');
+        const visited = getSessionStorage('hasVisited');
 
         if (visited) {
             setHasVisited(true);
         } else {
-            sessionStorage.setItem('hasVisited', 'true');
+            setSessionStorage('hasVisited', 'true');
         };
 
         if (!visited) {
