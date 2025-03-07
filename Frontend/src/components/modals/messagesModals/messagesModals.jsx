@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { AuthContext } from '../../../store/authContext';
+import { useMessagesStore } from '../../../store/messagesStore';
 import Modal from 'react-modal';
 import SendMessageForm from '../../forms/SendMessageForm';
 import { serverUrl } from '../../../url';
@@ -27,6 +28,8 @@ export function SendMessageModal({ isOpen, onRequestClose, recipient }) {
 }
 
 export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
+    const { fetchMessages } = useMessagesStore();
+
 
     const handleDeleteMessage = async (messageId) => {
         const delData = {

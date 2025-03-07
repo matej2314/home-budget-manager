@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../store/authContext';
 import Modal from 'react-modal';
 import Authorization from '../home-page-components/Authorization';
+import { showErrorToast } from '../../configs/toastify';
 
 export default function AuthModal({ isOpen, onRequestClose }) {
     const [mode, setMode] = useState(null);
+    const { isAuthenticated } = useContext(AuthContext);
 
     const handleModeChange = (selectedMode) => {
         setMode(selectedMode);
     };
+
+    const handleLoginBtn = (selectedMode) => {
+        if (isAuthenticated) {
+            showErrorToast('You are currently logged in!');
+            return;
+        }
+        setMode(selectedMode);
+    }
 
     return (
         <Modal
@@ -27,7 +38,7 @@ export default function AuthModal({ isOpen, onRequestClose }) {
                 <div className='text-center'>
                     <div className='flex justify-around'>
                         <button
-                            onClick={() => handleModeChange('login')}
+                            onClick={() => handleLoginBtn('login')}
                             className='auth-modal-mode-btn'
                         >
                             Login

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { serverUrl } from '../url';
+import fetchData from '../utils/asyncUtils/fetchData';
 
 const useHomePageStore = create((set) => ({
     homePageData: null,
@@ -10,13 +11,12 @@ const useHomePageStore = create((set) => ({
         set({ isHomePageDataLoading: true, homePageDataError: null });
 
         try {
-            const response = await fetch(`${serverUrl}/homepage/dataCollection`);
-            const resultData = await response.json();
+            const response = await fetchData(`${serverUrl}/homepage/dataCollection`);
 
-            if (resultData.status === 'success') {
-                set({ homePageData: resultData.homePageData });
-            } else if (homePageData.status === 'error') {
-                set({ homePageDataError: resultData.message });
+            if (response.status === 'success') {
+                set({ homePageData: response.homePageData });
+            } else if (response.status === 'error') {
+                set({ homePageDataError: response.message });
             }
         } catch (error) {
             set({ homePageDataError: error.message });

@@ -1,0 +1,65 @@
+import { useContext } from 'react';
+import { AuthContext } from '../../store/authContext';
+import Modal from 'react-modal';
+import sendRequest from '../../utils/asyncUtils/sendRequest';
+import { serverUrl } from '../../url';
+import { useTransactionsStore } from '../../store/transactionsStore';
+import { showErrorToast, showInfoToast } from '../../configs/toastify';
+
+export default function DeleteTransactionModal({ isOpen, onRequestClose, transaction }) {
+    const { fetchTransactions } = useTransactionsStore();
+    const { user } = useContext(AuthContext);
+
+    const handleDeleteAction = async (transaction) => {
+
+        if (transaction.userName !== user.userName) {
+            showErrorToast('Nie dodałeś tej transakcji!');
+            onRequestClose();
+        };
+
+        try {
+            const actionData = { transactionId: transaction.transactionId };
+            const deleteAction = await sendRequest('DELETE', actionData, `${serverUrl}/action`);
+
+            if (deleteAction.status === 'success') {
+                showInfoToast('Transakcja usunięta.');
+                fetchTransactions();
+                onRequestClose();
+            } else {
+                showErrorToast('Nie udało się usunąć transakcji.');
+            }
+        } catch (error) {
+            showErrorToast('Wystąpił błąd podczas usuwania transakcji.');
+            console.error('Delete transaction error:', error);
+        }
+    };
+
+    return (
+        <Modal
+            isOpen={isOpen}
+            onRequestClose={onRequestClose}
+            className="w-11/12 xl:w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-y-1/2 mx-auto"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+        >
+            <div className='w-full h-fit flex flex-col justify-center items-center gap-5'>
+                <h2 className='w-full h-fit fle justify-center font-semibold'>Are you sure you want to delete transaction?</h2>
+                <div id='btnsDiv' className='w-full h-fit flex justify-around'>
+                    <button
+                        type="button"
+                        className="form-submit-modal-btn"
+                        onClick={() => handleDeleteAction(transaction)}
+                    >
+                        Yes
+                    </button>
+                    <button
+                        onClick={onRequestClose}
+                        type="button"
+                        className="form-submit-modal-btn"
+                    >
+                        No
+                    </button>
+                </div>
+            </div>
+        </Modal>
+    )
+}

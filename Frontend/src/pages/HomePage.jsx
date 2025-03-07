@@ -1,5 +1,5 @@
 import { useEffect, useContext } from "react";
-import { useNavigate, useLocation, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
 import { showCookiesInfo } from "../configs/toastify";
 import useHomePageStore from "../store/homePageStore";
@@ -10,9 +10,6 @@ import { getSessionStorage, setSessionStorage } from "../utils/storageUtils";
 export default function HomePage() {
     useDocumentTitle('Home');
     const { isAuthenticated } = useContext(AuthContext);
-    const navigate = useNavigate();
-    const location = useLocation();
-    const referrer = document.referrer;
 
     const { homePageData, homePageDataError, isHomePageDataLoading, fetchHomePageData } = useHomePageStore();
 
@@ -20,20 +17,17 @@ export default function HomePage() {
         fetchHomePageData();
     }, []);
 
-
-
     useEffect(() => {
-        if (isAuthenticated && referrer.origin === "http://localhost:5173") {
-            showCookiesInfo("This site uses Cookies.", "You can find out the details in the Privacy Policy or in the dashboard panel.");
-            setTimeout(() => {
-                navigate("dashboard");
-            }, 600);
-        }
+        const isCookiesInfo = getSessionStorage('isCookiesInfo');
 
-        if (!isAuthenticated && location.state?.from !== "http://localhost:5173") {
+        if (isCookiesInfo && isAuthenticated) {
+            return;
+        } else if (!isCookiesInfo) {
+            setSessionStorage('isCookiesInfo', 'true');
             showCookiesInfo("This site uses Cookies.", " You can find out the details in the Privacy Policy or in the dashboard panel");
         }
-    }, [isAuthenticated, referrer, navigate]);
+
+    }, [isAuthenticated]);
 
     return (
         <>

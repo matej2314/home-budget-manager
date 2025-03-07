@@ -7,19 +7,13 @@ import { getSessionStorage, setSessionStorage } from '../../utils/storageUtils';
 
 export default function Home() {
     const [currentText, setCurrentText] = useState(null);
-    const [hasVisited, setHasVisited] = useState(false);
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'auth' });
 
     useEffect(() => {
         const visited = getSessionStorage('hasVisited');
 
-        if (visited) {
-            setHasVisited(true);
-        } else {
-            setSessionStorage('hasVisited', 'true');
-        };
-
         if (!visited) {
+            setSessionStorage('hasVisited', 'true');
             const timer1 = setTimeout(() => setCurrentText(0), 500);
             const timer2 = setTimeout(() => setCurrentText(1), 3500);
             const timer3 = setTimeout(() => setCurrentText(2), 5700);

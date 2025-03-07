@@ -11,16 +11,9 @@ export default function LoginForm() {
     const navigate = useNavigate();
     const email = useRef();
     const password = useRef();
-    const disabledValue = isLoading || isAuthenticated;
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (disabledValue) {
-            showInfoToast('You are currently logged in!');
-            return;
-        };
 
         const data = {
             email: email.current.value,
@@ -31,7 +24,7 @@ export default function LoginForm() {
     };
 
     useEffect(() => {
-        if (user && !isLoading && !error) {
+        if (user && !isLoading && !error && isAuthenticated) {
             showInfoToast(`User ${user.userName} logged in successfully!`);
             const timer = setTimeout(() => {
                 navigate('/dashboard');
@@ -41,7 +34,7 @@ export default function LoginForm() {
         };
 
         if (message || error) {
-            showErrorToast(message);
+            showErrorToast('Logowanie nieudane.');
         }
     }, [error, isLoading, navigate, user]);
 
@@ -88,7 +81,6 @@ export default function LoginForm() {
 
                 <button
                     type="submit"
-                    disabled={disabledValue}
                     className="login-form-submit-btn"
                 >
                     {isLoading ? 'Logging in' : 'Login'}

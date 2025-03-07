@@ -1,7 +1,6 @@
 const logger = require('../configs/logger');
 const { getHomePageCollection } = require('../services/homePageDataServices/homePageDataCollection');
-const { addFunctionalityContent } = require('../services/homePageDataServices/addFunctionalityService');
-const { addProjectInfoService } = require('../services/homePageDataServices/addProjectInfoService');
+const { addTechnologyContent } = require('../services/homePageDataServices/addTechnologyService');
 const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
@@ -31,18 +30,18 @@ exports.getDataCollection = async (req, res) => {
     }
 };
 
-exports.addFunctionality = async (req, res) => {
-    const { title, content } = req.body;
+exports.addTechnology = async (req, res) => {
+    const { name, icon } = req.body;
 
-    if (!title || !content) {
+    if (!name || !icon) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Enter functionality details!'
+            message: 'Enter technology details!'
         });
     };
 
     try {
-        const result = await addFunctionalityContent(title, content);
+        const result = await addTechnologyContent(name, icon);
 
         switch (result.status) {
             case 'error':
@@ -62,48 +61,11 @@ exports.addFunctionality = async (req, res) => {
                 });
         };
     } catch (error) {
-        logger.error(`homePageDataController/addFunctionality error: ${error}`);
+        logger.error(`homePageDataController/addTechnology error: ${error}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
             message: 'Internal server error.'
         });
     }
 
-};
-
-exports.addShortProjectInfo = async (req, res) => {
-    const { title, content } = req.body;
-
-    if (!title || !content) {
-        return res.status(statusCode.BAD_REQUEST).json({
-            status: 'error',
-            message: 'Podaj szczegóły informacji!'
-        });
-    };
-
-    try {
-        const result = await addProjectInfoService(title, content);
-
-
-        switch (result.status) {
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-                    status: 'error',
-                    message: result.message
-                });
-            case 'success':
-                return res.status(statusCode.CREATED).json(result);
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'Podany adres nie istnieje.',
-                });
-        };
-    } catch (error) {
-        logger.error(`Błąd w homePageDataController/addShortProjectInfo: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Błąd przetwarzania żądania.'
-        });
-    }
 };

@@ -1,20 +1,15 @@
-import { useContext } from 'react';
-import { AuthContext } from '../../../store/authContext';
-import { useTransactionsStore } from '../../../store/transactionsStore';
+import useModal from '../../../hooks/useModal';
 import { Icon } from '@iconify/react';
 import { useMediaQuery } from 'react-responsive';
-import sendRequest from '../../../utils/asyncUtils/sendRequest';
-import { serverUrl } from "../../../url";
-import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import LoadingModal from '../../modals/LoadingModal';
 import { tableLabels } from '../../../utils/arraysUtils/actionsTableLabels';
 import { formatDbDate } from '../../../utils/formattingUtils/formatDateToDisplay';
 import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
+import DeleteTransactionModal from '../../modals/DeleteTransactionModal';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
     const isMobile = useMediaQuery({ maxWidth: 768 });
-    const { user } = useContext(AuthContext);
-    const { fetchTransactions } = useTransactionsStore();
+    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'delete', data: null });
 
     const filteredTransactions = filterId ? filterArray(transactions, (transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)
@@ -22,27 +17,8 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
         : [];
     const transactionsToDisplay = limit ? sortedTransactions.slice(0, limit) : sortedTransactions;
 
-    const handleDeleteAction = async (transaction) => {
-
-        if (transaction.userName !== user.userName) {
-            showErrorToast('Nie dodałeś tej transakcji!');
-            return;
-        };
-
-        try {
-            const actionData = { transactionId: transaction.transactionId };
-            const deleteAction = await sendRequest('DELETE', actionData, `${serverUrl}/action`);
-
-            if (deleteAction.status === 'success') {
-                showInfoToast('Transakcja usunięta.');
-                fetchTransactions();
-            } else {
-                showErrorToast('Nie udało się usunąć transakcji.');
-            }
-        } catch (error) {
-            showErrorToast('Wystąpił błąd podczas usuwania transakcji.');
-            console.error('Delete transaction error:', error);
-        }
+    const handleDeleteAction = (transaction) => {
+        openModal('delete', transaction);
     };
 
     return (
@@ -106,6 +82,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                 <p>Brak transakcji</p>
             )}
             {actionsLoading && <LoadingModal isOpen={actionsLoading} />}
+            {modal && modal.isOpen && modal.type === 'delete' && <DeleteTransactionModal isOpen={modal.isOpen} onRequestClose={closeModal} transaction={modal.data} />}
         </div>
     );
 }

@@ -8,14 +8,18 @@ exports.getHomePageCollection = async () => {
         await connection.beginTransaction();
         let homePageData = {};
 
-        const [getFunctionalities] = await connection.query('SELECT id, functionTitle, functionContent FROM functionalities');
+        const [getTechnologies] = await connection.query('SELECT id, name, icon FROM technologies');
 
-        homePageData.functionalities = getFunctionalities;
-
-        const [getShortInfo] = await connection.query('SELECT id, infoTitle, infoContent FROM shortProjectInfo');
-        homePageData.shortInfo = getShortInfo;
+        homePageData.technologies = getTechnologies;
 
         const [getReviews] = await connection.query('SELECT id, rating,userName, content, userId, date FROM usersReviews');
+
+        if (getReviews.affectedRows === 0) {
+            return {
+                status: 'error',
+                message: 'Failed to fetch reviews data.'
+            }
+        }
         homePageData.reviews = getReviews;
 
         await connection.commit();

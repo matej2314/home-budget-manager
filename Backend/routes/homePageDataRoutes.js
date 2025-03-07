@@ -7,10 +7,6 @@ const verifyRole = require('../middlewares/verifyRole');
 
 router.get('/dataCollection', homeDataController.getDataCollection);
 
-router.post('/functionality', verifyJWT, verifyRole('superadmin'), homeDataController.addFunctionality);
-
-router.post('/shortInfo', homeDataController.addShortProjectInfo);
-
-
+router.post('/technology', verifyJWT, verifyRole('superadmin'), homeDataController.addTechnology);
 
 module.exports = router;
