@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { AuthContext } from '../../../store/authContext';
 import { useMessagesStore } from "../../../store/messagesStore";
 import { useSocket } from '../../../store/socketContext';
-import LanguageSelector from "../dashboard-internal-components/LanguageSelector";
+import LanguageSelector from "../../LanguageSelector";
 import { loggingOut } from "../../../utils/handleLogOut";
 import HeaderIconsContainer from "../dashboard-internal-components/HeaderIconsContainer";
 import LogOutModal from "../../modals/LogOutModal";

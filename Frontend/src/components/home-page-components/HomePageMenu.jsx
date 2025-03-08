@@ -7,7 +7,7 @@ import Modal from 'react-modal';
 import useModal from '../../hooks/useModal';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import AuthModal from '../modals/AuthModal';
-import LanguageSelector from '../dashboard/dashboard-internal-components/LanguageSelector';
+import LanguageSelector from '../LanguageSelector';
 import { loggingOut } from '../../utils/handleLogOut';
 import LogoOutModal from '../modals/LogOutModal';
 import { showInfoToast } from '../../configs/toastify';
@@ -58,7 +58,7 @@ export default function HomePageMenu() {
         <>
             {<motion.div
                 id="mainMenu"
-                className=" w-full h-fit flex rounded-md z-10"
+                className="absolute w-full h-fit flex rounded-md z-10 mb-4"
                 variants={isTablet || isMobile ? menuVariants.mobile : menuVariants.desktop}
                 initial='initial'
                 animate='animate'
