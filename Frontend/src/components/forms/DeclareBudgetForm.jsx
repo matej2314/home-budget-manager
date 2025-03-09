@@ -5,6 +5,7 @@ import { CountDeclaredBudgetPeriod } from '../../utils/countingUtils/CountDeclar
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from "../modals/LoadingModal";
 import { Icon } from '@iconify/react';
+import SubmitBtn from "./internal/SubmitBtn";
 
 
 export default function DeclareBudgetForm() {
@@ -68,17 +69,15 @@ export default function DeclareBudgetForm() {
                     />
                     <Icon
                         icon='tdesign:money'
-                        className="icon-base text-gray-500 text-xl text-opacity-40"
+                        className="icon-base top-0.5 text-gray-500 text-xl text-opacity-40"
                     />
                 </div>
-
-                <button
-                    type="submit"
+                <SubmitBtn
+                    className='form-submit-modal-btn'
                     disabled={sended}
-                    className="form-submit-modal-btn"
                 >
                     Declare
-                </button>
+                </SubmitBtn>
                 <p>For period : {declaredPeriod.startPeriod} - {declaredPeriod.endPeriodString}</p>
             </form>
             {isLoading && <LoadingModal isOpen={isLoading} />}

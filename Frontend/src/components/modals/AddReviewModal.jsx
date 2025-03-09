@@ -4,6 +4,7 @@ import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import StarRating from '../StarRating';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import SubmitBtn from '../forms/internal/SubmitBtn';
 
 export default function AddReviewModal({ isOpen, onRequestClose }) {
     const [rating, setRating] = useState(0);
@@ -62,12 +63,11 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
                         placeholder='type your opinion'
                         ref={userOpinionRef}
                     />
-                    <button
-                        type="submit"
-                        className="form-submit-modal-btn"
+                    <SubmitBtn
+                        className='form-submit-modal-btn'
                     >
                         Save!
-                    </button>
+                    </SubmitBtn>
                 </form>
             </div>
         </Modal>

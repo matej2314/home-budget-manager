@@ -6,6 +6,7 @@ import { useTransactionsStore } from '../../store/transactionsStore';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
+import SubmitBtn from './internal/SubmitBtn';
 
 export default function AddTransactionForm({ onClose }) {
     const { data, isLoading, error } = useContext(DataContext);
@@ -143,13 +144,12 @@ export default function AddTransactionForm({ onClose }) {
                 >
                     Recognize
                 </button>}
-                <button
-                    type="submit"
+                <SubmitBtn
+                    className='form-submit-modal-btn'
                     disabled={isLoading}
-                    className="form-submit-modal-btn"
                 >
-                    Save transaction
-                </button>
+                    Save Transaction
+                </SubmitBtn>
             </form>
             {loadingImage && <LoadingModal isOpen={loadingImage} />}
         </div>

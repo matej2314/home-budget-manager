@@ -4,6 +4,7 @@ import { AuthContext } from '../../store/authContext';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { Icon } from '@iconify/react';
 import SignUpCookiesSettings from '../SignUpCookiesSettings';
+import SubmitBtn from './internal/SubmitBtn';
 
 export default function SignUpForm() {
     const { register, isLoading, error, message, user } = useContext(AuthContext);
@@ -106,7 +107,7 @@ export default function SignUpForm() {
                     />
                     <Icon
                         icon='entypo:email'
-                        className="icon-base text-gray-500 text-xl text-opacity-60 -translate-y-1"
+                        className="icon-base top-1 text-gray-500 text-xl text-opacity-60 -translate-y-1"
                     />
                 </div>
                 <label htmlFor="regPass">Enter your password:</label>
@@ -123,7 +124,7 @@ export default function SignUpForm() {
                     />
                     <Icon
                         icon='carbon:password'
-                        className="icon-base text-gray-500 text-xl text-opacity-60 -translate-y-1"
+                        className="icon-base top-1 text-gray-500 text-xl text-opacity-60 -translate-y-1"
                     />
                 </div>
 
@@ -141,7 +142,7 @@ export default function SignUpForm() {
                     />
                     <Icon
                         icon='mdi:password-reset'
-                        className="icon-base text-gray-500 text-xl pointer-events-none text-opacity-60 -translate-y-1"
+                        className="icon-base top-1.5 text-gray-500 text-xl pointer-events-none text-opacity-60 -translate-y-1"
                     />
                 </div>
 
@@ -153,13 +154,12 @@ export default function SignUpForm() {
                     Cookies settings
                 </button>
                 {showCookiesSettings && <SignUpCookiesSettings clickAction={setCookiesConsent} />}
-                <button
-                    type="submit"
+                <SubmitBtn
+                    className='auth-submit-btn'
                     disabled={isLoading}
-                    className="signup-form-submit-btn"
                 >
                     Register
-                </button>
+                </SubmitBtn>
             </form>
         </div>
     )

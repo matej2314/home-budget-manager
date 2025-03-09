@@ -6,7 +6,7 @@ import i18next from 'i18next';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function LanguageSwitch({ isHomepage }) {
-    const [selectedLang, setSelectedLang] = useState(i18next.language);
+    const [selectedLang, setSelectedLang] = useState('en');
     const { isMobile } = useIsMobile();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -73,7 +73,7 @@ export default function LanguageSwitch({ isHomepage }) {
             {isMobile ? (
                 <Select
                     options={languages}
-                    value={languages.find(lang => lang.value === selectedLang)}
+                    value={languages.find(lang => lang.value === selectedLang) || 'en'}
                     components={{ DropdownIndicator: () => null, IndicatorSeparator: () => null }}
                     onChange={handleLangChange}
                     isSearchable={false}
@@ -93,13 +93,13 @@ export default function LanguageSwitch({ isHomepage }) {
                     <motion.div
                         className={`absolute w-1/2 h-full ${isHomepage ? 'bg-slate-600 border-2 border-slate-400' : 'bg-customGray/55 border-2 border-slate-300'} rounded-full`}
                         animate={{ x: selectedLang === 'en' ? 0 : '100%' }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        transition={{ duration: 0.15, ease: 'easeIn' }}
                     />
                     {languages.map((lang) => (
                         <div key={lang.value} className="relative w-1/2 flex justify-center items-center">
                             <motion.div
                                 animate={{ scale: selectedLang === lang.value ? [1, 1.2, 1] : 1 }}
-                                transition={{ duration: 0.3 }}
+                                transition={{ duration: 0.2 }}
                             >
                                 {lang.icon}
                             </motion.div>

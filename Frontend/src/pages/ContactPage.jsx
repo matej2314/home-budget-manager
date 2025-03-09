@@ -6,7 +6,7 @@ export default function ContactPage() {
     useDocumentTitle('Contact');
 
     return (
-        <div className='w-full h-full flex-row flex justify-center items-center pb-[3rem]'>
+        <div className='w-full h-full flex-row flex justify-center items-center pb-[4rem]'>
             <ContactForm />
         </div>
     )

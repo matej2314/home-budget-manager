@@ -18,20 +18,20 @@
     @apply w-full pl-2 rounded-md border-b-[1px] border-t-[1px] border-slate-300 shadow-sm shadow-slate-500
 }
 
+.btn-border {
+    @apply border-b-2 border-t-[1px] hover:border-x-[1px]
+}
+
 .auth-modal-mode-btn {
-    @apply px-4 py-3 bg-slate-500/90 text-white rounded-lg hover:bg-slate-400 hover:text-slate-800
+    @apply px-4 py-3 bg-slate-100 text-slate-900  border-slate-400/55 rounded-lg hover:bg-slate-400/35 btn-border hover:text-slate-800
 }
 
 .auth-input {
     @apply border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md;
    }
 
-.login-form-submit-btn {
-    @apply bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-700 active:shadow
-}
-
-.signup-form-submit-btn {
-    @apply bg-gray-300/65 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-sm shadow-slate-600/80 active:shadow
+.auth-submit-btn {
+    @apply bg-transparent text-black p-2 rounded-md border-slate-600 hover:bg-gray-500 hover:text-slate-300 btn-border shadow-sm shadow-slate-700 active:shadow
 }
 
 .msgs-filter-btn {
@@ -63,27 +63,27 @@
 }
 
 .icon-base {
-    @apply absolute right-1 top-1 pointer-events-none
+    @apply absolute right-1 pointer-events-none
 }
 
 .form-submit-modal-btn {
-    @apply bg-gray-300 p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 text-lg border-2 border-slate-500/45
+    @apply bg-transparent p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 btn-border border-slate-500/45
 }
 
 .contact-form {
-@apply w-9/12 text-sm indirect:w-9/12 indirect:text-base indirectxl:w-8/12 md:w-1/3 h-fit flex flex-col justify-start items-center bg-slate-300/15 gap-3 border-2 border-slate-300 text-slate-200 shadow-md shadow-customGray/55 rounded-md py-3
+@apply w-9/12 text-sm indirect:w-9/12 indirect:text-base indirectxl:w-8/12 md:w-1/3 mb-[3rem] h-fit flex flex-col justify-start items-center bg-slate-300/15 gap-2 border-2 border-slate-300 text-slate-200 shadow-md shadow-customGray/55 rounded-md py-3
 }
 
 .contact-form-input {
-    @apply w-full h-fit flex justify-center items-center pl-2 rounded-md border-2 border-slate-600 text-slate-800
+    @apply w-full h-fit flex justify-center items-center pl-2 rounded-md bg-transparent border-b-2 border-t-2 border-slate-200 text-slate-100 placeholder-slate-200 focus:outline-none focus:border-x-2
 }
 
 .contact-form-textarea {
-    @apply w-full h-fit flex justify-center items-center pl-2 resize-none rounded-md border-2 border-slate-600 text-slate-800
+    @apply w-full h-fit flex justify-center items-center pl-2 resize-none rounded-md bg-transparent border-b-2 border-t-[1px] border-slate-200 text-slate-200 placeholder-slate-200 focus:outline-none focus:border-x-2
 }
 
 .contact-form-submit-btn {
-    @apply bg-gray-300 text-black p-2 rounded-md border-2 border-slate-600 hover:bg-gray-500 hover:text-slate-300 shadow-md shadow-slate-700 active:shadow-sm
+    @apply relative w-[15rem] overflow-hidden bg-transparent flex justify-center text-slate-200 p-2 rounded-md border-t-[1px] border-b-2 border-slate-200 hover:bg-gray-500 hover:text-slate-300 shadow-md shadow-neutral-500 active:shadow-sm
 }
 
 .avatar-form {
@@ -119,7 +119,7 @@
 }
 
 .messages-list-table {
-    @apply w-fit mx-2 lg:w-[80rem] h-full table-fixed border-collapse text-xs lg:text-base rounded-b-xl
+    @apply w-fit mx-2 lg:w-full lg:mx-auto h-full table-fixed border-collapse text-xs lg:text-base rounded-b-xl
 }
 
 .messages-list-table-body {

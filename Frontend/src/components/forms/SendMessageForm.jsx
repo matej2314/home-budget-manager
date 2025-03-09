@@ -3,14 +3,25 @@ import { useMessagesStore } from '../../store/messagesStore';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { Icon } from '@iconify/react';
+import { motion } from 'framer-motion';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import SendMessageBtn from "./internal/SendMessageBtn";
+import LoadingModal from '../modals/LoadingModal';
 
 export default function SendMessageForm({ reply, recipientName, onClose }) {
-    const [sended, setSended] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [actionState, setActionState] = useState({ type: null });
     const { fetchMessages } = useMessagesStore();
     const recipientRef = useRef();
     const messageContentRef = useRef();
+
+    const handleSetActionState = (action) => {
+        setActionState({ type: action });
+    };
+
+    const handleResetActionState = () => {
+        setActionState({ type: null });
+    }
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
@@ -21,7 +32,6 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
         };
 
         try {
-            setSended(false);
             setIsLoading(true);
             const sendMessage = await sendRequest('POST', messageData, `${serverUrl}/message/send`);
 
@@ -36,7 +46,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
         } catch (error) {
             showErrorToast(sendMessage.message);
         } finally {
-            setSended(true);
+            handleSetActionState('sended');
             setIsLoading(false);
         }
     };
@@ -66,26 +76,27 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
                     />
                     <Icon
                         icon='mage:user-fill'
-                        className="icon-base text-gray-500 text-xl text-opacity-40"
+                        className="icon-base top-0.5 text-gray-500 text-xl text-opacity-40"
                     />
                 </div>
                 <label className="w-full h-fit flex justify-center" htmlFor="messageContent">Type your message:</label>
-                <textarea
-                    className=" md:w-1/2 resize-none input-base"
-                    name="messageContent"
-                    id="messageContent"
-                    placeholder="message"
-                    ref={messageContentRef}
-                    required
-                />
-
-                <button
-                    type="submit"
-                    className="form-submit-modal-btn"
-                    disabled={sended}>
-                    Send message
-                </button>
+                <div className="relative w-full flex justify-center">
+                    <textarea
+                        className=" md:w-1/2 resize-none input-base"
+                        name="messageContent"
+                        id="messageContent"
+                        placeholder="message"
+                        ref={messageContentRef}
+                        required
+                    />
+                    <Icon
+                        icon='ic:baseline-alternate-email'
+                        className="absolute right-[6.5rem] pointer-events-none top-0.5 text-slate-600 text-xl text-opacity-45"
+                    />
+                </div>
+                <SendMessageBtn form='sendMessage' state={actionState} setState={handleSetActionState} resetState={handleResetActionState} />
             </form>
+            {isLoading && <LoadingModal isOpen={isLoading} />}
         </div>
     );
 }

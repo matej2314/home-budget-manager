@@ -5,6 +5,7 @@ import { useSocket } from "../store/socketContext";
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import DashBoardMenu from "../components/dashboard/dashboardComponents/DashBoardMenu";
 import { Outlet } from "react-router-dom";
+import { showMessageToast } from '../configs/toastify'
 
 export default function DashboardPage() {
     useDocumentTitle('Dashboard');
@@ -32,7 +33,7 @@ export default function DashboardPage() {
 
     return (
         isMateOrHost ? (
-            <main className="w-screen h-full flex flex-row justify-around items-stretch overflow-y-hidden bg-slate-200">
+            <main className="w-full h-full flex flex-row justify-around items-stretch overflow-y-hidden bg-slate-200">
                 <DashBoardMenu />
                 <Outlet />
             </main>

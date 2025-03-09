@@ -46,15 +46,15 @@ export default function DashboardHeader() {
     }, [connected, SocketError, messages]);
 
     return (
-        <div id='dashboard-header' className="w-full h-fit flex flex-row items-center text-slate-900 py-3 gap-5 border-2 border-b-slate-800/5 pl-5 pr-8">
+        <div id='dashboard-header' className="w-full h-fit flex flex-row items-center justify-between text-slate-900 py-3 border-b-2 border-slate-800/5 pl-5 pr-8">
             <div id="user-info" className="w-fit flex justify-around items-center gap-3">
                 <div className="w-14 h-14 bg-white rounded-full flex justify-center items-center">
                     <img src={user && `${serverUrl}/avatars/avatar`} className="rounded-full w-full h-full" />
                 </div>
                 {isAuthenticated && !error && user ? <p>{user.userName}</p> : <p>Guest</p>}
+                <HeaderIconsContainer filteredDataMessages={filteredDataMessages} socketMessages={socketMessages} />
             </div>
-            <HeaderIconsContainer filteredDataMessages={filteredDataMessages} socketMessages={socketMessages} />
-            <div id="user-opts" className="w-full h-full flex justify-end items-center gap-4">
+            <div id="user-opts" className="w-fit h-full flex justify-end items-center gap-4">
                 <LanguageSelector />
                 <button type="button" title="Logout" onClick={handleOpenModal}><Icon icon='mdi:logout' width={20} height={20} /></button>
             </div>

@@ -2,28 +2,42 @@ import { useState, useRef } from 'react';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast } from '../../configs/toastify';
 import { Icon } from '@iconify/react';
+import { motion } from 'framer-motion'
+import SendMessageBtn from './internal/SendMessageBtn';
+import LoadingModal from '../modals/LoadingModal';
 
 export default function ContactForm() {
-    const [sended, setSended] = useState(false);
+    const [actionState, setActionState] = useState({ type: null });
+    const [isLoading, setIsLoading] = useState(false);
     const userNameRef = useRef();
     const userEmailRef = useRef();
     const userMessageRef = useRef();
 
+    const handleSetActionState = (action) => {
+        setActionState({ type: action });
+    };
+
+    const handleResetActionState = () => {
+        setActionState({ type: null });
+    }
+
     const handleContactForm = async (e) => {
         e.preventDefault();
         showInfoToast(`So fat it's not working :)`);
+        handleSetActionState('sended')
     };
+
     return (
         <form
             onSubmit={handleContactForm}
             className='contact-form'
         >
-            <h2 className='w-full h-fit flex justify-center items-center font-semibold text-xl mb-3'>Contact us:</h2>
+            <h2 className='w-full h-fit flex justify-center items-center font-semibold text-xl'>Contact us:</h2>
             <label className='w-full h-fit flex justify-center items-center' htmlFor="userName">Type your name:</label>
-            <div className='relative w-10/12'>
+            <div className='relative w-fit'>
                 <input
                     type="text"
-                    className='w-full h-fit flex justify-center items-center pl-2 rounded-md border-2 border-slate-600 text-slate-800'
+                    className='contact-form-input'
                     name="userName"
                     id="userName"
                     ref={userNameRef}
@@ -33,12 +47,11 @@ export default function ContactForm() {
                 />
                 <Icon
                     icon='tdesign:user-filled'
-                    className="icon-base text-gray-500 text-xl text-opacity-45"
+                    className="icon-base top-[0.15rem] text-slate-100 text-xl text-opacity-50"
                 />
             </div>
-
             <label htmlFor="userEmail">Type your e-mail address:</label>
-            <div className='relative w-10/12'>
+            <div className='relative w-fit flex'>
                 <input
                     type="email"
                     className='contact-form-input'
@@ -51,10 +64,9 @@ export default function ContactForm() {
                 />
                 <Icon
                     icon='ic:baseline-alternate-email'
-                    className="icon-base text-gray-500 text-xl text-opacity-55"
+                    className="icon-base top-[0.15rem] text-slate-100 text-xl text-opacity-55"
                 />
             </div>
-
             <label className='w-full h-fit flex justify-center items-center' htmlFor="userMessage">Type your message:</label>
             <div className='relative w-10/12'>
                 <textarea
@@ -69,16 +81,10 @@ export default function ContactForm() {
                 />
                 <Icon
                     icon='ic:outline-message'
-                    className="icon-base text-gray-500 text-xl text-opacity-55"
+                    className="icon-base top-[0.25rem] text-slate-200 text-xl text-opacity-65"
                 />
             </div>
-
-            <button
-                type="submit"
-                className="contact-form-submit-btn"
-
-            >Send message
-            </button>
+            <SendMessageBtn form='contact' state={actionState} setState={handleSetActionState} resetState={handleResetActionState} />
         </form>
     )
 }

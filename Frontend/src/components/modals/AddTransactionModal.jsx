@@ -16,7 +16,7 @@ export default function AddTransactionModal({ isOpen, onRequestClose }) {
             <div className="flex justify-end mt-4">
                 <button
                     onClick={onRequestClose}
-                    className="bg-gray-300 p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 text-lg border-2 border-slate-500/45"
+                    className='form-submit-modal-btn'
                 >
                     Cancel
                 </button>

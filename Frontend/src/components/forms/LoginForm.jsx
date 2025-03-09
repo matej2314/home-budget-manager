@@ -4,6 +4,7 @@ import { AuthContext } from '../../store/authContext';
 import { Icon } from '@iconify/react';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
+import SubmitBtn from './internal/SubmitBtn';
 
 
 export default function LoginForm() {
@@ -78,13 +79,12 @@ export default function LoginForm() {
                         className="icon-base text-gray-500 text-xl text-opacity-80"
                     />
                 </div>
-
-                <button
-                    type="submit"
-                    className="login-form-submit-btn"
+                <SubmitBtn
+                    className="auth-submit-btn"
+                    disabled={isLoading}
                 >
                     {isLoading ? 'Logging in' : 'Login'}
-                </button>
+                </SubmitBtn>
             </form>
             {isLoading && <LoadingModal isOpen={isLoading} />}
         </div>

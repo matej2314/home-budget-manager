@@ -4,6 +4,7 @@ import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from "../../configs/toastify";
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
+import SubmitBtn from "./internal/SubmitBtn";
 
 export default function AddUserToHouseForm({ onClose }) {
     const [sended, setSended] = useState(false);
@@ -60,17 +61,15 @@ export default function AddUserToHouseForm({ onClose }) {
                     />
                     <Icon
                         icon='mage:user-fill'
-                        className="icon-base text-gray-500 text-xl text-opacity-55"
+                        className="icon-base top-0.5 text-gray-500 text-xl text-opacity-55"
                     />
                 </div>
-
-                <button
-                    type="submit"
-                    className="form-submit-modal-btn"
+                <SubmitBtn
+                    className='form-submit-modal-btn'
                     disabled={sended}
                 >
                     Invite
-                </button>
+                </SubmitBtn>
             </form>
             {isLoading && <LoadingModal isOpen={isLoading} />}
         </div>

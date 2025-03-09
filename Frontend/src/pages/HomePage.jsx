@@ -32,9 +32,9 @@ export default function HomePage() {
     return (
         <>
             {!isHomePageDataLoading && !homePageDataError && homePageData && (
-                <main className="w-screen h-screen flex flex-row justify-center items-center gap-2 bg-slate-300">
+                <main className="w-screen h-screen flex flex-row justify-center items-center bg-slate-300">
                     <div
-                        className="home-page-content-div gap-5 md:gap-10">
+                        className="home-page-content-div gap-12 md:gap-[1.5rem] lg:gap-[1rem] xl:gap-[5rem]">
                         <div className="relative w-full">
                             <HomePageMenu />
                         </div>

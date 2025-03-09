@@ -5,6 +5,7 @@ import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
+import SubmitBtn from '../forms/internal/SubmitBtn';
 
 
 export default function ChangeEmailModal({ isOpen, onRequestClose }) {
@@ -81,15 +82,12 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
                             className="icon-base text-gray-500 text-xl text-opacity-30"
                         />
                     </div>
-
-
-                    <button
-                        type="submit"
+                    <SubmitBtn
+                        className='form-submit-modal-btn'
                         disabled={sended}
-                        className="form-submit-modal-btn"
                     >
                         Save new e-mail
-                    </button>
+                    </SubmitBtn>
                 </form>
                 {isLoading && <LoadingModal isOpen={isLoading} />}
             </div>

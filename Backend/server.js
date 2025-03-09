@@ -1,4 +1,5 @@
 const dotenv = require('dotenv').config({ path: './.env' });
+const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('./configs/logger.js');
@@ -41,6 +42,8 @@ app.options('*', (req, res) => {
 	res.header('Access-Control-Allow-Credentials', 'true');
 	res.status(200).end();
 });
+
+app.use('/screens', express.static(path.join(__dirname, 'public/app-images')));
 
 setupRoutes(app);
 swaggerDocs(app);

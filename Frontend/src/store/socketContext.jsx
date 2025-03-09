@@ -34,7 +34,7 @@ export const SocketProvider = ({ children }) => {
                 reconnectionAttempts: 5,
                 connectionStateRecovery: true,
                 pingInterval: 15000,
-                pintTimeout: 5000,
+                pingtTimeout: 5000,
             });
 
             newSocket.on("connect", () => {
@@ -119,8 +119,21 @@ export const SocketProvider = ({ children }) => {
         }
     };
 
+    const removeNotification = (notificationType, notificationId) => {
+        setMessages((prevMessages) => {
+            const updatedNotifications = { ...prevMessages.notifications };
+            updatedNotifications[notificationType] = updatedNotifications[notificationType].filter(
+                (notification) => notification.id !== notificationId
+            );
+            return {
+                ...prevMessages,
+                notifications: updatedNotifications,
+            };
+        });
+    };
+
     return (
-        <SocketContext.Provider value={{ socket, connected, messages, sendMessage, error }}>
+        <SocketContext.Provider value={{ socket, connected, messages, sendMessage, error, removeNotification }}>
             {children}
         </SocketContext.Provider>
     );

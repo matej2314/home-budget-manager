@@ -78,7 +78,6 @@ export const AuthProvider = ({ children }) => {
             const response = await sendRequest('POST', {}, `${serverUrl}/auth/logout`);
 
             if (response.status === 'success') {
-                setMessage(() => response.message);
                 setIsAuthenticated(false);
                 setUser({
                     id: '',
@@ -87,6 +86,7 @@ export const AuthProvider = ({ children }) => {
                     avatar: '',
                     cookiesConsent: false,
                 });
+                setMessage(() => response.message);
             };
 
         } catch (error) {

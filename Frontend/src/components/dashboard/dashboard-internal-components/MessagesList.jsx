@@ -81,11 +81,13 @@ export default function MessagesList({ userMessages, messagesError, loading, get
 
     return (
         <>
-            {userMessages && <div className="mx-auto min-h-full">
-                <MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />
+            {userMessages && <div className="mx-auto min-h-full w-full px-3">
+                <div className="ml-5">
+                    <MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />
+                </div>
                 {!loading ? (
                     <>
-                        <div className="w-full h-fit flex justify-end mb-2 pr-8">
+                        <div className="w-full h-fit flex justify-end pr-6">
                             {Array.from({ length: messagesPages }, (_, index) => (
                                 <button
                                     key={index}

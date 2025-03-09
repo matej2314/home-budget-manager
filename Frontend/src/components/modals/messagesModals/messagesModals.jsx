@@ -105,7 +105,7 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
                         <Icon
                             icon='mage:user-fill'
                             color='#0e63d6'
-                            className="icon-base text-gray-500 text-xl text-opacity-40"
+                            className="icon-base top-[0.1rem] text-gray-500 text-xl text-opacity-40"
                         />
                     </div>
 
@@ -121,7 +121,7 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
                         <Icon
                             icon='mage:user-fill'
                             color='#168709'
-                            className="icon-base text-gray-500 text-xl"
+                            className="icon-base top-[0.1rem] text-gray-500 text-xl"
                         />
                     </div>
 

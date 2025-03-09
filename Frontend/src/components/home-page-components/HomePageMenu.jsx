@@ -62,9 +62,8 @@ export default function HomePageMenu() {
                 variants={isTablet || isMobile ? menuVariants.mobile : menuVariants.desktop}
                 initial='initial'
                 animate='animate'
-
             >
-                <ul className={`w-full h-fit flex gap-2 justify-center items-center py-1 text-slate-200 text-[0.65rem] indirect:gap-2.5 indirectxl:text-[1.05rem] md:gap-0 indirect:text-[0.85rem] sm:text-[1.2rem] md:text-sm md:justify-around lg:text-lg px-2 transition-all duration-300`}>
+                <ul className={`w-full h-fit flex justify-center gap-2 items-center ml-2 py-1 text-slate-200 text-[0.7rem] sm:text-[1rem] sm:gap-8 indirect:gap-2.5 indirectxl:text-[1.05rem] md:gap-0 indirect:text-[0.85rem]  md:text-sm md:justify-around lg:text-lg px-2 transition-all duration-300`}>
                     <li><Link to='/'>Home Page</Link></li>
                     <li><Link to='/aboutus'>About us</Link></li>
                     <li>
