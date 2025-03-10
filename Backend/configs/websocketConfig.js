@@ -12,7 +12,7 @@ const initializeWebSocket = (server) => {
 	ioInstance = io(server, {
 		cors: {
 			origin: (origin, callback) => {
-				const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:5052', 'https://msliwowski.net'];
+				const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:5052', 'https://budgetapp.msliwowski.net', 'https://budgetapi.msliwowski.net'];
 				if (allowedOrigins.includes(origin)) {
 					callback(null, true);
 				} else {
