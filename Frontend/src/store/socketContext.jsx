@@ -53,6 +53,11 @@ export const SocketProvider = ({ children }) => {
                 console.error("Socket.IO Error:", error);
             });
 
+            newSocket.on('error', (error) => {
+                setError(error);
+                console.error('Connection error:', error);
+            });
+
             newSocket.on("balance_update", (data) => {
                 setMessages((prevMessages) => ({
                     ...prevMessages,

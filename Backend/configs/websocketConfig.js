@@ -5,11 +5,13 @@ const io = require('socket.io');
 const getMysqlExpireDate = require('../utils/getMySqlExpireDate');
 const authMiddleware = require('../middlewares/websocket/authMiddleware');
 const socketQueries = require('../database/websocketQueries');
+const path = require('path');
 
 let ioInstance;
 
 const initializeWebSocket = (server) => {
 	ioInstance = io(server, {
+		path: '/',
 		cors: {
 			origin: (origin, callback) => {
 				const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:5052', 'https://budgetapp.msliwowski.net', 'https://budgetapi.msliwowski.net'];
@@ -24,7 +26,7 @@ const initializeWebSocket = (server) => {
 		pingInterval: 15000,
 		pingTimeout: 5000,
 		reconnection: true,
-		reconnectionAttempts: 3, // poprawiona nazwa
+		reconnectionAttempts: 3,
 		reconnectionDelay: 3000,
 		reconnectionDelayMax: 10000,
 		randomizationFactor: 0.5,
@@ -62,10 +64,10 @@ const initializeWebSocket = (server) => {
 			});
 
 			socket.on('error', (error) => {
-				logger.error(`Websocket error: ${error.message}`);
+				logger.error(`Websocket error: ${error}`);
 			});
 		} catch (error) {
-			logger.error(`An error occurred during connection initialization: ${error.message}`);
+			logger.error(`An error occurred during connection initialization: ${error}`);
 			socket.emit('error', {
 				message: 'Failed to establish connection.',
 			});
