@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { AuthContext } from "./authContext";
 import { io } from "socket.io-client";
 import { socketPath } from "../url";
+import useNotificationsStore from './notificationsStore';
 
 export const SocketContext = createContext();
 
@@ -75,23 +76,23 @@ export const SocketProvider = ({ children }) => {
 
             newSocket.on('notification', (data) => {
                 setMessages((prevMessages) => {
-                    const updatedNotifications = {
-                        ...prevMessages.notifications,
-                        transactions: Array.isArray(prevMessages.notifications.transactions)
-                            ? [...prevMessages.notifications.transactions, data]
-                            : [data],
-                        usersActions: Array.isArray(prevMessages.notifications.usersActions)
-                            ? [...prevMessages.notifications.usersActions, data]
-                            : [data],
-                        monthlyBalance: Array.isArray(prevMessages.notifications.monthlyBalance)
-                            ? [...prevMessages.notifications.monthlyBalance, data]
-                            : [data],
-                    };
+                    const { category, ...restOfData } = data;
 
-                    return {
-                        ...prevMessages,
-                        notifications: updatedNotifications,
-                    };
+                    if (prevMessages.notifications.hasOwnProperty(category)) {
+
+                        const updatedNotifications = {
+                            ...prevMessages.notifications,
+                            [category]: [...prevMessages.notifications[category], restOfData],
+                        };
+
+                        return {
+                            ...prevMessages,
+                            notifications: updatedNotifications,
+                        };
+                    }
+
+                    console.error(`Unknown category: ${category}`);
+                    return prevMessages;
                 });
             });
 

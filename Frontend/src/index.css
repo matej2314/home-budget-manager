@@ -111,7 +111,7 @@
 }
 
 .home-page-content-div {
-    @apply w-full h-full lg:w-11/12 lg:h-[90%] overflow-hidden lg:rounded-md flex items-start border-t-2 bg-gradient-to-br from-[rgba(71,85,105,0.85)] via-[rgba(51,65,85,0.9)] to-[rgba(30,41,59,0.95)] backdrop-blur-[2px] shadow-[inset_0_0_12px_rgba(255,255,255,0.03),0_0_8px_rgba(255,255,255,0.02)]  bg-slate-700/90 border-slate-400/30 mx-auto md:mx-0 flex-wrap
+    @apply w-full h-full justify-center lg:w-11/12 lg:h-[90%] overflow-hidden lg:rounded-md flex items-start border-t-2 bg-gradient-to-br from-[rgba(71,85,105,0.85)] via-[rgba(51,65,85,0.9)] to-[rgba(30,41,59,0.95)] backdrop-blur-[2px] shadow-[inset_0_0_12px_rgba(255,255,255,0.03),0_0_8px_rgba(255,255,255,0.02)]  bg-slate-700/90 border-slate-400/30 mx-auto md:mx-0 flex-wrap
 }
 
 .transactions-page-select-modal-btn {
@@ -127,7 +127,7 @@
 }
 
 .messages-list-table-data {
-    @apply px-4 py-2 text-center;
+    @apply xl:px-16 text-center ;
 }
 
 .mates-list-table-data-base {

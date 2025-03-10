@@ -1,4 +1,4 @@
-import { useRef, useContext, useEffect } from 'react';
+import { useRef, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
 import { Icon } from '@iconify/react';
@@ -9,12 +9,14 @@ import SubmitBtn from './internal/SubmitBtn';
 
 export default function LoginForm() {
     const { login, isLoading, error, message, user, isAuthenticated } = useContext(AuthContext);
+    const [sended, setSended] = useState(false);
     const navigate = useNavigate();
     const email = useRef();
     const password = useRef();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSended(false);
 
         const data = {
             email: email.current.value,
@@ -22,6 +24,7 @@ export default function LoginForm() {
         };
 
         await login(data);
+        setSended(true);
     };
 
     useEffect(() => {
@@ -34,7 +37,7 @@ export default function LoginForm() {
             return () => clearTimeout(timer);
         };
 
-        if (message || error) {
+        if (sended && error && !isAuthenticated) {
             showErrorToast('Logowanie nieudane.');
         }
     }, [error, isLoading, navigate, user]);

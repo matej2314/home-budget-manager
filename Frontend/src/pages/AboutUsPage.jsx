@@ -12,7 +12,7 @@ export default function AboutUs() {
 
     return (
         <div className="w-full h-full flex flex-col justify-start xl:px-16">
-            <div className="w-full h-[90%] flex flex-col justify-start items-center gap-4 md:gap-4 rounded-md overflow-auto no-scrollbar md:mt-5 xl:mt-0">
+            <div className="w-full h-[90%] flex flex-col justify-start items-center gap-4 md:gap-4 rounded-md overflow-auto no-scrollbar mt-[4rem] indirect:mt-[3rem] indirectxl:mt-[3rem] sm:mt-[3rem] md:mt-5 lg:mt-[3rem] xl:mt-0">
                 <div id='welcome-text' className="w-fit h-full flex flex-col justify-center items-center text-slate-100 gap-3">
                     <h2 className="text-lg md:text-2xl font-semibold text-stone-400/80 text-center">What is Web Home Budget Manager?</h2>
                     <p className="w-11/12 flex flex-wrap justify-center mx-auto">

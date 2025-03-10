@@ -61,7 +61,7 @@ export default function Home() {
             variants={wrapperVariants}
             initial="initial"
             animate="animate"
-            className="w-full h-full flex flex-col text-slate-200 justify-center items-center gap-3 z-0"
+            className="w-full h-full flex flex-col mb-[10rem] text-slate-200 justify-center items-center gap-3 z-0"
         >
             <div>
                 <h2 className="text-center text-2xl indirect:text-3xl sm:text-4xl lg:text-5xl font-urbanist font-normal mb-28 lg:mb-[12rem]">

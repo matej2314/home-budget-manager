@@ -12,11 +12,11 @@ const initializeWebSocket = (server) => {
 	ioInstance = io(server, {
 		cors: {
 			origin: (origin, callback) => {
-				const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:5052'];
+				const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:5052', 'https://msliwowski.net'];
 				if (allowedOrigins.includes(origin)) {
 					callback(null, true);
 				} else {
-					callback(new Error('Nieautoryzowany origin'), false);
+					callback(new Error('Unathorized URL'), false);
 				}
 			},
 			credentials: true,
@@ -128,7 +128,6 @@ const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
 			logger.error(`Nie znaleziono domowników gospodarstwa ${houseId}`);
 			return;
 		};
-
 
 		const [usersConnections] = await connection.query(`SELECT connectionId FROM socketConnections WHERE userId IN (?)`,
 			[houseMates.map(mate => mate.userId)]

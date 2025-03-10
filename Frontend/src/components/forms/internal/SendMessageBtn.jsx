@@ -44,7 +44,7 @@ export default function SendMessageBtn({ form, state, setState, resetState }) {
                 animate='animate'
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
-                <Icon icon="fa-solid:paper-plane" width={22} height={22} />
+                <Icon icon="fa-solid:paper-plane" width={22} height={22} className="text-slate-200" />
             </motion.div>
 
         </motion.button>

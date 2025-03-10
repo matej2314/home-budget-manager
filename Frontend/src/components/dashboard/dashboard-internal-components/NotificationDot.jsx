@@ -1,4 +1,4 @@
-export default function NotificationDot({ color, data, head }) {
+export default function NotificationDot({ color, data, head, onClick }) {
     const position = () => {
         if (color === 'bg-green-700') {
             return 'top-[1rem] left-[24rem]';
@@ -15,7 +15,9 @@ export default function NotificationDot({ color, data, head }) {
 
     return (
         <span
-            className={head ? headerClasses : menuClasses}>
+            className={head ? headerClasses : menuClasses}
+            onClick={onClick}
+        >
             {data}
         </span>
     )

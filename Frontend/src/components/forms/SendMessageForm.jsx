@@ -58,10 +58,10 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
             </h2>
             <form
                 onSubmit={handleSendMessage}
-                className="w-full h-full flex flex-col items-center justify-center gap-3"
+                className=" w-9/12 indirectxl:w-7/12 md:w-5/12 lg:w-4/12 xl:w-7/12 h-full flex flex-col items-center justify-center gap-3"
             >
                 <label className="w-full h-fit flex justify-center" htmlFor="recipientName">Type recipient name:</label>
-                <div className="relative w-fit flex justify-center">
+                <div className="relative w-full flex justify-center">
                     <input
                         type="text"
                         name="recipientName"
@@ -82,7 +82,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
                 <label className="w-full h-fit flex justify-center" htmlFor="messageContent">Type your message:</label>
                 <div className="relative w-full flex justify-center">
                     <textarea
-                        className=" md:w-1/2 resize-none input-base"
+                        className="resize-none w-full pl-2 rounded-md border-b-[1px] border-t-[1px] border-slate-300 shadow-sm shadow-slate-500"
                         name="messageContent"
                         id="messageContent"
                         placeholder="message"
@@ -90,8 +90,8 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
                         required
                     />
                     <Icon
-                        icon='ic:baseline-alternate-email'
-                        className="absolute right-[6.5rem] pointer-events-none top-0.5 text-slate-600 text-xl text-opacity-45"
+                        icon='uiw:message'
+                        className="absolute right-1 pointer-events-none top-0.5 text-slate-600 text-xl text-opacity-45"
                     />
                 </div>
                 <SendMessageBtn form='sendMessage' state={actionState} setState={handleSetActionState} resetState={handleResetActionState} />

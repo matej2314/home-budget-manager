@@ -34,9 +34,9 @@ export default function TransactionsPage() {
     };
 
     return (
-        <div id="pagecontent" className="min-h-screen w-screen bg-slate-200 overflow-y-hidden">
+        <div id="pagecontent" className="min-h-screen w-screen bg-slate-200 overflow-y-hidden mb-3">
             <DashboardHeader />
-            <div id="middle-content" className="flex flex-col gap-4 border-2 border-b-slate-800/5 pt-3 pb-4 px-5">
+            <div id="middle-content" className="flex flex-col gap-4  pt-3 pb-4 px-5">
                 <div id='actionBtns' className="w-[75vw] h-fit flex  md:flex-row justify-center items-center rounded-md gap-3">
                     <button
                         onClick={() => openModal('transaction')}

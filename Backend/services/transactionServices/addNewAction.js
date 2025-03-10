@@ -52,6 +52,7 @@ const addNewAction = async (userId, type, value, catId) => {
 			type: 'notification',
 			data: {
 				category: 'transactions',
+				id,
 				action: 'addTransaction',
 				message: 'Transaction added correctly.',
 				user: userId

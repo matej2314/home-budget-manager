@@ -60,10 +60,15 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     const refreshData = getMessages;
     const handleMarkMessage = (message) => markMessage(message, user, refreshData);
 
+    const handleOpenMessage = (actionType, message) => {
+        handleMarkMessage(message);
+        openModal(actionType, message);
+    }
+
     const getClickHandler = (actionType, message) => {
         switch (actionType) {
             case 'open':
-                return () => openModal('open', message);
+                return () => handleOpenMessage('open', message);
             case 'delete':
                 return () => openModal('delete', message);
             case 'mark':
@@ -81,7 +86,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
 
     return (
         <>
-            {userMessages && <div className="mx-auto min-h-full w-full px-3">
+            {userMessages && <div className="mx-auto min-h-full lg:px-3 xl:px-3">
                 <div className="ml-5">
                     <MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />
                 </div>
@@ -123,7 +128,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                                             {!isMobile ? formatDbDate(message.date) : formatDbDate(message.date, 'split')}
                                         </td>
                                         <td className="messages-list-table-data">{message.readed ? "Readed" : "Unreaded"}</td>
-                                        <td className="messages-list-table-data flex justify-center items-center gap-2 indirect:text-base md:text-lg pt-3 md:pt-2.5">
+                                        <td className="w-full flex justify-around items-center messages-list-table-data lg:flex lg:justify-start lg:gap-8 xl:flex xl:justify-start xl:gap-2 indirect:text-base md:text-lg pt-3 md:pt-2.5">
                                             {mapArray(
                                                 filterArray(messagesBtnsArr, item => item.condition === undefined || item.condition(message, user)),
                                                 ({ label, icon, actionType }) => (

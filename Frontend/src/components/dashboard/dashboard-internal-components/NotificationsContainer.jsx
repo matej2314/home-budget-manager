@@ -1,16 +1,12 @@
 import { useContext } from 'react'
 import { DataContext } from '../../../store/dataContext';
 import { Icon } from '@iconify/react';
-import { useSocket } from '../../../store/socketContext';
 import { motion } from 'framer-motion'
 
-export default function NotificationsContainer({ onClick }) {
-    const { connected, messages, error: socketError } = useSocket();
+export default function NotificationsContainer({ notifications, clickAction }) {
     const { data, isLoading, error } = useContext(DataContext);
 
     const houseName = !isLoading && !error && data.houseData[0].houseName || '';
-
-    const notifications = !socketError && connected && messages.notifications || [];
 
     const iconsMap = {
         transactions: 'tdesign:undertake-transaction',
@@ -21,7 +17,7 @@ export default function NotificationsContainer({ onClick }) {
 
     return (
         <motion.div
-            className='absolute top-[2.8rem] left-[18rem] bg-white shadow-lg border rounded-md mt-2 p-2 w-[20rem]'
+            className='absolute top-[2.8rem] left-[18rem] bg-white shadow-lg border rounded-md mt-2 p-2 w-[20rem] z-10'
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -32,7 +28,7 @@ export default function NotificationsContainer({ onClick }) {
                     <ul>
                         {Object.entries(notifications).map(([category, items]) => items.map((notification, index) => (
                             <li key={`${category}-${index}`}
-                                onClick={onClick}
+                                onClick={() => clickAction(category, notification.id)}
                                 className='w-full h-fit flex items-center gap-2'
                             >
                                 <Icon icon={iconsMap[category]} width={25} height={25} />
