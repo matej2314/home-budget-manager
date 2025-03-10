@@ -16,7 +16,7 @@ const initializeWebSocket = (server) => {
 				if (allowedOrigins.includes(origin)) {
 					callback(null, true);
 				} else {
-					callback(new Error('Unathorized URL'), false);
+					callback(new Error('Unauthorized URL'), false);
 				}
 			},
 			credentials: true,
@@ -24,7 +24,7 @@ const initializeWebSocket = (server) => {
 		pingInterval: 15000,
 		pingTimeout: 5000,
 		reconnection: true,
-		reconectionAttempts: 3,
+		reconnectionAttempts: 3, // poprawiona nazwa
 		reconnectionDelay: 3000,
 		reconnectionDelayMax: 10000,
 		randomizationFactor: 0.5,
@@ -47,10 +47,9 @@ const initializeWebSocket = (server) => {
 
 				if (existingExpireDate > new Date()) {
 					socket.emit('connect_success', { message: 'Connection has been restored.' });
-
 					return;
 				} else {
-					logger.error(`User's  ${userId} websocket connection expired. Deleting old connection.`);
+					logger.error(`User's ${userId} websocket connection expired. Deleting old connection.`);
 					await pool.query(socketQueries.deleteConnection, [userId]);
 				}
 			}
@@ -66,7 +65,7 @@ const initializeWebSocket = (server) => {
 				logger.error(`Websocket error: ${error.message}`);
 			});
 		} catch (error) {
-			logger.error(`An error occured during connection initialization: ${error.message}`);
+			logger.error(`An error occurred during connection initialization: ${error.message}`);
 			socket.emit('error', {
 				message: 'Failed to establish connection.',
 			});
@@ -103,9 +102,9 @@ const broadcastMessage = async (userId, { type, data } = {}) => {
 		}
 
 		socket.emit(type, data);
-		logger.info(`Websocket message sended for ${userId}`);
+		logger.info(`Websocket message sent for ${userId}`);
 	} catch (error) {
-		logger.error(`An error occured during sending websocket message for user: ${userId} : ${error.message}`);
+		logger.error(`An error occurred during sending websocket message for user: ${userId} : ${error.message}`);
 	} finally {
 		if (connection) connection.release();
 	}
@@ -125,33 +124,31 @@ const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
 		if (houseMates.length === 0) {
 			logger.error(`Not found housemates for household: ${houseId}`);
 			return;
-		};
+		}
 
-		const [usersConnections] = await connection.query(`SELECT connectionId FROM socketConnections WHERE userId IN (?)`,
+		const [usersConnections] = await connection.query(
+			`SELECT connectionId FROM socketConnections WHERE userId IN (?)`,
 			[houseMates.map(mate => mate.userId)]
 		);
-	}
 
-		const [usersConnections] = await connection.query(`SELECT connectionId FROM socketConnections WHERE userId IN (?)`, [houseMates.map((mate) => mate.userId)]);
-
-	if (!usersConnections || usersConnections.length === 0) {
-		logger.error(`Connections not found for housemates of household: ${houseId}`);
-		return;
-	}
-
-	usersConnections.forEach((connection) => {
-		const socket = ioInstance.sockets.sockets.get(connection.connectionId);
-
-		if (socket) {
-			socket.emit(type, data);
+		if (!usersConnections || usersConnections.length === 0) {
+			logger.error(`Connections not found for housemates of household: ${houseId}`);
+			return;
 		}
-	});
-	logger.info(`Websocket message for housemates of house: ${houseId} was sended`);
-} catch (error) {
-	logger.error(`An error occured during broadcasting websocket message for housemates of house: ${houseId}`);
-} finally {
-	if (connection) connection.release();
-}
+
+		usersConnections.forEach((connection) => {
+			const socket = ioInstance.sockets.sockets.get(connection.connectionId);
+
+			if (socket) {
+				socket.emit(type, data);
+			}
+		});
+		logger.info(`Websocket message for housemates of house: ${houseId} was sent`);
+	} catch (error) {
+		logger.error(`An error occurred during broadcasting websocket message for housemates of house: ${houseId}`);
+	} finally {
+		if (connection) connection.release();
+	}
 };
 
 module.exports = { initializeWebSocket, broadcastMessage, broadcastToHouseMates };
