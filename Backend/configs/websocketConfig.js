@@ -29,7 +29,6 @@ const initializeWebSocket = (server) => {
 		reconnectionDelayMax: 10000,
 		randomizationFactor: 0.5,
 		connectionStateRecovery: true,
-
 	});
 
 	ioInstance.use(authMiddleware);
@@ -47,11 +46,11 @@ const initializeWebSocket = (server) => {
 				const existingExpireDate = new Date(existingConnection.expireDate);
 
 				if (existingExpireDate > new Date()) {
-					socket.emit('connect_success', { message: 'Połączenie zostało przywrócone.' });
+					socket.emit('connect_success', { message: 'Connection has been restored.' });
 
 					return;
 				} else {
-					logger.error(`Połączenie dla użytkownika ${userId} wygasło. Usuwamy stare połączenie.`);
+					logger.error(`User's  ${userId} websocket connection expired. Deleting old connection.`);
 					await pool.query(socketQueries.deleteConnection, [userId]);
 				}
 			}
@@ -60,29 +59,28 @@ const initializeWebSocket = (server) => {
 
 			socket.on('disconnect', async (reason) => {
 				await pool.query(socketQueries.deleteConnection, [userId]);
-				logger.info(`Połączenie WebSocket zamknięte. Powód: ${reason}`);
+				logger.info(`Websocket connection closed. Reason: ${reason}`);
 			});
 
 			socket.on('error', (error) => {
-				logger.error(`Błąd WebSocket: ${error.message}`);
+				logger.error(`Websocket error: ${error.message}`);
 			});
-
 		} catch (error) {
-			logger.error(`Błąd przy inicjalizacji połączenia: ${error.message}`);
+			logger.error(`An error occured during connection initialization: ${error.message}`);
 			socket.emit('error', {
-				message: 'Błąd podczas nawiązywania połączenia.',
+				message: 'Failed to establish connection.',
 			});
 			socket.disconnect();
 		}
 	});
 
-	logger.info('Serwer WebSocket zainicjalizowany.');
-	console.log('Serwer WebSocket zainicjalizowany.');
+	logger.info('Websocket server initialized.');
+	console.log('Websocket server initialized.');
 };
 
 const broadcastMessage = async (userId, { type, data } = {}) => {
 	if (!ioInstance) {
-		logger.error('Nie zainicjalizowano serwera WebSocket.');
+		logger.error('Failed to initialize websocket server.');
 		return;
 	}
 
@@ -92,7 +90,7 @@ const broadcastMessage = async (userId, { type, data } = {}) => {
 		const [result] = await connection.query(socketQueries.selectConnection, [userId]);
 
 		if (!result || result.length == 0) {
-			logger.error(`Brak połączenia dla userId: ${userId}`);
+			logger.error(`Connection not found for user: ${userId}`);
 			return;
 		}
 
@@ -100,14 +98,14 @@ const broadcastMessage = async (userId, { type, data } = {}) => {
 		const socket = ioInstance.sockets.sockets.get(socketId);
 
 		if (!socket) {
-			logger.error(`Socket o id ${socketId} dla userId: ${userId} jest nieaktywny.`);
+			logger.error(`Socket with id ${socketId} for userId: ${userId} is inactive.`);
 			return;
 		}
 
 		socket.emit(type, data);
-		logger.info(`Wysłano wiadomość WebSocket dla ${userId}`);
+		logger.info(`Websocket message sended for ${userId}`);
 	} catch (error) {
-		logger.error(`Błąd podczas wysyłania wiadomości do użytkownika: ${userId} : ${error.message}`);
+		logger.error(`An error occured during sending websocket message for user: ${userId} : ${error.message}`);
 	} finally {
 		if (connection) connection.release();
 	}
@@ -115,9 +113,9 @@ const broadcastMessage = async (userId, { type, data } = {}) => {
 
 const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
 	if (!ioInstance) {
-		logger.error('Nie zainicjalizowano serwera WebSocket.');
+		logger.error('Failed to initialize Websocket server.');
 		return;
-	};
+	}
 
 	const connection = await pool.getConnection();
 
@@ -125,32 +123,35 @@ const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
 		const [houseMates] = await connection.query('SELECT userId FROM householdUsers WHERE houseId = ?', [houseId]);
 
 		if (houseMates.length === 0) {
-			logger.error(`Nie znaleziono domowników gospodarstwa ${houseId}`);
+			logger.error(`Not found housemates for household: ${houseId}`);
 			return;
 		};
 
 		const [usersConnections] = await connection.query(`SELECT connectionId FROM socketConnections WHERE userId IN (?)`,
 			[houseMates.map(mate => mate.userId)]
 		);
-
-		if (!usersConnections || usersConnections.length === 0) {
-			logger.error(`Nie znaleziono połączeń dla domowników gospodarstwa ${houseId}`);
-			return;
-		};
-
-		usersConnections.forEach((connection) => {
-			const socket = ioInstance.sockets.sockets.get(connection.connectionId);
-
-			if (socket) {
-				socket.emit(type, data);
-			}
-		});
-		logger.info(`Wysłano wiadomość do domowników gospodarstwa ${houseId}`);
-	} catch (error) {
-		logger.error(`Błąd podczas rozsyłania wiadomości do domoowników ${houseId}`);
-	} finally {
-		if (connection) connection.release();
 	}
+
+		const [usersConnections] = await connection.query(`SELECT connectionId FROM socketConnections WHERE userId IN (?)`, [houseMates.map((mate) => mate.userId)]);
+
+	if (!usersConnections || usersConnections.length === 0) {
+		logger.error(`Connections not found for housemates of household: ${houseId}`);
+		return;
+	}
+
+	usersConnections.forEach((connection) => {
+		const socket = ioInstance.sockets.sockets.get(connection.connectionId);
+
+		if (socket) {
+			socket.emit(type, data);
+		}
+	});
+	logger.info(`Websocket message for housemates of house: ${houseId} was sended`);
+} catch (error) {
+	logger.error(`An error occured during broadcasting websocket message for housemates of house: ${houseId}`);
+} finally {
+	if (connection) connection.release();
 }
+};
 
 module.exports = { initializeWebSocket, broadcastMessage, broadcastToHouseMates };
