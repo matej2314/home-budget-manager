@@ -9,6 +9,7 @@ const routes = [
     { path: '/initmonthly', file: 'initialMonthlyBudgetsRoutes.js' },
     { path: '/receipt', file: 'receiptRoutes.js' },
     { path: '/homepage', file: 'homePageDataRoutes.js' },
+    { path: '/notice', file: 'noticeRotes.js' },
     { path: '/avatars', file: 'avatarsRoutes.js' },
     { path: '/cookiestour', file: 'cookiesTourRoutes.js' },
     { path: '/reviews', file: 'reviewsRoutes.js' },

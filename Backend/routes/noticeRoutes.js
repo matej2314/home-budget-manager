@@ -1,17 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database/db');
-const logger = require('../configs/logger');
 const verifyJWT = require('../middlewares/verifyJWT');
+const noticeController = require('../controllers/notificationController');
 
-router.post('/new', async (req, res) => {
+router.get('/collection', verifyJWT, noticeController.GetNoticesCollection);
 
-});
-
-router.get('/collection', async (req, res) => {
-
-});
-
-router.delete('/:noticeId', async (req, res) => {
-
-});
+router.delete('/:noticeId', noticeController.deleteNotification);
