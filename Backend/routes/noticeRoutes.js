@@ -5,6 +5,6 @@ const noticeController = require('../controllers/notificationController');
 
 router.get('/collection', verifyJWT, noticeController.GetNoticesCollection);
 
-router.delete('/:noticeId', noticeController.deleteNotification);
+router.delete('/', verifyJWT, noticeController.deleteNotification);
 
 module.exports = router;

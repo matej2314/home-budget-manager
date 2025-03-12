@@ -4,39 +4,52 @@ import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import NotificationDot from "./NotificationDot";
 import NotificationsContainer from "./NotificationsContainer";
+import useNotificationsStore from "../../../store/notificationsStore";
 
 export default function HeaderIconsContainer({ filteredDataMessages, socketMessages }) {
     const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
     const [isNotifications, setIsNotifications] = useState(false);
     const [userMessages, setUserMessages] = useState([]);
-    const { connected, messages, error, removeNotification } = useSocket();
-    const notifications = (connected && !error && messages && messages.notifications) || [];
+
+    const { connected, messages, error, deleteNotification } = useSocket();
+    const { notifications, fetchNotifications, removeNotification } = useNotificationsStore();
+    const socketNotifications = messages?.notifications || { transactions: [], usersActions: [], monthlyBalance: [] };
+
+    useEffect(() => {
+        fetchNotifications();
+    }, [fetchNotifications]);
+
+    const allNotifications = {
+        transactions: [...(notifications.transactions || []), ...(socketNotifications.transactions || [])],
+        usersActions: [...(notifications.usersActions || []), ...(socketNotifications.usersActions || [])],
+        monthlyBalance: [...(notifications.monthlyBalance || []), ...(socketNotifications.monthlyBalance || [])],
+    };
 
     const toggleNotifications = () => {
         setIsNotificationsVisible(prevState => !prevState);
     };
 
     const checkNotifications = () => {
-        return Object.values(notifications).some(category => category.length > 0);
-    };
-
-    const handleReadNotification = (type, id) => {
-        setIsNotifications(false);
-        removeNotification(type, id)
+        return Object.values(allNotifications).some(category => category.length > 0);
     };
 
     useEffect(() => {
-        const hasNotifications = checkNotifications();
-        setIsNotifications(hasNotifications);
+        setIsNotifications(checkNotifications());
 
         if (socketMessages) {
             setUserMessages(socketMessages);
         }
-    }, [notifications, socketMessages]);
+    }, [allNotifications, socketMessages]);
+
+    const handleReadNotification = async (type, id) => {
+        await removeNotification(type, id);
+        setIsNotifications(false);
+        await deleteNotification(type, id);
+    };
 
     const handleMessagesRead = () => {
         setUserMessages([]);
-    }
+    };
 
     return (
         <div id="icons-container" className="w-fit flex justify-center items-center gap-3">
@@ -72,7 +85,7 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
             <Link to="/dashboard/myhouse" title="My house" className="w-fit h-fit hover:text-yellow-900">
                 <Icon icon="ph:house-bold" width={20} height={20} />
             </Link>
-            {isNotificationsVisible && <NotificationsContainer notifications={notifications} clickAction={handleReadNotification} />}
+            {isNotificationsVisible && <NotificationsContainer notifications={allNotifications} clickAction={handleReadNotification} />}
         </div>
     );
 }

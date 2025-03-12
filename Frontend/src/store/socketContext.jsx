@@ -99,6 +99,7 @@ export const SocketProvider = ({ children }) => {
                     console.error(`Unknown category: ${category}`);
                     return prevMessages;
                 });
+                useNotificationsStore.getState().addNotification(category, data);
             });
 
             setSocket(newSocket);
@@ -125,7 +126,7 @@ export const SocketProvider = ({ children }) => {
         }
     };
 
-    const removeNotification = (notificationType, notificationId) => {
+    const deleteNotification = (notificationType, notificationId) => {
         setMessages((prevMessages) => {
             const updatedNotifications = { ...prevMessages.notifications };
             updatedNotifications[notificationType] = updatedNotifications[notificationType].filter(
@@ -139,7 +140,7 @@ export const SocketProvider = ({ children }) => {
     };
 
     return (
-        <SocketContext.Provider value={{ socket, connected, messages, sendMessage, error, removeNotification }}>
+        <SocketContext.Provider value={{ socket, connected, messages, sendMessage, error, deleteNotification }}>
             {children}
         </SocketContext.Provider>
     );

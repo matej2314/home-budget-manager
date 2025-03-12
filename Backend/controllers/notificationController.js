@@ -1,7 +1,7 @@
 const pool = require('../database/db');
 const logger = require('../configs/logger');
 const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
-const { v4: uuidv4 } = require('uuid');
+const { checkNotice } = require('../utils/checkUtils/checkNotice');
 const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
@@ -65,7 +65,7 @@ exports.GetNoticesCollection = async (req, res) => {
     }
 };
 
-exports.saveNotification = async (category, noticeData, houseId) => {
+exports.saveNotification = async (id, category, noticeData, houseId) => {
     if (!category || !noticeData || !houseId) {
         return {
             status: 'error',
@@ -76,7 +76,6 @@ exports.saveNotification = async (category, noticeData, houseId) => {
     const connection = await pool.getConnection();
 
     try {
-        const id = uuidv4();
         const [addNotice] = await connection.query(
             `INSERT INTO notifications (id, category, noticeData, houseId) VALUES (?, ?, ?, ?)`,
             [id, category, noticeData, houseId]
@@ -118,6 +117,15 @@ exports.deleteNotification = async (req, res) => {
 
     const connection = await pool.getConnection();
 
+    const noticeExist = await checkNotice(noticeId, connection);
+
+    if (!noticeExist) {
+        return res.status(statusCode.NOT_FOUND).json({
+            status: 'error',
+            message: 'Notification not found.',
+        });
+    };
+
     try {
         await connection.beginTransaction();
         const checkHouse = await checkUserHouse(connection, userId);
@@ -133,7 +141,7 @@ exports.deleteNotification = async (req, res) => {
 
         const [deleteNotice] = await connection.query('DELETE FROM notifications WHERE id=? AND houseId=?', [noticeId, houseId]);
 
-        if (deleteNotice.affectedRows === 0) {
+        if (deleteNotice.affectedRows == 0) {
             return res.status(statusCode.NOT_FOUND).json({
                 status: 'error',
                 message: 'Failed to delete notification',
@@ -149,7 +157,7 @@ exports.deleteNotification = async (req, res) => {
 
     } catch (error) {
         await connection.rollback();
-        logger.error(`Error in deleteNotification: ${error}`);
+        console.log(`Error in deleteNotification: ${error.message}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
             message: 'Failed to delete notification.',
