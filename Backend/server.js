@@ -16,7 +16,7 @@ const setupRoutes = require('./routes/index.js');
 
 const port = process.env.SERV_PORT || 5053;
 
-const allowedOrigins = ['https://budgetapp.msliwowski.net', 'http://localhost:5173', 'http://185.170.196.107:5052', 'https://budgetapi.msliwowski.net'];
+const allowedOrigins = ['https://budgetapp.msliwowski.net', 'http://localhost:5173', 'http://185.170.196.107:5052'];
 
 app.use(
 	cors({
