@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.options('*', (req, res) => {
-	res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');
+	res.header('Access-Control-Allow-Origin', req.get('Origin'));
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 	res.header('Access-Control-Allow-Credentials', 'true');
