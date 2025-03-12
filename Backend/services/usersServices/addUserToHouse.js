@@ -1,8 +1,9 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
+const { v4: uuidv4 } = require('uuid');
 const usersQueries = require('../../database/usersQueries');
 const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
-const { broadcastToHouseMates } = require('../../configs/websocketConfig');
+const { handleNotification } = require('../../utils/handleNotification');
 
 const addUserToHouse = async (userId, userName) => {
     const connection = await pool.getConnection();
@@ -30,13 +31,12 @@ const addUserToHouse = async (userId, userName) => {
                         await connection.query(usersQueries.updateroleHu, ['inmate', invitedUser.id]);
                     }
                 };
+                const id = uuidv4();
 
-                await broadcastToHouseMates(hostHouseId, {
-                    type: 'notification',
-                    data: {
-                        category: 'usersActions',
-                        message: 'New housemate added!',
-                    }
+                await handleNotification({
+                    id,
+                    category: 'usersActions',
+                    message: 'New housemate added!',
                 });
 
                 await connection.commit();

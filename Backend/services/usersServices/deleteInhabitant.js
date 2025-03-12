@@ -2,7 +2,8 @@ const pool = require('../../database/db');
 const logger = require('../../configs/logger');
 const usersQueries = require('../../database/usersQueries');
 const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
-const { broadcastToHouseMates } = require('../../configs/websocketConfig');
+const { v4: uuidv4 } = require('uuid');
+const { handleNotification } = require('../../utils/handleNotification');
 
 const deleteInhabitant = async (inhabitantId) => {
 
@@ -41,15 +42,14 @@ const deleteInhabitant = async (inhabitantId) => {
         );
 
         await connection.commit();
+        const id = uuidv4();
 
-        await broadcastToHouseMates(inhabitantHouseId, {
-            type: 'notification',
-            data: {
-                category: 'usersActions',
-                message: 'Housemate deleted correctly.',
-            },
-        });
-
+        await handleNotification({
+            id,
+            category: 'usersActions',
+            houseId: inhabitantHouseId,
+            message: 'Deleted housemate.',
+        })
         return {
             status: 'success',
             message: 'Housemate deleted correctly.',

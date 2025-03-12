@@ -1,10 +1,11 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
+const { v4: uuidv4 } = require('uuid');
 const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUtils/checkUserHouse');
 const { checkTransaction } = require('../../utils/checkUtils/checkTransaction');
 const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
-const { broadcastToHouseMates } = require('../../configs/websocketConfig.js');
+const { handleNotification } = require('../../utils/handleNotification.js');
 
 const deleteAction = async (transactionId, userId) => {
     const connection = await pool.getConnection();
@@ -51,13 +52,16 @@ const deleteAction = async (transactionId, userId) => {
 
         await connection.commit();
 
-        await broadcastToHouseMates(houseId, {
-            type: 'notification',
-            data: {
-                category: 'transactions',
+        const id = uuidv4();
+
+        await handleNotification({
+            id,
+            category: 'transactions',
+            houseId,
+            message: 'Transaction deleted successfully.',
+            extraData: {
+                user: userId,
                 action: 'deleteTransaction',
-                message: 'Transaction deleted successfully.',
-                user: userId
             }
         });
 

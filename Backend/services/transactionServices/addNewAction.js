@@ -3,10 +3,9 @@ const logger = require('../../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 const actionQueries = require('../../database/transactionsQueries');
 const checkHouse = require('../../utils/checkUtils/checkUserHouse');
-const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
-const { broadcastToHouseMates } = require('../../configs/websocketConfig');
 const { validTransactionTypes } = require('../../utils/validation');
-const { saveNotification } = require('../../controllers/notificationController');
+const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
+const { handleNotification } = require('../../utils/handleNotification');
 
 const addNewAction = async (userId, type, value, catId) => {
 	const transactionId = uuidv4();
@@ -49,19 +48,14 @@ const addNewAction = async (userId, type, value, catId) => {
 
 		await connection.commit();
 
-		const data = {
-			category: 'transactions',
+		await handleNotification({
 			id,
-			action: 'addTransaction',
-			message: 'Transaction added correctly',
-			user: userId,
-		};
-
-		await saveNotification(id, 'transactions', JSON.stringify(data), houseId);
-
-		await broadcastToHouseMates(houseId, {
-			type: 'notification',
-			data,
+			category: 'transactions',
+			houseId: houseId,
+			message: 'Transaction added correctly.',
+			extraData: {
+				action: 'addTransaction',
+			}
 		});
 
 		return {

@@ -19,7 +19,7 @@ export const SocketProvider = ({ children }) => {
         notifications: {
             transactions: [],
             usersActions: [],
-            monthlyBalance: []
+            monthlyBalance: [],
         },
         initBudgets: [],
     });

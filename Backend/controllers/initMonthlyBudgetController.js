@@ -1,8 +1,10 @@
 const pool = require('../database/db');
 const logger = require('../configs/logger');
+const { v4: uuidv4 } = require('uuid');
 const checkUserHouse = require('../utils/checkUtils/checkUserHouse.js');
 const { broadcastToHouseMates } = require('../configs/websocketConfig.js');
 const { addNewBudget, clearExtraValues } = require('../utils/householdUtils/initMonthlyBudgetFunctions.js');
+const { handleBroadcastInitBudget } = require('../utils/handleBroadcastInitBudget.js');
 const initialBudgetQueries = require('../database/initialMonthlyBudgetQueries.js');
 const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
@@ -10,6 +12,7 @@ const statusCode = StatusCodes;
 exports.addNewMonthlyBudget = async (req, res) => {
     const userId = req.userId;
     const { value } = req.body;
+    const id = uuidv4();
 
     if (!value) {
         return res.status(statusCode.BAD_REQUEST).json({
@@ -54,14 +57,7 @@ exports.addNewMonthlyBudget = async (req, res) => {
 
                 await connection.commit();
 
-                await broadcastToHouseMates(userHouse, {
-                    type: 'initial_budget',
-                    data: {
-                        initBudget: valueToDb,
-                        budgetPeriod: `${addedAtFormatted} - ${validUntilFormatted}`,
-                        message: `New month's budget declared!`,
-                    }
-                });
+                await handleBroadcastInitBudget(id, valueToDb, addedAtFormatted, validUntilFormatted, userHouse);
 
                 return res.status(statusCode.CREATED).json({
                     status: 'success',
@@ -83,14 +79,7 @@ exports.addNewMonthlyBudget = async (req, res) => {
 
             await connection.commit();
 
-            await broadcastToHouseMates(userHouse, {
-                type: 'initial_budget',
-                data: {
-                    initBudget: valueToDb,
-                    budgetPeriod: `${addedAtFormatted} - ${validUntilFormatted}`,
-                    message: 'New monthly budget declared!',
-                }
-            });
+            await handleBroadcastInitBudget(id, valueToDb, addedAtFormatted, validUntilFormatted, userHouse);
 
             return res.status(statusCode.CREATED).json({
                 status: 'success',

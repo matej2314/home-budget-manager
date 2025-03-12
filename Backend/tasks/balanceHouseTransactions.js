@@ -1,6 +1,7 @@
 const cron = require('node-cron');
 const pool = require('../database/db');
 const logger = require('../configs/logger');
+const { handleNotification } = require('../utils/handleNotification');
 const { v4: uuidv4 } = require('uuid');
 
 const balanceHouseActions = async () => {
@@ -47,8 +48,6 @@ const balanceHouseActions = async () => {
                     logger.info(`Finded ${transactions.length} transactions for household ${houseId}.`);
                     const transactionCountId = uuidv4();
 
-                    const transactionsCount = transactions.length;
-
                     await connection.query(`INSERT INTO monthlyTransactionCounts (id, houseId, transactionCount, startDate, balanceDate) VALUES (?,?,?,?,?)`,
                         [transactionCountId, houseId, transactions.length, dateLimit, today]);
 
@@ -87,6 +86,15 @@ const balanceHouseActions = async () => {
                     if (insertBalance.affectedRows === 1) {
                         await connection.query('UPDATE households SET monthlyBalanceDate = NOW() WHERE houseId=?', [houseId]);
                     }
+
+                    const noticeId = uuidv4();
+
+                    await handleNotification({
+                        noticeId,
+                        category: 'monthlyBalance',
+                        houseId,
+                        message: 'New monthly balance calculated.',
+                    });
 
                     logger.info(`Balance for household ${houseId} updated.`);
                 } else {
