@@ -10,6 +10,7 @@ const routes = [
     { path: '/receipt', file: 'receiptRoutes.js' },
     { path: '/homepage', file: 'homePageDataRoutes.js' },
     { path: '/notice', file: 'noticeRoutes.js' },
+    { path: '/gallery', file: './galleryRoutes.js' },
     { path: '/avatars', file: 'avatarsRoutes.js' },
     { path: '/cookiestour', file: 'cookiesTourRoutes.js' },
     { path: '/reviews', file: 'reviewsRoutes.js' },

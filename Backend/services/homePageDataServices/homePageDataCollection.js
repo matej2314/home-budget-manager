@@ -1,5 +1,6 @@
 const pool = require('../../database/db');
 const logger = require('../../configs/logger');
+const { getFilesList } = require('../../utils/getFilesList');
 
 exports.getHomePageCollection = async () => {
     const connection = await pool.getConnection();
@@ -21,6 +22,10 @@ exports.getHomePageCollection = async () => {
             }
         }
         homePageData.reviews = getReviews;
+
+        const picturesList = await getFilesList('../app-images');
+
+        homePageData.shots = picturesList;
 
         await connection.commit();
 

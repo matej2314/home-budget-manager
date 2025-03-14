@@ -32,7 +32,7 @@ export default function HomePage() {
     return (
         <>
             {!isHomePageDataLoading && !homePageDataError && homePageData && (
-                <main className="w-screen h-screen flex flex-row justify-center items-center bg-slate-300">
+                <main className="w-screen h-screen flex flex-row justify-center items-center bg-slate-300 overflow-auto no-scrollbar">
                     <div
                         className="home-page-content-div md:gap-[1.5rem] lg:gap-[1rem] xl:gap-[5rem]">
                         <div className="relative w-full">

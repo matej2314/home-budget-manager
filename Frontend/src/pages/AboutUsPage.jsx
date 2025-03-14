@@ -3,6 +3,7 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 import useHomePageStore from '../store/homePageStore';
 import { getData } from "../utils/getData";
 import { useIsMobile } from '../hooks/useIsMobile';
+import AppGallery from "../components/home-page-components/internal/AppGallery";
 
 export default function AboutUs() {
     useDocumentTitle('About us');
@@ -11,11 +12,11 @@ export default function AboutUs() {
     const { isMobile } = useIsMobile();
 
     return (
-        <div className="w-full h-full flex flex-col justify-start xl:px-16">
-            <div className="w-full h-[90%] flex flex-col justify-start items-center gap-4 md:gap-4 rounded-md overflow-auto no-scrollbar mt-[4rem] indirect:mt-[3rem] indirectxl:mt-[3rem] sm:mt-[3rem] md:mt-5 lg:mt-[3rem] xl:mt-0">
+        <div className="w-full h-full flex flex-col justify-start xl:px-16 overflow-auto">
+            <div className="w-full h-[90%] flex flex-col justify-start items-center gap-4 md:gap-4 rounded-md overflow-auto no-scrollbar pb-[4rem] mt-[4rem] indirect:mt-[3rem] indirectxl:mt-[3rem] sm:mt-[3rem] md:mt-5 lg:mt-[3rem] xl:mt-0">
                 <div id='welcome-text' className="w-fit h-full flex flex-col justify-center items-center text-slate-100 gap-3">
-                    <h2 className="text-lg md:text-2xl font-semibold text-stone-400/80 text-center">What is Web Home Budget Manager?</h2>
-                    <p className="w-11/12 flex flex-wrap justify-center mx-auto">
+                    <h2 className="text-2xl font-semibold text-stone-400/80 text-center">What is Web Home Budget Manager?</h2>
+                    <p className="px-2 text-center lg:text-xl">
                         Web Home Budget Manager is a web application that allows you to easily control the budget of your house.
                     </p>
                 </div>
@@ -36,7 +37,9 @@ export default function AboutUs() {
                 <div className="w-full h-fit flex flex-col justify-center items-start text-slate-100 gap-3">
                     <h2 className="w-full text-2xl flex justify-center font-semibold text-stone-400/80">Gallery:</h2>
                     <div className="w-full h-[20rem] flex justify-center items-start">
-                        <p className="mb-3 ">gallery</p>
+                        <div className="w-[960px] h-[350px] border-[1px] border-slate-300/60 rounded-md shadow-xl shadow-gray-900">
+                            <AppGallery photos={homePageData && homePageData.shots} />
+                        </div>
                     </div>
                 </div>
             </div>
