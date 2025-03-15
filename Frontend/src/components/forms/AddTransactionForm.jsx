@@ -62,7 +62,7 @@ export default function AddTransactionForm({ onClose }) {
         const parsedValue = parseFloat(rawValue);
 
         if (isNaN(parsedValue)) {
-            showErrorToast('Incorrect numbeer value.');
+            showErrorToast('Incorrect number value.');
             return;
         }
 

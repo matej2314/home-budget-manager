@@ -6,20 +6,20 @@ export default function ReviewsSection({ reviews }) {
 
     return (
         <div id="app-reviews" className="w-full h-fit flex flex-col justify-start items-center gap-3">
-            <h2 className="text-2xl">Users reviews:</h2>
+            <h2 className="text-2xl font-semibold text-stone-400/80 text-center">Users reviews:</h2>
             {reviews ? <div id="reviews-boxes" className="w-full h-fit flex flex-col items-center gap-5 mb-4 text-slate-900">
                 {reviews && reviews.map((review, index) => (
                     <div
                         key={index}
                         id='review'
-                        className="w-1/2 h-fit flex flex-row justify-start rounded-md bg-slate-300/25 border-[1px] border-slate-300 gap-2 p-3"
+                        className="w-11/12 sm:w-1/2 md:w-1/2 h-fit flex flex-row justify-start rounded-md bg-slate-300 border-4 border-slate-600 gap-2 p-3"
                     >
                         <div
                             id="photo"
-                            className="w-40 h-40 rounded-full bg-gray-600">
+                            className="w-16 h-16 mt-3 md:mt-0 md:w-40 md:h-40 rounded-full bg-gray-600">
                             <img className=" h-full rounded-full" src={`${serverUrl}/avatars/avatar/${review.userId}`} />
                         </div>
-                        <div className="h-full flex flex-col items-center gap-5">
+                        <div className="h-full flex flex-col items-center md:gap-5">
                             <div id="reviewData" className=" h-fit flex flex-col justify-start">
                                 <div>
                                     <p className="w-full h-fit ml-2">{reviews && review.userName}</p>
@@ -29,7 +29,7 @@ export default function ReviewsSection({ reviews }) {
                                     <p className="h-fit flex justify-start items-center">{formatDbDate(review.date, 'split')}</p>
                                 </div>
                             </div>
-                            <p className="w-full h-fit flex justify-start ml-6">{review.content}</p>
+                            <p className="w-full h-fit flex justify-start ml-6 text-xl">{review.content}</p>
                         </div>
                     </div>
                 ))}

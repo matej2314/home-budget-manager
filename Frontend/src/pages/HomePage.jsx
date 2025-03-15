@@ -38,7 +38,7 @@ export default function HomePage() {
                         <div className="relative w-full">
                             <HomePageMenu />
                         </div>
-                        <div className="w-full h-full flex flex-col justify-center items-center text-slate-800">
+                        <div className="w-full h-full flex flex-col text-slate-800">
                             <Outlet />
                         </div>
                     </div>

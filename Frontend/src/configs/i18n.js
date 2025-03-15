@@ -1,24 +1,27 @@
-import i18next from 'i18next';
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import httpApi from 'i18next-http-backend';
 
-i18next.use(httpApi)
-    .use(LanguageDetector)
+i18n
+    .use(Backend) // Załaduj tłumaczenia asynchronicznie
+    .use(LanguageDetector) // Wykrywanie języka użytkownika
     .use(initReactI18next)
     .init({
-        fallbackLng: 'en',
-        debug: false,
-        detection: {
-            order: ['querystring', 'cookie', 'localStorage', 'navigator'],
-            caches: ['cookie'],
-        },
+        fallbackLng: 'en', // Domyślny język, jeśli nie wykryje odpowiedniego
+        debug: true,
         interpolation: {
-            escapeValue: false,
+            escapeValue: false, // React już zapobiega XSS
         },
         backend: {
-            loadPath: '/locales/{{lng}}/translation.json',
+            loadPath: '/locales/{{lng}}/{{ns}}.json', // Ścieżka do plików tłumaczeń
+        },
+        ns: ['common', 'header', 'footer', 'home', 'auth'], // Lista przestrzeni nazw
+        defaultNS: 'common', // Domyślna przestrzeń nazw
+        detection: {
+            order: ['navigator', 'cookie', 'localStorage', 'sessionStorage', 'htmlTag'], // Źródła wykrywania języka
+            caches: ['cookie', 'localStorage'] // Zapisywanie języka w pamięci przeglądarki
         },
     });
 
-export default i18next;
+export default i18n;

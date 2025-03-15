@@ -61,7 +61,7 @@ export default function LoginForm() {
                     <Icon
                         icon='wpf:name'
                         width={15}
-                        className="icon-base text-gray-500 text-xl text-opacity-45"
+                        className="icon-base top-1 text-gray-500 text-xl text-opacity-45"
                     />
                 </div>
                 <label htmlFor="password">Password:</label>
@@ -79,7 +79,7 @@ export default function LoginForm() {
                     <Icon
                         icon='carbon:password'
                         width={15}
-                        className="icon-base text-gray-500 text-xl text-opacity-80"
+                        className="icon-base top-1 text-gray-500 text-xl text-opacity-80"
                     />
                 </div>
                 <SubmitBtn

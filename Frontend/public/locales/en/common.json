@@ -1,0 +1,16 @@
+{
+   "apiMessages": {
+
+   },
+   "authMessages" : {
+    "invalidInput": "Incorrect login data.",
+    "loginCorrect": "User logged in correctly.",
+    "authError": "Internal server error"
+   },
+   "cookiesSettings": {
+      
+   },
+   "documentTitle": {
+      
+   }
+}

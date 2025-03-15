@@ -43,7 +43,7 @@ app.options('*', (req, res) => {
 	res.status(200).end();
 });
 
-app.use('/screens', express.static(path.join(__dirname, 'public/app-images')));
+app.use('/screens', express.static(path.join(__dirname, 'app-images')));
 
 setupRoutes(app);
 swaggerDocs(app);
