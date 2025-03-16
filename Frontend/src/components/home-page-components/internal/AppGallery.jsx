@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useIsMobile } from '../../../hooks/useIsMobile';
+import useModal from '../../../hooks/useModal';
 import { serverUrl } from '../../../url';
 import { mapPhotos } from '../../../utils/arraysUtils/mapPhotos';
+import ScreenShotModal from '../../modals/ScreenshotModal';
 
 export default function AppGallery({ photos }) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -11,9 +13,10 @@ export default function AppGallery({ photos }) {
     const sliderRef = useRef(null);
     const isInView = useInView(sliderRef, { once: false, margin: "0px" });
     const intervalRef = useRef(null);
+    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null, data: null });
 
     useEffect(() => {
-        if (isInView) {
+        if (isInView && !modal.isOpen) {
             intervalRef.current = setInterval(() => {
                 setCurrentIndex((prevIndex) => (prevIndex + 1) % mappedPhotos.length);
             }, 3000);
@@ -22,7 +25,23 @@ export default function AppGallery({ photos }) {
         }
 
         return () => clearInterval(intervalRef.current);
-    }, [isInView, mappedPhotos]);
+    }, [isInView, mappedPhotos, modal]);
+
+    const handleMouseEnter = () => {
+        clearInterval(intervalRef.current);
+    };
+
+    const handleMouseLeave = () => {
+        if (isInView && !modal.isOpen) {
+            intervalRef.current = setInterval(() => {
+                setCurrentIndex(prevIndex => (prevIndex + 1) % mappedPhotos.length)
+            }, 3000);
+        };
+    };
+
+    const handleImageClick = () => {
+        openModal('photo', mappedPhotos[currentIndex]);
+    };
 
     return (
         <div
@@ -52,9 +71,14 @@ export default function AppGallery({ photos }) {
                         srcSet={mappedPhotos[currentIndex].srcSet}
                         sizes="(max-width: 640px) 320px, (max-width: 1024px) 640px, 1100px"
                         className="w-full h-full flex justify-center items-center object-contain opacity-75"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        onClick={handleImageClick}
+                        onDragEnd={handleImageClick}
                     />
                 </motion.div>
             </AnimatePresence>
+            {modal && modal.isOpen && modal.type === 'photo' && <ScreenShotModal isOpen={modal.isOpen} onRequestClose={closeModal} imageData={modal.data} />}
         </div>
     );
 }
