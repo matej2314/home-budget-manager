@@ -8,10 +8,10 @@ import NotificationsContainer from "./NotificationsContainer";
 import useNotificationsStore from "../../../store/notificationsStore";
 
 export default function HeaderIconsContainer({ filteredDataMessages, socketMessages }) {
+    const { t } = useTranslation("dashboardInternal");
     const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
     const [isNotifications, setIsNotifications] = useState(false);
     const [userMessages, setUserMessages] = useState([]);
-    const { t } = useTranslation("dashboardInternal");
 
     const { connected, messages, error, deleteNotification } = useSocket();
     const { notifications, fetchNotifications, removeNotification } = useNotificationsStore();

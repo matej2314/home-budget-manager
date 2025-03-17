@@ -8,11 +8,11 @@ import { showInfoToast } from "../../../configs/toastify";
 import { getData } from "../../../utils/getData";
 
 export default function MatesList({ mode }) {
+    const { t } = useTranslation("dashboardInternal");
     const { user, isAuthenticated } = useContext(AuthContext);
     const { data, isLoading, error } = useContext(DataContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [recipient, setRecipient] = useState(null);
-    const { t } = useTranslation("dashboardInternal");
 
     const houseMates = getData(isLoading, error, true, data.houseMates, []);
     const thLabels = ['Name', 'Role', 'Actions'];

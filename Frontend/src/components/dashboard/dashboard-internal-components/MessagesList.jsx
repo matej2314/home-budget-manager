@@ -20,13 +20,13 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     const { filter } = useParams();
     const { user } = useContext(AuthContext);
     const { connected, messages: socketMessages } = useSocket();
+    const { t: tInternal } = useTranslation("dashboardInternal");
+    const { t: tUtils } = useTranslation("utils");
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null, data: null });
     const [messagesType, setMessagesType] = useState(filter || "all");
     const [newMessages, setNewMessages] = useState([]);
     const navigate = useNavigate();
     const { isMobile } = useIsMobile();
-    const { t: tInternal } = useTranslation("dashboardInternal");
-    const { t: tUtils } = useTranslation("utils");
 
     const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
     const sortedMessages = Array.isArray(userMessages) ? userMessages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
