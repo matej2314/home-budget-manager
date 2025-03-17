@@ -27,7 +27,7 @@
 }
 
 .auth-input {
-    @apply border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md;
+    @apply border-b-[1px] border-slate-400/80 pl-2  shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md
    }
 
 .auth-submit-btn {
@@ -127,7 +127,7 @@
 }
 
 .messages-list-table-data {
-    @apply xl:px-16 text-center ;
+    @apply xl:px-16 text-center
 }
 
 .mates-list-table-data-base {
