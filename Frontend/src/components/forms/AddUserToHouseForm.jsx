@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from "../../configs/toastify";
+import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from "./internal/SubmitBtn";
@@ -9,7 +10,7 @@ import SubmitBtn from "./internal/SubmitBtn";
 export default function AddUserToHouseForm({ onClose }) {
     const [sended, setSended] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
+    const { t } = useTranslation("forms");
     const invitedUser = useRef();
 
     const handleAddUser = async (e) => {
@@ -23,13 +24,13 @@ export default function AddUserToHouseForm({ onClose }) {
             const inviteUser = await sendRequest('POST', data, `${serverUrl}/users/invite`)
 
             if (inviteUser.status === 'success') {
-                showInfoToast(inviteUser.message);
+                showInfoToast(t(inviteUser.message, { defaulValue: "addUserToHouse.inviteSuccessMessage" }));
                 inviteUser.current.value = '';
                 setTimeout(() => {
                     onClose();
                 }, 500);
             } else if (inviteUser.status === 'error') {
-                showErrorToast(inviteUser.message);
+                showErrorToast(t(inviteUser.message, { defaultValue: "addUserToHouse.inviteUserInternalError" }));
             }
         } catch (error) {
             console.error(error);
@@ -47,7 +48,7 @@ export default function AddUserToHouseForm({ onClose }) {
                     className="w-full h-fit flex justify-center"
                     htmlFor="invitedUserName"
                 >
-                    Type invited user name:
+                    {t("addUserToHouse.invitedUsernameLabel")}
                 </label>
                 <div className="relative w-fit">
                     <input
@@ -56,7 +57,7 @@ export default function AddUserToHouseForm({ onClose }) {
                         name="invitedUserName"
                         id="invitedUserName"
                         ref={invitedUser}
-                        placeholder="username"
+                        placeholder={t("addUserToHouse.invitedUsernameInputPlaceholder")}
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
                     />
                     <Icon
@@ -68,7 +69,7 @@ export default function AddUserToHouseForm({ onClose }) {
                     className='form-submit-modal-btn'
                     disabled={sended}
                 >
-                    Invite
+                    {t("addUserToHouse.inviteUserSubmitBtn")}
                 </SubmitBtn>
             </form>
             {isLoading && <LoadingModal isOpen={isLoading} />}

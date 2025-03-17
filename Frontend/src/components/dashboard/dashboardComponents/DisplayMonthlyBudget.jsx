@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react"
 import { useSocket } from "../../../store/socketContext";
 import { DataContext } from '../../../store/dataContext';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 
 export default function MonthlyBudget() {
@@ -8,6 +9,7 @@ export default function MonthlyBudget() {
     const { connected, messages, error: socketError } = useSocket();
     const [currentInitBudget, setCurrentInitBudget] = useState('000');
     const [currentBudgetPeriod, setCurrentBudgetPeriod] = useState('00-00');
+    const { t } = useTranslation("dashboardComponents");
 
     useEffect(() => {
         if (!isLoading && !error && data?.houseData?.length > 0) {
@@ -38,7 +40,7 @@ export default function MonthlyBudget() {
                 <Icon icon='emojione-monotone:money-bag' width={100} style={{ opacity: 0.2, position: 'relative', top: '0.5rem', left: '0.3rem' }} />
             </div>
             <div className="h-11/12 w-11/12 flex flex-col justify-center items-center gap-2 lg:gap-4">
-                <h2 className="lg:text-xl">Declared monthly budget:</h2>
+                <h2 className="lg:text-xl">{t("declaredBudget.heading")}</h2>
                 <span className="lg:text-xl text-white">{currentInitBudget} zł</span>
                 <span className=" text-xs md:text-sm">{currentBudgetPeriod}</span>
             </div>

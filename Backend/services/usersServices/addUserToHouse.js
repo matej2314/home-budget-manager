@@ -43,14 +43,14 @@ const addUserToHouse = async (userId, userName) => {
                 logger.info(`User ${userName} correctly added to household.`);
                 return {
                     status: 'success',
-                    message: `User ${userName} correctly added to household.`,
+                    message: "addUserToHouse.inviteSuccessMessage",
                 };
             } else {
                 logger.info(`User ${userName} already is housemate or host.`);
                 await connection.rollback();
                 return {
                     status: 'inmate',
-                    message: `User ${userName} already is housemate or host.`,
+                    message: "addUserToHouse.inmateOrHostError",
                 };
             }
         } else {
@@ -58,13 +58,13 @@ const addUserToHouse = async (userId, userName) => {
             await connection.rollback();
             return {
                 status: 'badreq',
-                message: `User ${userName} not found.`,
+                message: "addUserToHouse.userNotFoundError",
             };
         }
     } catch (error) {
         await connection.rollback();
         logger.error(`inviteUser error: ${error}`);
-        return { status: 'error', message: 'Internal server error.' };
+        return { status: 'error', message: "addUserToHouse.inviteUserInternalError" };
     } finally {
         if (connection) connection.release();
     }

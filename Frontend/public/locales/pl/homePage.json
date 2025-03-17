@@ -1,3 +1,13 @@
 {
-    
+    "mainSlogan": "Dodaj domowników, analizuj przychody i wydatki, przejmij pełną kontrolę.",
+    "buttonsHeading": "Twoje osobiste narzędzie do kontroli domowych finansów.",
+    "aboutProjectBtn": "O projekcie",
+    "discoverBtn": "Sprawdź sam",
+    "dashboardRedirectInfo": "Aby przejść dalej musisz się zalogować!",
+    "homePageMenu": {
+        "firstEl": "Strona główna",
+        "secondEl": "O nas",
+        "authBtn": "Rejestracja/Logowanie",
+        "contactBtn": "Kontakt"
+    }
 }

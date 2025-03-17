@@ -1,7 +1,9 @@
 import Modal from 'react-modal';
 import AddUserToHouseForm from '../forms/AddUserToHouseForm';
+import { useTranslation } from 'react-i18next';
 
 export default function AddUserToHouseModal({ isOpen, onRequestClose }) {
+    const { t } = useTranslation("modals");
 
     return (
         <Modal
@@ -20,7 +22,7 @@ export default function AddUserToHouseModal({ isOpen, onRequestClose }) {
             </div>
             <h2 className="w-full h-fit flex justify-center text-lg font-semibold indirectxl:text-2xl mb-7"
             >
-                Invite new user to household
+                {t("addUserToHouse.heading")}
             </h2>
             <AddUserToHouseForm onClose={onRequestClose} />
             <div className="flex justify-end mt-4">
@@ -28,7 +30,7 @@ export default function AddUserToHouseModal({ isOpen, onRequestClose }) {
                     onClick={onRequestClose}
                     className="form-submit-modal-btn"
                 >
-                    Cancel
+                    {t("cancel")}
                 </button>
             </div>
         </Modal>

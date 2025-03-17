@@ -1,7 +1,4 @@
 {
-   "apiMessages": {
-
-   },
    "authMessages" : {
     "invalidInput": "Incorrect login data.",
     "loginCorrect": "User logged in correctly.",
@@ -12,5 +9,34 @@
    },
    "documentTitle": {
       
+   },
+   "authElements": {
+      "modalLoginBtn": "Login",
+      "modalSignUpBtn": "SignUp"
+   },
+   "fastActionsBtns": {
+      "Declare budget" : "declare budget",
+      "Add transaction": "add transaction",
+      "Send message": "send message",
+      "Add housemate": "add housemate",
+      "Your housemates": "your housemates",
+      "Change avatar": "change avatar",
+      "Change e-mail": "change e-mail",
+      "Cookies settings": "cookies settings",
+      "Add app review": "add app review"
+   },
+   "logOutMessage": "User logged out correctly.",
+   "logOutFailedMessage": "Failed to log out.",
+   "dashboardMenu": {
+      "Home page": "Home page",
+      "Dashboard": "Dashboard",
+      "My profile": "My profile",
+      "My house": "My house",
+      "Messages": "Messages",
+      "Housemates": "Housemates",
+      "Transactions": "Transactions",
+      "Calendar": "Calendar",
+      "AdminPanel": "Admin Panel",
+      "Page stats": "Page stats"
    }
 }

@@ -1,3 +1,44 @@
 {
-    
+    "displayLiveBalance": {
+        "heading": "Current budget:",
+        "noData": "No data."
+    },
+    "displayMatesList": {
+        "heading": "Your housemates:"
+    },
+    "declaredBudget": {
+        "heading": "Declared monthly budget:"
+    },
+    "lastTransactions": {
+        "heading": "Last transactions:"
+    },
+    "matesCounter": {
+        "heading": "Housemates:"
+    },
+    "messagesCounter": {
+        "heading": "New messages:"
+    },
+    "topCategoriesList": {
+        "heading": "Top categories of transactions:"
+    },
+    "balanceBudgetCompare": {
+        "heading": "Monthly Balance vs Defined Budget"
+    },
+    "budgetPerDay": {
+        "heading": "Budget per day"
+    },
+    "categoriesValues": {
+        "heading": "Value for each category:"
+    },
+    "lossOrGain": {
+        "heading": "Loss or gain:",
+        "loss" : "loss",
+        "gain": "gain"
+    },
+    "actionsOverTime": {
+        "heading": "Transactions over time:"
+    },
+    "actionsPerDay": {
+        "heading": "Transactions per day"
+    }
 }

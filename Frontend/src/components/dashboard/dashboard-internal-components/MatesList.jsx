@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../store/authContext";
 import { DataContext } from "../../../store/dataContext";
+import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { SendMessageModal } from "../../modals/messagesModals/messagesModals";
 import { showInfoToast } from "../../../configs/toastify";
@@ -11,6 +12,7 @@ export default function MatesList({ mode }) {
     const { data, isLoading, error } = useContext(DataContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [recipient, setRecipient] = useState(null);
+    const { t } = useTranslation("dashboardInternal");
 
     const houseMates = getData(isLoading, error, true, data.houseMates, []);
     const thLabels = ['Name', 'Role', 'Actions'];
@@ -27,7 +29,7 @@ export default function MatesList({ mode }) {
     return (
         <div className={`${mode === 'subpage' ? 'w-11/12' : 'w-full'} h-full overflow-auto`}>
             {error ? (
-                <p>Wystąpił błąd podczas ładowania danych.</p>
+                <p>{t("matesList.loadingError")}</p>
             ) : houseMates.length > 0 ? (
                 <table className={`${mode === 'subpage' ? 'w-11/12 mx-auto' : 'w-[100%] mx-auto'} h-full table-auto text-sm`}>
                     <thead>
@@ -39,7 +41,7 @@ export default function MatesList({ mode }) {
                     ${index === 0 ? 'rounded-tl-xl' : ''} 
                     ${index === thLabels.length - 1 ? 'rounded-tr-xl' : ''}`}
                                 >
-                                    {label}
+                                    {t(`matesList.thLabels.${label}`)}
                                 </th>
                             ))}
                         </tr>
@@ -52,19 +54,19 @@ export default function MatesList({ mode }) {
                                 <td className="mates-list-table-data-base flex justify-center gap-3">
                                     <button type="button"
                                         onClick={() => handleOpenModal(mate.userName)}
-                                        className="w-fit h-fit" title='Send message'>
+                                        className="w-fit h-fit" title={t("matesList.messageBtnTitle")}>
                                         <Icon icon='mdi-light:message' width={20} height={20} />
                                     </button>
                                     {mode === 'subpage' && (
                                         <>
-                                            <button type="button" className="w-fit h-fit" title={`Show user's transactions`}>
+                                            <button type="button" className="w-fit h-fit" title={t("matesList.actionsBtnTitle")}>
                                                 <Icon icon='hugeicons:transaction' width={20} height={20} />
                                             </button>
                                             <button
                                                 type="button"
                                                 className="w-fit h-fit"
                                                 hidden={user.role !== 'superadmin'}
-                                                title="Delete housemate"
+                                                title={t("matesList.deleteBtnTitle")}
                                             >
                                                 <Icon icon='mi:delete' width={20} height={20} />
                                             </button>
@@ -76,13 +78,13 @@ export default function MatesList({ mode }) {
                     </tbody>
                 </table>
             ) : (
-                <p>Brak domowników</p>
+                <p>{t("matesList.noHousematesError")}</p>
             )}
             {isAuthenticated && user.userName !== recipient ?
                 <SendMessageModal
                     isOpen={isModalOpen}
                     onRequestClose={handleCloseModal}
-                    recipient={recipient} /> : showInfoToast('Nie możesz wysłać wiadomości do siebie...')}
+                    recipient={recipient} /> : showInfoToast(t("matesList.selfSendError"))}
         </div>
     );
 }

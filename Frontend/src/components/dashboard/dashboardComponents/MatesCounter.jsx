@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { DataContext } from "../../../store/dataContext";
+import { useTranslation } from 'react-i18next';
 import { getData } from '../../../utils/getData';
 import { Icon } from '@iconify/react';
 
 export default function MatesCounter() {
     const { data, isLoading, error } = useContext(DataContext);
+    const { t } = useTranslation("dashboardComponents");
 
     const matesData = getData(isLoading, error, true, data.houseMates);
 
@@ -17,7 +19,7 @@ export default function MatesCounter() {
                 <Icon icon='lucide:users-round' width={105} style={{ opacity: 0.2, position: 'relative', top: '0.5rem', left: '0.4rem' }} />
             </div>
             <div className="h-1/2 w-1/2 flex flex-col justify-center items-center gap-4">
-                <h2 className="text-2xl">Housemates:</h2>
+                <h2 className="text-2xl">{t("matesCounter.heading")}</h2>
                 {!isLoading && !error && <span className="text-2xl">{matesData.length}</span>}
             </div>
         </div>

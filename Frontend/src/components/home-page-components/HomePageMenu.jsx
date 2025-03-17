@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Modal from 'react-modal';
 import useModal from '../../hooks/useModal';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import { useTranslation } from 'react-i18next';
 import AuthModal from '../modals/AuthModal';
 import LanguageSelector from '../LanguageSelector';
 import { loggingOut } from '../../utils/handleLogOut';
@@ -16,6 +17,7 @@ import OpenMenuButton from '../dashboard/dashboard-internal-components/OpenMenuB
 Modal.setAppElement('#root');
 
 export default function HomePageMenu() {
+    const { t } = useTranslation("homePage");
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
     const { user, isLoading, isAuthenticated, logout } = useContext(AuthContext);
     const [isOpened, setIsOpened] = useState(false);
@@ -50,7 +52,7 @@ export default function HomePageMenu() {
         if (isAuthenticated) {
             navigate('/dashboard');
         } else {
-            showInfoToast('Aby przejść dalej musisz się zalogować!');
+            showInfoToast(t('dashboardRedirectInfo'));
         };
     };
 
@@ -64,8 +66,8 @@ export default function HomePageMenu() {
                 animate='animate'
             >
                 <ul className={`w-full h-fit flex justify-center gap-2 items-center ml-2 py-1 text-slate-200 text-[0.7rem] sm:text-[1rem] sm:gap-8 indirect:gap-2.5 indirectxl:text-[1.05rem] md:gap-0 indirect:text-[0.85rem]  md:text-sm md:justify-around lg:text-lg px-2 transition-all duration-300`}>
-                    <li><Link to='/'>Home Page</Link></li>
-                    <li><Link to='/aboutus'>About us</Link></li>
+                    <li><Link to='/'>{t("homePageMenu.firstEl")}</Link></li>
+                    <li><Link to='/aboutus'>{t("homePageMenu.secondEl")}</Link></li>
                     <li>
                         <button
                             onClick={handleDashboardRedirect}
@@ -79,17 +81,17 @@ export default function HomePageMenu() {
                             onClick={() => openModal('auth')}
                             className='cursor-pointer'
                         >
-                            SignUp/Login
+                            {t("homePageMenu.authBtn")}
                         </button>
                     </li>
-                    <li><Link to='/contact'>Contact</Link></li>
+                    <li><Link to='/contact'>{t("homePageMenu.contactBtn")}</Link></li>
                     <li className='h-full w-fit flex items-center gap-2 md:gap-3'>
                         <span className={`${isMobile && !isOpened ? 'hidden' : 'block'}`}>
                             < LanguageSelector isHomepage={true} />
                         </span>
                         {!isLoading && isAuthenticated && user && !isMobile && (
                             <p className=' h-full flex md:justify-center items-center'>
-                                User: {user.userName}
+                                {user.userName}
                             </p>
                         )
                         }

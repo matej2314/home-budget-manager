@@ -2,6 +2,7 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 import useHomePageStore from '../store/homePageStore';
 import { getData } from "../utils/getData";
 import { useIsMobile } from '../hooks/useIsMobile';
+import { useTranslation } from 'react-i18next';
 import AppGallery from "../components/home-page-components/internal/AppGallery";
 import ReviewsSection from '../components/home-page-components/ReviewsSection';
 import TechnologiesSection from "../components/home-page-components/TechnologiesSection";
@@ -12,6 +13,7 @@ export default function AboutUs() {
     const { homePageData, homePageDataError, homePageDataLoading } = useHomePageStore();
     const technologies = getData(homePageDataLoading, homePageDataError, true, homePageData.technologies, []);
     const { isMobile } = useIsMobile();
+    const { t } = useTranslation('aboutUs');
 
     return (
         <div className="w-full h-full flex flex-col justify-start xl:px-16 overflow-auto">
@@ -19,7 +21,7 @@ export default function AboutUs() {
                 <DescriptionSection />
                 <TechnologiesSection technologies={technologies} isMobile={isMobile} />
                 <div className="w-full h-fit flex flex-col justify-center items-start text-slate-100 gap-3">
-                    <h2 className="w-full text-2xl flex justify-center font-semibold text-stone-400/80">Gallery:</h2>
+                    <h2 className="w-full text-2xl flex justify-center font-semibold text-stone-400/80">{t("galleryHeading")}</h2>
                     <div className="w-full h-[20rem] flex justify-center items-start">
                         <div className="w-full h-full flex justify-center items-center rounded-md ">
                             <AppGallery photos={homePageData && homePageData.shots} />

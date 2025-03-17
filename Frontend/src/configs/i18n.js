@@ -9,14 +9,14 @@ i18n
     .use(initReactI18next)
     .init({
         fallbackLng: 'en', // Domyślny język, jeśli nie wykryje odpowiedniego
-        debug: true,
+        debug: false,
         interpolation: {
             escapeValue: false, // React już zapobiega XSS
         },
         backend: {
             loadPath: '/locales/{{lng}}/{{ns}}.json', // Ścieżka do plików tłumaczeń
         },
-        ns: ['common', 'header', 'footer', 'home', 'auth'], // Lista przestrzeni nazw
+        ns: ['common', "aboutUs", "dashboardComponents", "dashboardInternal", "errorPage", "forms", "pages", "homePage", "modals", "utils"], // Lista przestrzeni nazw
         defaultNS: 'common', // Domyślna przestrzeń nazw
         detection: {
             order: ['navigator', 'cookie', 'localStorage', 'sessionStorage', 'htmlTag'], // Źródła wykrywania języka

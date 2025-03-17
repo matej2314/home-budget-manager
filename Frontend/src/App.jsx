@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import routes from './configs/routerConfig';
 import { ToastContainer } from 'react-toastify';
 import BackToUsMessage from './components/BackToUsMessage';
-// import './configs/i18n';
+import './configs/i18n';
 
 export default function App() {
 

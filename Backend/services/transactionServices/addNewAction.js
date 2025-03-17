@@ -60,7 +60,7 @@ const addNewAction = async (userId, type, value, catId) => {
 
 		return {
 			status: 'success',
-			message: 'Transaction added correctly.',
+			message: "addTransaction.addTransactionCorrect",
 			transactionId,
 		};
 	} catch (error) {
@@ -68,7 +68,7 @@ const addNewAction = async (userId, type, value, catId) => {
 		logger.error(`An error occured during adding transaction: ${error.message}`);
 		return {
 			status: 'error',
-			message: 'An error occured during adding transaction.',
+			message: "addTransaction.addTransactionError",
 		};
 	} finally {
 		if (connection) connection.release();

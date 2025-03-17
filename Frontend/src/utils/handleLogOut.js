@@ -1,14 +1,16 @@
 import { showInfoToast, showErrorToast } from "../configs/toastify";
 
+
 export const loggingOut = async (logout, navigate) => {
+
     try {
         await logout();
-        showInfoToast('Użytkownik wylogowany!');
+        showInfoToast("User logged out correctly");
         setTimeout(() => {
             navigate('/');
         }, 600);
 
     } catch (error) {
-        showErrorToast(`Błąd wylogowania: ${error.message}`);
+        showErrorToast("Failed to log out.");
     }
 };

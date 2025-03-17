@@ -2,6 +2,7 @@ import { useContext, useState, useRef, useEffect } from 'react';
 import { AuthContext } from '../../store/authContext';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import { useTranslation } from 'react-i18next';
 import { serverUrl } from '../../url';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 import FastActions from '../../components/dashboard/dashboard-internal-components/FastActionsSection';
@@ -15,6 +16,7 @@ export default function UserProfilePage() {
     const [type, setType] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sended, setSended] = useState(false);
+    const { t } = useTranslation("pages");
     const avatarFile = useRef();
     useDocumentTitle('Housemate profile');
 
@@ -96,7 +98,7 @@ export default function UserProfilePage() {
                             onSubmit={handleChangeAvatar}
                             className='avatar-form'
                         >
-                            <label htmlFor="avatar" className='text-lg font-semibold'>Select your avatar file:</label>
+                            <label htmlFor="avatar" className='text-lg font-semibold'>{t("userProfile.avatarLabel")}</label>
                             <input type="file" name="avatar" id="avatar" limit={1} accept='image/*' ref={avatarFile} />
                             <button
                                 type="submit"
@@ -114,7 +116,7 @@ export default function UserProfilePage() {
 
                 ) : (
                     <div className='w-full h-fit flex flex-col justify-center px-5 mb-4'>
-                        <h2 className='w-full h-fit flex justify-center text-xl mb-4'>Your transactions:</h2>
+                        <h2 className='w-full h-fit flex justify-center text-xl mb-4'>{t("userProfile.transactionsTitle")}</h2>
                         <TransactionsList filterId={user.id} transactions={actionsData && transactions} actionsLoading={actionsLoading} actionsError={actionsDataError} />
                     </div>
                 )}

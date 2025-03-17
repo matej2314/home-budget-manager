@@ -5,6 +5,7 @@ import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
+import { useTranslation } from 'react-i18next';
 
 export default function DeleteTransactionModal({ isOpen, onRequestClose, transaction }) {
     const { fetchTransactions } = useTransactionsStore();
@@ -22,14 +23,14 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
             const deleteAction = await sendRequest('DELETE', actionData, `${serverUrl}/action`);
 
             if (deleteAction.status === 'success') {
-                showInfoToast('Transakcja usunięta.');
+                showInfoToast(t("deleteTransaction.successMessage"));
                 fetchTransactions();
                 onRequestClose();
             } else {
-                showErrorToast('Nie udało się usunąć transakcji.');
+                showErrorToast(t("deleteTransaction.failedMessage"));
             }
         } catch (error) {
-            showErrorToast('Wystąpił błąd podczas usuwania transakcji.');
+            showErrorToast(t("deleteTransaction.errorMessage"));
             console.error('Delete transaction error:', error);
         }
     };
@@ -42,21 +43,21 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
             <div className='w-full h-fit flex flex-col justify-center items-center gap-5'>
-                <h2 className='w-full h-fit fle justify-center font-semibold'>Are you sure you want to delete transaction?</h2>
+                <h2 className='w-full h-fit fle justify-center font-semibold'>{t("deleteTransaction.heading")}</h2>
                 <div id='btnsDiv' className='w-full h-fit flex justify-around'>
                     <button
                         type="button"
                         className="form-submit-modal-btn"
                         onClick={() => handleDeleteAction(transaction)}
                     >
-                        Yes
+                        {t("btnYes")}
                     </button>
                     <button
                         onClick={onRequestClose}
                         type="button"
                         className="form-submit-modal-btn"
                     >
-                        No
+                        {t("btnNo")}
                     </button>
                 </div>
             </div>

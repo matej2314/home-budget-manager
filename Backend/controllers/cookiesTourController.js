@@ -11,7 +11,7 @@ exports.setCookieValue = async (req, res) => {
     if (!cookieValue) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Incorrect value.'
+            message: "cookies.valueError"
         });
     };
 

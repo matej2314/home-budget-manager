@@ -3,10 +3,12 @@ import { AuthContext } from '../../store/authContext';
 import Modal from 'react-modal';
 import Authorization from '../home-page-components/Authorization';
 import { showErrorToast } from '../../configs/toastify';
+import { useTranslation } from 'react-i18next';
 
 export default function AuthModal({ isOpen, onRequestClose }) {
     const [mode, setMode] = useState(null);
     const { isAuthenticated } = useContext(AuthContext);
+    const { t } = useTranslation("common");
 
     const handleModeChange = (selectedMode) => {
         setMode(selectedMode);
@@ -41,13 +43,13 @@ export default function AuthModal({ isOpen, onRequestClose }) {
                             onClick={() => handleLoginBtn('login')}
                             className='auth-modal-mode-btn'
                         >
-                            Login
+                            {t("authElements.modalLoginBtn")}
                         </button>
                         <button
                             onClick={() => handleModeChange('register')}
                             className='auth-modal-mode-btn'
                         >
-                            SignUp
+                            {t("authElements.modalSignUpBtn")}
                         </button>
                     </div>
                 </div>

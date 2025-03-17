@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { AuthContext } from "../../../store/authContext";
 import useModal from "../../../hooks/useModal";
+import { useTranslation } from "react-i18next";
 import ModalComponent from "./ModalComponent";
 import AddTransactionModal from '../../modals/AddTransactionModal';
 import { SendMessageModal } from "../../modals/messagesModals/messagesModals";
@@ -15,6 +16,8 @@ import { showInfoToast } from "../../../configs/toastify";
 
 export default function FastActions({ profilePage, action }) {
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
+    const { t: tInternal } = useTranslation("dashboardInternal");
+    const { t: tCommon } = useTranslation("common");
     const { user } = useContext(AuthContext);
 
     const handleButtonClick = (type) => {
@@ -33,7 +36,7 @@ export default function FastActions({ profilePage, action }) {
             case 'declare':
                 return () => {
                     if (user.role !== 'host') {
-                        showInfoToast('Nie jesteś gospodarzem!');
+                        showInfoToast(tInternal("fastActions.noHostError"));
                         return;
                     }
                     openModal(actionType);
@@ -69,7 +72,7 @@ export default function FastActions({ profilePage, action }) {
                             className='fast-actions-btn'
                             style={{ boxShadow: 'inset 0 0 1px 2px rgba(0, 0, 0, 0.15)' }}
                         >
-                            {label}
+                            {tCommon(`fastActionsBtns.${label}`)}
                         </button>
                     ))
                 }

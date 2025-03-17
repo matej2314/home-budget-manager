@@ -1,14 +1,15 @@
 import { useState, useRef } from 'react';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast } from '../../configs/toastify';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion'
 import SendMessageBtn from './internal/SendMessageBtn';
 import LoadingModal from '../modals/LoadingModal';
 
 export default function ContactForm() {
     const [actionState, setActionState] = useState({ type: null });
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation("forms");
     const userNameRef = useRef();
     const userEmailRef = useRef();
     const userMessageRef = useRef();
@@ -23,7 +24,7 @@ export default function ContactForm() {
 
     const handleContactForm = async (e) => {
         e.preventDefault();
-        showInfoToast(`So fat it's not working :)`);
+        showInfoToast(`So far it's not working :)`);
         handleSetActionState('sended')
     };
 
@@ -32,8 +33,8 @@ export default function ContactForm() {
             onSubmit={handleContactForm}
             className='contact-form'
         >
-            <h2 className='w-full h-fit flex justify-center items-center font-semibold text-xl'>Contact us:</h2>
-            <label className='w-full h-fit flex justify-center items-center' htmlFor="userName">Type your name:</label>
+            <h2 className='w-full h-fit flex justify-center items-center font-semibold text-xl'>{t("contactForm.heading")}</h2>
+            <label className='w-full h-fit flex justify-center items-center' htmlFor="userName">{t("contactForm.nameLabel")}</label>
             <div className='relative w-fit'>
                 <input
                     type="text"
@@ -41,7 +42,7 @@ export default function ContactForm() {
                     name="userName"
                     id="userName"
                     ref={userNameRef}
-                    placeholder='name'
+                    placeholder={t("contactForm.namePlaceholder")}
                     onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
                     required
                 />
@@ -50,14 +51,14 @@ export default function ContactForm() {
                     className="icon-base top-[0.15rem] text-slate-100 text-xl text-opacity-50"
                 />
             </div>
-            <label htmlFor="userEmail">Type your e-mail address:</label>
+            <label htmlFor="userEmail">{t("contactForm.emailLabel")}</label>
             <div className='relative w-fit flex'>
                 <input
                     type="email"
                     className='contact-form-input'
                     name="userEmail"
                     id="userEmail"
-                    placeholder='email'
+                    placeholder={t("contactForm.emailPlaceholder")}
                     onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
                     ref={userEmailRef}
                     required
@@ -67,13 +68,16 @@ export default function ContactForm() {
                     className="icon-base top-[0.15rem] text-slate-100 text-xl text-opacity-55"
                 />
             </div>
-            <label className='w-full h-fit flex justify-center items-center' htmlFor="userMessage">Type your message:</label>
+            <label
+                className='w-full h-fit flex justify-center items-center'
+                htmlFor="userMessage">{t("contactForm.messageLabel")}
+            </label>
             <div className='relative w-10/12'>
                 <textarea
                     className='contact-form-textarea'
                     name="userMessage"
                     id="userMessage"
-                    placeholder='message'
+                    placeholder={t("contactForm.messagePlaceholder")}
                     rows="10"
                     ref={userMessageRef}
                     onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}

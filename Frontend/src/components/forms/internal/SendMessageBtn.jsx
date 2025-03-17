@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { Icon } from '@iconify/react';
+import { useTranslation } from "react-i18next";
 
 const messageFormClasses = "relative w-[15rem] bg-transparent p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 btn-border border-slate-500/45 overflow-hidden";
 
 export default function SendMessageBtn({ form, state, setState, resetState }) {
+    const { t } = useTranslation("forms");
 
     const messageFormVariants = {
         initial: { x: -50, y: -25, opacity: 0 },
@@ -34,7 +36,7 @@ export default function SendMessageBtn({ form, state, setState, resetState }) {
             <span
                 className="w-full h-full justify-center"
             >
-                Send message
+                {t("sendMessageBtn.label")}
             </span>
             <motion.div
                 key="submit-icon"

@@ -31,7 +31,7 @@ exports.addReview = async (req, res) => {
             case 1:
                 return res.status(statusCode.CREATED).json({
                     status: 'success',
-                    message: 'Opinion added correctly.'
+                    id,
                 });
         };
     } catch (error) {

@@ -1,3 +1,13 @@
 {
-    
+    "mainSlogan": "Add your housemates, analyze incomes and costs, take control.",
+    "buttonsHeading": "Your personal tool to control house finances",
+    "aboutProjectBtn": "About project",
+    "discoverBtn": "Discover",
+    "dashboardRedirectInfo": "To proceed you have to log in",
+    "homePageMenu": {
+        "firstEl": "Home Page",
+        "secondEl": "About us",
+        "authBtn": "SignUp/Login",
+        "contactBtn": "Contact"
+    }
 }

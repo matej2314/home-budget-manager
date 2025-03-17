@@ -1,10 +1,12 @@
 import { useContext } from 'react'
 import { DataContext } from '../../../store/dataContext';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion'
 
 export default function NotificationsContainer({ notifications, clickAction }) {
     const { data, isLoading, error } = useContext(DataContext);
+    const { t } = useTranslation("dashboardInternal");
 
     const houseName = !isLoading && !error && data.houseData[0].houseName || '';
 
@@ -25,7 +27,7 @@ export default function NotificationsContainer({ notifications, clickAction }) {
         >
             {notifications ? (
                 Object.entries(notifications).some(([_, items]) => items.length > 0) ? (
-                    <ul className='w-fit flex indirect:'>
+                    <ul className='w-fit flex'>
                         {Object.entries(notifications).map(([category, items]) => items.map((notification, index) => (
                             <li key={`${category}-${index}`}
                                 className='w-full h-fit flex items-center gap-2'
@@ -51,10 +53,10 @@ export default function NotificationsContainer({ notifications, clickAction }) {
                         )}
                     </ul>
                 ) : (
-                    <p>No new notifications.</p>
+                    <p>{t("notificationsContainer.noNoticesError")}</p>
                 )
             ) : (
-                <p>No new notifications.</p>
+                <p>{t("notificationsContainer.noNoticesError")}</p>
             )
             }
         </motion.div>

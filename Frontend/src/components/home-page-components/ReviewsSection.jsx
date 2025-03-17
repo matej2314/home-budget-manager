@@ -1,12 +1,14 @@
 import StarRating from "../StarRating";
 import { serverUrl } from '../../url';
 import { formatDbDate } from "../../utils/formattingUtils/formatDateToDisplay";
+import { useTranslation } from "react-i18next";
 
 export default function ReviewsSection({ reviews }) {
+    const { t } = useTranslation("aboutUs");
 
     return (
         <div id="app-reviews" className="w-full h-fit flex flex-col justify-start items-center gap-3">
-            <h2 className="text-2xl font-semibold text-stone-400/80 text-center">Users reviews:</h2>
+            <h2 className="text-2xl font-semibold text-stone-400/80 text-center">{t("reviewsHeading")}</h2>
             {reviews ? <div id="reviews-boxes" className="w-full h-fit flex flex-col items-center gap-5 mb-4 text-slate-900">
                 {reviews && reviews.map((review, index) => (
                     <div

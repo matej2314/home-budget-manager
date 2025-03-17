@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import { useSocket } from '../../../store/socketContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import useModal from '../../../hooks/useModal';
+import { useTranslation } from "react-i18next";
 import { AuthContext } from "../../../store/authContext";
 import { mapArray, filterArray } from "../../../utils/arraysUtils/arraysFunctions";
 import { formatDbDate } from "../../../utils/formattingUtils/formatDateToDisplay";
@@ -24,6 +25,8 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     const [newMessages, setNewMessages] = useState([]);
     const navigate = useNavigate();
     const { isMobile } = useIsMobile();
+    const { t: tInternal } = useTranslation("dashboardInternal");
+    const { t: tUtils } = useTranslation("utils");
 
     const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
     const sortedMessages = Array.isArray(userMessages) ? userMessages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
@@ -111,7 +114,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                                     ${index === 0 ? 'rounded-tl-xl' : ''}
                                     ${index === tableHeader.length - 1 ? 'rounded-tr-xl' : ''}`}
                                         >
-                                            {header}
+                                            {tUtils(`tableHeader.${header}`)}
                                         </th>
                                     ))}
                                 </tr>
@@ -127,8 +130,10 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                                         <td className="messages-list-table-data">
                                             {!isMobile ? formatDbDate(message.date) : formatDbDate(message.date, 'split')}
                                         </td>
-                                        <td className="messages-list-table-data">{message.readed ? "Readed" : "Unreaded"}</td>
-                                        <td className="w-full flex justify-around items-center messages-list-table-data lg:flex lg:justify-start lg:gap-8 xl:flex xl:justify-start xl:gap-2 indirect:text-base md:text-lg pt-3 md:pt-2.5">
+                                        <td className="messages-list-table-data">{message.readed ? tInternal("messagesList.readed") : tInternal("messagesList.unreaded")}</td>
+                                        <td
+                                            className="w-full flex justify-around items-center messages-list-table-data lg:flex lg:justify-start lg:gap-8 xl:flex xl:justify-start xl:gap-2 indirect:text-base md:text-lg pt-3 md:pt-2.5"
+                                        >
                                             {mapArray(
                                                 filterArray(messagesBtnsArr, item => item.condition === undefined || item.condition(message, user)),
                                                 ({ label, icon, actionType }) => (
@@ -146,7 +151,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                     </>
                 ) : (
                     <p className="w-full h-fit flex justify-center text-2xl">
-                        <span>Nie udało się pobrać wiadomości.</span>
+                        <span>{tInternal("messagesList.failedFetchError")}</span>
                     </p>
                 )}
                 {modal.isOpen && <ModalComponent

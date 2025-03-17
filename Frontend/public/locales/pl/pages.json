@@ -1,0 +1,23 @@
+{
+    "userProfile": {
+        "avatarLabel": "Wybierz swój avatar:",
+        "transactionsTitle": "Twoje transakcje:"
+    },
+    "houseInfo": {
+        "transactionsLabel": "Transakcje w poprzednim dniu:",
+        "budgetLabel": "Budżet w poprzednim dniu:",
+        "housematesLabel": "Domowników:",
+        "housematesOpenBtn": "Wyświetl domowników",
+        "fiveActionsTitle": "5 ostatnich transakcji:"
+    },
+    "messagesPage": {
+        "title": "Twoje wiadomości:"
+    },
+    "transactionsPage": {
+        "addNewBtn": "Dodaj nową transakcję",
+        "categoriesBtn": "Wyświetl kategorie"
+    },
+    "housematesPage": {
+        "title": "Twoi domownicy:"
+    }
+}

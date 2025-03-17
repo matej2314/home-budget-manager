@@ -1,6 +1,7 @@
 import { useRef, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
@@ -10,6 +11,7 @@ import SubmitBtn from './internal/SubmitBtn';
 export default function LoginForm() {
     const { login, isLoading, error, message, user, isAuthenticated } = useContext(AuthContext);
     const [sended, setSended] = useState(false);
+    const { t } = useTranslation("forms");
     const navigate = useNavigate();
     const email = useRef();
     const password = useRef();
@@ -29,7 +31,7 @@ export default function LoginForm() {
 
     useEffect(() => {
         if (user && !isLoading && !error && isAuthenticated) {
-            showInfoToast(`User ${user.userName} logged in successfully!`);
+            showInfoToast(`${user.userName} ${t("loginForm.correctLogin")}`);
             const timer = setTimeout(() => {
                 navigate('/dashboard');
             }, 600);
@@ -38,13 +40,13 @@ export default function LoginForm() {
         };
 
         if (sended && error && !isAuthenticated) {
-            showErrorToast('Logowanie nieudane.');
+            showErrorToast(t("loginForm.failedLogin"));
         }
     }, [error, isLoading, navigate, user]);
 
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>
-            <h2 className='text-xl'>Login</h2>
+            <h2 className='text-xl'>{t("loginForm.heading")}</h2>
             <form onSubmit={handleSubmit} className='w-fit h-fit flex flex-col justify-center items-center gap-3'>
                 <label htmlFor="email">Email:</label>
                 <div className='relative w-full'>
@@ -64,7 +66,7 @@ export default function LoginForm() {
                         className="icon-base top-1 text-gray-500 text-xl text-opacity-45"
                     />
                 </div>
-                <label htmlFor="password">Password:</label>
+                <label htmlFor="password">{t("loginForm.passLabel")}</label>
                 <div className='relative w-full'>
                     <input
                         type="password"
@@ -86,7 +88,7 @@ export default function LoginForm() {
                     className="auth-submit-btn"
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Logging in' : 'Login'}
+                    {isLoading ? t("loginForm.isLoadingBtn") : t("loginForm.submitBtn")}
                 </SubmitBtn>
             </form>
             {isLoading && <LoadingModal isOpen={isLoading} />}

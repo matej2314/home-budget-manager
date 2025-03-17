@@ -6,7 +6,7 @@ import i18next from 'i18next';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function LanguageSwitch({ isHomepage }) {
-    const [selectedLang, setSelectedLang] = useState('en');
+    const [selectedLang, setSelectedLang] = useState(i18next.selectedLang);
     const { isMobile } = useIsMobile();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 

@@ -4,11 +4,13 @@ import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import StarRating from '../StarRating';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import { useTranslation } from 'react-i18next';
 import SubmitBtn from '../forms/internal/SubmitBtn';
 
 export default function AddReviewModal({ isOpen, onRequestClose }) {
     const [rating, setRating] = useState(0);
     const userOpinionRef = useRef();
+    const { t } = useTranslation("modals");
 
     const handleSaveReview = async (e) => {
         e.preventDefault();
@@ -23,11 +25,11 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
 
             if (saveReview.status === 'error') {
                 console.error(saveReview.messaage)
-                showErrorToast('Failed to save opinion :( Try again!');
+                showErrorToast(t("addReview.failedSaveMessage"));
                 setRating((prevState) => 0);
                 userOpinionRef.current.value = '';
             } else if (saveReview.status === 'success') {
-                showInfoToast(saveReview.message);
+                showInfoToast(t("saveReview.correctlySaveMessage"));
                 setTimeout(() => {
                     onRequestClose();
                 }, 600);
@@ -50,23 +52,23 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
                     onSubmit={handleSaveReview}
                     className='w-full h-fit flex flex-col items-center gap-3'
                 >
-                    <label htmlFor="choose_rating" className='text-xl'>Choose rating:</label>
+                    <label htmlFor="choose_rating" className='text-xl'>{t("addReview.ratingLabel")}</label>
                     <StarRating
                         edit={true}
                         action={(newRating) => setRating(newRating)} size={40}
                     />
-                    <label htmlFor="userOpinion" className='text-lg font-semibold'>Type your opinion:</label>
+                    <label htmlFor="userOpinion" className='text-lg font-semibold'>{t("addReview.opinionLabel")}</label>
                     <textarea
                         className='w-full h-[10rem] resize-none border-2 border-slate-300 rounded-md pl-2'
                         name="userOpinion"
                         id="userOpinion"
-                        placeholder='type your opinion'
+                        placeholder={t("addReview.opinionPlaceholder")}
                         ref={userOpinionRef}
                     />
                     <SubmitBtn
                         className='form-submit-modal-btn'
                     >
-                        Save!
+                        {t("addReview.submitOpinionBtn")}
                     </SubmitBtn>
                 </form>
             </div>

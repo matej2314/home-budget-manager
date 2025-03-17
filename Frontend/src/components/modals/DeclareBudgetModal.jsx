@@ -1,8 +1,10 @@
 import Modal from 'react-modal';
 import DeclareBudgetForm from '../forms/DeclareBudgetForm';
+import { useTranslation } from 'react-i18next';
 
 
 export default function DeclareBudgetModal({ isOpen, onRequestClose }) {
+    const { t } = useTranslation("modals");
 
     return (
         <Modal
@@ -17,7 +19,7 @@ export default function DeclareBudgetModal({ isOpen, onRequestClose }) {
                     onClick={onRequestClose}
                     className="form-submit-modal-btn"
                 >
-                    Cancel
+                    {t("cancel")}
                 </button>
             </div>
         </Modal>

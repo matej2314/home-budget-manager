@@ -1,0 +1,23 @@
+{
+    "userProfile": {
+        "avatarLabel": "Select your avatar file:",
+        "transactionsTitle": "Your transactions:"
+    },
+    "houseInfo": {
+        "transactionsLabel": "Previous day's transactions:",
+        "budgetLabel": "Previous day's budget:",
+        "housematesLabel": "Housemates:",
+        "housematesOpenBtn": "View housemates list",
+        "fiveActionsTitle": "Last 5 transactions:"
+    },
+    "messagesPage": {
+        "title": "Your messages:"
+    },
+    "transactionsPage": {
+        "addNewBtn": "Add new transaction",
+        "categoriesBtn": "Vew all categories"
+    },
+    "housematesPage" : {
+        "title": "Your housemates:"
+    }
+}

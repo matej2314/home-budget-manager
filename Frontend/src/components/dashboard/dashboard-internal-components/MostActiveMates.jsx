@@ -1,8 +1,10 @@
 import { motion } from "framer-motion"
 import { useIsMobile } from '../../../hooks/useIsMobile';
+import { useTranslation } from 'react-i18next';
 
 export default function MostActiveMates({ isLoading, matesData }) {
     const { isMobile } = useIsMobile();
+    const { t } = useTranslation("dashboardInternal");
 
     return (
         <div
@@ -19,7 +21,7 @@ export default function MostActiveMates({ isLoading, matesData }) {
                     delay: 0.2,
                 }}
                 className="w-full h-full flex flex-row gap-3">
-                <h2 className="lg:w-fit h-fit flex lg:justify-center text-nowrap">Most active mates:</h2>
+                <h2 className="lg:w-fit h-fit flex lg:justify-center text-nowrap">{t("mostActiveMates.heading")}</h2>
                 {!isLoading && matesData && matesData.map((mate, index) => {
                     return <p key={index} className="text-nowrap">{mate.userName} - {mate.role}</p>
                 })}

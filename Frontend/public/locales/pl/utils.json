@@ -1,3 +1,23 @@
 {
-    
+    "actionsTableLabels": {
+        "Value": "wartość",
+        "Type": "typ",
+        "Category": "kategoria",
+        "User": "domownik",
+        "Date": "data"
+    },
+    "messagesStates": {
+        "all": "wszystkie",
+        "new": "nowe",
+        "readed": "przeczytane",
+        "sended": "wysłane"
+    },
+    "tableHeader": {
+        "Sender": "nadawca",
+        "Recipient": "odbiorca",
+        "Message": "wiadomość",
+        "Date": "data",
+        "Is readed": "status",
+        "Actions": "akcje"
+    }
 }

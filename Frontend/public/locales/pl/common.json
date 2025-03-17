@@ -10,5 +10,34 @@
     },
     "documentTitle": {
         
+    },
+    "authElements": {
+        "modalLoginBtn": "Logowanie",
+        "modalSignUpBtn": "Rejestracja"
+    },
+    "fastActionsBtns": {
+        "Declare budget" : "zadeklaruj budżet",
+        "Add transaction": "dodaj transakcję",
+        "Send message": "wyślij wiadomość",
+        "Add housemate": "dodaj domownika",
+        "Your housemates": "Twoi domownicy",
+        "Change avatar": "zmień avatar",
+        "Change e-mail": "zmień adres e-mail",
+        "Cookies settings": "ustawienia Cookies",
+        "Add app review": "dodaj opinię"
+    },
+    "logOutMessage": "Użytkownik wylogowany.",
+    "logOutFailedMessage": "Nie udało się wylogować.",
+    "dashboardMenu": {
+        "Home page": "Strona główna",
+        "Dashboard": "Dashboard",
+        "My profile": "Mój profil",
+        "My house": "Mój dom",
+        "Messages": "Wiadomości",
+        "Housemates": "Domownicy",
+        "Transactions": "Transakcje",
+        "Calendar": "Kalendarz",
+        "AdminPanel": "Admin Panel",
+        "Page stats": "Statystyki"
     }
 }

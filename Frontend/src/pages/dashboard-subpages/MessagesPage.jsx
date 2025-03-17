@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useMessagesStore } from '../../store/messagesStore';
+import { useTranslation } from "react-i18next";
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import MessagesList from '../../components/dashboard/dashboard-internal-components/MessagesList';
@@ -7,6 +8,7 @@ import LoadingModal from "../../components/modals/LoadingModal";
 
 export default function MessagesPage() {
     useDocumentTitle('Inbox');
+    const { t } = useTranslation("pages");
 
     const {
         messagesData,
@@ -27,7 +29,7 @@ export default function MessagesPage() {
                 <div
                     id="middle-content"
                     className=" min-h-full flex flex-col items-center border-2 border-b-slate-800/5 pb-4 overflow-auto">
-                    <h2 className="min-w-full h-fit flex justify-center text-2xl">Your messages:</h2>
+                    <h2 className="min-w-full h-fit flex justify-center text-2xl">{t("messagesPage.title")}</h2>
                     {messagesData && <MessagesList
                         userMessages={messagesData}
                         messagesError={messagesError}

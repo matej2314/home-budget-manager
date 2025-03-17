@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useTransactionsStore } from "../../store/transactionsStore";
+import { useTranslation } from "react-i18next";
 import Modal from 'react-modal';
 import TransactionsList from "../../components/dashboard/dashboard-internal-components/TransactionsList";
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
@@ -15,6 +16,7 @@ export default function TransactionsPage() {
     const { fetchTransactions, actionsLoading, actionsDataError, actionsData, actionsTotalPages, isTransactionsFetched } = useTransactionsStore();
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
     useDocumentTitle('Transactions');
+    const { t } = useTranslation("pages");
 
     useEffect(() => {
         if (!isTransactionsFetched) {
@@ -43,14 +45,14 @@ export default function TransactionsPage() {
                         className="transactions-page-select-modal-btn"
                         style={{ boxShadow: 'inset 0 0 2px 2px rgba(0, 0, 0, 0.15)' }}
                     >
-                        Add new transaction
+                        {t("transactionsPage.addNewBtn")}
                     </button>
                     <button
                         className="transactions-page-select-modal-btn"
                         onClick={() => openModal('categories')}
                         style={{ boxShadow: 'inset 0 0 2px 2px rgba(0, 0, 0, 0.15)' }}
                     >
-                        Vew all categories
+                        {t("transactionsPage.categoriesBtn")}
                     </button>
                 </div>
                 <TransactionsList

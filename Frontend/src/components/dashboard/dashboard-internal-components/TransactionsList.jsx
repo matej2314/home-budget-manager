@@ -5,11 +5,14 @@ import LoadingModal from '../../modals/LoadingModal';
 import { tableLabels } from '../../../utils/arraysUtils/actionsTableLabels';
 import { formatDbDate } from '../../../utils/formattingUtils/formatDateToDisplay';
 import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
+import { useTranslation } from 'react-i18next';
 import DeleteTransactionModal from '../../modals/DeleteTransactionModal';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }) {
     const isMobile = useMediaQuery({ maxWidth: 768 });
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'delete', data: null });
+    const { t: tInternal } = useTranslation("dashboardInternal");
+    const { t: tUtils } = useTranslation("utils");
 
     const filteredTransactions = filterId ? filterArray(transactions, (transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)
@@ -45,10 +48,10 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                                     ${index === 0 ? 'rounded-tl-xl' : ''} 
                                     ${mainSite && index === tableLabels.length - 1 ? 'rounded-tr-xl' : ''}`}
                                 >
-                                    {label}
+                                    {tUtils(`actionsTableLabels.${label}`)}
                                 </th>
                             ))}
-                            {!mainSite && <th className="px-4 py-2 text-left rounded-tr-xl">Actions</th>}
+                            {!mainSite && <th className="px-4 py-2 text-left rounded-tr-xl">{tInternal("transactionsList.actionsHeaderValue")}</th>}
                         </tr>
                     </thead>
                     <tbody className="border-x-[1px] border-slate-400 text-[0.6rem] indirect:text-sm md:text-sm">
@@ -56,7 +59,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                             <tr key={transaction.transactionId}
                                 className={`border-b ${transaction.transactionId === transactionsToDisplay.length - 1 ? 'border-b-2 border-slate-400' : 'border-none'}`}>
                                 <td className="pl-2 transactions-list-table-data">{`${transaction.value} zł`}</td>
-                                <td className="transactions-list-table-data">{transaction.type}</td>
+                                <td className="transactions-list-table-data">{tInternal(`transactionsList.types.${transaction.type}`)}</td>
                                 <td className="transactions-list-table-data">{transaction.categoryName}</td>
                                 <td className="transactions-list-table-data">{transaction.userName}</td>
                                 <td className="transactions-list-table-data">
@@ -68,7 +71,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                                             type="button"
                                             className="w-fit h-fit"
                                             onClick={() => handleDeleteAction(transaction)}
-                                            title="Delete transaction"
+                                            title={tInternal("transactionsList.deleteBtnTitle")}
                                         >
                                             <Icon icon='material-symbols:delete-outline' width={20} height={20} />
                                         </button>
@@ -79,7 +82,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                     </tbody>
                 </table>
             ) : (
-                <p>Brak transakcji</p>
+                <p>{tInternal("transactionsList.noActionsError")}</p>
             )}
             {actionsLoading && <LoadingModal isOpen={actionsLoading} />}
             {modal && modal.isOpen && modal.type === 'delete' && <DeleteTransactionModal isOpen={modal.isOpen} onRequestClose={closeModal} transaction={modal.data} />}

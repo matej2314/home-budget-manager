@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { Icon } from '@iconify/react';
+import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../../store/authContext';
 import { useSocket } from '../../../store/socketContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
@@ -16,6 +17,7 @@ export default function DashBoardMenu() {
     const location = useLocation();
     const { isMobile } = useIsMobile();
     const [isOpened, setIsOpened] = useState(false);
+    const { t } = useTranslation("common");
 
     const handleToggleMenu = () => {
         setIsOpened(prevState => !prevState);
@@ -38,7 +40,7 @@ export default function DashBoardMenu() {
                         {linksElements.map((link, index) => (
                             <li
                                 key={index}
-                                className={`w-full h-fit flex flex-row justify-center items-center ${!isMobile ? 'text-base' : 'text-sm'} border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3 ${locationEffect(link, location)}`}
+                                className={`w-full h-fit flex flex-row justify-center text-nowrap items-center ${!isMobile ? 'text-base' : 'text-sm'} border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3 ${locationEffect(link, location)}`}
                             >
                                 <Icon
                                     icon={link.icon}
@@ -49,7 +51,7 @@ export default function DashBoardMenu() {
                                     to={link.path}
                                     onClick={() => setIsOpened(false)}
                                 >
-                                    {link.label}
+                                    {t(`dashboardMenu.${link.label}`)}
                                 </Link>
                                 {link.dot && newMessages?.length > 0 ? <NotificationDot color={'bg-green-700'} data={newMessages.length} /> : null}
                             </li>
@@ -69,7 +71,7 @@ export default function DashBoardMenu() {
                                         <Link
                                             to={link.path}
                                         >
-                                            {link.label}
+                                            {t(`dashboardMenu.${link.label}`)}
                                         </Link>
                                     </li>
                                 ))}

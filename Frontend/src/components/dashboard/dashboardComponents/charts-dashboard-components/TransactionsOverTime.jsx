@@ -1,12 +1,14 @@
 import LineChart from "../../../charts/LineChart"
 import { useIsMobile } from "../../../../hooks/useIsMobile"
+import { useTranslation } from 'react-i18next';
 
 export default function TransactionsOverTime({ data }) {
     const isMobile = useIsMobile();
+    const { t } = useTranslation("dashboardComponents");
 
     return (
         <div id="transactionsOverTime" className="w-fit h-fit flex flex-col flex-wrap justify-center items-center lg:mr-5 border-2 border-slate-300 flex-grow flex-shrink">
-            <h2 className="w-full h-fit flex justify-center text-xl mb-3">Transactions over time: </h2>
+            <h2 className="w-full h-fit flex justify-center text-xl mb-3">{t("actionsOverTime.heading")}</h2>
             <div className="w-full h-full">
                 <div className="w-full h-[25rem] indirect:w-[90vw] md:h-[35rem] md:w-[40rem] flex justify-center">
                     <LineChart

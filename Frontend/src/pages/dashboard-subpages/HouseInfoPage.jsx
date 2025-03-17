@@ -5,6 +5,7 @@ import { AuthContext } from "../../store/authContext";
 import { useTransactionsStore } from '../../store/transactionsStore'
 import useProcessedData from '../../hooks/useProcessedData';
 import { useIsMobile } from "../../hooks/useIsMobile";
+import { useTranslation } from "react-i18next";
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { getData } from '../../utils/getData';
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
@@ -25,6 +26,7 @@ export default function HouseInfoPage() {
 
     const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
     const { user, isAuthenticated } = useContext(AuthContext);
+    const { t } = useTranslation("pages");
     const { houseData, houseMates, statsData, dailyData } = data;
     const isMobile = useIsMobile();
     useDocumentTitle('House info');
@@ -80,26 +82,26 @@ export default function HouseInfoPage() {
                                 className="lg:w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto text-xs lg:text-md px-3 py-3">
                                 <div id="dailyShortInfo" className="w-full h-full flex flex-row justify-center items-center gap-3">
                                     <p className="flex flex-col lg:flex-row text-md lg:gap-1">
-                                        <span className="w-fit h-fit flex items-center justify-center lg:text-base font-bold">Previous day's transactions:</span>
+                                        <span className="w-fit h-fit flex items-center justify-center lg:text-base font-bold">{t("houseInfo.transactionsLabel")}</span>
                                         <span className="flex justify-center text-xs lg:text-base ml-2">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyActionCount : '00'}</span>
                                     </p>
                                     <span className="text-xl lg:text-md flex items-center -translate-y-1 lg:-translate-y-0.5">&#124;</span>
                                     <p className="flex flex-col lg:flex-row lg:items-center text-md gap-1">
-                                        <span className="font-bold text-xs lg:text-base">Previous day's budget:</span>
+                                        <span className="font-bold text-xs lg:text-base">{t("houseInfo.budgetLabel")}</span>
                                         <span className="flex justify-center ml-2 text-xs lg:text-base">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyBudgetValue : '0000'}</span>
                                     </p>
                                 </div>
                             </div>
                             <div id="housemates-container" className="w-fit h-fit flex items-center border-2 border-slate-400 rounded-xl mx-auto gap-2 p-3">
-                                <p className="font-bold text-sm lg:text-base">Housemates:</p>
+                                <p className="font-bold text-sm lg:text-base">{t("houseInfo.housematesLabel")}</p>
                                 <p className="flex items-center">{houseMates.length || '1'}</p>
-                                <Link to='/dashboard/housemates' className="flex items-center font-semibold text-slate-500 hover:text-slate-800">- View housemates list</Link>
+                                <Link to='/dashboard/housemates' className="flex items-center font-semibold text-slate-500 hover:text-slate-800"> - {t("houseInfo.housematesOpenBtn")}</Link>
                             </div>
                             <MostActiveMates isLoading={isLoading} matesData={matesData} />
                         </div>
                         <div id="content-section" className="w-full flex flex-row justify-center items-start gap-5 flex-wrap">
                             <div id="last-five-transactions" className="flex flex-col items-center gap-3  px-4 mx-5 rounded-md">
-                                <h2 className="text-xl flex justify-center">Last 5 transactions:</h2>
+                                <h2 className="text-xl flex justify-center">{t("houseInfo.fiveActionsTitle")}</h2>
                                 <TransactionsList limit={5} mainSite={true} transactions={actionsData && transactions} />
                             </div>
                             <div id="charts1" className="w-full h-full flex flex-col flex-wrap justify-around items-center mb-5 flex-grow px-5 gap-y-4 gap-x-4">

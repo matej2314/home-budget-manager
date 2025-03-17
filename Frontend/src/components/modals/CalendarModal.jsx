@@ -1,6 +1,8 @@
 import Modal from 'react-modal';
+import { useTranslation } from 'react-i18next'
 
 export default function CalendarModal({ selectedEvent, handleCloseModal }) {
+    const { t } = useTranslation("modals");
 
     return (
         <Modal
@@ -14,12 +16,12 @@ export default function CalendarModal({ selectedEvent, handleCloseModal }) {
             {selectedEvent && (
                 <>
                     <div className='z-999 flex flex-col gap-2'>
-                        <h2 className="md:text-xl font-semibold text-center">Transaction details:</h2>
-                        <p><strong>Category:</strong> {selectedEvent.details.categoryName}</p>
-                        <p><strong>Type:</strong> {selectedEvent.details.type}</p>
-                        <p><strong>Value:</strong> {selectedEvent.details.value}</p>
-                        <p><strong>User:</strong> {selectedEvent.details.userName}</p>
-                        <p><strong>Addition date:</strong> {new Date(selectedEvent.details.addedAt).toLocaleString()}</p>
+                        <h2 className="md:text-xl font-semibold text-center">{t("calendar.heading")}</h2>
+                        <p><strong>{t("calendar.category")}</strong> {selectedEvent.details.categoryName}</p>
+                        <p><strong>{t("calendar.type")}</strong> {selectedEvent.details.type}</p>
+                        <p><strong>{t("calendar.value")}</strong> {selectedEvent.details.value}</p>
+                        <p><strong>{t("calendar.user")}</strong> {selectedEvent.details.userName}</p>
+                        <p><strong>{t("calendar.date")}</strong> {new Date(selectedEvent.details.addedAt).toLocaleString()}</p>
                     </div>
 
                     <div className='w-full flex justify-center'>
@@ -27,7 +29,7 @@ export default function CalendarModal({ selectedEvent, handleCloseModal }) {
                             onClick={handleCloseModal}
                             className="form-submit-modal-btn"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                     </div>
 

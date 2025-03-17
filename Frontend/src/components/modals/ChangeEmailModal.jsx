@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from '../forms/internal/SubmitBtn';
@@ -11,6 +12,7 @@ import SubmitBtn from '../forms/internal/SubmitBtn';
 export default function ChangeEmailModal({ isOpen, onRequestClose }) {
     const [sended, setSended] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation("modals");
     const newEmailAddr = useRef();
 
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -19,7 +21,7 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
         e.preventDefault();
 
         if (newEmailAddr.current.value === '' || !emailRegex.test(newEmailAddr.current.value)) {
-            showErrorToast('Podaj prawidłowy adres e-mail!');
+            showErrorToast(t("changeEmail.emailInputError"));
         };
 
         const emailData = {
@@ -32,9 +34,9 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
             const saveEmail = await sendRequest('POST', emailData, `${serverUrl}/users/changemail`);
 
             if (saveEmail.status === 'error') {
-                showErrorToast(saveEmail.message);
+                showErrorToast(t(saveEmail.message, { defaultValue: "changeEmail.failedError" }));
             } else if (saveEmail.status === 'success') {
-                showInfoToast(saveEmail.message);
+                showInfoToast(t(saveEmail.message, { defaultValue: "changeEmail.changedCorrectlyMessage" }));
                 setTimeout(() => {
                     onRequestClose();
                 }, 500);
@@ -61,19 +63,19 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
                     className='relative left-3 bottom-6 text-black hover:text-gray-600'
                 >X</button>
             </div>
-            <h2 className='w-full h-fit flex justify-center text-xl font-semibold'>Change your e-mail</h2>
+            <h2 className='w-full h-fit flex justify-center text-xl font-semibold'>{t("changeEmail.formHeading")}</h2>
             <div className='w-full flex justify-center'>
                 <form
                     onSubmit={handleSaveNewEmail}
                     className='w-3/4 h-fit flex flex-col justify-start items-center gap-4 mt-5'
                 >
-                    <label htmlFor="newEmailAddr">Type your new e-mail address:</label>
+                    <label htmlFor="newEmailAddr">{t("changeEmail.emailLabel")}</label>
                     <div className='relative w-full flex justify-center items-center'>
                         <input
                             type="email"
                             name="newEmailAddr"
                             id="newEmailAddr"
-                            placeholder='new e-mail'
+                            placeholder={t("changeEmail.emailPlaceholder")}
                             className='input-base'
                             ref={newEmailAddr}
                         />
@@ -86,7 +88,7 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
                         className='form-submit-modal-btn'
                         disabled={sended}
                     >
-                        Save new e-mail
+                        {t("changeEmail.newEmailSubmitBtn")}
                     </SubmitBtn>
                 </form>
                 {isLoading && <LoadingModal isOpen={isLoading} />}

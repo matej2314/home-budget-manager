@@ -24,20 +24,19 @@ router.post('/',
             if (!totalAmount) {
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'Invalid input data.'
+                    message: "addTransaction.invalidRecognizeInput"
                 });
             }
 
             res.status(statusCode.OK).json({
                 status: 'success',
-                message: `Value from receipt: ${totalAmount} PLN`,
                 value: totalAmount
             });
         } catch (error) {
             logger.error(`Image processing error: ${error}`);
             res.status(statusCode.INTERNAL_SERVER_ERROR).json({
                 status: 'error',
-                message: 'Image processing error.'
+                message: "addTransaction.recognizeInternalError"
             });
         }
     }

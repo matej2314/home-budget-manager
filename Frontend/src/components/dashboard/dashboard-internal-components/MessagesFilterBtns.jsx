@@ -1,7 +1,9 @@
 import { useLocation } from "react-router-dom"
+import { useTranslation } from "react-i18next";
 
 export default function MessagesFilterBtns({ messagesStates, handleChangeFilter }) {
     const location = useLocation();
+    const { t } = useTranslation("utils");
 
     return (
         <div className="flex gap-3 mb-6">
@@ -12,7 +14,7 @@ export default function MessagesFilterBtns({ messagesStates, handleChangeFilter 
                     className={`msgs-filter-btn ${location.pathname === `/dashboard/messages/${type}` ? 'bg-slate-400/45' : null}`}
                     style={{ boxShadow: 'inset 0 0 2px 2px rgba(0, 0, 0, 0.15)' }}
                 >
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                    {t(`messagesStates.${type}`)}
                 </button>
             ))}
         </div>

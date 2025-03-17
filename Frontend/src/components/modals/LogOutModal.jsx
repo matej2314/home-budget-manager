@@ -1,6 +1,8 @@
 import Modal from 'react-modal';
+import { useTranslation } from 'react-i18next';
 
 export default function LogOutModal({ isOpen, onRequestClose, handleLogOut }) {
+    const { t } = useTranslation("modals");
 
     return (
         <Modal
@@ -11,21 +13,21 @@ export default function LogOutModal({ isOpen, onRequestClose, handleLogOut }) {
             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
             <div className="w-full h-full flex flex-col justify-center items-center gap-5">
-                <h2 className="w-full h-fit flex justify-center text-xl font-bold">Czy na pewno chcesz się wylogować?</h2>
+                <h2 className="w-full h-fit flex justify-center text-xl font-bold">{t("logOut.heading")}</h2>
                 <div className="w-full h-fit flex flex-row justify-center gap-14 md:gap-[6rem]">
                     <button
                         className="form-submit-modal-btn"
                         onClick={handleLogOut}
                         type="button"
                     >
-                        Tak
+                        {t("btnYes")}
                     </button>
                     <button
                         onClick={onRequestClose}
                         className="form-submit-modal-btn"
                         type="button"
                     >
-                        Nie
+                        {t("btnNo")}
                     </button>
                 </div>
             </div>

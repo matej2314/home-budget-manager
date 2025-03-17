@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence, delay } from "framer-motion";
 import { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import useModal from '../../hooks/useModal';
 import AuthModal from '../modals/AuthModal';
 import { getSessionStorage, setSessionStorage } from '../../utils/storageUtils';
@@ -8,6 +9,7 @@ import { getSessionStorage, setSessionStorage } from '../../utils/storageUtils';
 export default function Home() {
     const [currentText, setCurrentText] = useState(null);
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'auth' });
+    const { t } = useTranslation("homePage");
 
     useEffect(() => {
         const visited = getSessionStorage('hasVisited');
@@ -81,7 +83,7 @@ export default function Home() {
                     {currentText === 0 && "Easy signup, easy to use, functional."}
                     {currentText === 1 && (
                         <>
-                            Add your housemates, analyze incomes and costs, take control.
+                            {t('mainSlogan')}
                         </>
                     )}
                     {currentText === 2 && (
@@ -92,8 +94,8 @@ export default function Home() {
                             animate="animate"
                             className="opacity-0"
                         >
-                            <h3 className="text-base indirect:text-lg sm:text-xl lg:text-2xl text-center font-urbanist font-medium">
-                                Your personal tool to control house finances
+                            <h3 className="text-base indirect:text-lg sm:text-xl lg:text-2xl text-center font-urbanist font-medium mb-4">
+                                {t("buttonsHeading")}
                             </h3>
                             <div className="w-full h-fit flex justify-center items-start gap-3">
                                 <button
@@ -101,19 +103,16 @@ export default function Home() {
                                     type="button"
                                 >
                                     <NavLink to="aboutus">
-                                        About project
+                                        {t('aboutProjectBtn')}
                                     </NavLink>
                                 </button>
                                 <button
-                                    className="w-fit h-fit text-sm border-[3px] border-slate-300 p-2 rounded-xl shadow-md shadow-slate-400 hover:text-slate-300 hover:shadow-slate-800 active:shadow-sm"
+                                    className="w-fit h-fit px-2 py-3 text-sm border-[3px] border-slate-300 p-2 rounded-xl shadow-md shadow-slate-400 hover:text-slate-300 hover:shadow-slate-800 active:shadow-sm"
                                     type="button"
                                     onClick={() => openModal('auth')}
                                 >
-                                    <NavLink className="w-fit h-fit flex items-center gap-1">
-                                        Discover
-                                        <span className="w-fit h-fit text-lg">
-                                            &rarr;
-                                        </span>
+                                    <NavLink className=" w-full h-full flex flex-row items-center">
+                                        {t('discoverBtn')}
                                     </NavLink>
                                 </button>
                             </div>

@@ -2,7 +2,6 @@ const pool = require('../database/db');
 const logger = require('../configs/logger');
 const { v4: uuidv4 } = require('uuid');
 const checkUserHouse = require('../utils/checkUtils/checkUserHouse.js');
-const { broadcastToHouseMates } = require('../configs/websocketConfig.js');
 const { addNewBudget, clearExtraValues } = require('../utils/householdUtils/initMonthlyBudgetFunctions.js');
 const { handleBroadcastInitBudget } = require('../utils/handleBroadcastInitBudget.js');
 const initialBudgetQueries = require('../database/initialMonthlyBudgetQueries.js');
@@ -17,7 +16,7 @@ exports.addNewMonthlyBudget = async (req, res) => {
     if (!value) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',
-            message: 'Podaj budżet!'
+            message: "declareBudget.inputError"
         });
     };
 
@@ -30,7 +29,7 @@ exports.addNewMonthlyBudget = async (req, res) => {
             logger.error(`User ${userId} does not belong to any household.`);
             return res.status(statusCode.BAD_REQUEST).json({
                 status: 'error',
-                message: 'User does not belong to any household.'
+                message: "declareBudget.userError"
             });
         };
 
@@ -61,12 +60,12 @@ exports.addNewMonthlyBudget = async (req, res) => {
 
                 return res.status(statusCode.CREATED).json({
                     status: 'success',
-                    message: `New month's budget declared!`
+                    message: "declareBudget.declaredCorrectlyMessage"
                 });
             } else {
                 return res.status(statusCode.BAD_REQUEST).json({
                     status: 'error',
-                    message: 'You can add a new budget within 7 days of the last budget or after 30 days from its date.',
+                    message: "declareBudget.conditionError",
                 });
             }
 
@@ -83,7 +82,7 @@ exports.addNewMonthlyBudget = async (req, res) => {
 
             return res.status(statusCode.CREATED).json({
                 status: 'success',
-                message: 'New monthly budget declared!'
+                message: "declareBudget.declaredCorrectlyMessage"
             });
         }
 
@@ -92,7 +91,7 @@ exports.addNewMonthlyBudget = async (req, res) => {
         await connection.rollback();
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Internal server error.'
+            message: "declareBudget.declareInternalError"
         });
     } finally {
         if (connection) connection.release();

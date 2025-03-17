@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../../store/dataContext";
 import { useSocket } from "../../../store/socketContext";
+import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 
 export default function DisplayLiveBalance() {
     const { messages, connected } = useSocket();
+    const { t } = useTranslation("dashboardComponents");
 
     const {
         data,
@@ -35,11 +37,11 @@ export default function DisplayLiveBalance() {
             style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
         >
             <div className="h-11/12 w-11/12 flex flex-col justify-center items-center gap-4">
-                <h2 className="text-xl">Current budget:</h2>
+                <h2 className="text-xl">{t("displayLiveBalance.heading")}</h2>
                 <span
                     className={currentBalance && currentBalance > 0 ? 'text-xl text-lime-900/75' : "text-xl text-red-500"}
                 >
-                    {currentBalance !== null ? `${currentBalance} zł` : 'Brak danych'}
+                    {currentBalance !== null ? `${currentBalance} zł` : t("displayLiveBalance.noData")}
                 </span>
             </div>
             <div className="absolute bottom-2 right-2">

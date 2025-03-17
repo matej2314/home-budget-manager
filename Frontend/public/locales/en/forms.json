@@ -1,3 +1,81 @@
 {
-    
+    "loginForm": {
+        "heading": "Login",
+        "passLabel": "Password:",
+        "isLoadingBtn": "Logging in...",
+        "submitBtn": "Login",
+        "correctLogin": "logged in successfully!",
+        "failedLogin": "Failed to log in."
+    },
+    "signUpForm": {
+        "passMatchInfo": "Passwords must match!",
+        "passLengthInfo": "The password must be at least 10 characters long!",
+        "passSpecialCharInfo": "Password must contain at least one special character(*, @,%, !,^)",
+        "heading": "Sign up",
+        "nameLabel" : "Enter your username:",
+        "namePlaceholder" : "username",
+        "emailLabel": "Enter your email:",
+        "passLabel": "Enter your password:",
+        "passPlaceholder": "password",
+        "repPassLabel": "Repeat your password:",
+        "repPassPlaceholder": "repeat password",
+        "cookiesSettingsBtn": "Cookies settings",
+        "submitBtn": "Register"
+    },
+    "contactForm": {
+        "heading": "Contact us:",
+        "nameLabel": "Type your name:",
+        "namePlaceholder": "Name",
+        "emailLabel": "Type your e-mail address:",
+        "emailPlaceholder": "e-mail address",
+        "messageLabel": "Type your message:",
+        "messagePlaceholder": "Your message"
+    },
+    "sendMessageBtn": {
+        "label": "Send message"
+    },
+    "addTransaction": {
+        "typeActionLabel": "Select type of transaction:",
+        "incomeType": "income",
+        "expenseType": "expense",
+        "actionValueImageLabel": "Select image of receipt:",
+        "actionValueNumberLabel" : "Type value of transaction:",
+        "textInputPlaceholder": "value",
+        "submitTransaction": "Save transaction",
+        "invalidRecognizeInput": "Invalid input data",
+        "recognizeInternalError": "Image processing error.",
+        "incorrectNumberInputValue": "Incorrect number value.",
+        "addTransactionCorrect": "Transaction added correctly.",
+        "addTransactionError": "An error occured during adding transaction."
+    },
+    "addUserToHouse": {
+        "invitedUsernameLabel": "Type invited user name:",
+        "invitedUsernameInputPlaceholder" :"username",
+        "inviteUserSubmitBtn": "Invite",
+        "inviteSuccessMessage": "User correctly added to household.",
+        "userNotFoundError": "User not found.",
+        "inviteUserInternalError": "Internal server error.",
+        "inmateOrHostError": "User already is housemate or host."
+    },
+    "declareBudget" : {
+        "inputError": "Enter new monthly budget!",
+        "formHeader": "Declare budget for your household",
+        "valueLabel": "Type value of new monthly budget:",
+        "valuePlaceholder": "budget value",
+        "declareSubmitBtn": "Declare",
+        "periodParagraph": "For period :",
+        "userError": "User does not belong to any household.",
+        "declaredCorrectlyMessage": "New month's budget declared!",
+        "conditionError": "You can add a new budget within 7 days of the last budget or after 30 days from its date.",
+        "declareInternalError": "Internal server error."
+    },
+    "sendMessage": {
+        "formHeaderReply": "Reply message",
+        "formHeaderSend": "Send message",
+        "recipientNameLabel": "Type recipient name:",
+        "recipientNamePlaceholder": "recipient name",
+        "messageLabel": "Type your message:",
+        "messagePlaceholder": "message"
+    }
+
 }
