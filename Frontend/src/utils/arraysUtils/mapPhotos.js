@@ -13,7 +13,7 @@ export const mapPhotos = (photos, isMobile, isTablet, isDesktop, serverUrl) => {
             return {
                 src: `${serverUrl}/screens/${photo}`,
                 srcSet: `
-                ${serverUrl}/screens/${baseName}-320.webp 3201,
+                ${serverUrl}/screens/${baseName}-320.webp 320w,
                 ${serverUrl}/screens/${baseName}-640.webp 640w,
                 ${serverUrl}/screens/${baseName}.webp 960w
                 `,
