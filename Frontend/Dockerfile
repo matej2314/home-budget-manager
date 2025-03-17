@@ -1,4 +1,4 @@
-FROM node:22.12-slim AS builder
+FROM node:20.19.0-slim AS builder
 
 WORKDIR /app
 
@@ -11,7 +11,6 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY --from=builder /app/public/locales /usr/share/nginx/html/public/locales
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
