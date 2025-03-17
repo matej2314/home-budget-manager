@@ -6,7 +6,7 @@ import i18next from 'i18next';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function LanguageSwitch({ isHomepage }) {
-    const [selectedLang, setSelectedLang] = useState(i18next.selectedLang);
+    const [selectedLang, setSelectedLang] = useState(i18next.language);
     const { isMobile } = useIsMobile();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -73,7 +73,7 @@ export default function LanguageSwitch({ isHomepage }) {
             {isMobile ? (
                 <Select
                     options={languages}
-                    value={languages.find(lang => lang.value === selectedLang) || 'en'}
+                    value={languages.find(lang => lang.value === selectedLang) || languages[0]}
                     components={{ DropdownIndicator: () => null, IndicatorSeparator: () => null }}
                     onChange={handleLangChange}
                     isSearchable={false}
