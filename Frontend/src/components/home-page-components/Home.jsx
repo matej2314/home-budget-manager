@@ -1,6 +1,6 @@
+import { useState, useEffect, startTransition } from 'react';
 import { NavLink } from "react-router-dom";
-import { motion, AnimatePresence, delay } from "framer-motion";
-import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import useModal from '../../hooks/useModal';
 import AuthModal from '../modals/AuthModal';
@@ -15,21 +15,35 @@ export default function Home() {
     useEffect(() => {
         if (!visited) {
             setSessionStorage('hasVisited', 'true');
-            const timer1 = setTimeout(() => setCurrentText(0), 500);
-            const timer2 = setTimeout(() => setCurrentText(1), 3500);
-            const timer3 = setTimeout(() => setCurrentText(2), 5700);
+            const timer1 = setTimeout(() => {
+                startTransition(() => {
+                    setCurrentText(0);
+                });
+            }, 500);
+
+            const timer2 = setTimeout(() => {
+                startTransition(() => {
+                    setCurrentText(1);
+                });
+            }, 3500);
+
+            const timer3 = setTimeout(() => {
+                startTransition(() => {
+                    setCurrentText(2);
+                });
+            }, 5700);
 
             return () => {
                 clearTimeout(timer1);
                 clearTimeout(timer2);
                 clearTimeout(timer3);
             };
-
         } else {
-            setCurrentText(2);
+            startTransition(() => {
+                setCurrentText(2);
+            });
         }
     }, [visited]);
-
     const wrapperVariants = {
         initial: { opacity: 0 },
         animate: {
