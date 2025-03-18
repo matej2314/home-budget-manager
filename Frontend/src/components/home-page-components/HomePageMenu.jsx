@@ -98,7 +98,7 @@ export default function HomePageMenu() {
                         <span className={`${isMobile && !isOpened ? 'hidden' : 'block'}`}>
                             < LanguageSelector isHomepage={true} />
                         </span>
-                        {!isLoading && isAuthenticated && user && !isMobile && (
+                        {!isLoading && user && !isMobile && (
                             <p className=' h-full flex md:justify-center items-center'>
                                 {user && user.userName}
                             </p>
