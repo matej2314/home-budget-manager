@@ -16,7 +16,7 @@ export default function HomePage() {
 
     useEffect(() => {
         fetchHomePageData();
-    }, []);
+    }, [fetchHomePageData]);
 
     useEffect(() => {
         if (isCookiesInfo && isAuthenticated) {
