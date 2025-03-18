@@ -10,10 +10,9 @@ export default function Home() {
     const { t } = useTranslation("homePage");
     const [currentText, setCurrentText] = useState(null);
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'auth' });
+    const visited = getSessionStorage('hasVisited');
 
     useEffect(() => {
-        const visited = getSessionStorage('hasVisited');
-
         if (!visited) {
             setSessionStorage('hasVisited', 'true');
             const timer1 = setTimeout(() => setCurrentText(0), 500);
@@ -29,7 +28,7 @@ export default function Home() {
         } else {
             setCurrentText(2);
         }
-    }, []);
+    }, [visited]);
 
     const wrapperVariants = {
         initial: { opacity: 0 },
