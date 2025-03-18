@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Select from 'react-select';
 import i18next from 'i18next';
 import { useIsMobile } from '../hooks/useIsMobile';
+import { setLocalStorage } from '../utils/storageUtils';
 
 export default function LanguageSwitch({ isHomepage }) {
     const [selectedLang, setSelectedLang] = useState(i18next.language);
@@ -59,10 +60,24 @@ export default function LanguageSwitch({ isHomepage }) {
 
     const handleLangChange = (selectedOption) => {
         if (selectedOption) {
-            setSelectedLang(selectedOption.value);
-            i18next.changeLanguage(selectedOption.value);
+            const newLang = selectedOption.value;
+            setSelectedLang(newLang);
+            i18next.changeLanguage(newLang);
+            setLocalStorage("i18nextLng", newLang);
         }
     };
+
+    useEffect(() => {
+        const storedLang = localStorage.getItem('i18nextLng');
+        if (storedLang) {
+            setSelectedLang(storedLang);
+            i18next.changeLanguage(storedLang);
+        } else {
+            const browserLang = navigator.language.split('-')[0];
+            setSelectedLang(browserLang);
+            i18next.changeLanguage(browserLang);
+        }
+    }, []);
 
     useEffect(() => {
         const handleLanguageChange = (lng) => setSelectedLang(lng);
