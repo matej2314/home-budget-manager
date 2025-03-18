@@ -17,22 +17,24 @@ import OpenMenuButton from '../dashboard/dashboard-internal-components/OpenMenuB
 Modal.setAppElement('#root');
 
 export default function HomePageMenu() {
+    const { isMobile, isTablet } = useIsMobile();
+    const { user, isAuthenticated, logout } = useContext(AuthContext);
     const { t } = useTranslation("homePage");
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
-    const { user, isLoading, isAuthenticated, logout } = useContext(AuthContext);
     const [isOpened, setIsOpened] = useState(false);
     const navigate = useNavigate();
-    const { isMobile, isTablet } = useIsMobile();
 
     const menuVariants = {
         mobile: {
             initial: { opacity: 0, x: '-100%' },
             animate: { opacity: 1, x: isOpened ? -11 : '-100%' },
+            exit: { opacity: 0, x: '-100%' },
             transition: { type: 'tween', stiffness: 250, damping: 100, duration: 0.6, delay: 0.5 },
         },
         desktop: {
             initial: { opacity: 1, x: 0 },
             animate: { opacity: 1, x: 0 },
+            exit: { opacity: 1, x: 0 },
             transition: { type: 'tween', duration: 0.3 },
         }
     };
@@ -64,7 +66,7 @@ export default function HomePageMenu() {
                 variants={(isTablet || isMobile) ? menuVariants.mobile : menuVariants.desktop}
                 initial='initial'
                 animate='animate'
-                exit='initial'
+                exit='exit'
             >
                 <ul className={`w-full h-fit flex justify-center gap-2 items-center ml-2 py-1 text-slate-200 text-[0.7rem] sm:text-[1rem] sm:gap-8 indirect:gap-2.5 indirectxl:text-[1.05rem] md:gap-0 indirect:text-[0.85rem]  md:text-sm md:justify-around lg:text-lg px-2 transition-all duration-300`}>
                     <li><Link to='/'>{t("homePageMenu.firstEl")}</Link></li>
