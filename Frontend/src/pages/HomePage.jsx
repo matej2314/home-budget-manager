@@ -5,11 +5,12 @@ import { showCookiesInfo } from "../configs/toastify";
 import useHomePageStore from "../store/homePageStore";
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import HomePageMenu from "../components/home-page-components/HomePageMenu";
+import LoadingModal from "../components/modals/LoadingModal";
 import { getSessionStorage, setSessionStorage } from "../utils/storageUtils";
 
 export default function HomePage() {
     useDocumentTitle('Home');
-    const { isAuthenticated } = useContext(AuthContext);
+    const { isAuthenticated, isLoading } = useContext(AuthContext);
     const { homePageData, homePageDataError, isHomePageDataLoading, fetchHomePageData } = useHomePageStore();
     const isCookiesInfo = getSessionStorage('isCookiesInfo');
 
@@ -26,6 +27,10 @@ export default function HomePage() {
         }
 
     }, [isCookiesInfo, isAuthenticated]);
+
+    if (isLoading) {
+        return <LoadingModal isOpen={isLoading} />
+    }
 
     return (
         <>

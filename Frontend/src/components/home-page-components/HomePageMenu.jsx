@@ -13,6 +13,7 @@ import { loggingOut } from '../../utils/handleLogOut';
 import LogoOutModal from '../modals/LogOutModal';
 import { showInfoToast } from '../../configs/toastify';
 import OpenMenuButton from '../dashboard/dashboard-internal-components/OpenMenuButton';
+import LoadingModal from '../modals/LoadingModal';
 
 Modal.setAppElement('#root');
 
@@ -58,6 +59,10 @@ export default function HomePageMenu() {
             showInfoToast(t('dashboardRedirectInfo'));
         };
     };
+
+    if (isLoading) {
+        return <LoadingModal isOpen={isLoading} />
+    }
 
     return (
         <>
