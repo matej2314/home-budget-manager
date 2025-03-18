@@ -122,7 +122,7 @@ export default function Home() {
                     )}
                 </motion.span>
             </AnimatePresence>
-            {modal && modal.type === 'auth' && <AuthModal isOpen={modal.isOpen} onRequestClose={closeModal} />}
+            {modal && modal.type === 'auth' && <AuthModal isOpen={modal && modal.isOpen} onRequestClose={closeModal} />}
         </motion.div>
     );
 }

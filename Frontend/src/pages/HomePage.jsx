@@ -10,16 +10,14 @@ import { getSessionStorage, setSessionStorage } from "../utils/storageUtils";
 export default function HomePage() {
     useDocumentTitle('Home');
     const { isAuthenticated } = useContext(AuthContext);
-
     const { homePageData, homePageDataError, isHomePageDataLoading, fetchHomePageData } = useHomePageStore();
+    const isCookiesInfo = getSessionStorage('isCookiesInfo');
 
     useEffect(() => {
         fetchHomePageData();
     }, []);
 
     useEffect(() => {
-        const isCookiesInfo = getSessionStorage('isCookiesInfo');
-
         if (isCookiesInfo && isAuthenticated) {
             return;
         } else if (!isCookiesInfo) {
@@ -27,7 +25,7 @@ export default function HomePage() {
             showCookiesInfo("This site uses Cookies.", " You can find out the details in the Privacy Policy or in the dashboard panel");
         }
 
-    }, [isAuthenticated]);
+    }, [isCookiesInfo, isAuthenticated]);
 
     return (
         <>
