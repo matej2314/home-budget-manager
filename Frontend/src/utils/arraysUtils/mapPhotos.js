@@ -11,7 +11,7 @@ export const mapPhotos = (photos, isMobile, isTablet, isDesktop, serverUrl) => {
         .map(photo => {
             const baseName = photo.replace(/-\d+\.webp$/, '').replace('.webp', '');
             return {
-                src: `${serverUrl}/screens/${photo}`,
+                src: `${serverUrl}/screens/${baseName}.webp`,
                 srcSet: `
                 ${serverUrl}/screens/${baseName}-320.webp 320w,
                 ${serverUrl}/screens/${baseName}-640.webp 640w,
