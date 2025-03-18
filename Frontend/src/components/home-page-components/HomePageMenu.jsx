@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
+import { Link, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
 import Modal from 'react-modal';
@@ -20,8 +20,9 @@ export default function HomePageMenu() {
     const { isMobile, isTablet } = useIsMobile();
     const { user, isAuthenticated, logout } = useContext(AuthContext);
     const { t } = useTranslation("homePage");
-    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
     const [isOpened, setIsOpened] = useState(false);
+    const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
+
     const navigate = useNavigate();
 
     const menuVariants = {
@@ -94,7 +95,7 @@ export default function HomePageMenu() {
                         </span>
                         {!isLoading && isAuthenticated && user && !isMobile && (
                             <p className=' h-full flex md:justify-center items-center'>
-                                {user.userName}
+                                {user && user.userName}
                             </p>
                         )
                         }
