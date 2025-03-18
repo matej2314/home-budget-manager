@@ -1,27 +1,43 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
+const resources = {
+    en: {
+        common: require('../public/locales/en/common.json'),
+        aboutUs: require('../public/locales/en/aboutUs.json'),
+        dashboardComponents: require('../public/locales/en/dashboardComponents.json'),
+        dashboardInternal: require('../public/locales/en/dashboardInternal.json'),
+        errorPage: require('../public/locales/en/errorPage.json'),
+        forms: require('../public/locales/en/forms.json'),
+        homePage: require('../public/locales/en/homePage.json'),
+    },
+    pl: {
+        common: require('../public/locales/pl/common.json'),
+        aboutUs: require('../public/locales/pl/aboutUs.json'),
+        dashboardComponents: require('../public/locales/pl/dashboardComponents.json'),
+        dashboardInternal: require('../public/locales/pl/dashboardInternal.json'),
+        errorPage: require('../public/locales/pl/errorPage.json'),
+        forms: require('../public/locales/pl/forms.json'),
+        homePage: require('../public/locales/pl/homePage.json'),
+    }
+};
+
 i18n
-    .use(Backend) // Załaduj tłumaczenia asynchronicznie
-    .use(LanguageDetector) // Wykrywanie języka użytkownika
+    .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        fallbackLng: 'en', // Domyślny język, jeśli nie wykryje odpowiedniego
+        resources,
+        fallbackLng: 'en',
         debug: false,
-        interpolation: {
-            escapeValue: false, // React już zapobiega XSS
-        },
-        backend: {
-            loadPath: '/locales/{{lng}}/{{ns}}.json', // Ścieżka do plików tłumaczeń
-        },
-        ns: ['common', "aboutUs", "dashboardComponents", "dashboardInternal", "errorPage", "forms", "pages", "homePage", "modals", "utils"], // Lista przestrzeni nazw
-        defaultNS: 'common', // Domyślna przestrzeń nazw
+        interpolation: { escapeValue: false },
+        ns: ['common', 'aboutUs', 'dashboardComponents', 'dashboardInternal', 'errorPage', 'forms', 'homePage'],
+        defaultNS: 'common',
         detection: {
-            order: ['navigator', 'cookie', 'localStorage', 'sessionStorage', 'htmlTag'], // Źródła wykrywania języka
-            caches: ['cookie', 'localStorage'] // Zapisywanie języka w pamięci przeglądarki
+            order: ['navigator', 'cookie', 'localStorage'],
+            caches: ['cookie', 'localStorage'],
         },
+        preload: ['en', 'pl'],
     });
 
 export default i18n;

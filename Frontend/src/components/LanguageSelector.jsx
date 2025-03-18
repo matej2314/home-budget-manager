@@ -8,7 +8,7 @@ import { useIsMobile } from '../hooks/useIsMobile';
 export default function LanguageSwitch({ isHomepage }) {
     const [selectedLang, setSelectedLang] = useState(i18next.language);
     const { isMobile } = useIsMobile();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
     const languages = [
         { value: 'en', icon: <Icon icon="flagpack:gb-ukm" width={20} height={20} /> },
@@ -65,8 +65,13 @@ export default function LanguageSwitch({ isHomepage }) {
     };
 
     useEffect(() => {
-        i18next.changeLanguage(selectedLang);
-    }, [selectedLang]);
+        const handleLanguageChange = (lng) => setSelectedLang(lng);
+
+        i18next.on('languageChanged', handleLanguageChange);
+        return () => {
+            i18next.off('languageChanged', handleLanguageChange);
+        };
+    }, []);
 
     return (
         <div className="relative w-full flex flex-col items-center">
