@@ -11,7 +11,7 @@ import { getSessionStorage, setSessionStorage } from "../utils/storageUtils";
 export default function HomePage() {
     useDocumentTitle('Home');
     const { isAuthenticated, isLoading } = useContext(AuthContext);
-    const { homePageData, homePageDataError, isHomePageDataLoading, fetchHomePageData } = useHomePageStore();
+    const { fetchHomePageData } = useHomePageStore();
     const isCookiesInfo = getSessionStorage('isCookiesInfo');
 
     useEffect(() => {
