@@ -14,10 +14,6 @@ export default function AppGallery({ photos }) {
     const intervalRef = useRef(null);
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null, data: null });
 
-    // const mappedPhotos = useMemo(() => {
-    //     return mapPhotos(photos, isMobile, isTablet, isDesktop, serverUrl);
-    // }, [photos, isMobile, isTablet, isDesktop]);
-
     const mappedPhotos = mapPhotos(photos, isMobile, isTablet, isDesktop, serverUrl);
 
 
@@ -81,7 +77,7 @@ export default function AppGallery({ photos }) {
                             alt=""
                             srcSet={mappedPhotos[currentIndex]?.srcSet || ""}
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 640px, 1100px"
-                            className="absolute h-full w-full xl:w-9/12 flex justify-center items-center object-fit xl:scale-100 xl:object-contain opacity-75 cursor-zoom-in"
+                            className="h-full w-full xl:w-9/12 flex justify-center items-center object-fit xl:scale-105 xl:object-contain opacity-75 cursor-zoom-in aspect-auto"
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                             onClick={handleImageClick}

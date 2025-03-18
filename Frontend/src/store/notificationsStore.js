@@ -18,7 +18,7 @@ const useNotificationsStore = create((set) => ({
             const response = await fetchData(`${serverUrl}/notice/collection`);
 
             if (response.status !== 'success') {
-                throw new Error(response.message || 'Failed to fetch notifications.');
+                console.info(response.message || 'Failed to fetch notifications.');
             }
 
             set((state) => {
@@ -37,7 +37,7 @@ const useNotificationsStore = create((set) => ({
                 return { notifications: updatedNotifications, loading: false };
             });
         } catch (error) {
-            console.error(`Error fetching notifications: ${error}`);
+            console.info(`Error fetching notifications: ${error}`);
             set({ error: error.message, loading: false });
         }
     },

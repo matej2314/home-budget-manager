@@ -26,7 +26,7 @@ export default function AboutUs() {
                 <TechnologiesSection technologies={homePageData && homePageData.technologies} isMobile={isMobile} />
                 <div className="w-full h-fit flex flex-col justify-center items-start text-slate-100 gap-3">
                     <h2 className="w-full text-2xl flex justify-center font-semibold text-stone-400/80">{t("galleryHeading")}</h2>
-                    <div className="w-full h-[15rem] xl:h-[16rem] flex justify-center items-start">
+                    <div className="w-full h-[18rem] xl:h-[16rem] flex justify-center items-start">
                         <div className="w-full max-w-full h-full flex justify-center items-center rounded-md">
                             <AppGallery photos={homePageData && homePageData.shots} />
                         </div>
