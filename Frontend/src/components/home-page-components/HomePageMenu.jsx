@@ -61,9 +61,10 @@ export default function HomePageMenu() {
             {<motion.div
                 id="mainMenu"
                 className="absolute w-full h-fit flex rounded-md z-10 mb-4"
-                variants={isTablet || isMobile ? menuVariants.mobile : menuVariants.desktop}
+                variants={(isTablet || isMobile) ? menuVariants.mobile : menuVariants.desktop}
                 initial='initial'
                 animate='animate'
+                exit='initial'
             >
                 <ul className={`w-full h-fit flex justify-center gap-2 items-center ml-2 py-1 text-slate-200 text-[0.7rem] sm:text-[1rem] sm:gap-8 indirect:gap-2.5 indirectxl:text-[1.05rem] md:gap-0 indirect:text-[0.85rem]  md:text-sm md:justify-around lg:text-lg px-2 transition-all duration-300`}>
                     <li><Link to='/'>{t("homePageMenu.firstEl")}</Link></li>

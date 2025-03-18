@@ -7,9 +7,9 @@ import AuthModal from '../modals/AuthModal';
 import { getSessionStorage, setSessionStorage } from '../../utils/storageUtils';
 
 export default function Home() {
+    const { t } = useTranslation("homePage");
     const [currentText, setCurrentText] = useState(null);
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'auth' });
-    const { t } = useTranslation("homePage");
 
     useEffect(() => {
         const visited = getSessionStorage('hasVisited');
@@ -41,6 +41,7 @@ export default function Home() {
                 ease: 'easeInOut',
             },
         },
+        exit: { opacity: 0 }
     };
 
     const elementsVariants = {
@@ -63,6 +64,7 @@ export default function Home() {
             variants={wrapperVariants}
             initial="initial"
             animate="animate"
+            exit="exit"
             className="w-full h-full flex flex-col mb-[10rem] text-slate-200 justify-center items-center gap-3 z-0"
         >
             <div>
