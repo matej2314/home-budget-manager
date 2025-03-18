@@ -18,7 +18,7 @@ Modal.setAppElement('#root');
 
 export default function HomePageMenu() {
     const { isMobile, isTablet } = useIsMobile();
-    const { user, isAuthenticated, logout } = useContext(AuthContext);
+    const { user, isAuthenticated, isLoading, logout } = useContext(AuthContext);
     const { t } = useTranslation("homePage");
     const [isOpened, setIsOpened] = useState(false);
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
@@ -109,8 +109,8 @@ export default function HomePageMenu() {
                             </button>}
                     </li>
                 </ul>
-                {modal.isOpen && modal.type === 'auth' && <AuthModal isOpen={modal.isOpen} onRequestClose={closeModal} />}
-                {modal.isOpen && modal.type === 'logout' && (
+                {modal && modal.isOpen && modal.type === 'auth' && <AuthModal isOpen={modal.isOpen} onRequestClose={closeModal} />}
+                {modal && modal.isOpen && modal.type === 'logout' && (
                     <LogoOutModal
                         isOpen={modal.isOpen}
                         onRequestClose={closeModal}
