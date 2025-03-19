@@ -17,6 +17,7 @@ const helmetConfig = (app) => {
                 "data:"
             ],
             connectSrc: [
+                "'self'",
                 "https://budgetapi.msliwowski.net",
                 "https://budgetapp.msliwowski.net",
                 "wss://budgetapi.msliwowski.net",
