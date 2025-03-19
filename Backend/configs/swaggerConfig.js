@@ -30,8 +30,8 @@ const swaggerDocs = (app) => {
   app.use('/api-docs', (req, res, next) => {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-Content-Type-Options', 'nosniff');
+    // res.setHeader('X-Frame-Options', 'DENY');
+    // res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://budgetapp.msliwowski.net; connect-src 'self' https://budgetapi.msliwowski.net wss://budgetapi.msliwowski.net; frame-src 'none'; object-src 'none'");
     res.setHeader('Permissions-Policy', 'fullscreen=*; geolocation=self; microphone=none; camera=none');
     res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none');
