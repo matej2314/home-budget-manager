@@ -7,13 +7,13 @@ const helmetConfig = (app) => {
     app.use(helmet.contentSecurityPolicy({
         directives: {
             scriptSrc: [
-                ["https://budgetapp.msliwowski.net"],
+                ["https://budgetapp.msliwowski.net", "https://budgetapi.msliwowski.net", "wss://budgetapi.msliwowski.net"],
             ],
             styleSrc: [
                 "'self'",
             ],
             imgSrc: [
-                ["https://budgetapp.msliwowski.net"],
+                ["https://budgetapp.msliwowski.net", "https://budgetapi.msliwowski.net"],
                 "data:"
             ],
             connectSrc: [
@@ -22,7 +22,7 @@ const helmetConfig = (app) => {
                 "wss://budgetapi.msliwowski.net",
             ],
             frameSrc: ["'none'"],
-            objectSrc: ["'none'"],
+            objectSrc: ["'self'"],
             upgradeInsecureRequests: [],
         }
     }));
