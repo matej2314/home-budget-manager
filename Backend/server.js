@@ -17,7 +17,7 @@ const setupRoutes = require('./routes/index.js');
 
 app.disable('x-powered-by');
 
-// helmetConfig(app);
+helmetConfig(app);
 
 const port = process.env.SERV_PORT || 5053;
 
@@ -86,6 +86,6 @@ try {
 		});
 	});
 } catch (error) {
-	logger.error(`Nie udało się uruchomić serwera : ${error} `);
-	console.log('Nie udało się uruchomić serwera.');
+	logger.error(`Failed to run API server : ${error} `);
+	console.log('Failed to run API server');
 }
