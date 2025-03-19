@@ -1,7 +1,7 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-const helmet = require('helmet');
 const path = require('path');
+const helmet = require('helmet');
 
 const swaggerOptions = {
   definition: {
@@ -27,8 +27,18 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 const swaggerDocs = (app) => {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use('/api-docs', (req, res, next) => {
 
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://budgetapp.msliwowski.net; connect-src 'self' https://budgetapi.msliwowski.net wss://budgetapi.msliwowski.net; frame-src 'none'; object-src 'none'");
+    res.setHeader('Permissions-Policy', 'fullscreen=*; geolocation=self; microphone=none; camera=none');
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    next();
+  });
+
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 };
 
 module.exports = swaggerDocs;
