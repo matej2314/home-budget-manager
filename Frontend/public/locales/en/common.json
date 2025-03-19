@@ -38,5 +38,8 @@
       "Calendar": "Calendar",
       "AdminPanel": "Admin Panel",
       "Page stats": "Page stats"
+   },
+   "notifications": {
+      
    }
 }

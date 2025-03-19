@@ -1,7 +1,6 @@
 const dotenv = require('dotenv').config({ path: './.env' });
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
 const logger = require('./configs/logger.js');
 const express = require('express');
 const swaggerDocs = require('./configs/swaggerConfig.js');
@@ -13,41 +12,24 @@ const { clearSocketConnections } = require('./utils/clearSocketConnections.js');
 const http = require('http');
 const app = express();
 const setupRoutes = require('./routes/index.js');
+const corsConfig = require('./configs/corsConfig.js');
+const helmetConfig = require('./configs/helmetConfig.js');
+
+app.disable('x-powered-by');
+
+helmetConfig(app);
+corsConfig(app);
 
 const port = process.env.SERV_PORT || 5053;
-
-const allowedOrigins = ['https://budgetapp.msliwowski.net', 'http://localhost:5173', 'http://185.170.196.107:5052'];
-
-app.use(
-	cors({
-		origin: (origin, callback) => {
-			if (!origin || allowedOrigins.includes(origin)) {
-				callback(null, true);
-			} else {
-				callback(new Error('Not allowed by CORS'));
-			}
-		},
-		credentials: true,
-	})
-);
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.options('*', (req, res) => {
-	res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');
-	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-	res.header('Access-Control-Allow-Credentials', 'true');
-	res.status(200).end();
-});
-
 app.use('/screens', express.static(path.join(__dirname, 'app-images')));
 
 setupRoutes(app);
 swaggerDocs(app);
-
 
 const server = http.createServer(app);
 
