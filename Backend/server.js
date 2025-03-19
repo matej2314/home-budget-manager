@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('./configs/logger.js');
 const express = require('express');
-const helmetConfig = require('./configs/helmetConfig.js');
 const swaggerDocs = require('./configs/swaggerConfig.js');
 const balanceHouseActions = require('./tasks/balanceHouseTransactions.js');
 const saveDailyTransactions = require('./tasks/saveDailyTransactions.js');
@@ -16,8 +15,6 @@ const app = express();
 const setupRoutes = require('./routes/index.js');
 
 app.disable('x-powered-by');
-
-// helmetConfig(app);
 
 const port = process.env.SERV_PORT || 5053;
 
