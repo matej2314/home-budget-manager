@@ -6,21 +6,20 @@ const helmetConfig = (app) => {
     app.use(helmet.noSniff());
     app.use(helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: ["'self'"],
             scriptSrc: [
-                ["'self'", "https://budgetapp.msliwowski.net"],
+                ["https://budgetapp.msliwowski.net"],
             ],
             styleSrc: [
                 "'self'",
             ],
             imgSrc: [
-                ["'self'", "https://budgetapp.msliwowski.net"],
+                ["https://budgetapp.msliwowski.net"],
                 "data:"
             ],
             connectSrc: [
-                "'self'",
-                "wss://budgetapi.msliwowski.net",
+                "https://budgetapi.msliwowski.net",
                 "https://budgetapp.msliwowski.net",
+                "wss://budgetapi.msliwowski.net",
             ],
             frameSrc: ["'none'"],
             objectSrc: ["'none'"],
