@@ -7,7 +7,7 @@ const helmetConfig = (app) => {
     app.use(helmet.contentSecurityPolicy({
         directives: {
             scriptSrc: [
-                ["https://budgetapp.msliwowski.net", "https://budgetapi.msliwowski.net", "wss://budgetapi.msliwowski.net"],
+                ["'self'", "https://budgetapp.msliwowski.net", "https://budgetapi.msliwowski.net", "wss://budgetapi.msliwowski.net"],
             ],
             styleSrc: [
                 "'self'",
