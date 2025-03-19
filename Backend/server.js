@@ -47,6 +47,10 @@ app.options('*', (req, res) => {
 
 app.use('/screens', express.static(path.join(__dirname, 'app-images')));
 
+app.all(['/sitemap.xml', '/robots.txt'], (req, res) => {
+	return res.status(404).send('Not found.');
+});
+
 setupRoutes(app);
 swaggerDocs(app);
 
