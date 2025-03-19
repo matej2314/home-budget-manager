@@ -17,7 +17,7 @@ const setupRoutes = require('./routes/index.js');
 
 app.disable('x-powered-by');
 
-helmetConfig(app);
+// helmetConfig(app);
 
 const port = process.env.SERV_PORT || 5053;
 
