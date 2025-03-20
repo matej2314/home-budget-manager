@@ -4,6 +4,7 @@ import { AuthContext } from '../../store/authContext';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import { isValidPassword, isNoSQL, isNoXSS, isValidEmail } from '../../utils/validation';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from './internal/SubmitBtn';
 
@@ -20,9 +21,20 @@ export default function LoginForm() {
         e.preventDefault();
         setSended(false);
 
+        const userEmail = email.current.value;
+        const userPassword = password.current.value;
+
+        const validUserEmail = userEmail && isValidEmail(userEmail);
+        const validUserPassword = userPassword && isValidPassword(userPassword);
+
+        if (!validUserEmail || !validUserPassword) {
+            showErrorToast(t("loginForm.invalidInput"));
+            return;
+        }
+
         const data = {
-            email: email.current.value,
-            password: password.current.value,
+            email: userEmail,
+            password: userPassword,
         };
 
         await login(data);

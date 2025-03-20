@@ -15,6 +15,7 @@
     },
     "addReview": {
         "failedSaveMessage": "Nie udało się zapisać opinii. Spróbuj ponownie.",
+        "invalidOpinion": "Opinia musi mieć formę tekstu!",
         "correctlySaveMessage": "Opinia dodana poprawnie.",
         "ratingLabel": "Wybierz ocenę:",
         "opinionLabel": "Wpisz swoją opinię:",

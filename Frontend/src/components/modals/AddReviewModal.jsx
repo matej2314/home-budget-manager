@@ -3,24 +3,36 @@ import Modal from 'react-modal';
 import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import StarRating from '../StarRating';
+import LoadingModal from '../modals/LoadingModal';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
+import { isNoSQL, isNoXSS } from '../../utils/validation';
 import SubmitBtn from '../forms/internal/SubmitBtn';
 
 export default function AddReviewModal({ isOpen, onRequestClose }) {
     const [rating, setRating] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
     const userOpinionRef = useRef();
     const { t } = useTranslation("modals");
 
     const handleSaveReview = async (e) => {
         e.preventDefault();
 
+        const reviewContent = userOpinionRef.current.value;
+
+        const validUserReview = reviewContent && !isNoSQL(reviewContent) && !isNoXSS(reviewContent);
+
+        if (!validUserReview) {
+            showErrorToast(t("addReview.invalidOpinion"));
+        };
+
         const reviewData = {
-            content: userOpinionRef.current.value,
+            content: reviewContent,
             rating: rating,
         };
 
         try {
+            setIsLoading(true);
             const saveReview = await sendRequest('POST', reviewData, `${serverUrl}/reviews/new`)
 
             if (saveReview.status === 'error') {
@@ -36,6 +48,8 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
             };
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -62,16 +76,19 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
                         className='w-full h-[10rem] resize-none border-2 border-slate-300 rounded-md pl-2'
                         name="userOpinion"
                         id="userOpinion"
+                        disabled={isLoading}
                         placeholder={t("addReview.opinionPlaceholder")}
                         ref={userOpinionRef}
                     />
                     <SubmitBtn
                         className='form-submit-modal-btn'
+                        disabled={isLoading}
                     >
                         {t("addReview.submitOpinionBtn")}
                     </SubmitBtn>
                 </form>
             </div>
+            {isLoading && <LoadingModal isOpen={isLoading} />}
         </Modal>
     )
 }

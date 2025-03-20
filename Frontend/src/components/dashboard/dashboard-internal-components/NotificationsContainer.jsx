@@ -6,7 +6,8 @@ import { motion } from 'framer-motion'
 
 export default function NotificationsContainer({ notifications, clickAction }) {
     const { data, isLoading, error } = useContext(DataContext);
-    const { t } = useTranslation("dashboardInternal");
+    const { t: tInternal } = useTranslation("dashboardInternal");
+    const { t: tCommon } = useTranslation("common")
 
     const houseName = !isLoading && !error && data.houseData[0].houseName || '';
 
@@ -27,15 +28,16 @@ export default function NotificationsContainer({ notifications, clickAction }) {
         >
             {notifications ? (
                 Object.entries(notifications).some(([_, items]) => items.length > 0) ? (
-                    <ul className='w-fit flex'>
+                    <ul className='w-fit flex flex-col gap-2'>
                         {Object.entries(notifications).map(([category, items]) => items.map((notification, index) => (
-                            <li key={`${category}-${index}`}
-                                className='w-full h-fit flex items-center gap-2'
+                            <li
+                                key={`${category}-${index}`}
+                                className={`w-full h-fit flex items-center gap-2 ${index === items.length - 1 ? 'border-0' : 'border-b-[1px] border-slate-300 pb-2'} `}
                             >
                                 <Icon icon={iconsMap[category]} width={25} height={25} />
                                 <p className='w-full h-fit flex items-center justify-center text-nowrap'>
                                     <span className='font-bold mr-2 text-sm indirectxl:text-base'>{houseName} :</span>
-                                    <span className='text-sm indirectxl:text-base'>{notification.message}</span>
+                                    <span className='text-sm indirectxl:text-base'>{tCommon(notification.message)}</span>
                                     <button
                                         type="button"
                                         className='ml-2'
@@ -53,10 +55,10 @@ export default function NotificationsContainer({ notifications, clickAction }) {
                         )}
                     </ul>
                 ) : (
-                    <p>{t("notificationsContainer.noNoticesError")}</p>
+                    <p>{tInternal("notificationsContainer.noNoticesError")}</p>
                 )
             ) : (
-                <p>{t("notificationsContainer.noNoticesError")}</p>
+                <p>{tInternal("notificationsContainer.noNoticesError")}</p>
             )
             }
         </motion.div>

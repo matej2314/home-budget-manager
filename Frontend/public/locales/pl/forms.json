@@ -2,15 +2,15 @@
     "loginForm": {
         "heading": "Logowanie",
         "passLabel": "Hasło:",
+        "invalidInput": "Nieprawidłowe dane.",
         "isLoadingBtn": "Logowanie...",
         "submitBtn": "Zaloguj się",
         "corectLogin": "zalogowany poprawnie!",
         "failedLogin": "Logowanie nieudane."
     },
     "signUpForm": {
-        "passMatchInfo": "Hasła muszą być takie same!",
-        "passLengthInfo": "Hasło musi mieć minimum 10 znaków!",
-        "passSpecialCharInfo": "Hasło musi zawierać przynajmniej 1 znak specjalny (*,@,%,!,^)",
+       "inputError": "Podałeś niepoprawne dane!",
+       "passMatchError": "Hasła nie są identyczne!",
         "heading": "Rejestracja",
         "nameLabel": "Wprowadź login:",
         "namePlaceholder": "login",
@@ -50,6 +50,7 @@
     },
     "addUserToHouse": {
         "invitedUsernameLabel": "Podaj login nowego domownika:",
+        "invalidInputError": "Podałeś nieprawidłowe dane!",
         "invitedUsernameInputPlaceholder": "login",
         "inviteUserSubmitBtn": "Zaproś",
         "inviteSuccessMessage": "Nowy domownik dodany poprawnie.",

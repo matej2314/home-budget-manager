@@ -3,6 +3,7 @@ import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { CountDeclaredBudgetPeriod } from '../../utils/countingUtils/CountDeclaredBudgetPeriod';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import { isNoSQL, isNoXSS, isValidNumber } from "../../utils/validation";
 import LoadingModal from "../modals/LoadingModal";
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
@@ -15,20 +16,20 @@ export default function DeclareBudgetForm() {
     const { t } = useTranslation("forms");
     const declaredBudgetRef = useRef();
     const declaredPeriod = CountDeclaredBudgetPeriod();
-    const lettersRegex = /[^0-9.,]/;
+
 
     const handleDeclareBudget = async (e) => {
         e.preventDefault();
 
-        if (!declaredBudgetRef.current.value || lettersRegex.test(declaredBudgetRef.current.value.trim())) {
+        const declaredBudget = declaredBudgetRef.current.value.trim().replace(',', '.');
+
+        if (!declaredBudget || !isNoSQL(declaredBudget) || !isNoXSS(declaredBudget) || !isValidNumber(declaredBudget)) {
             showInfoToast(t("declareBudget.inputError"));
             return;
         };
 
-        const budgetValue = declaredBudgetRef.current.value.trim().replace(',', '.');
-
         const budgetData = {
-            value: +parseFloat(budgetValue).toFixed(2),
+            value: +parseFloat(declaredBudget).toFixed(2),
         };
 
         try {

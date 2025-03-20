@@ -1,7 +1,8 @@
 function isValidPassword(password) {
-	const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[*!#^%$@?])[a-zA-Z\d*!#^%$@?]{10,30}$/;
+	const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[*!#^%$@?_+\[\]='"|,.<>?])[a-zA-Z\d*!#^%$@?_+\[\]='"|,.<>?]{10,30}$/;
 	return regex.test(password);
 };
+
 
 function isValidEmail(email) {
 	const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -9,8 +10,28 @@ function isValidEmail(email) {
 };
 
 function isValidUsername(username) {
-	const regex = /^[a-zA-Z0-9]{5,}$/;
+	const regex = /^[a-zA-Z0-9]{5,10}$/;
 	return regex.test(username);
+};
+
+function isNoSQL(str) {
+	const sqlRegex = /(?:--|;|\b(SELECT|INSERT|UPDATE|DELETE|DROP|TRUNCATE|ALTER|CREATE|SHOW|GRANT|REVOKE)\b|\b(UNION|EXEC|TRUNCATE|SLEEP|BENCHMARK|OR)\b)/i;
+
+	return !sqlRegex.test(str);
+};
+
+function isNoXSS(str) {
+	const xssRegex = /(<([^>]+)>|javascript:|<script|<\/script|on\w+=)/i;
+
+	return !xssRegex.test(str);
+};
+
+function isValidNumber(value) {
+	const isNumber = !isNaN(value) && isFinite(value);
+
+	const isFloatOrInt = /^-?\d+(\.\d+)?$/.test(value);
+
+	return isNumber && isFloatOrInt;
 };
 
 const allowedRoles = ['superadmin', 'user'];
@@ -29,5 +50,4 @@ const loginValidations = (email, password) => [
 
 const validTransactionTypes = ['income', 'expense'];
 
-
-module.exports = { registerValidations, loginValidations, validTransactionTypes };
+module.exports = { registerValidations, loginValidations, validTransactionTypes, isNoSQL, isNoXSS, isValidNumber };

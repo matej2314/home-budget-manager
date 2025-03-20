@@ -48,7 +48,7 @@ const deleteInhabitant = async (inhabitantId) => {
             id,
             category: 'usersActions',
             houseId: inhabitantHouseId,
-            message: 'Deleted housemate.',
+            message: 'notifications.deletedHouseMate',
         })
         return {
             status: 'success',

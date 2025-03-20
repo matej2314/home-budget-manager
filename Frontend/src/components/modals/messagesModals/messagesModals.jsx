@@ -30,7 +30,6 @@ export function SendMessageModal({ isOpen, onRequestClose, recipient }) {
 }
 
 export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
-	const { fetchMessages } = useMessagesStore();
 	const { t } = useTranslation("modals");
 
 	const handleDeleteMessage = async (messageId) => {

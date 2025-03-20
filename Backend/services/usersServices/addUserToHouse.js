@@ -36,7 +36,7 @@ const addUserToHouse = async (userId, userName) => {
                 await handleNotification({
                     id,
                     category: 'usersActions',
-                    message: 'New housemate added!',
+                    message: 'notifications.addedHouseMate',
                 });
 
                 await connection.commit();

@@ -78,7 +78,7 @@ export default function Home() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="w-full h-full flex flex-col mb-[10rem] text-slate-200 justify-center items-center gap-3 z-0"
+            className="w-full h-full flex flex-col mb-[10rem] text-slate-200 justify-center items-center z-0"
         >
             <div>
                 <h2 className="text-center text-2xl indirect:text-3xl sm:text-4xl lg:text-5xl font-urbanist font-normal mb-28 lg:mb-[12rem]">
@@ -95,7 +95,7 @@ export default function Home() {
                     exit="exit"
                     className="absolute text-base indirect:text-lg sm:text-xl lg:text-2xl text-center font-urbanist font-medium"
                 >
-                    {currentText === 0 && "Easy signup, easy to use, functional."}
+                    {currentText === 0 && t("firstSlogan")}
                     {currentText === 1 && (
                         <>
                             {t('mainSlogan')}
@@ -107,7 +107,7 @@ export default function Home() {
                             variants={lastElementVariants}
                             initial="initial"
                             animate="animate"
-                            className="opacity-0"
+                            className="opacity-0 mt-[2rem]"
                         >
                             <h3 className="text-base indirect:text-lg sm:text-xl lg:text-2xl text-center font-urbanist font-medium mb-4">
                                 {t("buttonsHeading")}

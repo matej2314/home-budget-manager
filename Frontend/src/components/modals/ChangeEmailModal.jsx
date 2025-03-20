@@ -4,6 +4,7 @@ import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
+import { isValidEmail, isNoXSS } from '../../utils/validation';
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from '../forms/internal/SubmitBtn';
@@ -15,12 +16,14 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
     const { t } = useTranslation("modals");
     const newEmailAddr = useRef();
 
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
     const handleSaveNewEmail = async (e) => {
         e.preventDefault();
 
-        if (newEmailAddr.current.value === '' || !emailRegex.test(newEmailAddr.current.value)) {
+        const newAddress = newEmailAddr.current.value;
+
+        const validNewEmail = newAddress && isValidEmail(newAddress) && !isNoXSS(newAddress)
+
+        if (!validNewEmail) {
             showErrorToast(t("changeEmail.emailInputError"));
         };
 

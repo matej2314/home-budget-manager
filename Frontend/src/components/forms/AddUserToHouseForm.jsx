@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from "../../configs/toastify";
+import { isValidUsername, isNoSQL } from "../../utils/validation";
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
@@ -15,8 +16,14 @@ export default function AddUserToHouseForm({ onClose }) {
 
     const handleAddUser = async (e) => {
         e.preventDefault();
+        const invitedUserName = invitedUser.current.value;
 
-        const data = { userName: invitedUser.current.value };
+        if (!isValidUsername(invitedUserName) || !isNoSQL(invitedUserName)) {
+            showErrorToast(t("addUserToHouse.invalidInputError"));
+            return;
+        }
+
+        const data = { userName: invitedUserName };
 
         try {
             setSended(false);

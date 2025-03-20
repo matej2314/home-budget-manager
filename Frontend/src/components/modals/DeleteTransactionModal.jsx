@@ -1,15 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../store/authContext';
 import Modal from 'react-modal';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
+import LoadingModal from '../modals/LoadingModal';
 import { useTranslation } from 'react-i18next';
 
 export default function DeleteTransactionModal({ isOpen, onRequestClose, transaction }) {
     const { fetchTransactions } = useTransactionsStore();
+    const [isLoading, setIsLoading] = useState(false);
     const { user } = useContext(AuthContext);
+    const { t } = useTranslation("modals");
 
     const handleDeleteAction = async (transaction) => {
 
@@ -19,6 +22,7 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
         };
 
         try {
+            setIsLoading(true);
             const actionData = { transactionId: transaction.transactionId };
             const deleteAction = await sendRequest('DELETE', actionData, `${serverUrl}/action`);
 
@@ -32,6 +36,8 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
         } catch (error) {
             showErrorToast(t("deleteTransaction.errorMessage"));
             console.error('Delete transaction error:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -60,6 +66,7 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
                         {t("btnNo")}
                     </button>
                 </div>
+                {isLoading && <LoadingModal isOpen={isLoading} />}
             </div>
         </Modal>
     )

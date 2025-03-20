@@ -12,15 +12,15 @@ export default function LanguageSwitch({ isHomepage }) {
 
 
     const languages = [
-        { value: 'en', icon: <Icon icon="flagpack:gb-ukm" width={20} height={20} /> },
-        { value: 'pl', icon: <Icon icon="flagpack:pl" width={20} height={20} /> }
+        { value: 'en', icon: <Icon icon="flagpack:gb-ukm" width={!isMobile ? 20 : 18} height={!isMobile ? 20 : 18} /> },
+        { value: 'pl', icon: <Icon icon="flagpack:pl" width={!isMobile ? 20 : 18} height={!isMobile ? 20 : 18} /> }
     ];
 
     const customStyles = {
         control: (base) => ({
             ...base,
             minHeight: '2rem',
-            width: '2.5rem',
+            width: !isMobile ? '2.5rem' : '2.2rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -40,7 +40,7 @@ export default function LanguageSwitch({ isHomepage }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '1rem',
+            fontSize: !isMobile ? '1rem' : '0.7rem',
         }),
         menu: (base) => ({
             ...base,
@@ -100,7 +100,7 @@ export default function LanguageSwitch({ isHomepage }) {
                     className="w-full"
                     styles={customStyles}
                     getOptionLabel={(e) => (
-                        <div className="flex items-center gap-2">
+                        <div className="flex">
                             {e.icon}
                         </div>
                     )}

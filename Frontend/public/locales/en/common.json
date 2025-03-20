@@ -27,6 +27,7 @@
    },
    "logOutMessage": "User logged out correctly.",
    "logOutFailedMessage": "Failed to log out.",
+   "backToUsMessage": "Hey! Back to us!",
    "dashboardMenu": {
       "Home page": "Home page",
       "Dashboard": "Dashboard",
@@ -40,6 +41,11 @@
       "Page stats": "Page stats"
    },
    "notifications": {
-      
+      "newInitBudget": "New monthly budget declared!",
+      "addedAction": "Added new transaction!.",
+      "deletedAction": "Deleted transaction!",
+      "addedHouseMate": "Added new housemate :)",
+      "deletedHouseMate": "Deleted housemate :(",
+      "newMonthlyBalance": "New monthly balance calculated."
    }
 }

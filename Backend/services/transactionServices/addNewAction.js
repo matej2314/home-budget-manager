@@ -52,7 +52,7 @@ const addNewAction = async (userId, type, value, catId) => {
 			id,
 			category: 'transactions',
 			houseId: houseId,
-			message: 'Transaction added correctly.',
+			message: 'notifications.addedAction',
 			extraData: {
 				action: 'addTransaction',
 			}

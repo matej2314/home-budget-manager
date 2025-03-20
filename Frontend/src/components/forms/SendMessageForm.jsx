@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import SendMessageBtn from './internal/SendMessageBtn';
 import LoadingModal from '../modals/LoadingModal';
+import { isNoSQL, isNoXSS, isValidUsername } from '../../utils/validation';
 
 export default function SendMessageForm({ reply, recipientName, onClose }) {
 	const [isLoading, setIsLoading] = useState(false);
@@ -27,9 +28,15 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 	const handleSendMessage = async (e) => {
 		e.preventDefault();
 
+		const recipient = recipientRef.current.value;
+		const message = messageContentRef.current.value;
+
+		const validRecipient = recipient && isValidUsername(recipient) && !isNoSQL(recipient);
+		const validMessage = message && !isNoSQL(message) && !isNoXSS(message);
+
 		const messageData = {
-			recipientName: recipientRef.current.value,
-			content: messageContentRef.current.value,
+			recipientName: validRecipient,
+			content: validMessage,
 		};
 
 		try {

@@ -58,7 +58,7 @@ const deleteAction = async (transactionId, userId) => {
             id,
             category: 'transactions',
             houseId,
-            message: 'Transaction deleted successfully.',
+            message: 'notifications.deletedAction',
             extraData: {
                 user: userId,
                 action: 'deleteTransaction',

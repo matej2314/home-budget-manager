@@ -28,6 +28,7 @@
     },
     "logOutMessage": "Użytkownik wylogowany.",
     "logOutFailedMessage": "Nie udało się wylogować.",
+    "backToUsMessage": "Wróć do nas!",
     "dashboardMenu": {
         "Home page": "Strona główna",
         "Dashboard": "Dashboard",
@@ -41,6 +42,11 @@
         "Page stats": "Statystyki"
     },
     "notifications": {
-        
+        "newInitBudget": "Zadeklarowano nowy budżet!",
+        "addedAction": "Dodano nową transakcję!",
+        "deletedAction": "Usunięto transakcję!",
+        "addedHouseMate": "Dodano domownika :)",
+        "deletedHouseMate": "Usunięto domownika :(",
+        "newMonthlyBalance": "Nowe podsumowanie miesięczne dostępne."
     }
 }

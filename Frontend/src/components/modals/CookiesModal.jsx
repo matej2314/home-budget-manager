@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 Modal.setAppElement('#root');
 
 export default function CookiesModal({ isOpen, onRequestClose }) {
+    const { t } = useTranslation("modals");
 
     const handleSaveCookieValue = async (value) => {
 

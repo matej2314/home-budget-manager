@@ -15,6 +15,7 @@
     },
     "addReview": {
         "failedSaveMessage": "Failed to save opinion :( Try again!",
+        "invalidOpinion": "Type valid opinion!",
         "correctlySaveMessage": "Opinion added correctly.",
         "ratingLabel": "Choose rating:",
         "opinionLabel": "Type your opinion:",

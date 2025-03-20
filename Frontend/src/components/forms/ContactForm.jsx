@@ -4,6 +4,7 @@ import { showInfoToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import SendMessageBtn from './internal/SendMessageBtn';
+import { isNoXSS, isValidEmail } from '../../utils/validation';
 import LoadingModal from '../modals/LoadingModal';
 
 export default function ContactForm() {
@@ -89,6 +90,7 @@ export default function ContactForm() {
                 />
             </div>
             <SendMessageBtn form='contact' state={actionState} setState={handleSetActionState} resetState={handleResetActionState} />
+            {isLoading && <LoadingModal isOpen={isLoading} />}
         </form>
     )
 }

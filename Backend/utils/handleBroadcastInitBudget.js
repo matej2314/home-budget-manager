@@ -7,7 +7,7 @@ exports.handleBroadcastInitBudget = async (id, value, addedAt, validUntil, house
         category: 'initial_budget',
         initBudget: value,
         budgetPeriod: `${addedAt} - ${validUntil}`,
-        message: 'New monthly budget declared!',
+        message: 'notifications.newInitBudget',
     };
 
     await broadcastToHouseMates(houseId, {

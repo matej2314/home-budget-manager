@@ -93,7 +93,7 @@ const balanceHouseActions = async () => {
                         noticeId,
                         category: 'monthlyBalance',
                         houseId,
-                        message: 'New monthly balance calculated.',
+                        message: 'notifications.neMonthlyBalance',
                     });
 
                     logger.info(`Balance for household ${houseId} updated.`);

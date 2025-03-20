@@ -2,15 +2,15 @@
     "loginForm": {
         "heading": "Login",
         "passLabel": "Password:",
+        "invalidInput": "Invalid input data.",
         "isLoadingBtn": "Logging in...",
         "submitBtn": "Login",
         "correctLogin": "logged in successfully!",
         "failedLogin": "Failed to log in."
     },
     "signUpForm": {
-        "passMatchInfo": "Passwords must match!",
-        "passLengthInfo": "The password must be at least 10 characters long!",
-        "passSpecialCharInfo": "Password must contain at least one special character(*, @,%, !,^)",
+        "inputError": "You entered invalid data!",
+        "passMatchError": "Passwords do not match!",
         "heading": "Sign up",
         "nameLabel" : "Enter your username:",
         "namePlaceholder" : "username",
@@ -50,6 +50,7 @@
     },
     "addUserToHouse": {
         "invitedUsernameLabel": "Type invited user name:",
+        "invalidInputError": "Invalid input data",
         "invitedUsernameInputPlaceholder" :"username",
         "inviteUserSubmitBtn": "Invite",
         "inviteSuccessMessage": "User correctly added to household.",

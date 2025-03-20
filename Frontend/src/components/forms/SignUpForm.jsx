@@ -5,6 +5,7 @@ import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import SignUpCookiesSettings from '../SignUpCookiesSettings';
+import { isValidUsername, isValidPassword, isNoSQL, isNoXSS, isValidEmail } from '../../utils/validation';
 import SubmitBtn from './internal/SubmitBtn';
 
 export default function SignUpForm() {
@@ -30,26 +31,27 @@ export default function SignUpForm() {
         e.preventDefault();
         setSended(false);
 
-        if (userPass.current.value !== repPass.current.value) {
-            showErrorToast(t("signUpForm.passMatchInfo"));
-            return;
-        };
+        const name = userName.current.value;
+        const email = userEmail.current.value;
+        const password = userPass.current.value;
+        const repeatedPass = repPass.current.value;
 
-        if (userPass.current.value.length < 10) {
-            showErrorToast(t("signUpForm.passLengthInfo"));
-            return;
-        };
+        const validUsername = name && isValidUsername(name) && !isNoSQL(name);
+        const validEmail = email && isValidEmail(email) && !isNoSQL(email) && !isNoXSS(email);
+        const validPassword = password && isValidPassword(password) && !isNoSQL(password) && !isNoXSS(password);
+        const validRepeatedPass = repeatedPass && isValidPassword(repeatedPass) && !isNoSQL(repeatedPass) && !isNoXSS(repeatedPass);
+        const paswordsMatch = password === repeatedPass;
 
-        const specialCharRegex = /[*#!@%^]/;
-        if (!specialCharRegex.test(userPass.current.value)) {
-            showErrorToast(t("singUpForm.passSpecialCharInfo"));
-            return;
-        }
+        if (!(validUsername && validEmail && validPassword && validRepeatedPass)) {
+            showErrorToast(t("signUpForm.inputError"));
+        } else if (!paswordsMatch) {
+            showErrorToast(t("signUpForm.passMatchError"));
+        };
 
         const data = {
-            reg_username: userName.current.value,
-            reg_email: userEmail.current.value,
-            reg_password: userPass.current.value,
+            reg_username: name,
+            reg_email: email,
+            reg_password: password,
             role,
             cookies: cookiesConsent,
         };
