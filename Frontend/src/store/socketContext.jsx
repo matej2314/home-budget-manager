@@ -80,26 +80,30 @@ export const SocketProvider = ({ children }) => {
             });
 
             newSocket.on('notification', (data) => {
+                const { category, ...noticeData } = data;
+
+                if (!category) {
+                    console.error("Notification category is missing:", data);
+                    return;
+                }
+
                 setMessages((prevMessages) => {
-                    const { category, ...restOfData } = data;
-
-                    if (prevMessages.notifications.hasOwnProperty(category)) {
-
-                        const updatedNotifications = {
-                            ...prevMessages.notifications,
-                            [category]: [...prevMessages.notifications[category], restOfData],
-                        };
-
+                    if (!prevMessages.notifications[category].some(n => n.id === noticeData.id)) {
                         return {
                             ...prevMessages,
-                            notifications: updatedNotifications,
+                            notifications: {
+                                ...prevMessages.notifications,
+                                [category]: [...prevMessages.notifications[category], noticeData],
+                            }
                         };
                     }
-
-                    console.error(`Unknown category: ${category}`);
                     return prevMessages;
                 });
-                useNotificationsStore.getState().addNotification(category, data);
+
+                const existingNotifications = useNotificationsStore.getState().notifications[category] || [];
+                if (!existingNotifications.some(n => n.id === noticeData.id)) {
+                    useNotificationsStore.getState().addNotification(category, noticeData);
+                }
             });
 
             setSocket(newSocket);

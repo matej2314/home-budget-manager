@@ -49,7 +49,7 @@ const useNotificationsStore = create((set) => ({
         }),
 
     removeNotification: async (category, notificationId) => {
-        set({ laoding: true, error: false });
+        set({ loading: true, error: false });
         try {
             const response = await sendRequest('DELETE', { noticeId: notificationId }, ` ${serverUrl}/notice`)
 
