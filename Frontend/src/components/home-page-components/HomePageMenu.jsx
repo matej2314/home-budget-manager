@@ -50,7 +50,7 @@ export default function HomePageMenu() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 1, x: 0 }}
             >
-                <ul className="w-screen h-fit flex justify-center items-center py-1 text-slate-200 gap-2 text-[0.6rem] sm:text-[0.83rem] sm:justify-between indirect:gap-3 indirectxl:text-[0.9rem] indirectxl:gap-4 indirect:text-[0.74rem] md:text-[0.9rem] lg:text-lg lg:justify-center xl:gap-[3rem] transition-all duration-300">
+                <ul className="w-screen h-fit flex justify-center items-center py-1 text-slate-200 gap-2 text-[0.6rem] sm:text-[0.83rem] sm:justify-between indirect:gap-3 indirectxl:text-[0.9rem] indirectxl:gap-4 indirect:text-[0.74rem] md:text-[0.9rem] lg:text-lg lg:justify-center xl:text-xl xl:gap-[3rem] transition-all duration-300">
                     <li className='text-nowrap'><Link to='/'>{t("homePageMenu.firstEl")}</Link></li>
                     {!isMobile && <li><Link to='/aboutus'>{t("homePageMenu.secondEl")}</Link></li>}
                     <li>
