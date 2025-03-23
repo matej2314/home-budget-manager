@@ -45,12 +45,12 @@ export default function HomePageMenu() {
         <>
             <motion.div
                 id="mainMenu"
-                className="absolute w-screen h-fit items-center z-10"
+                className="absolute w-full h-fit items-center z-10"
                 initial={{ opacity: 1, x: 0 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 1, x: 0 }}
             >
-                <ul className="w-screen h-fit flex justify-center items-center py-1 text-slate-200 gap-2 text-[0.6rem] sm:text-[0.83rem] sm:justify-between indirect:gap-3 indirectxl:text-[0.9rem] indirectxl:gap-4 indirect:text-[0.74rem] md:text-[0.9rem] lg:text-lg lg:justify-center xl:text-xl xl:gap-[3rem] transition-all duration-300">
+                <ul className="w-full h-fit flex justify-around items-center py-1 text-slate-200 text-[0.6rem] sm:text-[0.95rem] sm:justify-around indirect:gap-3 indirectxl:text-[0.9rem] indirectxl:gap-4 indirect:text-[0.74rem] md:text-[0.9rem] lg:text-lg lg:justify-around xl:text-xl xl:gap-[3rem] transition-all duration-300">
                     <li className='text-nowrap'><Link to='/'>{t("homePageMenu.firstEl")}</Link></li>
                     {!isMobile && <li><Link to='/aboutus'>{t("homePageMenu.secondEl")}</Link></li>}
                     <li>
@@ -62,7 +62,7 @@ export default function HomePageMenu() {
                         </button>
                     </li>
                     <li><Link to='/contact'>{t("homePageMenu.contactBtn")}</Link></li>
-                    <li className='h-full w-fit flex items-center gap-1 md:gap-3'>
+                    <li className='h-full w-fit flex items-center gap-4 md:gap-3'>
                         <LanguageSelector isHomepage={true} />
                         {isAuthenticated && (
                             <span className='w-full flex flex-col xl:flex-row items-center gap-0.5 ml-0.5 xl:gap-3'>

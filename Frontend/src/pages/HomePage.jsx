@@ -36,7 +36,7 @@ export default function HomePage() {
 
     return (
         <>
-            <main className="w-screen h-screen flex flex-row justify-center items-center bg-slate-300 overflow-auto no-scrollbar">
+            <main className="w-screen lg:w-full h-screen flex flex-row justify-between lg:justify-center items-center bg-slate-300 overflow-auto no-scrollbar">
                 <div
                     className="home-page-content-div md:gap-[1.5rem] lg:gap-[1rem] xl:gap-[5rem]">
                     <div className="w-full flex justify-start">
