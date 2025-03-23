@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
 import { showCookiesInfo } from "../configs/toastify";
 import useHomePageStore from "../store/homePageStore";
+import { useTranslation } from "react-i18next";
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import HomePageMenu from "../components/home-page-components/HomePageMenu";
 import LoadingModal from "../components/modals/LoadingModal";
@@ -13,6 +14,7 @@ export default function HomePage() {
     const { isAuthenticated, isLoading } = useContext(AuthContext);
     const { fetchHomePageData } = useHomePageStore();
     const isCookiesInfo = getSessionStorage('isCookiesInfo');
+    const { t } = useTranslation("common");
 
     useEffect(() => {
         fetchHomePageData();
@@ -23,7 +25,7 @@ export default function HomePage() {
             return;
         } else if (!isCookiesInfo) {
             setSessionStorage('isCookiesInfo', 'true');
-            showCookiesInfo("This site uses Cookies.", " You can find out the details in the Privacy Policy or in the dashboard panel");
+            showCookiesInfo(t("signUpCookiesSettings.cookiesInfoPar"), t("signUpCookiesSettings.cookiesInfoSpan"));
         }
 
     }, [isCookiesInfo, isAuthenticated]);

@@ -45,12 +45,12 @@ export default function HomePageMenu() {
         <>
             <motion.div
                 id="mainMenu"
-                className="absolute w-11/12 h-fit z-10"
+                className="absolute w-screen h-fit items-center z-10"
                 initial={{ opacity: 1, x: 0 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 1, x: 0 }}
             >
-                <ul className="w-full h-fit flex  gap-1 items-center py-1 text-slate-200 text-[0.65rem] sm:text-[1rem] sm:gap-8 indirect:gap-2.5 indirectxl:text-[1.05rem] md:gap-0 indirect:text-[0.85rem] md:text-sm md:justify-around lg:text-lg px-2 transition-all duration-300">
+                <ul className="w-screen h-fit flex justify-center items-center py-1 text-slate-200 gap-2 text-[0.6rem] sm:text-[0.83rem] sm:justify-between indirect:gap-3 indirectxl:text-[0.9rem] indirectxl:gap-4 indirect:text-[0.74rem] md:text-[0.9rem] lg:text-lg lg:justify-center xl:gap-[3rem] transition-all duration-300">
                     <li className='text-nowrap'><Link to='/'>{t("homePageMenu.firstEl")}</Link></li>
                     {!isMobile && <li><Link to='/aboutus'>{t("homePageMenu.secondEl")}</Link></li>}
                     <li>
@@ -65,7 +65,7 @@ export default function HomePageMenu() {
                     <li className='h-full w-fit flex items-center gap-1 md:gap-3'>
                         <LanguageSelector isHomepage={true} />
                         {isAuthenticated && (
-                            <span className='w-full flex flex-col xl:flex-row items-center gap-0.5 md:gap-3'>
+                            <span className='w-full flex flex-col xl:flex-row items-center gap-0.5 ml-0.5 xl:gap-3'>
                                 <p>
                                     {user && user.userName}
                                 </p>

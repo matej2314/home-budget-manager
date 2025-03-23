@@ -10,5 +10,8 @@
         "secondEl": "About us",
         "authBtn": "SignUp/Login",
         "contactBtn": "Contact"
+    },
+    "cookiesInfo": {
+        
     }
 }
