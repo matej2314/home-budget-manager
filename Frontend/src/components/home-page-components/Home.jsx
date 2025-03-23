@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import useModal from '../../hooks/useModal';
 import AuthModal from '../modals/AuthModal';
 import { getSessionStorage, setSessionStorage } from '../../utils/storageUtils';
+import { wrapperVariants, elementsVariants, lastElementVariants } from '../../utils/animationVariants';
 
 export default function Home() {
     const { t } = useTranslation("homePage");
@@ -44,32 +45,6 @@ export default function Home() {
             });
         }
     }, [visited]);
-    const wrapperVariants = {
-        initial: { opacity: 0 },
-        animate: {
-            opacity: 1,
-            transition: {
-                duration: 0.3,
-                type: 'tween',
-                ease: 'easeInOut',
-            },
-        },
-        exit: { opacity: 0 }
-    };
-
-    const elementsVariants = {
-        initial: { opacity: 0 },
-        animate: { opacity: 1, transition: { duration: 2, ease: 'easeInOut' } },
-        exit: { opacity: 0, transition: { duration: 1, delay: 1, ease: 'easeInOut' } },
-    };
-
-    const lastElementVariants = {
-        initial: { opacity: 0 },
-        animate: {
-            opacity: 1,
-            transition: { duration: 1, delay: 1.3, ease: 'easeInOut' },
-        },
-    };
 
     return (
         <motion.div

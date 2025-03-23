@@ -5,18 +5,21 @@ import { CountDeclaredBudgetPeriod } from '../../utils/countingUtils/CountDeclar
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { isNoSQL, isNoXSS, isValidNumber } from "../../utils/validation";
 import LoadingModal from "../modals/LoadingModal";
+import useApiResponseHandler from "../../hooks/useApiResponseHandler";
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import SubmitBtn from "./internal/SubmitBtn";
 
 
 export default function DeclareBudgetForm() {
-    const [sended, setSended] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [declarationStatus, setDeclarationStatus] = useState({
+        sended: false,
+        isLoading: false,
+    });
+    const handleApiResponse = useApiResponseHandler();
     const { t } = useTranslation("forms");
     const declaredBudgetRef = useRef();
     const declaredPeriod = CountDeclaredBudgetPeriod();
-
 
     const handleDeclareBudget = async (e) => {
         e.preventDefault();
@@ -33,23 +36,24 @@ export default function DeclareBudgetForm() {
         };
 
         try {
-            setSended(false);
-            setIsLoading(true);
+            setDeclarationStatus({ sended: false, isLoading: true });
+
             const addBudget = await sendRequest('POST', budgetData, `${serverUrl}/initmonthly/new`);
 
-            if (addBudget.status === 'error') {
-                showErrorToast(t(addBudget.message, { defaultValue: "declareBudget.declareInternalError" }));
-            } else if (addBudget.status === 'success') {
-                showInfoToast(t(addBudget.message, { defaultValue: "declareBudget.declaredCorrectlyMessage" }));
-                setTimeout(() => {
-                    onRequestClose();
-                }, 600);
-            };
+            handleApiResponse(addBudget, {
+                onSuccess: () => {
+                    showInfoToast(t(addBudget.message, { defaultValue: "declareBudget.declaredCorrectlyMessage" }));
+                    setTimeout(onRequestClose, 600);
+                },
+                onError: () => {
+                    showErrorToast(t(addBudget.message, { defaultValue: "declareBudget.declareInternalError" }));
+                }
+            });
+
         } catch (error) {
             console.error(error);
         } finally {
-            setSended(true);
-            setIsLoading(false);
+            setDeclarationStatus({ sended: true, isLoading: false });
         }
     }
 
@@ -77,13 +81,13 @@ export default function DeclareBudgetForm() {
                 </div>
                 <SubmitBtn
                     className='form-submit-modal-btn'
-                    disabled={sended}
+                    disabled={declarationStatus.sended}
                 >
                     {t("declareBudget.declareSubmitBtn")}
                 </SubmitBtn>
                 <p>{t("declareBudget.periodParagraph")} {declaredPeriod.startPeriod} - {declaredPeriod.endPeriodString}</p>
             </form>
-            {isLoading && <LoadingModal isOpen={isLoading} />}
+            {declarationStatus.isLoading && <LoadingModal isOpen={declarationStatus.isLoading} />}
         </>
     )
 }

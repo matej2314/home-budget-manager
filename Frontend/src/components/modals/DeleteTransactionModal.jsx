@@ -4,12 +4,14 @@ import Modal from 'react-modal';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { useTransactionsStore } from '../../store/transactionsStore';
+import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
 import { useTranslation } from 'react-i18next';
 
 export default function DeleteTransactionModal({ isOpen, onRequestClose, transaction }) {
     const { fetchTransactions } = useTransactionsStore();
+    const handleApiResponse = useApiResponseHandler();
     const [isLoading, setIsLoading] = useState(false);
     const { user } = useContext(AuthContext);
     const { t } = useTranslation("modals");
@@ -26,13 +28,16 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
             const actionData = { transactionId: transaction.transactionId };
             const deleteAction = await sendRequest('DELETE', actionData, `${serverUrl}/action`);
 
-            if (deleteAction.status === 'success') {
-                showInfoToast(t("deleteTransaction.successMessage"));
-                fetchTransactions();
-                onRequestClose();
-            } else {
-                showErrorToast(t("deleteTransaction.failedMessage"));
-            }
+            handleApiResponse(deleteAction, {
+                onSuccess: () => {
+                    showInfoToast(t("deleteTransaction.successMessage"));
+                    fetchTransactions();
+                    onRequestClose();
+                },
+                onError: () => {
+                    showErrorToast(t("deleteTransaction.failedMessage"));
+                }
+            })
         } catch (error) {
             showErrorToast(t("deleteTransaction.errorMessage"));
             console.error('Delete transaction error:', error);

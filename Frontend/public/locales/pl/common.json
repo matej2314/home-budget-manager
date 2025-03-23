@@ -15,6 +15,13 @@
         "modalLoginBtn": "Logowanie",
         "modalSignUpBtn": "Rejestracja"
     },
+    "signUpCookiesSettings": {
+       "cookiesInfoPar": "Na tej stronie używamy plików cookie do uwierzytelniania użytkowników i zbierania anonimowych statystyk dotyczących ruchu i korzystania z witryny (Google Analytics).",
+       "cookiesInfoSpan": "Nie przechowujemy żadnych danych reklamowych ani śledzących. Wybrane ustawienie zostanie zapisane w bazie danych.",
+       "btnsHeading": "Akceptuję:",
+       "btnAll": "Wszystkie",
+       "btnMandatory": "Tylko obowiązkowe"
+    },
     "fastActionsBtns": {
         "Declare budget" : "zadeklaruj budżet",
         "Add transaction": "dodaj transakcję",

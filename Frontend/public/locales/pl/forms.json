@@ -72,6 +72,8 @@
     },
     "sendMessage": {
         "formHeaderReply": "Odpowiedz na wiadomość",
+        "successMessage" : "Wiadomość została wysłana.",
+        "errorMessage": "Wystąpił błąd podczas wysyłania wiadomości.",
         "formHeaderSend": "Wyślij wiadomość",
         "recipientNameLabel": "Wpisz nazwę odbiorcy:",
         "recipientNamePlaceholder": "nazwa odbiorcy",

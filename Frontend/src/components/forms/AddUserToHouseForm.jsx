@@ -4,13 +4,17 @@ import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from "../../configs/toastify";
 import { isValidUsername, isNoSQL } from "../../utils/validation";
 import { useTranslation } from 'react-i18next';
+import useApiResponseHandler from "../../hooks/useApiResponseHandler";
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from "./internal/SubmitBtn";
 
 export default function AddUserToHouseForm({ onClose }) {
-    const [sended, setSended] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [inviteStatus, setInviteStatus] = useState({
+        sended: false,
+        isLoading: false,
+    })
+    const handleApiResponse = useApiResponseHandler();
     const { t } = useTranslation("forms");
     const invitedUser = useRef();
 
@@ -26,24 +30,23 @@ export default function AddUserToHouseForm({ onClose }) {
         const data = { userName: invitedUserName };
 
         try {
-            setSended(false);
-            setIsLoading(true)
+            setInviteStatus({ sended: false, isLoading: true });
             const inviteUser = await sendRequest('POST', data, `${serverUrl}/users/invite`)
 
-            if (inviteUser.status === 'success') {
-                showInfoToast(t(inviteUser.message, { defaulValue: "addUserToHouse.inviteSuccessMessage" }));
-                inviteUser.current.value = '';
-                setTimeout(() => {
-                    onClose();
-                }, 500);
-            } else if (inviteUser.status === 'error') {
-                showErrorToast(t(inviteUser.message, { defaultValue: "addUserToHouse.inviteUserInternalError" }));
-            }
+            handleApiResponse(inviteUser, {
+                onSuccess: () => {
+                    showInfoToast(t(inviteUser.message, { defaltValue: "addUserToHouse.inviteSuccessMessage" }));
+                    invitedUser.current.value = '';
+                    setTimeout(onClose, 500);
+                },
+                onError: () => {
+                    showErrorToast(t(inviteUser.message, { defaultValue: "addUserToHouse.inviteUserInternalError" }));
+                }
+            })
         } catch (error) {
             console.error(error);
         } finally {
-            setSended(true);
-            setIsLoading(false);
+            setInviteStatus({ sended: true, isLoading: false });
         };
 
     };
@@ -74,12 +77,12 @@ export default function AddUserToHouseForm({ onClose }) {
                 </div>
                 <SubmitBtn
                     className='form-submit-modal-btn'
-                    disabled={sended}
+                    disabled={inviteStatus.sended}
                 >
                     {t("addUserToHouse.inviteUserSubmitBtn")}
                 </SubmitBtn>
             </form>
-            {isLoading && <LoadingModal isOpen={isLoading} />}
+            {inviteStatus.isLoading && <LoadingModal isOpen={inviteStatus.isLoading} />}
         </div>
     )
 

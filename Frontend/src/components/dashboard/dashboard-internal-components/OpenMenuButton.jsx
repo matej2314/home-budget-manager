@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '../../../hooks/useIsMobile';
+import { dashboardVariants, homeVariants } from '../../../utils/animationVariants';
 
 export default function OpenMenuButton({ isOpened, actionCallback, home }) {
     const { isMobile, isTablet } = useIsMobile();
@@ -11,43 +12,14 @@ export default function OpenMenuButton({ isOpened, actionCallback, home }) {
         return 0;
     }, [isTablet, isMobile]);
 
-    const dashboardVariants = {
-        initial: {
-            x: 0,
-            transition: {
-                duration: 0.3,
-                type: 'tween'
-            }
-        },
-        animate: {
-            x: isOpened ? '10rem' : 0,
-            transition: {
-                duration: 0.3,
-                type: 'tween',
-            }
-        }
-    };
-
-    const homeVariants = {
-        initial: {
-            x: 0,
-            transition: {
-                duration: 0.3,
-                type: 'tween',
-            }
-        },
-        animate: custom => ({
-            x: isOpened ? custom : 0,
-            transition: { duration: 0.1, type: 'tween' }
-        })
-    };
-
+    const boardVariants = dashboardVariants(isOpened);
+    const pageVariants = homeVariants(isOpened);
 
     return (
         <motion.button
             id='openMenuBtn'
             custom={openValue}
-            variants={home ? homeVariants : dashboardVariants}
+            variants={home ? pageVariants : boardVariants}
             initial='initial'
             animate='animate'
             onDragStart={actionCallback}

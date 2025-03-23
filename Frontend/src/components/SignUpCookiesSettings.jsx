@@ -1,31 +1,34 @@
+import { useTranslation } from 'react-i18next';
+
 export default function SignUpCookiesSettings({ clickAction }) {
+    const { t } = useTranslation("common");
 
     return (
         <div>
             <p className='text-sm w-full h-fit flex flex-col justify-center text-pretty'>
-                On this site, we use cookies to authenticate users and collect anonymous statistics regarding traffic and usage of the site (Google Analytics).
+                {t("signUpCookiesSettings.cookiesInfoPar")}
                 <span
                     className='mt-2'
                 >
-                    We do not store any advertising or tracking data. The selected setting will be stored in the database.
+                    {t("signUpCookiesSettings.cookiesInfoSpan")}
                 </span>
             </p>
             <div className='w-full h-fit flex flex-col gap-3 mt-2'>
-                <p className='w-full h-fit flex justify-center font-semibold'>Akceptuję:</p>
+                <p className='w-full h-fit flex justify-center font-semibold'>{t("signUpCokiesSettings.btnsHeading")}</p>
                 <div className='w-full h-fit flex justify-center gap-3 pl-14'>
                     <button
                         className="form-submit-modal-btn"
                         type="button"
                         onClick={() => clickAction(1)}
                     >
-                        Wszystkie
+                        {t("signUpCookiesSettings.btnAll")}
                     </button>
                     <button
                         className="form-submit-modal-btn"
                         type="button"
                         onClick={() => clickAction(0)}
                     >
-                        Tylko obowiązkowe
+                        {t("signUpCookiesSettings.btnMandatory")}
                     </button>
                 </div>
             </div>

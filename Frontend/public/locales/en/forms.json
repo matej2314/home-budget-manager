@@ -72,6 +72,8 @@
     },
     "sendMessage": {
         "formHeaderReply": "Reply message",
+        "successMessage": "Message sent.",
+        "errorMessage": "An error occured during sending message.",
         "formHeaderSend": "Send message",
         "recipientNameLabel": "Type recipient name:",
         "recipientNamePlaceholder": "recipient name",

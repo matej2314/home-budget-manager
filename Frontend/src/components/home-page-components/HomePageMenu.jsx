@@ -21,7 +21,6 @@ export default function HomePageMenu() {
     const { user, isAuthenticated, isLoading, logout } = useContext(AuthContext);
     const { t } = useTranslation("homePage");
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
-
     const navigate = useNavigate();
 
     const handleLogOut = async () => {

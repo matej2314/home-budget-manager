@@ -14,6 +14,14 @@
       "modalLoginBtn": "Login",
       "modalSignUpBtn": "SignUp"
    },
+   "signUpCookiesSettings": {
+   "cookiesInfoPar": "On this site, we use cookies to authenticate users and collect anonymous statistics regarding traffic and usage of the site (Google Analytics).",
+   "cookiesInfoSpan": "We do not store any advertising or tracking data. The selected setting will be stored in the database.",
+   "btnsHeading": "Accept:",
+   "btnAll": "All cookies",
+   "btnMandatory": "Only mandatory"
+
+   },
    "fastActionsBtns": {
       "Declare budget" : "declare budget",
       "Add transaction": "add transaction",

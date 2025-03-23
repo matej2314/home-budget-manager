@@ -42,11 +42,9 @@ export default function LoginForm() {
     };
 
     useEffect(() => {
-        if (user && !isLoading && !error && isAuthenticated) {
+        if (user && isAuthenticated) {
             showInfoToast(`${user.userName} ${t("loginForm.correctLogin")}`);
-            const timer = setTimeout(() => {
-                navigate('/dashboard');
-            }, 600);
+            const timer = setTimeout(() => navigate('/dashboard'), 600);
 
             return () => clearTimeout(timer);
         };
@@ -54,7 +52,7 @@ export default function LoginForm() {
         if (sended && error && !isAuthenticated) {
             showErrorToast(t("loginForm.failedLogin"));
         }
-    }, [error, isLoading, navigate, user]);
+    }, [error, user, isAuthenticated, sended]);
 
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>

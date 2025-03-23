@@ -26,7 +26,9 @@
         "actionsBtnTitle": "Show user's transactions",
         "deleteBtnTitle": "Delete housemate",
         "noHousematesError": "No housemates",
-        "selfSendError": "You can't send a message to yourself..."
+        "selfSendError": "You can't send a message to yourself...",
+        "inmate": "housemate",
+        "host": "host"
     },
     "messagesList": {
         "readed": "Readed",
@@ -34,7 +36,9 @@
         "failedFetchError": "Failed to fetch messages."
     },
     "mostActiveMates": {
-        "heading": "Most active mates:"
+        "heading": "Most active mates:",
+        "inmate": "housemate",
+        "host": "host"
     },
     "notificationsContainer": {
         "noNoticesError": "No new notifications."

@@ -2,12 +2,14 @@ import Modal from 'react-modal';
 import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { useTranslation } from 'react-i18next';
 
 Modal.setAppElement('#root');
 
 export default function CookiesModal({ isOpen, onRequestClose }) {
     const { t } = useTranslation("modals");
+    const handleApiResponse = useApiResponseHandler();
 
     const handleSaveCookieValue = async (value) => {
 
@@ -23,14 +25,15 @@ export default function CookiesModal({ isOpen, onRequestClose }) {
         try {
             const saveValue = await sendRequest('POST', data, `${serverUrl}/cookiestour/cookie_value`);
 
-            if (saveValue.status === 'error') {
-                showErrorToast(t("cookies.internalError"))
-            } else if (saveValue.status === 'success') {
-                showInfoToast(t("cookies.successMessage"));
-                setTimeout(() => {
-                    onRequestClose();
-                }, 500);
-            }
+            handleApiResponse(saveValue, {
+                onSuccess: () => {
+                    showInfoToast(t("cookies.successMessage"));
+                    setTimeout(onRequestClose, 500);
+                },
+                onError: () => {
+                    showErrorToast(t("cookies.internalError"));
+                }
+            })
         } catch (error) {
             console.error(error);
         }

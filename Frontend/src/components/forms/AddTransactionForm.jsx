@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
+import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import SubmitBtn from './internal/SubmitBtn';
 import { isValidNumber } from '../../utils/validation';
 
@@ -14,6 +15,7 @@ export default function AddTransactionForm({ onClose }) {
     const { data, isLoading, error } = useContext(DataContext);
     const actionCategories = !isLoading && !error && data.actionsCatData || [];
     const { fetchTransactions } = useTransactionsStore();
+    const handleApiResponse = useApiResponseHandler();
     const [imageMode, setImageMode] = useState(false);
     const [loadingImage, setLoadingImage] = useState(false);
     const [recognizedValue, setRecognizedValue] = useState();
@@ -39,13 +41,15 @@ export default function AddTransactionForm({ onClose }) {
 
             const recognizeData = await recognize.json();
 
-            if (recognizeData.status === 'success') {
-                setImageMode(false);
-                setRecognizedValue(recognizeData.value.replace(',', '.'));
-
-            } else if (recognizeData.status === 'error') {
-                showErrorToast(t(recognizeData.message, { defaultValue: t("addTransaction.recognizeInternalError") }));
-            }
+            handleApiResponse(recognizeData, {
+                onSuccess: () => {
+                    setImageMode(false);
+                    setRecognizedValue(recognizeData.value.replace(',', '.'));
+                },
+                onError: () => {
+                    showErrorToast(t(recognizeData.message, { defaultValue: t("addTransaction.recognizeInternalError") }))
+                }
+            })
         } catch (error) {
             console.error(error);
         } finally {
@@ -78,18 +82,17 @@ export default function AddTransactionForm({ onClose }) {
 
         const saveAction = await sendRequest('POST', newActionData, `${serverUrl}/action/new`);
 
-        if (saveAction.status === 'success') {
-            showInfoToast(t(saveAction.message, { defaultValue: "addTransaction.addTransactionCorrect" }));
-            await fetchTransactions();
-            setTimeout(() => {
-                onClose();
-            }, 500);
-        } else if (saveAction.status === 'error') {
-            showErrorToast(t(saveAction.message), { defaultValue: "addTransaction.addTransactionError" });
-            onClose();
-        }
+        handleApiResponse(saveAction, {
+            onSuccess: async () => {
+                showInfoToast(t(saveAction.message, { defaultValue: "addTransaction.addTransactionCorrect" }));
+                await fetchTransactions();
+                setTimeout(onClose, 500);
+            },
+            onError: () => {
+                showErrorToast(t(saveAction.message, { defaultValue: "addTransaction.addTransactionError" }));
+            }
+        });
     };
-
 
     return (
         <div className='w-full h-fit flex flex-col items-center'>

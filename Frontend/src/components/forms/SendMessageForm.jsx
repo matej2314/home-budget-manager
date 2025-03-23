@@ -5,6 +5,7 @@ import { serverUrl } from '../../url';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import SendMessageBtn from './internal/SendMessageBtn';
 import LoadingModal from '../modals/LoadingModal';
 import { isNoSQL, isNoXSS, isValidUsername } from '../../utils/validation';
@@ -43,16 +44,19 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 			setIsLoading(true);
 			const sendMessage = await sendRequest('POST', messageData, `${serverUrl}/message/send`);
 
-			if (sendMessage.status === 'success') {
-				showInfoToast(sendMessage.message);
-				await fetchMessages();
-				messageContentRef.current.value = '';
-				setTimeout(() => {
-					onClose();
-				}, 600);
-			}
+			useApiResponseHandler(sendMessage, {
+				onSuccess: async () => {
+					showInfoToast(t(sendMessage.message, { defaultValue: "sendMessage.successMessage" }));
+					await fetchMessages();
+					messageContentRef.current.value = '';
+					setTimeout(onClose, 600);
+				},
+				onError: () => {
+					showErrorToast(t(sendMessage.message, { defaultValue: "sendMessage.errorMessage" }));
+				}
+			})
 		} catch (error) {
-			showErrorToast('Failed to send message.');
+			showErrorToast(t("sendMessage.errorMessage"));
 		} finally {
 			handleSetActionState('sended');
 			setIsLoading(false);

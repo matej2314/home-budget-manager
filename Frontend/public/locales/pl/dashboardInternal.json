@@ -26,7 +26,9 @@
         "actionsBtnTitle": "Pokaż transakcje użytkownika",
         "deleteBtnTitle": "Usuń domownika",
         "noHousematesError": "Brak domowników",
-        "selfSendError": "Nie możesz wysłać wiadomości do siebie..."
+        "selfSendError": "Nie możesz wysłać wiadomości do siebie...",
+        "host": "gospodarz",
+        "inmate": "domownik"
     },
     "messagesList": {
         "readed": "Przeczytana",
@@ -34,7 +36,9 @@
         "failedFetchError": "Nie udało się pobrać wiadomości"
     },
     "mostActiveMates": {
-        "heading": "Najbardziej aktywni domownicy:"
+        "heading": "Najbardziej aktywni domownicy:",
+        "host": "gospodarz",
+        "inmate": "domownik"
     },
     "notificationsContainer": {
         "noNoticesError": "Brak nowych powiadomień."

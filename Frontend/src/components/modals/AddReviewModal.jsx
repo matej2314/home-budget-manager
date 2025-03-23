@@ -6,6 +6,7 @@ import StarRating from '../StarRating';
 import LoadingModal from '../modals/LoadingModal';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
+import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { isNoSQL, isNoXSS } from '../../utils/validation';
 import SubmitBtn from '../forms/internal/SubmitBtn';
 
@@ -13,17 +14,19 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
     const [rating, setRating] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const userOpinionRef = useRef();
+    const handleApiResponse = useApiResponseHandler();
     const { t } = useTranslation("modals");
 
     const handleSaveReview = async (e) => {
         e.preventDefault();
 
-        const reviewContent = userOpinionRef.current.value;
+        const reviewContent = userOpinionRef.current?.value || "";
 
         const validUserReview = reviewContent && !isNoSQL(reviewContent) && !isNoXSS(reviewContent);
 
         if (!validUserReview) {
             showErrorToast(t("addReview.invalidOpinion"));
+            return;
         };
 
         const reviewData = {
@@ -35,17 +38,17 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
             setIsLoading(true);
             const saveReview = await sendRequest('POST', reviewData, `${serverUrl}/reviews/new`)
 
-            if (saveReview.status === 'error') {
-                console.error(saveReview.messaage)
-                showErrorToast(t("addReview.failedSaveMessage"));
-                setRating((prevState) => 0);
-                userOpinionRef.current.value = '';
-            } else if (saveReview.status === 'success') {
-                showInfoToast(t("saveReview.correctlySaveMessage"));
-                setTimeout(() => {
-                    onRequestClose();
-                }, 600);
-            };
+            handleApiResponse(saveReview, {
+                onSuccess: () => {
+                    showInfoToast(t("saveReview.correctlySaveMessage"));
+                    setTimeout(onRequestClose, 600);
+                },
+                onError: () => {
+                    showErrorToast(t("addReview.failedSaveMessage"));
+                    setRating(0);
+                    userOpinionRef.current.value = '';
+                },
+            });
         } catch (error) {
             console.error(error);
         } finally {
@@ -57,7 +60,7 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            contentLabel="Add New Transaction"
+            contentLabel="Add new opinion"
             className="add-review-modal"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
@@ -76,7 +79,7 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
                         className='w-full h-[10rem] resize-none border-2 border-slate-300 rounded-md pl-2'
                         name="userOpinion"
                         id="userOpinion"
-                        disabled={isLoading}
+                        readOnly={isLoading}
                         placeholder={t("addReview.opinionPlaceholder")}
                         ref={userOpinionRef}
                     />

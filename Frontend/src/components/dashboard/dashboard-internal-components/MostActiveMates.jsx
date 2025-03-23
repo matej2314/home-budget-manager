@@ -23,7 +23,7 @@ export default function MostActiveMates({ isLoading, matesData }) {
                 className="w-full h-full flex flex-row gap-3">
                 <h2 className="lg:w-fit h-fit flex lg:justify-center text-nowrap">{t("mostActiveMates.heading")}</h2>
                 {!isLoading && matesData && matesData.map((mate, index) => {
-                    return <p key={index} className="text-nowrap">{mate.userName} - {mate.role}</p>
+                    return <p key={index} className="text-nowrap">{mate.userName} - {t(`mostActiveMates.${mate.role}`)}</p>
                 })}
             </motion.div>
         </div>

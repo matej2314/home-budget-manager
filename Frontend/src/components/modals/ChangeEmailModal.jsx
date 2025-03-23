@@ -4,6 +4,7 @@ import { serverUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
+import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { isValidEmail, isNoXSS } from '../../utils/validation';
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
@@ -11,8 +12,11 @@ import SubmitBtn from '../forms/internal/SubmitBtn';
 
 
 export default function ChangeEmailModal({ isOpen, onRequestClose }) {
-    const [sended, setSended] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [requestState, setRequestState] = useState({
+        sended: false,
+        isLoading: false,
+    });
+    const handleApiResponse = useApiResponseHandler();
     const { t } = useTranslation("modals");
     const newEmailAddr = useRef();
 
@@ -32,24 +36,23 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
         };
 
         try {
-            setSended(false);
-            setIsLoading(true);
+            setRequestState({ sended: false, isLoading: true });
             const saveEmail = await sendRequest('POST', emailData, `${serverUrl}/users/changemail`);
 
-            if (saveEmail.status === 'error') {
-                showErrorToast(t(saveEmail.message, { defaultValue: "changeEmail.failedError" }));
-            } else if (saveEmail.status === 'success') {
-                showInfoToast(t(saveEmail.message, { defaultValue: "changeEmail.changedCorrectlyMessage" }));
-                setTimeout(() => {
-                    onRequestClose();
-                }, 500);
-            };
+            handleApiResponse(saveEmail, {
+                onSuccess: () => {
+                    showInfoToast(t(saveEmail.message, { defaultValue: "changeEmail.changedCorrectlyMessage" }));
+                    setTimeout(onRequestClose, 500);
+                },
+                onError: () => {
+                    showErrorToast(t(saveEmail.message, { defaultValue: "changeEmail.failedError" }));
+                }
+            })
 
         } catch (error) {
             console.error(error);
         } finally {
-            setSended(true);
-            setIsLoading(false);
+            setRequestState({ sended: true, isLoading: false });
         };
     };
 
@@ -89,12 +92,12 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
                     </div>
                     <SubmitBtn
                         className='form-submit-modal-btn'
-                        disabled={sended}
+                        disabled={requestState.sended}
                     >
                         {t("changeEmail.newEmailSubmitBtn")}
                     </SubmitBtn>
                 </form>
-                {isLoading && <LoadingModal isOpen={isLoading} />}
+                {requestState.isLoading && <LoadingModal isOpen={requestState.isLoading} />}
             </div>
         </Modal>
     )

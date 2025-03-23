@@ -6,6 +6,7 @@ import SendMessageForm from '../../forms/SendMessageForm';
 import { serverUrl } from '../../../url';
 import sendRequest from '../../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
+import useApiResponseHandler from '../../../hooks/useApiResponseHandler';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 
@@ -31,6 +32,7 @@ export function SendMessageModal({ isOpen, onRequestClose, recipient }) {
 
 export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
 	const { t } = useTranslation("modals");
+	const handleApiResponse = useApiResponseHandler();
 
 	const handleDeleteMessage = async (messageId) => {
 		const delData = {
@@ -38,12 +40,15 @@ export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
 		};
 		const result = await sendRequest('DELETE', delData, `${serverUrl}/message/delete`);
 
-		if (result.status === 'error') {
-			showErrorToast(t("deleteMessage.errorMessage"));
-		} else if (result.status === 'success') {
-			showInfoToast(t("deleteMessage.deletedCorrectlyMessage"));
-			onRequestClose();
-		}
+		handleApiResponse(result, {
+			onSuccess: () => {
+				showInfoToast(t("deleteMessage.deletedCorrectlyMessage"));
+				onRequestClose();
+			},
+			onError: () => {
+				showErrorToast(t("deleteMessage.errorMessage"));
+			}
+		});
 	};
 
 	return (

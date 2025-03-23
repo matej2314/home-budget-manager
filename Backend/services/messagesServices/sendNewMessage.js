@@ -22,7 +22,7 @@ const sendNewMessage = async (userId, userName, recipientName, content) => {
 
         if (result.affectedRows === 0) {
             logger.error(`Failed to save message from user ${userId} to user ${recipientId}`);
-            return { status: 'error', message: 'Failed to save message.' };
+            return { status: 'error', message: 'sendMessage.errorMessage' };
         }
         try {
             broadcastMessage(recipientId, {
@@ -43,11 +43,11 @@ const sendNewMessage = async (userId, userName, recipientName, content) => {
 
         return {
             status: 'success',
-            message: 'Message sent successfully.',
+            message: 'sendMessage.successMessage',
         };
     } catch (error) {
         logger.error(`Sending message error: ${error}`);
-        return { status: 'error', message: 'An error occured during sending message.' };
+        return { status: 'error', message: 'sendMessage.errorMessage' };
     } finally {
         connection && connection.release();
     }
