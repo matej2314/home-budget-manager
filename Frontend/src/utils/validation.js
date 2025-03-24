@@ -9,15 +9,19 @@ export const isValidEmail = (email) => {
 };
 
 export const isValidUsername = (username) => {
-    const regex = /^[a-zA-Z0-9]{5,10}$/;
+    const regex = /^[a-zA-Z0-9]{5,20}$/;
     return regex.test(username);
 };
 
 export const isNoSQL = (str) => {
     const sqlRegex = /(?:--|;|\b(SELECT|INSERT|UPDATE|DELETE|DROP|TRUNCATE|ALTER|CREATE|SHOW|GRANT|REVOKE)\b|\b(UNION|EXEC|TRUNCATE|SLEEP|BENCHMARK|OR)\b)/i;
 
-    return !sqlRegex.test(str);
+    const result = !sqlRegex.test(str);
+    console.log(`Checking username: ${str}, isNoSQL result: ${result}`);
+
+    return result;
 };
+
 
 export const isNoXSS = (str) => {
     const xssRegex = /(<([^>]+)>|javascript:|<script|<\/script|on\w+=)/i;

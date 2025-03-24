@@ -19,5 +19,10 @@
     },
     "housematesPage" : {
         "title": "Your housemates:"
+    },
+    "userDashboard": {
+        "heading": "To use website functions, add your household",
+        "inputLabel" : "Type name of your household:",
+        "infoParagraph": "If household exists, you will be added to it"
     }
 }

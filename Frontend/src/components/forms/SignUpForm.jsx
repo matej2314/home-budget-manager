@@ -36,16 +36,18 @@ export default function SignUpForm() {
         const password = userPass.current.value;
         const repeatedPass = repPass.current.value;
 
-        const validUsername = name && isValidUsername(name) && !isNoSQL(name);
-        const validEmail = email && isValidEmail(email) && !isNoSQL(email) && !isNoXSS(email);
-        const validPassword = password && isValidPassword(password) && !isNoSQL(password) && !isNoXSS(password);
-        const validRepeatedPass = repeatedPass && isValidPassword(repeatedPass) && !isNoSQL(repeatedPass) && !isNoXSS(repeatedPass);
+        const validUsername = name && isValidUsername(name);
+        const validEmail = email && isValidEmail(email);
+        const validPassword = password && isValidPassword(password);
+        const validRepeatedPass = repeatedPass && isValidPassword(repeatedPass);
         const paswordsMatch = password === repeatedPass;
 
-        if (!(validUsername && validEmail && validPassword && validRepeatedPass)) {
+        if (!validUsername || !validEmail || !validPassword || !validRepeatedPass) {
             showErrorToast(t("signUpForm.inputError"));
+            return;
         } else if (!paswordsMatch) {
             showErrorToast(t("signUpForm.passMatchError"));
+            return;
         };
 
         const data = {

@@ -64,7 +64,7 @@ export default function HomePageMenu() {
                     <li><Link to='/contact'>{t("homePageMenu.contactBtn")}</Link></li>
                     <li className='h-full w-fit flex items-center gap-4 md:gap-3'>
                         <LanguageSelector isHomepage={true} />
-                        {isAuthenticated && (
+                        {isAuthenticated && user && (
                             <span className='w-full flex flex-col xl:flex-row items-center gap-0.5 ml-0.5 xl:gap-3'>
                                 <p>
                                     {user && user.userName}

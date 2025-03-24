@@ -19,5 +19,10 @@
     },
     "housematesPage": {
         "title": "Twoi domownicy:"
+    },
+    "userDashboard": {
+        "heading": "Aby korzystać ze strony, dodaj swoje gospodarstwo domowe.",
+        "inputLabel": "Podaj nazwę swojego gospodarstwa:",
+        "infoParagraph": "Jeżeli gospodarstwo istnieje, zostaniesz do niego przypisany."
     }
 }

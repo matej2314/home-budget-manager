@@ -9,7 +9,7 @@ import UserProfilePage from '../pages/dashboard-subpages/UserProfilePage';
 import AdminPanelPage from '../pages/dashboard-subpages/AdminPanelPage';
 import StatsPage from '../pages/dashboard-subpages/StatsPage';
 import TransactionsPage from "../pages/dashboard-subpages/TransactionsPage";
-import DashBoardForUser from "../pages/dashboard-subpages/DashboardForUser";
+import DashBoardForUser from '../pages/dashboard-subpages/DashboardForUser';
 import Home from '../components/home-page-components/Home';
 import AboutUs from '../pages/AboutUsPage';
 import ContactPage from '../pages/ContactPage';
@@ -25,6 +25,7 @@ const routes = [
             { index: true, element: <Home /> },
             { path: 'aboutus', element: <AboutUs /> },
             { path: 'contact', element: <ContactPage /> },
+            { path: 'userDashboard', element: <DashBoardForUser /> },
 
         ],
     },
@@ -43,7 +44,6 @@ const routes = [
             { path: 'housemates', element: <HouseMatesPage /> },
             { path: 'calendar', element: <CalendarPage /> },
             { path: 'messages/:filter?', element: <MessagesPage /> },
-            { path: 'userDashboard', element: <DashBoardForUser /> },
             { path: 'adminpanel/:page?', element: <AdminPanelPage /> },
             { path: 'stats', element: <StatsPage /> },
             { path: '*', element: <ErrorPage /> },

@@ -70,13 +70,6 @@ exports.registerUser = async (req, res) => {
 			});
 		}
 
-		const token = jwt.sign({ id: userId, role }, JWT_SECRET, { expiresIn: '1h' });
-
-		res.cookie('SESSID', token, {
-			...jwtCookieOptions,
-			maxAge: 60 * 60 * 1000,
-		});
-
 		return res.status(statusCode.OK).json({
 			status: 'success',
 			message: 'User successfully registered. Now you can sign in.'

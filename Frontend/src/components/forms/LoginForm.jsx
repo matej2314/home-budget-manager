@@ -1,5 +1,5 @@
-import { useRef, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useContext, useEffect, useState, useMemo } from 'react';
+import { replace, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../store/authContext';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
@@ -8,12 +8,10 @@ import { isValidPassword, isNoSQL, isNoXSS, isValidEmail } from '../../utils/val
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from './internal/SubmitBtn';
 
-
 export default function LoginForm() {
     const { login, isLoading, error, message, user, isAuthenticated } = useContext(AuthContext);
     const [sended, setSended] = useState(false);
     const { t } = useTranslation("forms");
-    const navigate = useNavigate();
     const email = useRef();
     const password = useRef();
 
@@ -40,19 +38,6 @@ export default function LoginForm() {
         await login(data);
         setSended(true);
     };
-
-    useEffect(() => {
-        if (user && isAuthenticated) {
-            showInfoToast(`${user.userName} ${t("loginForm.correctLogin")}`);
-            const timer = setTimeout(() => navigate('/dashboard'), 600);
-
-            return () => clearTimeout(timer);
-        };
-
-        if (sended && error && !isAuthenticated) {
-            showErrorToast(t("loginForm.failedLogin"));
-        }
-    }, [error, user, isAuthenticated, sended]);
 
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>
