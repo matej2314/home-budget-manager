@@ -9,7 +9,7 @@ import { isValidUsername, isValidPassword, isValidEmail } from '../../utils/vali
 import SubmitBtn from './internal/SubmitBtn';
 
 export default function SignUpForm() {
-    const { register, isLoading, message, error } = useContext(AuthContext);
+    const { register, signUpStatus } = useContext(AuthContext);
     const [sended, setSended] = useState(false);
     const [showCookiesSettings, setShowCookiesSettings] = useState(false);
     const [cookiesConsent, setCookiesConsent] = useState(null);
@@ -63,7 +63,7 @@ export default function SignUpForm() {
     };
 
     useEffect(() => {
-        if (sended && message) {
+        if (sended && signUpStatus.message) {
             const timer = setTimeout(() => {
                 navigate('/');
             }, 700);
@@ -72,11 +72,11 @@ export default function SignUpForm() {
         }
 
 
-        if (sended && error) {
+        if (sended && signUpStatus.error) {
             showErrorToast(t("signUpForm.negativeMessage"))
         }
-    }, [error, message, sended, navigate, t]);
-    console.log(`error: ${error}, message: ${message}`)
+    }, [signUpStatus, sended, navigate, t]);
+
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>
             <h2 className='text-xl'>{t("signUpForm.heading")}</h2>
@@ -161,7 +161,7 @@ export default function SignUpForm() {
                 {showCookiesSettings && <SignUpCookiesSettings clickAction={setCookiesConsent} />}
                 <SubmitBtn
                     className='auth-submit-btn'
-                    disabled={isLoading}
+                    disabled={signUpStatus.isLoading}
                 >
                     {t("signUpForm.submitBtn")}
                 </SubmitBtn>

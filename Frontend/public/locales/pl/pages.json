@@ -1,7 +1,11 @@
 {
     "userProfile": {
         "avatarLabel": "Wybierz swój avatar:",
-        "transactionsTitle": "Twoje transakcje:"
+        "transactionsTitle": "Twoje transakcje:",
+        "avatarInputError": "Wybierz plik!",
+        "failedError": "Nie udało się zapisać avatara :(",
+        "successMessage": "Avatar zapisany poprawnie.",
+        "btnSave": "Zapisz avatar"
     },
     "houseInfo": {
         "transactionsLabel": "Transakcje w poprzednim dniu:",
@@ -23,6 +27,11 @@
     "userDashboard": {
         "heading": "Aby korzystać ze strony, dodaj swoje gospodarstwo domowe.",
         "inputLabel": "Podaj nazwę swojego gospodarstwa:",
-        "infoParagraph": "Jeżeli gospodarstwo istnieje, zostaniesz do niego przypisany."
+        "infoParagraph": "Jeżeli gospodarstwo istnieje, zostaniesz do niego przypisany.",
+        "emptyInputError": "Wpisz nazwę gospodarstwa!",
+        "addBtnLabel": "Dodaj",
+        "addedCorrectlyMessage" : "Gospodarstwo dodane",
+        "assignedCorrectlyMessage" : "Użytkownik poprawnie przypisany do gospodarstwa.",
+        "failedError": "Nie udało się dodać nowego gospodarstwa domowego."
     }
 }

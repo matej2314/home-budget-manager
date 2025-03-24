@@ -18,7 +18,7 @@ Modal.setAppElement('#root');
 
 export default function HomePageMenu() {
     const { isMobile, isTablet } = useIsMobile();
-    const { user, isAuthenticated, isLoading, logout } = useContext(AuthContext);
+    const { user, isAuthenticated, loginStatus, logout } = useContext(AuthContext);
     const { t } = useTranslation("homePage");
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ export default function HomePageMenu() {
         }
     };
 
-    if (isLoading) {
+    if (loginStatus.isLoading) {
         return <LoadingModal isOpen={isLoading} />
     }
 

@@ -41,7 +41,7 @@ export default function UserProfilePage() {
         e.preventDefault();
 
         if (avatarFile.current.files.length == 0) {
-            showErrorToast('Wybierz plik!');
+            showErrorToast(t("userProfile.avatarInputError"));
             return;
         }
 
@@ -60,15 +60,15 @@ export default function UserProfilePage() {
             const avatarResponse = await addAvatar.json();
 
             if (avatarResponse.status === 'success') {
-                showInfoToast(avatarResponse.message);
+                showInfoToast(t("userProfile.successMessage"));
                 setTimeout(() => {
                     window.location.reload();
                 }, 600);
             } else if (avatarResponse.status === 'error') {
-                showErrorToast(avatarResponse.message);
+                showErrorToast(t("userProfile.failedError"));
             }
         } catch (error) {
-            showErrorToast(`Nie udało się zapisać avatara :(`);
+            showErrorToast(t("userProfile.failedError"));
         } finally {
             setSended(true);
         }
@@ -105,7 +105,7 @@ export default function UserProfilePage() {
                                 disabled={sended}
                                 className='w-fit h-fit border-2 border-slate-400 rounded-md p-3 hover:bg-slate-400 hover:text-slate-50'
                             >
-                                Save
+                                {t("userProfile.btnSave")}
                             </button>
                         </form>
                     </>

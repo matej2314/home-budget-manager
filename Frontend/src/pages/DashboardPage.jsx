@@ -4,14 +4,16 @@ import { AuthContext } from "../store/authContext";
 import { useSocket } from "../store/socketContext";
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import DashBoardMenu from "../components/dashboard/dashboardComponents/DashBoardMenu";
+import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
 import { showMessageToast } from '../configs/toastify'
 
 export default function DashboardPage() {
     useDocumentTitle('Dashboard');
     const navigate = useNavigate();
-    const { user, isLoading, isAuthenticated } = useContext(AuthContext);
+    const { loginStatus, isAuthenticated, user } = useContext(AuthContext);
     const { connected, messages } = useSocket();
+    const { t } = useTranslation("common");
 
 
     const liveMessages = connected && messages?.newMessages;
@@ -20,16 +22,16 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (connected && liveMessages?.length > 0) {
-            showMessageToast("Otrzymałeś nową wiadomość!");
+            showMessageToast(t("notifications.newMessageNotice"));
         };
 
-        if (!isLoading && isAuthenticated && isUser) {
+        if (!loginStatus.isLoading && isAuthenticated && isUser) {
             navigate("/userDashboard");
         }
 
-    }, [liveMessages, connected, isLoading, isAuthenticated, isUser, navigate]);
+    }, [liveMessages, connected, loginStatus, isAuthenticated, isUser, navigate]);
 
-    if (isLoading || !isAuthenticated || !user) return null;
+    if (loginStatus.isLoading || !isAuthenticated || !user) return null;
 
     return (
         isMateOrHost ? (

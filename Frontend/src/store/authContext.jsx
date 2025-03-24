@@ -7,8 +7,9 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState(null);
+    const [loginStatus, setLoginStatus] = useState({ message: null, error: null, isLoading: false });
+    const [signUpStatus, setSignUpStatus] = useState({ message: null, error: null, isLoading: false });
+    const [sessionStatus, setSessionStatus] = useState({ error: null, isLoading: false });
     const [user, setUser] = useState({
         id: '',
         userName: '',
@@ -16,7 +17,6 @@ export const AuthProvider = ({ children }) => {
         avatar: '',
         cookiesConsent: false
     });
-    const [error, setError] = useState(null);
 
     const updateUser = (updates) => {
         setUser((prevUser) => ({
@@ -25,31 +25,29 @@ export const AuthProvider = ({ children }) => {
         }));
     };
 
+    const emptyUser = { id: '', userName: '', role: '', avatar: '', cookiesConsent: false };
+
     const register = async (data) => {
-        setError(null);
-        setIsLoading(true);
-        setMessage(null);
+        setSignUpStatus({ error: null, isLoading: true, message: null });
         try {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/signup`);
 
             if (response.status === 'error') {
-                setError(response.message);
+                setSignUpStatus((prev) => ({ ...prev, error: response.message }));
             } else if (response.status === 'success') {
-                setMessage(response.message);
+                setSignUpStatus((prev) => ({ ...prev, message: response.message, error: null }));
             }
 
         } catch (error) {
-            setError(error.message);
+            setSignUpStatus((prev) => ({ ...prev, error: error.message }));
         } finally {
-            setIsLoading(false);
+            setSignUpStatus((prev) => ({ ...prev, isLoading: false }))
         };
     };
 
     const login = async (data) => {
-        setError(null);
-        setIsAuthenticated(false);
-        setIsLoading(true);
-        setMessage(null);
+        setLoginStatus({ error: null, isLoading: true, message: null });
+
         try {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/login`);
 
@@ -62,22 +60,21 @@ export const AuthProvider = ({ children }) => {
                     cookiesConsent: response.cookies,
                 });
                 setIsAuthenticated(true);
-                setMessage(response.message);
+                setLoginStatus((prev) => ({ ...prev, message: response.message, error: null }));
             } else if (response.status === 'error') {
-                setError(response.message);
+                setLoginStatus((prev) => ({ ...prev, error: response.message }));
             }
         } catch (error) {
             setIsAuthenticated(false);
-            setError(error);
+            setLoginStatus((prev) => ({ ...prev, error: error.message }));
         } finally {
-            setIsLoading(false);
+            setLoginStatus((prev) => ({ ...prev, isLoading: false }));
         };
     };
 
     const logout = async () => {
-        setError(() => null);
-        setIsLoading(true);
-        setMessage(() => null);
+        setLoginStatus({ error: null, isLoading: true, message: null });
+
         try {
             const response = await sendRequest('POST', {}, `${serverUrl}/auth/logout`);
 
@@ -90,19 +87,18 @@ export const AuthProvider = ({ children }) => {
                     avatar: '',
                     cookiesConsent: false,
                 });
-                setMessage(() => response.message);
+                setLoginStatus((prev) => ({ ...prev, message: response.message }));
             };
 
         } catch (error) {
-            setError(error.message);
+            setLoginStatus((prev) => ({ ...prev, error: error.message }));
         } finally {
-            setIsLoading(false);
+            setLoginStatus((prev) => ({ ...prev, isLoading: false }));
         };
     };
 
     const checkSession = async () => {
-        setError(null);
-        setIsLoading(true);
+        setSessionStatus({ error: null, isLoading: true });
         try {
             const response = await fetchData(`${serverUrl}/auth/verify`);
 
@@ -114,6 +110,7 @@ export const AuthProvider = ({ children }) => {
                     avatar: response.avatar,
                 });
                 setIsAuthenticated(true);
+                setSessionStatus((prev) => ({ ...prev, error: null, isLoading: false }));
             } else {
                 setIsAuthenticated(false);
                 setUser({
@@ -125,9 +122,9 @@ export const AuthProvider = ({ children }) => {
                 });
             }
         } catch (error) {
-            setError(error.message);
+            setSessionStatus((prev) => ({ ...prev, error: error.message }));
         } finally {
-            setIsLoading(false);
+            setSessionStatus((prev) => ({ ...prev, isLoading: false }));
         }
     };
 
@@ -137,7 +134,9 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, isLoading, error, message, register, login, logout }}>
+        <AuthContext.Provider value={{
+            user, isAuthenticated, loginStatus, signUpStatus, sessionStatus, register, login, logout
+        }}>
             {children}
         </AuthContext.Provider>
     )

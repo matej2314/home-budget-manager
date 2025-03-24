@@ -9,7 +9,7 @@ export const SocketContext = createContext();
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
-    const { isAuthenticated, user } = useContext(AuthContext);
+    const { isAuthenticated } = useContext(AuthContext);
     const [socket, setSocket] = useState(null);
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState(null);

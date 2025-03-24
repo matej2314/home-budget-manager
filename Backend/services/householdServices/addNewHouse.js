@@ -27,7 +27,7 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
             await connection.commit();
             return {
                 status: 'success',
-                message: `User addedd to household ${houseName}.`,
+                message: 'userDashboard.assignedCorrectlyMessage',
                 newRole: 'inmate',
             };
 
@@ -46,7 +46,7 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
             logger.info(`New household ${houseName} created.`);
             return {
                 status: 'success',
-                message: `Household ${houseName} created.`,
+                message: 'userDashboard.addedCorrectlyMessage',
                 newRole: 'host',
             };
         }

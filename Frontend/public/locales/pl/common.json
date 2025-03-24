@@ -54,6 +54,7 @@
         "deletedAction": "Usunięto transakcję!",
         "addedHouseMate": "Dodano domownika :)",
         "deletedHouseMate": "Usunięto domownika :(",
-        "newMonthlyBalance": "Nowe podsumowanie miesięczne dostępne."
+        "newMonthlyBalance": "Nowe podsumowanie miesięczne dostępne.",
+        "newMessageNotice": "Otrzymałeś nową wiadomość!"
     }
 }

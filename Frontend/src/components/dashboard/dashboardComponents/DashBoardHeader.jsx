@@ -12,7 +12,7 @@ import { serverUrl } from "../../../url";
 import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
 
 export default function DashboardHeader() {
-    const { user, error, logout, isAuthenticated } = useContext(AuthContext);
+    const { user, loginStatus, logout, isAuthenticated } = useContext(AuthContext);
     const { connected, messages, error: SocketError } = useSocket();
     const [socketMessages, setSocketMessages] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,7 +51,7 @@ export default function DashboardHeader() {
                 <div className="w-14 h-14 bg-white rounded-full flex justify-center items-center">
                     <img src={user && `${serverUrl}/avatars/avatar`} className="rounded-full w-full h-full" />
                 </div>
-                {isAuthenticated && !error && user ? <p>{user.userName}</p> : <p>Guest</p>}
+                {isAuthenticated && !loginStatus.error && user ? <p>{user.userName}</p> : <p>Guest</p>}
                 <HeaderIconsContainer filteredDataMessages={filteredDataMessages} socketMessages={socketMessages} />
             </div>
             <div id="user-opts" className="w-fit h-full flex justify-end items-center gap-4">

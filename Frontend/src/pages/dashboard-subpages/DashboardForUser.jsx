@@ -13,9 +13,8 @@ export default function DashBoardForUser() {
         e.preventDefault();
 
         if (houseNameRef.current.value === '') {
-            showErrorToast('Wpisz nazwę gospodarstwa!');
+            showErrorToast(t("userDashboard.emptyInputError"));
         };
-
 
         const houseData = { houseName: houseNameRef.current.value };
 
@@ -23,13 +22,13 @@ export default function DashBoardForUser() {
             setIsSended(false);
             const addHouse = await sendRequest('POST', houseData, `${serverUrl}/house/new`);
             if (addHouse.status === 'success') {
-                showInfoToast(addHouse.message);
+                showInfoToast(t(`${addHouse.message}`));
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000)
             }
         } catch (error) {
-            showErrorToast(addHouse.message);
+            showErrorToast("userDashboard.failedError");
         } finally {
             setIsSended(true);
         }
@@ -50,7 +49,7 @@ export default function DashBoardForUser() {
                         disabled={sended}
                         className="w-fit h-fit flex justify-center mx-auto border-2 border-slate-400 p-3 mt-4 rounded-xl hover:bg-slate-400 hover:text-slate-100"
                     >
-                        Add
+                        {t("userDashboard.addBtnLabel")}
                     </button>
                 </form>
             </div>

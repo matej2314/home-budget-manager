@@ -51,6 +51,7 @@
       "deletedAction": "Deleted transaction!",
       "addedHouseMate": "Added new housemate :)",
       "deletedHouseMate": "Deleted housemate :(",
-      "newMonthlyBalance": "New monthly balance calculated."
+      "newMonthlyBalance": "New monthly balance calculated.",
+      "newMessageNotice": "You have received new message!"
    }
 }

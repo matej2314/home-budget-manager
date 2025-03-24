@@ -11,7 +11,7 @@ import { getSessionStorage, setSessionStorage } from "../utils/storageUtils";
 
 export default function HomePage() {
     useDocumentTitle('Home');
-    const { isAuthenticated, isLoading } = useContext(AuthContext);
+    const { isAuthenticated, loginStatus } = useContext(AuthContext);
     const { fetchHomePageData } = useHomePageStore();
     const isCookiesInfo = getSessionStorage('isCookiesInfo');
     const { t } = useTranslation("common");
@@ -30,8 +30,8 @@ export default function HomePage() {
 
     }, [isCookiesInfo, isAuthenticated]);
 
-    if (isLoading) {
-        return <LoadingModal isOpen={isLoading} />
+    if (loginStatus.isLoading) {
+        return <LoadingModal isOpen={loginStatus.isLoading} />
     }
 
     return (

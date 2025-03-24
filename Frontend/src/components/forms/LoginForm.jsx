@@ -9,7 +9,7 @@ import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from './internal/SubmitBtn';
 
 export default function LoginForm() {
-    const { login, isLoading, error, message, user, isAuthenticated } = useContext(AuthContext);
+    const { login, loginStatus } = useContext(AuthContext);
     const [sended, setSended] = useState(false);
     const { t } = useTranslation("forms");
     const email = useRef();
@@ -81,12 +81,12 @@ export default function LoginForm() {
                 </div>
                 <SubmitBtn
                     className="auth-submit-btn"
-                    disabled={isLoading}
+                    disabled={sended && loginStatus.isLoading}
                 >
-                    {isLoading ? t("loginForm.isLoadingBtn") : t("loginForm.submitBtn")}
+                    {sended && loginStatus.isLoading ? t("loginForm.isLoadingBtn") : t("loginForm.submitBtn")}
                 </SubmitBtn>
             </form>
-            {isLoading && <LoadingModal isOpen={isLoading} />}
+            {loginStatus.isLoading && <LoadingModal isOpen={loginStatus.isLoading} />}
         </div>
     )
 
