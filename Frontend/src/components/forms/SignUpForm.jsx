@@ -5,11 +5,11 @@ import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import SignUpCookiesSettings from '../SignUpCookiesSettings';
-import { isValidUsername, isValidPassword, isNoSQL, isNoXSS, isValidEmail } from '../../utils/validation';
+import { isValidUsername, isValidPassword, isValidEmail } from '../../utils/validation';
 import SubmitBtn from './internal/SubmitBtn';
 
 export default function SignUpForm() {
-    const { register, isLoading, error, message, user } = useContext(AuthContext);
+    const { register, isLoading, message, error } = useContext(AuthContext);
     const [sended, setSended] = useState(false);
     const [showCookiesSettings, setShowCookiesSettings] = useState(false);
     const [cookiesConsent, setCookiesConsent] = useState(null);
@@ -64,20 +64,19 @@ export default function SignUpForm() {
 
     useEffect(() => {
         if (sended && message) {
-            showInfoToast(message);
             const timer = setTimeout(() => {
                 navigate('/');
-            }, 600);
-
+            }, 700);
+            showInfoToast(t("signUpForm.positiveMessage"));
             return () => clearTimeout(timer);
         }
 
 
         if (sended && error) {
-            showErrorToast(error)
+            showErrorToast(t("signUpForm.negativeMessage"))
         }
-    }, [error, message, sended, navigate]);
-
+    }, [error, message, sended, navigate, t]);
+    console.log(`error: ${error}, message: ${message}`)
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>
             <h2 className='text-xl'>{t("signUpForm.heading")}</h2>

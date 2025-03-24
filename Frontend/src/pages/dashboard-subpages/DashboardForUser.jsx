@@ -44,7 +44,7 @@ export default function DashBoardForUser() {
                     className="w-1/3 h-fit flex flex-col justify-start items-center mt-5 border-2 border-slate-500 rounded-md py-2">
                     <label htmlFor="houseName" className="text-lg">{t("userDashboard.inputLabel")}</label>
                     <p className="text-sm mb-5 text-red-500">{t("userDashboard.infoParagraph")}</p>
-                    <input type="text" name="houseName" id="houseName" className="bg-slate-200" ref={houseNameRef} />
+                    <input type="text" name="houseName" id="houseName" className="bg-slate-200 text-slate-700 pl-2 rounded-md" ref={houseNameRef} />
                     <button
                         type="submit"
                         disabled={sended}

@@ -20,7 +20,9 @@
         "repPassLabel": "Powtórz hasło:",
         "repPassPlaceholder": "powtórz hasło",
         "cookiesSettingsBtn": "Ustawienia Cookies",
-        "submitBtn": "Rejestracja"
+        "submitBtn": "Rejestracja",
+        "positiveMessage": "Użytkownik zarejestrowany. Możesz się zalogować.",
+        "negativeMessage": "Błąd podczas rejestracji."
     },
     "contactForm": {
         "heading": "Kontakt",

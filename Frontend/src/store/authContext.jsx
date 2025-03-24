@@ -32,9 +32,11 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await sendRequest('POST', data, `${serverUrl}/auth/signup`);
 
-            if (response.status === 'success') {
+            if (response.status === 'error') {
+                setError(response.message);
+            } else if (response.status === 'success') {
                 setMessage(response.message);
-            };
+            }
 
         } catch (error) {
             setError(error.message);
@@ -61,10 +63,12 @@ export const AuthProvider = ({ children }) => {
                 });
                 setIsAuthenticated(true);
                 setMessage(response.message);
-            };
+            } else if (response.status === 'error') {
+                setError(response.message);
+            }
         } catch (error) {
             setIsAuthenticated(false);
-            setError(error.message);
+            setError(error);
         } finally {
             setIsLoading(false);
         };

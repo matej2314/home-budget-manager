@@ -20,7 +20,9 @@
         "repPassLabel": "Repeat your password:",
         "repPassPlaceholder": "repeat password",
         "cookiesSettingsBtn": "Cookies settings",
-        "submitBtn": "Register"
+        "submitBtn": "Register",
+        "positiveMessage": "User registered correctly. You can log in.",
+        "negativeMessage": "Failed to sign up."
     },
     "contactForm": {
         "heading": "Contact us:",

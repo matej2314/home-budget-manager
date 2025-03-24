@@ -10,7 +10,7 @@ function isValidEmail(email) {
 };
 
 function isValidUsername(username) {
-	const regex = /^[a-zA-Z0-9]{5,10}$/;
+	const regex = /^[a-zA-Z0-9]{5,20}$/;
 	return regex.test(username);
 };
 

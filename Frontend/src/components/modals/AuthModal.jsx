@@ -26,9 +26,13 @@ export default function AuthModal({ isOpen, onRequestClose }) {
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='bg-white rounded-lg p-6 w-9/12 md:w-1/3 mx-auto mt-4 shadow-lg border-4 border-slate-400'
+            className='bg-white rounded-lg p-6 w-11/12 md:w-5/12 mx-auto mt-4 shadow-lg border-4 border-slate-400'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
         >
+            <div className='w-full h-fit flex flex-col md:flex-row justify-center gap-2 mb-4'>
+                <p className='w-full h-fit flex justify-center font-semibold text-md md:text-lg'>TEST LOGIN DATA: </p>
+                <span className='w-full h-fit flex justify-center'>testuser@email.pl / Testuser123!!</span>
+            </div>
             {mode ? (
                 <>
                     <button onClick={onRequestClose} className='absolute top-2 right-2 text-gray-400 hover:text-gray-600'>
