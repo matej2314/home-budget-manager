@@ -24,7 +24,7 @@ services:
     networks:
       - main_network
     ports:
-      - "5052:80"
+      - "127.0.0.1:5052:80"
     environment:
       - FRONTEND_ORIGIN=https://budgetapp.msliwowski.net
     
