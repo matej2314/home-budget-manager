@@ -7,7 +7,7 @@ services:
     networks:
       - main_network
     ports:
-      - "5053:5053"
+      - "127.0.0.1:5053:5053"
     volumes:
       - /root/main/budgetApp/backend/logs:/app/logs
       - /root/main/budgetApp/backend/.env:/app/.env
