@@ -11,8 +11,6 @@ services:
     volumes:
       - /root/main/budgetApp/backend/logs:/app/logs
       - /root/main/budgetApp/backend/.env:/app/.env
-      # - /root/main/budgetApp/backend/google:/app/google
-      # - /root/main/budgetApp/backend/emaildata.js:/app/emaildata.js
     environment:
       - DB_HOST=main_db
       - BACKEND_ORIGIN=https://budgetapi.msliwowski.net
