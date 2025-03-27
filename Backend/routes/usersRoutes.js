@@ -339,7 +339,9 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
 
 router.post('/invite', verifyJWT, verifyRole('host'), usersController.addUserToHouse);
 
-// router.post('/invite/perm');
+// router.post('/invite/perm', verifyJWT, async (req, res) => {
+
+// });
 
 router.post('/changemail', verifyJWT, usersController.changeEmail);
 
