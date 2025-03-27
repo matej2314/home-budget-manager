@@ -27,7 +27,7 @@
         "deleteBtnTitle": "Delete housemate",
         "noHousematesError": "No housemates",
         "selfSendError": "You can't send a message to yourself...",
-        "inmate": "housemate",
+        "mate": "housemate",
         "host": "host"
     },
     "messagesList": {

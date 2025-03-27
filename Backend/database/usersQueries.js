@@ -1,8 +1,8 @@
 module.exports = {
-    delUsersQuery : 'DELETE FROM users WHERE id = ?',
+    delUsersQuery: 'DELETE FROM users WHERE id = ?',
     deleteHouse: 'DELETE FROM households WHERE houseId = ?',
-    checkQuery : 'SELECT inmate FROM users WHERE id = ?',
-    selectUserByName: 'SELECT * FROM users WHERE name=?',
+    checkQuery: 'SELECT inmate FROM users WHERE id = ?',
+    selectUserByName: 'SELECT * FROM householdUsers WHERE userName=?',
     updatehouseIdHu: 'UPDATE householdUsers SET houseId = ? WHERE userId = ?',
     mateQuery: 'UPDATE users SET inmate = ?, role = ? WHERE id = ?',
     hostQuery: 'UPDATE users SET host = ?, role = ? WHERE id = ?',

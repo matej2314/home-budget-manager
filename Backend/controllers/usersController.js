@@ -9,6 +9,8 @@ const statusCode = StatusCodes;
 
 exports.addUserToHouse = async (req, res) => {
     const userId = req.userId;
+    const role = req.role;
+    const invitingUserName = req.userName;
     const { userName } = req.body;
 
     if (!userName) {
@@ -19,7 +21,7 @@ exports.addUserToHouse = async (req, res) => {
     };
 
     try {
-        const response = await addUserToHouse(userId, userName);
+        const response = await addUserToHouse(userId, userName, invitingUserName, role);
 
         switch (response.status) {
             case 'badreq':

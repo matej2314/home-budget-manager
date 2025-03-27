@@ -28,7 +28,7 @@
         "noHousematesError": "Brak domowników",
         "selfSendError": "Nie możesz wysłać wiadomości do siebie...",
         "host": "gospodarz",
-        "inmate": "domownik"
+        "mate": "domownik"
     },
     "messagesList": {
         "readed": "Przeczytana",
