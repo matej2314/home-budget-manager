@@ -9,7 +9,7 @@ export const addUserByMate = async (connection, invitingUserId, invitedUser, hou
 
     try {
         const invitationId = uuidv4();
-        await connection.query('INSERT INTO invitations (id, invitingUserId, invitedUserId, houseId, hostId)', [invitationId, invitingUserId, invitedUserId, houseId, hostId]);
+        await connection.query('INSERT INTO invitations (id, invitingUserId, invitedUserId, houseId, hostId) VALUES (?,?,?,?,?)', [invitationId, invitingUserId, invitedUserId, houseId, hostId]);
 
         const extraData = {
             invitingUser: invitingUserName,
