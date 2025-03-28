@@ -12,6 +12,7 @@ const routes = [
     { path: '/notice', file: 'noticeRoutes.js' },
     { path: '/gallery', file: './galleryRoutes.js' },
     { path: '/avatars', file: 'avatarsRoutes.js' },
+    { path: '/invitation', file: 'invitationRoutes.js' },
     { path: '/cookiestour', file: 'cookiesTourRoutes.js' },
     { path: '/reviews', file: 'reviewsRoutes.js' },
 ];

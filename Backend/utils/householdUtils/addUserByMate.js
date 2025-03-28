@@ -1,7 +1,8 @@
 const { handleNotification } = require('../../utils/handleNotification');
+const { broadcastMessage } = require('../../configs/websocketConfig');
 const { v4: uuidv4 } = require('uuid');
 
-export const addUserByMate = async (connection, invitingUserId, invitedUser, houseId, userName, invitingUserName) => {
+exports.addUserByMate = async (connection, invitingUserId, invitedUser, houseId, userName, invitingUserName) => {
 
     const invitedUserId = invitedUser.id;
     const getHost = await connection.query('SELECT userId FROM householdUsers WHERE houseid=? AND role=?', [houseId, 'host']);
@@ -9,20 +10,15 @@ export const addUserByMate = async (connection, invitingUserId, invitedUser, hou
 
     try {
         const invitationId = uuidv4();
-        await connection.query('INSERT INTO invitations (id, invitingUserId, invitedUserId, houseId, hostId) VALUES (?,?,?,?,?)', [invitationId, invitingUserId, invitedUserId, houseId, hostId]);
+        await connection.query('INSERT INTO invitations (id, status, invitingUserId, invitedUserId, houseId, hostId) VALUES (?,?,?,?,?,?)', [invitationId, 'new/pending', invitingUserId, invitedUserId, houseId, hostId]);
 
         const extraData = {
+            invitationId,
             invitingUser: invitingUserName,
             invitedUser: userName,
         };
 
-        await handleNotification({
-            id: hostId,
-            category: 'invitation',
-            houseId,
-            message: 'New invitation to check!',
-            extraData
-        })
+        await broadcastMessage(hostId, { type: 'invitation', data: extraData });
 
     } catch (error) {
 

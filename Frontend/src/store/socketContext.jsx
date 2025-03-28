@@ -22,6 +22,7 @@ export const SocketProvider = ({ children }) => {
             monthlyBalance: [],
         },
         initBudgets: [],
+        invitations: [],
     });
 
 
@@ -76,6 +77,13 @@ export const SocketProvider = ({ children }) => {
                 setMessages((prevMessages) => ({
                     ...prevMessages,
                     newMessages: [...prevMessages.newMessages, data],
+                }));
+            });
+
+            newSocket.on("invitation", (data) => {
+                setMessages((prevMessages) => ({
+                    ...prevMessages,
+                    invitations: [...prevMessages.invitations, data],
                 }));
             });
 

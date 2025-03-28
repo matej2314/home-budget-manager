@@ -5,7 +5,7 @@ const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
 const { handleNotification } = require('../../utils/handleNotification');
 const { saveNewHousemate } = require('./saveNewHousemate');
 
-export const addUserByHost = async (connection, userName, houseId, invitedUserData) => {
+exports.addUserByHost = async (connection, userName, houseId, invitedUserData) => {
 
     try {
         await connection.beginTransaction();

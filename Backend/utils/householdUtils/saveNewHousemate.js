@@ -1,6 +1,6 @@
 const logger = require('../../configs/logger');
 
-export const saveNewHousemate = async (usersQueries, invitedUserId, hostHouseId, connection) => {
+exports.saveNewHousemate = async (usersQueries, invitedUserId, hostHouseId, connection) => {
 
     try {
         const [addMate] = await connection.query(usersQueries.mateQuery, [1, 'mate', invitedUserId]);
