@@ -8,11 +8,11 @@ exports.saveNewHousemate = async (usersQueries, invitedUserId, hostHouseId, conn
 
             const [updateHouseId] = await connection.query(usersQueries.updatehouseIdHu, [hostHouseId, invitedUserId]);
 
-            if (updateHouseId.affectedRows == 1) {
-                await connection.query(usersQueries.updateroleHu, ['mate', invitedUserId]);
-            }
+            await connection.query(usersQueries.updateroleHu, ['mate', invitedUserId]);
         };
+        return { status: 'success', invitedUserId }
     } catch (error) {
-        logger.error(`error in saveNewHousemate: ${error}`);
+        logger.error(`error in saveNewHousemate: ${error.message || error}`);
+        return { status: 'error', error };
     }
-}
+};

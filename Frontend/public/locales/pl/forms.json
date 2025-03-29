@@ -58,7 +58,8 @@
         "inviteSuccessMessage": "Nowy domownik dodany poprawnie.",
         "userNotFoundError": "Nie znaleziono użytkownika.",
         "inviteUserInternalError": "Błąd przetwarzania żądania.",
-        "inmateOrHostError": "Użytkownik jest już gospodarzem lub domownikiem."
+        "inmateOrHostError": "Użytkownik jest już gospodarzem lub domownikiem.",
+        "correctlyAddedByMate": "Zaproszenie wysłane. Oczekuje na zatwierdzenie przez gospodarza."
     },
     "declareBudget": {
         "inputError": "Podaj nowy budżet miesięczny!",

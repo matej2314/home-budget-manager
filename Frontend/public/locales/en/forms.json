@@ -58,7 +58,8 @@
         "inviteSuccessMessage": "User correctly added to household.",
         "userNotFoundError": "User not found.",
         "inviteUserInternalError": "Internal server error.",
-        "inmateOrHostError": "User already is housemate or host."
+        "inmateOrHostError": "User already is housemate or host.",
+        "correctlyAddedByMate": "Invitation sent to host for approval."
     },
     "declareBudget" : {
         "inputError": "Enter new monthly budget!",

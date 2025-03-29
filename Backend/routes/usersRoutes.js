@@ -337,7 +337,7 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *                   example: 'Błąd przetwarzania żądania.'
  */
 
-router.post('/invite', verifyJWT, verifyRole('host'), usersController.addUserToHouse);
+router.post('/invite', verifyJWT, verifyRole('mates'), usersController.addUserToHouse);
 
 router.post('/changemail', verifyJWT, usersController.changeEmail);
 

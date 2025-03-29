@@ -35,12 +35,12 @@ export default function AddUserToHouseForm({ onClose }) {
 
             handleApiResponse(inviteUser, {
                 onSuccess: () => {
-                    showInfoToast(t(inviteUser.message, { defaltValue: "addUserToHouse.inviteSuccessMessage" }));
+                    showInfoToast(t(inviteUser.message));
                     invitedUser.current.value = '';
                     setTimeout(onClose, 500);
                 },
                 onError: () => {
-                    showErrorToast(t(inviteUser.message, { defaultValue: "addUserToHouse.inviteUserInternalError" }));
+                    showErrorToast(t(inviteUser.message));
                 }
             })
         } catch (error) {
