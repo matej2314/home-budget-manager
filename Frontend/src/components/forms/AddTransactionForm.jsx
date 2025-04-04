@@ -19,7 +19,8 @@ export default function AddTransactionForm({ onClose }) {
     const [imageMode, setImageMode] = useState(false);
     const [loadingImage, setLoadingImage] = useState(false);
     const [recognizedValue, setRecognizedValue] = useState();
-    const { t } = useTranslation("forms");
+    const { t: tForms } = useTranslation("forms");
+    const { t: tCommon } = useTranslation("common");
     const typeRef = useRef();
     const numberValueRef = useRef();
     const fileValueRef = useRef();
@@ -47,7 +48,7 @@ export default function AddTransactionForm({ onClose }) {
                     setRecognizedValue(recognizeData.value.replace(',', '.'));
                 },
                 onError: () => {
-                    showErrorToast(t(recognizeData.message, { defaultValue: t("addTransaction.recognizeInternalError") }))
+                    showErrorToast(tForms(recognizeData.message, { defaultValue: t("addTransaction.recognizeInternalError") }))
                 }
             })
         } catch (error) {
@@ -68,7 +69,7 @@ export default function AddTransactionForm({ onClose }) {
         let rawValue = numberValueRef.current.value.replace(',', '.');
 
         if (!isValidNumber(rawValue)) {
-            showErrorToast(t("addTransaction.incorrectNumberInputValue"));
+            showErrorToast(tForms("addTransaction.incorrectNumberInputValue"));
             return;
         };
 
@@ -84,12 +85,12 @@ export default function AddTransactionForm({ onClose }) {
 
         handleApiResponse(saveAction, {
             onSuccess: async () => {
-                showInfoToast(t(saveAction.message, { defaultValue: "addTransaction.addTransactionCorrect" }));
+                showInfoToast(tForms(saveAction.message, { defaultValue: "addTransaction.addTransactionCorrect" }));
                 await fetchTransactions();
                 setTimeout(onClose, 500);
             },
             onError: () => {
-                showErrorToast(t(saveAction.message, { defaultValue: "addTransaction.addTransactionError" }));
+                showErrorToast(tForms(saveAction.message, { defaultValue: "addTransaction.addTransactionError" }));
             }
         });
     };
@@ -97,18 +98,18 @@ export default function AddTransactionForm({ onClose }) {
     return (
         <div className='w-full h-fit flex flex-col items-center'>
             <form onSubmit={handleSaveAction} className='w-full h-fit flex flex-col items-center gap-5 text-xs indirect:text-base'>
-                <label htmlFor="actionType" className='text-lg font-semibold'>{t("addTransaction.typeActionLabel")}</label>
+                <label htmlFor="actionType" className='text-lg font-semibold'>{tForms("addTransaction.typeActionLabel")}</label>
                 <select
                     name="actionType"
                     id="actionType"
                     ref={typeRef}
                     className='border-2 border-slate-300 rounded-md'
                     required>
-                    <option value="income">{t("addTransaction.incomeType")}</option>
-                    <option value="expense">{t("addTransaction.expenseType")}</option>
+                    <option value="income">{tForms("addTransaction.incomeType")}</option>
+                    <option value="expense">{tForms("addTransaction.expenseType")}</option>
                 </select>
-                <label htmlFor="actionValue" className='text-lg font-semibold'>{imageMode ? t("addTransaction.actionValueImageLabel") :
-                    t("addTransaction.actionValueNumberLabel")}</label>
+                <label htmlFor="actionValue" className='text-lg font-semibold'>{imageMode ? tForms("addTransaction.actionValueImageLabel") :
+                    tForms("addTransaction.actionValueNumberLabel")}</label>
                 <div className='w-full h-fit flex justify-center items-center gap-3'>
                     {!imageMode ?
                         <input
@@ -118,7 +119,7 @@ export default function AddTransactionForm({ onClose }) {
                             ref={numberValueRef}
                             defaultValue={recognizedValue ? recognizedValue : ''}
                             className='input-base text-black'
-                            placeholder={t("addTransaction.textInputPlaceholder")}
+                            placeholder={tForms("addTransaction.textInputPlaceholder")}
                             required /> :
                         <input
                             type="file"
@@ -140,7 +141,7 @@ export default function AddTransactionForm({ onClose }) {
                 <select name="actionCat" id="actionCat" ref={catIdRef} className='border-2 border-slate-300 rounded-md'>
                     {!isLoading && !error ? (
                         actionCategories.map((cat) => (
-                            <option key={cat.id} data-id={cat.id} value={cat.name}>{cat.name}</option>
+                            <option key={cat.id} data-id={cat.id} value={cat.name}>{tCommon(`actionCats.${cat.name}`)}</option>
                         ))
                     ) : (
                         <option value="error">error</option>
@@ -150,7 +151,7 @@ export default function AddTransactionForm({ onClose }) {
                     className='form-submit-modal-btn'
                     disabled={isLoading}
                 >
-                    {t("addTransaction.submitTransaction")}
+                    {tForms("addTransaction.submitTransaction")}
                 </SubmitBtn>
             </form>
             {loadingImage && <LoadingModal isOpen={loadingImage} />}

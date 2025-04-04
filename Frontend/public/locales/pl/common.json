@@ -56,5 +56,21 @@
         "deletedHouseMate": "Usunięto domownika :(",
         "newMonthlyBalance": "Nowe podsumowanie miesięczne dostępne.",
         "newMessageNotice": "Otrzymałeś nową wiadomość!"
+    },
+    "actionCats": {
+        "education": "edukacja",
+        "unforeseen expenses" :"nieprzewidziane wydatki",
+        "other expenses" : "inne wydatki",
+        "transport": "transport",
+        "freelancing": "freelancing",
+        "salary": "wynagrodzenie",
+        "salary (own business)": "wynagrodzenie -własna działalność",
+        "health": "zdrowie",
+        "other income": "inny przychód",
+        "pensions, annuities, benefits": "emerytury, renty, świadczenia",
+        "commissions and additional fees" : "prowizje i opłaty dodatkowe",
+        "bills and subscriptions": "rachunki i subskrypcje",
+        "grocery shopping": "zakupy spożywcze",
+        "eating out" : "jedzenie na mieście"
     }
 }

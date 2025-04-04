@@ -2,18 +2,41 @@ import Modal from 'react-modal';
 import { Icon } from '@iconify/react';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { serverUrl } from '../../url';
-
+import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import sendRequest from '../../utils/asyncUtils/sendRequest'
 
 export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => {
     const handleApiResponse = useApiResponseHandler();
 
-    const handleAcceptInvitation = async () => {
+    const handleAcceptInvitation = async (id, invitedUser) => {
+        const invitationData = { invitationId: id, invitedUserId: invitedUser };
 
+        try {
+            const acceptResult = await sendRequest('POST', invitationData, `${serverUrl}/invitation/accept`);
+
+            handleApiResponse(acceptResult, {
+                onSuccess: () => { showInfoToast('Invitation successfully accepted'), onRequestClose() },
+                onError: () => showErrorToast('Failed to accept invitation'),
+            });
+        } catch (error) {
+            showErrorToast('Failed to accept invitation');
+        }
     };
 
-    const handleDeclineInvitation = async () => {
-
-    }
+    const handleDeclineInvitation = async (id) => {
+        try {
+            const declineResult = await sendRequest('POST', { invitationId: id }, `${serverUrl}/invitation/decline`);
+            handleApiResponse(declineResult, {
+                onSuccess: () => {
+                    showInfoToast('Invitation successfully rejected.'),
+                        onRequestClose();
+                },
+                onError: () => showErrorToast('Failed to reject invitation.')
+            })
+        } catch (error) {
+            showErrorToast('Failed to reject invitation');
+        };
+    };
 
     return (
         <Modal
@@ -30,8 +53,18 @@ export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => 
                         <div>
                             <p>User {invitation.invitingUser} invite {invitation.invitedUser}</p>
                             <div>
-                                <button type="button">Accept</button>
-                                <button type="button">Decline</button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleAcceptInvitation(invitation.invitationId, invitation.invitedUser)}
+                                >
+                                    Accept
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleDeclineInvitation(invitation.invitationId)}
+                                >
+                                    Decline
+                                </button>
                             </div>
                         </div>
                     </li>

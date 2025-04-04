@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { AuthContext } from '../../store/authContext';
 import { DataContext } from '../../store/dataContext';
+import { useTranslation } from 'react-i18next';
 import Modal from 'react-modal';
 
 
@@ -8,6 +9,7 @@ export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) 
     const { data, isLoading, error } = useContext(DataContext);
     const actionCats = !isLoading && !error && data.actionsCatData || [];
     const { user } = useContext(AuthContext);
+    const { t } = useTranslation("common");
 
     return (
         <Modal
@@ -35,8 +37,7 @@ export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) 
                     {!isLoading && !error && data ? (
                         actionCats.map((cat) => (
                             <li key={cat.id} data-id={cat.id} className="w-6/12 h-fit flex justify-between items-center gap-3 mx-auto text-sm lg:text-base">
-                                <span className='w-full h-fit flex'>{cat.name}</span> -
-                                <span className='w-fit h-fit'>{cat.type}</span>
+                                <span className='w-full h-fit flex'>{t(`actionCats.${cat.name}`)}</span>
                                 {user && user.role === 'superadmin' && -<button type="button" className='w-fit h-fit p-2 bg-slate-400 rounded-xl hover:bg-slate-300 border-[1px] border-slate-600'>Delete</button>}
                             </li>
                         ))

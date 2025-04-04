@@ -7,6 +7,7 @@ const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
 exports.acceptInvitation = async (req, res) => {
     const { invitationId, invitedUserId } = req.body;
     const hostId = req.userId;
+    const acceptStatus = 'accepted';
 
     const connection = pool.getConnection();
 
@@ -30,7 +31,7 @@ exports.acceptInvitation = async (req, res) => {
         });
     };
 
-    const [confirmInvitation] = (await connection).query('UPDATE invitations SET status =? WHERE id=? AND hostId=?', ['accepted', invitationId, hostId]);
+    const [confirmInvitation] = (await connection).query('UPDATE invitations SET status =? WHERE id=? AND hostId=?', [acceptStatus, invitationId, hostId]);
 
     if (confirmInvitation.affectedRows == 0) {
         return res.status(500).json({
@@ -45,6 +46,71 @@ exports.acceptInvitation = async (req, res) => {
     });
 };
 
-exports.declineInvitation = (req, res) => {
+exports.rejectInvitation = async (req, res) => {
+    const { invitationId } = req.body;
+    const hostId = req.userId;
+    const status = 'rejected';
 
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.beginTransaction();
+        const [invitationData] = await connection.query('SELECT status, invitingUserId, invitedUserId, houseId, hostId, date WHERE id=?', [invitationId]);
+
+        if (invitationData.length == 0 || invitationData.status !== 'new') {
+            await connection.rollback();
+            return res.status(404).json({
+                status: 'error',
+                message: 'Invitation not found',
+            });
+        };
+
+        const [rejectResult] = await connection.query('UPDATE invitations SET status=? WHERE id=? AND hostId=?', [status, invitationId, hostId]);
+
+        if (rejectResult.affectedRows == 0) {
+            await connection.rollback();
+            return res.status(404).json({
+                status: 'error',
+                message: 'Invitation not found',
+            });
+        };
+
+        await connection.commit();
+        return res.status(200).json({
+            status: 'success',
+            message: 'Invitation successfully rejected.'
+        });
+    } catch (error) {
+        await connection.rollback();
+        logger.error(`error in rejectInvitation: ${error}`);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+        });
+    };
+};
+
+exports.getInvitationsCollection = async (req, res) => {
+    const connection = await pool.getConnection();
+
+    try {
+        const [invitations] = await connection.query('SELECT id, status, invitingUserId, invitedUserId, houseId, hostId, date from invitations');
+        if (invitations.length < 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Invitations not found.',
+            });
+        };
+
+        return res.status(200).json({
+            status: 'success',
+            invitations,
+        });
+    } catch (error) {
+        logger.error(`getInvitationsCollection error: ${error}`);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+        });
+    }
 };

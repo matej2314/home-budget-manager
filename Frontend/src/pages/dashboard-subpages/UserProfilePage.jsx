@@ -3,6 +3,7 @@ import { AuthContext } from '../../store/authContext';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { useTranslation } from 'react-i18next';
+import CustomAvatarInput from '../../components/dashboard/dashboard-internal-components/CustomAvatarInput';
 import { serverUrl } from '../../url';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 import FastActions from '../../components/dashboard/dashboard-internal-components/FastActionsSection';

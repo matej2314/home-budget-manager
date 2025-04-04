@@ -53,5 +53,21 @@
       "deletedHouseMate": "Deleted housemate :(",
       "newMonthlyBalance": "New monthly balance calculated.",
       "newMessageNotice": "You have received new message!"
+   },
+   "actionCats": {
+      "education": "education",
+      "unforeseen expenses": "unforeseen expenses",
+      "other expenses": "other expenses",
+      "transport" : "transport",
+      "freelancing": "freelancing",
+      "salary": "salary",
+      "salary (own business)": "salary (own business)",
+      "health": "health",
+      "other income": "other icome",
+      "pensions, annuities, benefits": "pensions, annuities, benefits",
+      "commissions and additional fees": "commisions and additional fees",
+      "bills and subscriptions": "bills and subscriptions",
+      "grocery shopping": "grocery shopping",
+      "eating out": "eating out"
    }
 }
