@@ -100,7 +100,8 @@ export default function UserProfilePage() {
                             className='avatar-form'
                         >
                             <label htmlFor="avatar" className='text-lg font-semibold'>{t("userProfile.avatarLabel")}</label>
-                            <input type="file" name="avatar" id="avatar" limit={1} accept='image/*' ref={avatarFile} />
+                            {/* <input type="file" name="avatar" id="avatar" limit={1} accept='image/*' ref={avatarFile} /> */}
+                            <CustomAvatarInput ref={avatarFile} />
                             <button
                                 type="submit"
                                 disabled={sended}

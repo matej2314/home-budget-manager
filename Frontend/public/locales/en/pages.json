@@ -5,7 +5,9 @@
         "avatarInputError": "Choose a file!",
         "failedError": "Failed to save avatar",
         "successMessage": "Avatar saved correctly.",
-        "btnSave": "Save avatar"
+        "btnSave": "Save avatar",
+        "selectAvatar": "Select avatar"
+
     },
     "houseInfo": {
         "transactionsLabel": "Previous day's transactions:",

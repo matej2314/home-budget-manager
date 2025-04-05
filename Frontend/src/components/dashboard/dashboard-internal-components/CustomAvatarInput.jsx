@@ -1,24 +1,34 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
-const CustomAvatarInput = forwardRef(({ onChange }, ref) => {
-    const handleFileClick = () => {
-        ref.current.click();
+const CustomAvatarInput = forwardRef((_, ref) => {
+    const [avatarName, setAvatarName] = useState('');
+    const { t } = useTranslation("pages");
+
+    const handleChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setAvatarName(file.name);
+        }
     };
 
     return (
-        <div className="relative">
+        <div className="relative w-full flex flex-col items-center">
+            {avatarName && (
+                <p className="mb-2 text-sm text-center text-gray-700 truncate max-w-xs">{avatarName}</p>
+            )}
             <button
-                onClick={handleFileClick}
-                className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none"
+                type="button"
+                className='w-5/12 h-fit border-2 border-slate-400 rounded-md p-3 hover:bg-slate-400 hover:text-slate-50'
+                onClick={() => ref?.current?.click()}
             >
-                Select avatar
+                {t ? t('userProfile.selectAvatar', 'Select avatar') : 'Select avatar'}
             </button>
             <input
                 type="file"
                 ref={ref}
-                onChange={onChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
+                onChange={handleChange}
+                className="hidden"
                 accept="image/*"
                 name="user-avatar"
             />

@@ -5,7 +5,8 @@
         "avatarInputError": "Wybierz plik!",
         "failedError": "Nie udało się zapisać avatara :(",
         "successMessage": "Avatar zapisany poprawnie.",
-        "btnSave": "Zapisz avatar"
+        "btnSave": "Zapisz avatar",
+        "selectAvatar" : "Wybierz avatar"
     },
     "houseInfo": {
         "transactionsLabel": "Transakcje w poprzednim dniu:",

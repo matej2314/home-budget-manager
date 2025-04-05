@@ -1,4 +1,5 @@
 import { useState, useRef } from "react"
+import { useNavigate } from 'react-router-dom';
 import { serverUrl } from "../../url";
 import sendRequest from "../../utils/asyncUtils/sendRequest";
 import { useTranslation } from "react-i18next";
@@ -8,6 +9,7 @@ export default function DashBoardForUser() {
     const [sended, setIsSended] = useState(false);
     const houseNameRef = useRef();
     const { t } = useTranslation("pages");
+    const navigate = useNavigate();
 
     const handleAddHouse = async (e) => {
         e.preventDefault();
@@ -24,8 +26,9 @@ export default function DashBoardForUser() {
             if (addHouse.status === 'success') {
                 showInfoToast(t(`${addHouse.message}`));
                 setTimeout(() => {
-                    window.location.reload();
+                    window.location.href = "/dashboard";
                 }, 1000)
+
             }
         } catch (error) {
             showErrorToast("userDashboard.failedError");
