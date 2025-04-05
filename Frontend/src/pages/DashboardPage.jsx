@@ -31,7 +31,7 @@ export default function DashboardPage() {
 
     const allInvitations = [
         ...(Array.isArray(dbInvitations) ? dbInvitations : []),
-        ...(Array.isArray(invitationsMessages) ? invitationsMessages : [])
+        ...(Array.isArray(invitationsMessages) ? invitationsMessages : []),
     ];
 
     useEffect(() => {
