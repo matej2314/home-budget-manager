@@ -44,35 +44,3 @@ exports.setCookieValue = async (req, res) => {
     };
 
 };
-
-exports.setTourValue = async (req, res) => {
-    const userId = req.userId;
-
-    try {
-        const setResult = await setCompleteTour(userId);
-
-        switch (setResult.status) {
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-                    status: 'error',
-                    message: setResult.mesage
-                });
-            case 'success':
-                return res.status(statusCode.OK).json({
-                    status: 'success',
-                    message: setResult.mesage,
-                });
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                });
-        };
-    } catch (error) {
-        logger.error(`setTourValue error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
-    };
-};
