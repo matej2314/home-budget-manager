@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { useTranslation } from 'react-i18next';
 
 const CustomAvatarInput = forwardRef(({ onChange }, ref) => {
     const handleFileClick = () => {
