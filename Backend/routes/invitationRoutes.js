@@ -6,7 +6,7 @@ const verifyRole = require('../middlewares/verifyRole');
 
 router.post('/accept', verifyRole('host'), invitationController.acceptInvitation);
 
-router.post('/decline', verifyRole('host'), invitationController.declineInvitation);
+router.post('/decline', verifyRole('host'), invitationController.rejectInvitation);
 
 router.get('/collection', verifyRole('host'), invitationController.getInvitationsCollection);
 
