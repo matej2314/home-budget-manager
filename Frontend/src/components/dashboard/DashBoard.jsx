@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { AuthContext } from '../../store/authContext';
 import { DataContext } from '../../store/dataContext';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import DashboardHeader from './dashboardComponents/DashBoardHeader';
@@ -15,7 +14,6 @@ import LossOrGainChart from './dashboardComponents/charts-dashboard-components/L
 
 export default function DashBoard() {
 
-    const { user } = useContext(AuthContext);
     const { data } = useContext(DataContext);
     const { actionsData } = useTransactionsStore();
 

@@ -4,6 +4,7 @@ import { DataContext } from "../../../store/dataContext";
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { SendMessageModal } from "../../modals/messagesModals/messagesModals";
+import { thLabels } from "../../../utils/matesListUtils";
 import { showInfoToast } from "../../../configs/toastify";
 import { getData } from "../../../utils/getData";
 
@@ -15,7 +16,6 @@ export default function MatesList({ mode }) {
     const [recipient, setRecipient] = useState(null);
 
     const houseMates = getData(isLoading, error, true, data.houseMates, []);
-    const thLabels = ['Name', 'Role', 'Actions'];
 
     const handleOpenModal = (recipient) => {
         setIsModalOpen(true);

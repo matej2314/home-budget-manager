@@ -13,6 +13,7 @@ import AddReviewModal from "../../modals/AddReviewModal";
 import { dashboardBtnsArray } from "../../../utils/arraysUtils/fastActionsArray";
 import { filterArray, mapArray } from "../../../utils/arraysUtils/arraysFunctions";
 import { showInfoToast } from "../../../configs/toastify";
+import { getClickHandler, getModalComponents } from "../../../utils/fastActionsUtils";
 
 export default function FastActions({ profilePage, action }) {
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
@@ -28,38 +29,15 @@ export default function FastActions({ profilePage, action }) {
         }
     };
 
-    const getClickHandler = (actionType) => {
-        switch (actionType) {
-            case 'mates':
-            case 'avatar':
-                return () => handleButtonClick(actionType);
-            case 'declare':
-                return () => {
-                    if (user.role !== 'host') {
-                        showInfoToast(tInternal("fastActions.noHostError"));
-                        return;
-                    }
-                    openModal(actionType);
-                };
-            case 'transaction':
-            case 'message':
-            case 'addUser':
-            case 'email':
-            case 'cookies':
-            case 'review':
-                return () => openModal(actionType);
-        }
-    };
-
-    const modalComponents = {
-        transaction: AddTransactionModal,
-        message: SendMessageModal,
-        addUser: AddUserToHouseModal,
-        email: ChangeEmailModal,
-        declare: DeclareBudgetModal,
-        cookies: CookiesModal,
-        review: AddReviewModal,
-    };
+    const modalComponents = getModalComponents({
+        AddTransactionModal,
+        SendMessageModal,
+        AddUserToHouseModal,
+        ChangeEmailModal,
+        DeclareBudgetModal,
+        CookiesModal,
+        AddReviewModal
+    });
 
     return (
         <>
@@ -68,7 +46,7 @@ export default function FastActions({ profilePage, action }) {
                     ({ label, actionType }) => (
                         <button
                             key={actionType}
-                            onClick={getClickHandler(actionType)}
+                            onClick={getClickHandler(actionType, handleButtonClick, openModal, showInfoToast, user, tInternal)}
                             className='fast-actions-btn'
                             style={{ boxShadow: 'inset 0 0 1px 2px rgba(0, 0, 0, 0.15)' }}
                         >

@@ -14,7 +14,6 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
         hasNotifications: false,
     });
     const [userMessages, setUserMessages] = useState([]);
-
     const { connected, messages, error, deleteNotification } = useSocket();
     const { notifications, fetchNotifications, removeNotification } = useNotificationsStore();
     const socketNotifications = messages?.notifications || { transactions: [], usersActions: [], monthlyBalance: [] };
