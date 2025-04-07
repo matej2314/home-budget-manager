@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { AuthContext } from '../../../store/authContext';
 import useModal from '../../../hooks/useModal';
 import { Icon } from '@iconify/react';
 import { useMediaQuery } from 'react-responsive';
@@ -13,6 +15,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'delete', data: null });
     const { t: tInternal } = useTranslation("dashboardInternal");
     const { t: tUtils } = useTranslation("utils");
+    const { user } = useContext(AuthContext);
 
     const filteredTransactions = filterId ? filterArray(transactions, (transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)
@@ -44,17 +47,17 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                             {tableLabels.map((label, index) => (
                                 <th
                                     key={index}
-                                    className={`px-2 lg:px-4 py-2 text-left 
+                                    className={`
                                     ${index === 0 ? 'rounded-tl-xl' : ''} 
                                     ${mainSite && index === tableLabels.length - 1 ? 'rounded-tr-xl' : ''}`}
                                 >
                                     {tUtils(`actionsTableLabels.${label}`)}
                                 </th>
                             ))}
-                            {!mainSite && <th className="px-4 py-2 text-left rounded-tr-xl">{tInternal("transactionsList.actionsHeaderValue")}</th>}
+                            {!mainSite && <th className="px-4 py-2 text-center rounded-tr-xl">{tInternal("transactionsList.actionsHeaderValue")}</th>}
                         </tr>
                     </thead>
-                    <tbody className="border-x-[1px] border-slate-400 text-[0.6rem] indirect:text-sm md:text-sm">
+                    <tbody className="border-x-[1px] border-slate-400 text-[0.6rem] indirect:text-sm md:text-sm text-center">
                         {transactionsToDisplay.map((transaction) => (
                             <tr key={transaction.transactionId}
                                 className={`border-b ${transaction.transactionId === transactionsToDisplay.length - 1 ? 'border-b-2 border-slate-400' : 'border-none'}`}>
@@ -65,8 +68,8 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                                 <td className="transactions-list-table-data">
                                     {!isMobile ? formatDbDate(transaction.addedAt) : formatDbDate(transaction.addedAt, 'split')}
                                 </td>
-                                {!mainSite && (
-                                    <td className="px-4 py-2">
+                                {!mainSite && transaction.userName === user.userName && (
+                                    <td>
                                         <button
                                             type="button"
                                             className="w-fit h-fit"

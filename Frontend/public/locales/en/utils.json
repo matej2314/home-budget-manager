@@ -4,7 +4,8 @@
         "Type": "type",
         "Category": "category",
         "User" : "user",
-        "Date": "date"
+        "Date": "date",
+        "Actions": "actions"
     },
     "messagesStates": {
         "all": "all",

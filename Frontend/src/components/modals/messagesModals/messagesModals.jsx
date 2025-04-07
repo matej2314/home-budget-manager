@@ -69,6 +69,7 @@ export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
 }
 export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
 	const { user } = useContext(AuthContext);
+	const { t } = useTranslation("modals");
 
 	return (
 		<Modal isOpen={isOpen} onRequestClose={onRequestClose} className="display-msg-modal" overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">

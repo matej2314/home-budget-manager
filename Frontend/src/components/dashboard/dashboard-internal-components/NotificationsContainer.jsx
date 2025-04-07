@@ -3,6 +3,7 @@ import { DataContext } from '../../../store/dataContext';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion'
+import { iconsMap } from '../../../utils/notificationsIconsMap';
 
 export default function NotificationsContainer({ notifications, clickAction }) {
     const { data, isLoading, error } = useContext(DataContext);
@@ -10,13 +11,6 @@ export default function NotificationsContainer({ notifications, clickAction }) {
     const { t: tCommon } = useTranslation("common")
 
     const houseName = !isLoading && !error && data.houseData[0].houseName || '';
-
-    const iconsMap = {
-        transactions: 'tdesign:undertake-transaction',
-        usersActions: 'mdi:users',
-        monthlyBalance: 'healthicons:finance-dept-outline',
-
-    };
 
     return (
         <motion.div
@@ -28,7 +22,7 @@ export default function NotificationsContainer({ notifications, clickAction }) {
         >
             {notifications ? (
                 Object.entries(notifications).some(([_, items]) => items.length > 0) ? (
-                    <ul className='w-fit flex flex-col gap-2'>
+                    <ul className='w-full flex flex-col gap-2'>
                         {Object.entries(notifications).map(([category, items]) => items.map((notification, index) => (
                             <li
                                 key={`${category}-${index}`}

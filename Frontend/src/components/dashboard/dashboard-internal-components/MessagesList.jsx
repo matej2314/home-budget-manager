@@ -15,6 +15,7 @@ import { markMessage } from "../../../utils/asyncUtils/markMessage";
 import { messagesStates, tableHeader } from "../../../utils/arraysUtils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
 import { messagesBtnsArr } from "../../../utils/arraysUtils/messagesBtnsArray";
+import { getFilterMap, getClickHandler, getModalComponents } from "../../../utils/messagesListUtils";
 
 export default function MessagesList({ userMessages, messagesError, loading, getMessages, messagesPages }) {
     const { filter } = useParams();
@@ -53,39 +54,16 @@ export default function MessagesList({ userMessages, messagesError, loading, get
         navigate(`/dashboard/messages/${type}`);
     }
 
-    const filterMap = {
-        all: sortedMessages,
-        new: newMessages,
-        readed: filterArray(filteredMessages, (msg) => msg.readed === 1),
-        sended: filterArray(sortedMessages, (msg) => msg.sender === user.userName),
-    };
+    const filterMap = getFilterMap(sortedMessages, newMessages, filteredMessages, user);
 
-    const refreshData = getMessages;
-    const handleMarkMessage = (message) => markMessage(message, user, refreshData);
+    const handleMarkMessage = (message, mode) => markMessage(message, user, getMessages, mode);
 
     const handleOpenMessage = (actionType, message) => {
-        handleMarkMessage(message);
+        handleMarkMessage(message, 'open');
         openModal(actionType, message);
     }
 
-    const getClickHandler = (actionType, message) => {
-        switch (actionType) {
-            case 'open':
-                return () => handleOpenMessage('open', message);
-            case 'delete':
-                return () => openModal('delete', message);
-            case 'mark':
-                return () => handleMarkMessage(message);
-            case 'reply':
-                return () => openModal('reply', message);
-        };
-    };
-
-    const modalComponents = {
-        open: DisplayMessageDetails,
-        delete: DeleteMessageModal,
-        reply: ReplyMessageModal,
-    };
+    const modalComponents = getModalComponents(DisplayMessageDetails, DeleteMessageModal, ReplyMessageModal);
 
     return (
         <>
@@ -124,7 +102,7 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                                     <tr
                                         key={message.id}
                                         className={`border-b border-slate-400 ${index === filterMap[messagesType].length - 1 ? 'border-b-[1px]' : ''} indirect:text-sm`}>
-                                        <td className="messages-list-table-data indirect:text-base">{message.sender}</td>
+                                        <td className="messages-list-table-data">{message.sender}</td>
                                         <td className="messages-list-table-data">{message.recipient}</td>
                                         <td className="messages-list-table-data">{message.message}</td>
                                         <td className="messages-list-table-data">
@@ -132,12 +110,16 @@ export default function MessagesList({ userMessages, messagesError, loading, get
                                         </td>
                                         <td className="messages-list-table-data">{message.readed ? tInternal("messagesList.readed") : tInternal("messagesList.unreaded")}</td>
                                         <td
-                                            className="w-full flex justify-around items-center messages-list-table-data lg:flex lg:justify-start lg:gap-8 xl:flex xl:justify-start xl:gap-2 indirect:text-base md:text-lg pt-3 md:pt-2.5"
+                                            className="w-full flex justify-around items-center messages-list-table-data lg:flex lg:justify-center lg:gap-4 xl:flex xl:justify-start xl:gap-2 indirect:text-base md:text-lg pt-3 md:pt-2.5"
                                         >
                                             {mapArray(
                                                 filterArray(messagesBtnsArr, item => item.condition === undefined || item.condition(message, user)),
                                                 ({ label, icon, actionType }) => (
-                                                    <button key={actionType} onClick={getClickHandler(actionType, message)} title={label}>
+                                                    <button
+                                                        key={actionType}
+                                                        onClick={getClickHandler(actionType, message, openModal, handleMarkMessage, handleOpenMessage)}
+                                                        title={label}
+                                                    >
                                                         <Icon icon={icon} />
                                                     </button>
                                                 )

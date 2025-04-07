@@ -2,6 +2,8 @@
     "cancel": "Cancel",
     "btnYes": "Yes",
     "btnNo": "No",
+    "btnAccept": "Accept",
+    "btnDecline": "Reject",
     "deleteMessage": {
         "errorMessage": "Failed to deleting message.",
         "deletedCorrectlyMessage": "Message deleted correctly.",
@@ -63,5 +65,13 @@
     },
     "logOut": {
         "heading": "Are you sure you want to log out?"
+    },
+    "invitationModal": {
+        "housemate" : "Housemate",
+        "invite": "invite",
+        "acceptedMessage": "Invitation successfully accepted",
+        "failedAccept": "Failed to accept invitation",
+        "rejectedMessage": "Invitation successfully rejected.",
+        "failedReject": "Failed to reject invitation."
     }
 }

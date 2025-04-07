@@ -1,6 +1,7 @@
 const logger = require('../../configs/logger');
 const { broadcastMessage } = require('../../configs/websocketConfig');
 const { v4: uuidv4 } = require('uuid');
+const { invitationStatus } = require('../../utils/invitationStatus');
 
 exports.addUserByMate = async (connection, invitingUserId, invitedUser, houseId, userName, invitingUserName) => {
 
@@ -11,9 +12,8 @@ exports.addUserByMate = async (connection, invitingUserId, invitedUser, houseId,
                 const [getHost] = await connection.query('SELECT userId FROM householdUsers WHERE houseid=? AND role=?', [houseId, 'host']);
                 const hostId = getHost[0].userId;
                 const invitationId = uuidv4();
-                const invitationStatus = 'new';
 
-                const [insertResult] = await connection.query('INSERT INTO invitations (id, status, invitingUserId, invitedUserId, houseId, hostId) VALUES (?,?,?,?,?,?)', [invitationId, invitationStatus, invitingUserId, invitedUserId, houseId, hostId]);
+                const [insertResult] = await connection.query('INSERT INTO invitations (id, status, invitingUserId, invitedUserId, houseId, hostId) VALUES (?,?,?,?,?,?)', [invitationId, invitationStatus.new, invitingUserId, invitedUserId, houseId, hostId]);
                 console.log(`insertresult:`, insertResult);
                 const extraData = {
                     invitationId,

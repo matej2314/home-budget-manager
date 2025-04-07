@@ -2,6 +2,8 @@
     "cancel": "Anuluj",
     "btnYes": "Tak",
     "btnNo": "Nie",
+    "btnAccept": "Zaakceptuj",
+    "btnDecline": "Odrzuć",
     "deleteMessage": {
         "errorMessage": "Nie udało się usunąć wiadomości.",
         "deletedCorrectlyMessage": "Wiadomość usunięta poprawnie.",
@@ -63,5 +65,13 @@
     },
     "logOut": {
         "heading": "Czy na pewno chcesz się wylogować?"
+    },
+    "invitationModal": {
+        "housemate": "Domownik",
+        "invite": "zaprosił",
+        "acceptedMessage": "Zaproszenie zaakceptowane.",
+        "failedAccept": "Nie udało się zaakceptować zaproszenia.",
+        "rejectedMessage": "Zaproszenie odrzucone.",
+        "failedReject": "Nie udało się odrzucić zaproszenia"
     }
 }

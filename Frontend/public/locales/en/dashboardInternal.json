@@ -46,7 +46,7 @@
     "transactionsList": {
         "noActionsError": "No transactions.",
         "deleteBtnTitle": "Delete transaction",
-        "actionsHeaderValue": "Actions",
+        "actionsHeaderValue": "actions",
         "types": {
             "income": "income",
             "expense": "expense"

@@ -119,15 +119,15 @@
 }
 
 .messages-list-table {
-    @apply w-fit mx-2 lg:w-full lg:mx-auto h-full table-fixed border-collapse text-xs lg:text-base rounded-b-xl
+    @apply w-fit mx-2 md:w-[97%] lg:w-[99%] lg:mx-auto h-full table-fixed border-collapse lg:text-base rounded-b-xl
 }
 
 .messages-list-table-body {
-    @apply w-full border-x-[1px] border-slate-400 text-[0.6rem] indirect:text-sm md:text-base
+    @apply w-full border-x-[1px] border-slate-400 md:text-base
 }
 
 .messages-list-table-data {
-    @apply xl:px-16 text-center
+    @apply xl:px-16 text-center text-[0.6rem] indirectxl:text-xs lg:text-sm
 }
 
 .mates-list-table-data-base {

@@ -1,116 +1,176 @@
 const pool = require('../database/db');
 const logger = require('../configs/logger');
+const { v4: uuidv4 } = require('uuid');
 const usersQueries = require('../database/usersQueries');
 const { saveNewHousemate } = require('../utils/householdUtils/saveNewHousemate');
+const { handleNotification } = require('../utils/handleNotification');
 const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
+const { invitationStatus } = require('../utils/invitationStatus');
+const { StatusCodes } = require('http-status-codes');
+const statusCode = StatusCodes;
 
 exports.acceptInvitation = async (req, res) => {
     const { invitationId, invitedUserId } = req.body;
     const hostId = req.userId;
-    const acceptStatus = 'accepted';
 
-    const connection = pool.getConnection();
+    const connection = await pool.getConnection();
 
-    const hostHouseId = await checkUserHouse(connection, hostId);
+    try {
+        const hostHouseId = await checkUserHouse(connection, hostId);
 
-    if (hostHouseId.length == 0) {
-        return res.status(400).json({
-            status: 'error',
-            message: `You don't belong to any household`,
+        if (!hostHouseId || !hostHouseId.houseId) {
+            return res.status(statusCode.BAD_REQUEST).json({
+                status: 'error',
+                message: `You don't belong to any household`,
+            });
+        }
+
+        const houseId = hostHouseId.houseId;
+
+        const saveMate = await saveNewHousemate(usersQueries, invitedUserId, houseId, connection);
+
+        if (saveMate.status === 'error') {
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+                status: 'error',
+                message: 'Failed to accept invitation. Failed to save new housemate.',
+            });
+        }
+
+        const [confirmInvitation] = await connection.query(
+            'UPDATE invitations SET status = ? WHERE id = ? AND hostId = ?',
+            [invitationStatus.accepted, invitationId, hostId]
+        );
+
+        if (confirmInvitation.affectedRows === 0) {
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+                status: 'error',
+                message: 'Failed to accept invitation.',
+            });
+        }
+
+        const noticeId = uuidv4();
+
+        handleNotification({
+            noticeId,
+            category: 'usersActions',
+            houseId,
+            message: 'notifications.addedHouseMate',
         });
-    };
 
-    const houseId = hostHouseId.houseId;
-
-    const saveMate = await saveNewHousemate(usersQueries, invitedUserId, houseId, connection);
-
-    if (saveMate.affectedRows == 0) {
-        return res.status(500).json({
-            status: 'error',
-            message: 'Failed to accept invitation. Failed to save new housemate.',
+        return res.status(statusCode.OK).json({
+            status: 'success',
+            message: `Invitation of user ${invitedUserId} correctly accepted.`,
         });
-    };
-
-    const [confirmInvitation] = (await connection).query('UPDATE invitations SET status =? WHERE id=? AND hostId=?', [acceptStatus, invitationId, hostId]);
-
-    if (confirmInvitation.affectedRows == 0) {
-        return res.status(500).json({
+    } catch (error) {
+        logger.error(`acceptInvitation error: ${error}`);
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
-            message: 'Failed to accept invitation.',
-        })
-    };
-
-    return res.status(200).json({
-        status: 'success',
-        message: `Invitation of user ${invitedUserId} correctly accepted.`,
-    });
+            message: 'Internal server error.',
+        });
+    } finally {
+        connection.release();
+    }
 };
 
+
 exports.rejectInvitation = async (req, res) => {
-    const { invitationId } = req.body;
+    const invitationId = req.body.invitationId;
     const hostId = req.userId;
-    const status = 'rejected';
 
     const connection = await pool.getConnection();
 
     try {
         await connection.beginTransaction();
-        const [invitationData] = await connection.query('SELECT status, invitingUserId, invitedUserId, houseId, hostId, date WHERE id=?', [invitationId]);
+        const [rows] = await connection.query('SELECT status, invitingUserId, invitedUserId, houseId, hostId, date FROM invitations WHERE id=?', [invitationId]);
+        const invitationData = rows[0];
 
         if (invitationData.length == 0 || invitationData.status !== 'new') {
             await connection.rollback();
-            return res.status(404).json({
+            return res.status(statusCode.NOT_FOUND).json({
                 status: 'error',
                 message: 'Invitation not found',
             });
         };
 
-        const [rejectResult] = await connection.query('UPDATE invitations SET status=? WHERE id=? AND hostId=?', [status, invitationId, hostId]);
+        const [rejectResult] = await connection.query('UPDATE invitations SET status=? WHERE id=?', [invitationStatus.rejected, invitationId]);
 
         if (rejectResult.affectedRows == 0) {
             await connection.rollback();
-            return res.status(404).json({
+            return res.status(statusCode.NOT_FOUND).json({
                 status: 'error',
                 message: 'Invitation not found',
             });
         };
 
+        const noticeId = uuidv4();
+        const houseId = invitationData.houseId;
+
+        handleNotification({
+            id: noticeId,
+            category: 'usersActions',
+            houseId,
+            message: 'Rejected invitation of new user',
+            extraData: {
+                invitedUserId: invitationData.invitedUserId
+            }
+        })
+
         await connection.commit();
-        return res.status(200).json({
+
+        return res.status(statusCode.OK).json({
             status: 'success',
             message: 'Invitation successfully rejected.'
         });
     } catch (error) {
         await connection.rollback();
         logger.error(`error in rejectInvitation: ${error}`);
-        return res.status(500).json({
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
             message: 'Internal server error',
         });
-    };
+    } finally {
+        connection.release();
+    }
 };
 
 exports.getInvitationsCollection = async (req, res) => {
     const connection = await pool.getConnection();
 
     try {
-        const [invitations] = await connection.query('SELECT id, status, invitingUserId, invitedUserId, houseId, hostId, date from invitations');
+        const [invitations] = await connection.query(`
+            SELECT
+            i.id AS id,
+            i.status AS status,
+            i.hostId AS hostId,
+            i.invitedUserId AS invitedUser,
+            i.invitingUserId AS invitingUser,
+            i.date AS date,
+            invitingUser.userName AS invitingUserName,
+            invitedUser.userName AS invitedUserName
+            FROM invitations i 
+            LEFT JOIN householdUsers invitingUser ON i.invitingUserId = invitingUser.userId
+            LEFT JOIN householdUsers invitedUser ON i.invitedUserId = invitedUser.userId
+            WHERE status=?;
+            `, [invitationStatus.new]);
+
         if (invitations.length < 0) {
-            return res.status(404).json({
+            return res.status(statusCode.NOT_FOUND).json({
                 status: 'error',
                 message: 'Invitations not found.',
             });
         };
 
-        return res.status(200).json({
+        return res.status(statusCode.OK).json({
             status: 'success',
             invitations,
         });
     } catch (error) {
         logger.error(`getInvitationsCollection error: ${error}`);
-        return res.status(500).json({
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',
             message: 'Internal server error',
         });
+    } finally {
+        connection.release();
     }
 };

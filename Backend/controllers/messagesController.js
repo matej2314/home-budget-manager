@@ -58,7 +58,7 @@ exports.markMessage = async (req, res) => {
 
     if (!messageId) {
         logger.error('No message data.');
-        return res.status(400).json({ status: 'error', message: 'Enter correctly message data.' });
+        return res.status(statusCode.BAD_REQUEST).json({ status: 'error', message: 'Enter correctly message data.' });
     };
 
     try {

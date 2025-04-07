@@ -18,7 +18,7 @@ export default function DashboardPage() {
     const navigate = useNavigate();
     const { loginStatus, isAuthenticated, user } = useContext(AuthContext);
     const { connected, messages } = useSocket();
-    const { invitationsData, invitationsLoading, invitationsLoadingError } = useInvitationsStore();
+    const { invitationsData, invitationsLoading, invitationsLoadingError, fetchInvitations, fetchedInvitations } = useInvitationsStore();
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null, data: null });
     const { t } = useTranslation("common");
 
@@ -43,11 +43,15 @@ export default function DashboardPage() {
             navigate("/userDashboard");
         }
 
-        if (allInvitations && allInvitations.length > 0) {
-            openModal('invitation', allInvitations)
-        }
+        if (!invitationsLoading && !invitationsLoadingError && !fetchedInvitations && allInvitations.length == 0) {
+            fetchInvitations();
+        };
 
-    }, [liveMessages, allInvitations, connected, loginStatus, isAuthenticated, isUser, navigate]);
+        if (allInvitations.length > 0) {
+            openModal('invitation', allInvitations);
+        };
+
+    }, [liveMessages, connected, loginStatus, isAuthenticated, isUser, fetchedInvitations]);
 
     if (loginStatus.isLoading) return <LoadingModal isOpen={loginStatus.isLoading} />;
 

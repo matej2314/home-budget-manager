@@ -3,11 +3,12 @@ const router = express.Router();
 const pool = require('../database/db');
 const invitationController = require('../controllers/invitationController');
 const verifyRole = require('../middlewares/verifyRole');
+const verifyJWT = require('../middlewares/verifyJWT');
 
-router.post('/accept', verifyRole('host'), invitationController.acceptInvitation);
+router.post('/accept', verifyJWT, verifyRole('host'), invitationController.acceptInvitation);
 
-router.post('/decline', verifyRole('host'), invitationController.rejectInvitation);
+router.post('/decline', verifyJWT, verifyRole('host'), invitationController.rejectInvitation);
 
-router.get('/collection', verifyRole('host'), invitationController.getInvitationsCollection);
+router.get('/collection', verifyJWT, verifyRole('host'), invitationController.getInvitationsCollection);
 
 module.exports = router;

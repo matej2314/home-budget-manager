@@ -69,5 +69,8 @@
       "bills and subscriptions": "bills and subscriptions",
       "grocery shopping": "grocery shopping",
       "eating out": "eating out"
-   }
+   },
+   "receiverErrorMsg": "You are not a receiver of this message!",
+   "markErrorMsg": "Failed to mark message.",
+   "markSuccessMsg": "Message status updated correctly."
 }

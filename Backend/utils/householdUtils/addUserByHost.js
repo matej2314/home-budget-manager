@@ -21,6 +21,7 @@ exports.addUserByHost = async (connection, userName, houseId, invitedUserData) =
                 await handleNotification({
                     id,
                     category: 'usersActions',
+                    houseId,
                     message: 'notifications.addedHouseMate',
                 });
 

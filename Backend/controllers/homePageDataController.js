@@ -26,7 +26,7 @@ exports.getDataCollection = async (req, res) => {
 
     } catch (error) {
         logger.error(`homePageDataController/getDataCollection error: ${error}`);
-        return res.status(500).json({ status: 'error', message: 'Internal server error.' });
+        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({ status: 'error', message: 'Internal server error.' });
     }
 };
 

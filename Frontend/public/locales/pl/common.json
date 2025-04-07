@@ -72,5 +72,8 @@
         "bills and subscriptions": "rachunki i subskrypcje",
         "grocery shopping": "zakupy spożywcze",
         "eating out" : "jedzenie na mieście"
-    }
+    },
+    "receiverErrorMsg": "Nie jesteś odbiorcą tej wiadomości!",
+    "markErrorMsg": "Nie udało się oznaczyć wiadomości.",
+    "markSuccessMsg": "Status wiadomości zmieniony poprawnie."
 }
