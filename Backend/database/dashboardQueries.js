@@ -23,8 +23,8 @@ module.exports = {
         WHERE houseId = h.houseId
     )
 WHERE h.houseId = ?;`,
-    
-statsQuery: `SELECT
+
+    statsQuery: `SELECT
 ib.value AS definedMonthlyBudgets,
  DATE_FORMAT(ib.addedAt, '%Y-%m-%d') AS initMonthlyBudgetDate,
  DATE_FORMAT(ib.validUntil, '%Y-%m-%d') AS initMonthlyBudgetValidDate,
@@ -40,8 +40,8 @@ ib.value AS definedMonthlyBudgets,
  ON ib.houseId = tc.houseId
  WHERE ib.houseId=?
  ORDER BY mb.monthlyBalanceDate ASC; `,
-matesData: 'SELECT userName, role FROM householdUsers WHERE houseId = ? ORDER BY id',
-transactionsData: `SELECT 
+    matesData: 'SELECT userId, userName, role FROM householdUsers WHERE houseId = ? ORDER BY id',
+    transactionsData: `SELECT 
 t.transactionId AS transactionId,
 t.value,
 DATE_FORMAT(t.addedAt, '%Y-%m-%d %H:%i:%s') AS addedAt,
@@ -58,8 +58,8 @@ WHERE t.houseId = ?
 ORDER BY t.addedAt DESC
 LIMIT ? OFFSET ?;
 `,
-actionCatData: 'SELECT * FROM actionCategories ORDER BY id',
-dailyData: `SELECT 
+    actionCatData: 'SELECT * FROM actionCategories ORDER BY id',
+    dailyData: `SELECT 
 dt.dailyActionCount,
 dt.houseId,
 DATE_FORMAT(dt.date, '%Y-%m-%d') AS dailyActionsDate,
@@ -71,7 +71,7 @@ LEFT JOIN dailyBudget db
 ON dt.houseId = db.houseId
 WHERE dt.houseId = ?;
 `,
-messagesData: `SELECT 
+    messagesData: `SELECT 
 m.id AS id,
 m.content AS message,
 m.is_read AS readed,
