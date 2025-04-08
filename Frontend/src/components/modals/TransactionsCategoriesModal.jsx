@@ -28,11 +28,7 @@ export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) 
             </div>
 
             <div id="categories-list" className='flex flex-col justify-center items-center'>
-                <button
-                    className="bg-slate-300 p-2 rounded-xl hover:bg-slate-400/45 border-[1px] border-slate-500"
-                >
-                    Add new category
-                </button>
+                <h2 className='w-full flex justify-center text-xl'>Available transactions categories:</h2>
                 <ul className="w-full grid grid-cols-4 lg:grid-cols-2 grid-rows-auto gap-y-2 mt-5">
                     {!isLoading && !error && data ? (
                         actionCats.map((cat) => (
