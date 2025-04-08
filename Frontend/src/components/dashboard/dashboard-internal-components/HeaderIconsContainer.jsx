@@ -3,6 +3,7 @@ import { useSocket } from "../../../store/socketContext";
 import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
+import { checkNotifications, mergeNotifications } from "../../../utils/notificationsUtils";
 import NotificationDot from "./NotificationDot";
 import NotificationsContainer from "./NotificationsContainer";
 import useNotificationsStore from "../../../store/notificationsStore";
@@ -22,11 +23,6 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
         fetchNotifications();
     }, [fetchNotifications]);
 
-    const mergeNotifications = (storeNotifs = [], socketNotifs = []) => {
-        const ids = new Set(storeNotifs.map(n => n.id));
-        return [...storeNotifs, ...socketNotifs.filter(n => !ids.has(n.id))];
-    };
-
     const allNotifications = useMemo(() => ({
         transactions: mergeNotifications(notifications.transactions, socketNotifications.transactions),
         usersActions: mergeNotifications(notifications.usersActions, socketNotifications.usersActions),
@@ -40,12 +36,8 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
         }));
     };
 
-    const checkNotifications = () => {
-        return Object.values(allNotifications).some(category => category.length > 0);
-    };
-
     useEffect(() => {
-        const hasNewNotifications = checkNotifications();
+        const hasNewNotifications = checkNotifications(allNotifications);
         setNotificationsState(prevState => ({
             ...prevState,
             hasNotifications: hasNewNotifications,

@@ -22,7 +22,7 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
 
         const reviewContent = userOpinionRef.current?.value || "";
 
-        const validUserReview = reviewContent && !isNoSQL(reviewContent) && !isNoXSS(reviewContent);
+        const validUserReview = reviewContent;
 
         if (!validUserReview) {
             showErrorToast(t("addReview.invalidOpinion"));
@@ -40,7 +40,7 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
 
             handleApiResponse(saveReview, {
                 onSuccess: () => {
-                    showInfoToast(t("saveReview.correctlySaveMessage"));
+                    showInfoToast(t("addReview.correctlySaveMessage"));
                     setTimeout(onRequestClose, 600);
                 },
                 onError: () => {

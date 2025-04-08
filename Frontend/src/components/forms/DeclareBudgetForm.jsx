@@ -10,7 +10,6 @@ import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import SubmitBtn from "./internal/SubmitBtn";
 
-
 export default function DeclareBudgetForm() {
     const [declarationStatus, setDeclarationStatus] = useState({
         sended: false,

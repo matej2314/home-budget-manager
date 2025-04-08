@@ -60,7 +60,7 @@ const LineChart = ({
             x: {
                 beginAtZero: true,
                 ticks: {
-                    autoSkip: false,
+                    autoSkip: true,
                     maxRotation: window.innerWidth <= 768 ? 45 : 0,
                     minRotation: window.innerWidth <= 768 ? 45 : 0,
                 }

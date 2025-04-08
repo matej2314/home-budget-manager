@@ -8,6 +8,7 @@ import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
+import useOcrRecognition from '../../hooks/useOcrRecognition';
 import SubmitBtn from './internal/SubmitBtn';
 import { isValidNumber } from '../../utils/validation';
 
@@ -17,8 +18,7 @@ export default function AddTransactionForm({ onClose }) {
     const { fetchTransactions } = useTransactionsStore();
     const handleApiResponse = useApiResponseHandler();
     const [imageMode, setImageMode] = useState(false);
-    const [loadingImage, setLoadingImage] = useState(false);
-    const [recognizedValue, setRecognizedValue] = useState();
+    const { recognizeValueFromFile, loadingImage, recognizedValue } = useOcrRecognition();
     const { t: tForms } = useTranslation("forms");
     const { t: tCommon } = useTranslation("common");
     const typeRef = useRef();
@@ -26,38 +26,11 @@ export default function AddTransactionForm({ onClose }) {
     const fileValueRef = useRef();
     const catIdRef = useRef();
 
-    const recognizeValue = async (e) => {
-        e.preventDefault();
-        const data = new FormData();
-        const file = fileValueRef.current?.files[0];
-        data.append('receipt', file);
-
-        try {
-            setLoadingImage(true)
-            const recognize = await fetch(`${serverUrl}/receipt`, {
-                method: 'POST',
-                body: data,
-                credentials: 'include',
-            });
-
-            const recognizeData = await recognize.json();
-
-            handleApiResponse(recognizeData, {
-                onSuccess: () => {
-                    setImageMode(false);
-                    setRecognizedValue(recognizeData.value.replace(',', '.'));
-                },
-                onError: () => {
-                    showErrorToast(tForms(recognizeData.message, { defaultValue: t("addTransaction.recognizeInternalError") }))
-                }
-            })
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoadingImage(false)
-        }
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        await recognizeValueFromFile(file);
+        setImageMode(false);
     };
-
 
     const handleToggleImageMode = () => {
         setImageMode(prevMode => !prevMode);
@@ -127,7 +100,7 @@ export default function AddTransactionForm({ onClose }) {
                             id="actionValue"
                             ref={fileValueRef}
                             className='pl-2'
-                            onChange={imageMode && recognizeValue}
+                            onChange={imageMode && handleFileChange}
                             disabled={loadingImage}
                             required />}
                     <button
