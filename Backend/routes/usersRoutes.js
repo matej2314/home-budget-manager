@@ -4,18 +4,19 @@ const usersController = require('../controllers/usersController.js');
 const verifyJWT = require('../middlewares/verifyJWT');
 const verifyRole = require('../middlewares/verifyRole.js');
 
-
 /**
  * @swagger
  * /users/collection:
  *   get:
- *     summary: Pobierz wszystkich użytkowników aplikacji.
- *     description: Zwraca listę wszystkich użytkowników w bazie danych uporządkowaną według ID użytkownika.
+ *     summary: Get all users (only for superadmin)
  *     tags:
  *       - Users
+ *     security:
+ *       - cookieAuth: []
+ *     description: Retrieves the list of all users. Access restricted to users with role `superadmin`.
  *     responses:
  *       200:
- *         description: Lista wszystkich użytkowników pobrana poprawnie.
+ *         description: Successfully fetched users
  *         content:
  *           application/json:
  *             schema:
@@ -23,12 +24,10 @@ const verifyRole = require('../middlewares/verifyRole.js');
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi
- *                   example: 'success'
+ *                   example: success
  *                 message:
  *                   type: string
- *                   description: Wiadomość o sukcesie
- *                   example: 'Lista wszystkich użytkowników pobrana poprawnie.'
+ *                   example: User's list fetched correctly.
  *                 users:
  *                   type: array
  *                   items:
@@ -36,34 +35,24 @@ const verifyRole = require('../middlewares/verifyRole.js');
  *                     properties:
  *                       id:
  *                         type: string
- *                         description: Unikalny identyfikator użytkownika
- *                         example: '123e4567-e89b-12d3-a456-426614174000'
- *                       role:
+ *                         format: uuid
+ *                         example: 123e4567-e89b-12d3-a456-426614174000
+ *                       userName:
  *                         type: string
- *                         description: Rola użytkownika w systemie
- *                         example: 'user'
- *                       name:
- *                         type: string
- *                         description: Login użytkownika w systemie
- *                         example: 'test1234'
- *                       password:
- *                         type: string
- *                         description: Zaszyfrowane hasło użytkownika
- *                         example: '$2b$10$Wbc/LzFDGB0quWuk6Fd2CusUdnUHrj9wDa7H4PkU1b4'
+ *                         example: admin
  *                       email:
  *                         type: string
- *                         description: Adres e-mail użytkownika.
- *                         example: 'email@email.pl'
- *                       household_id:
+ *                         format: email
+ *                         example: admin@example.com
+ *                       role:
  *                         type: string
- *                         description: ID gospodarstwa domowego, którego użytkownik jest założycielem/właścicielem
- *                         example: '42bfc32f-0bd2-4aff-9ebd-6da002ea790e'
- *                       inhabitant:
+ *                         example: superadmin
+ *                       createdAt:
  *                         type: string
- *                         description: ID gospodarstwa, do którego należy użytkownik, jeśli jest tylko domownikiem.
- *                         example: '42bfc32f-0bd2-4aff-9ebd-6da002ea790e'
- *       500:
- *         description: Błąd serwera.
+ *                         format: date-time
+ *                         example: 2024-01-01T12:00:00Z
+ *       404:
+ *         description: Users not found or unexpected status returned
  *         content:
  *           application/json:
  *             schema:
@@ -71,12 +60,23 @@ const verifyRole = require('../middlewares/verifyRole.js');
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi
- *                   example: 'error'
+ *                   example: notfound
  *                 message:
  *                   type: string
- *                   description: Opis błędu
- *                   example: 'Błąd pobierania listy użytkowników.'
+ *                   example: Users not found.
+ *       500:
+ *         description: Server error while fetching user list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: Error fetching user's list.
  */
 
 router.get('/collection', verifyJWT, verifyRole('superadmin'), usersController.getAllUsers);
@@ -85,26 +85,25 @@ router.get('/collection', verifyJWT, verifyRole('superadmin'), usersController.g
  * @swagger
  * /users/delete/{userId}:
  *   post:
- *     summary: Usuń użytkownika
- *     description: Usuwa użytkownika z systemu. Jeśli użytkownik jest właścicielem gospodarstwa, gospodarstwo i wszelkie informacje o nim również zostaną usunięte. Rola domowników zmieni się na 'user'
+ *     summary: Delete a user by ID (only for superadmin)
  *     tags:
  *       - Users
  *     security:
  *       - cookieAuth: []
  *     parameters:
- *       - name: userId
- *         in: path
+ *       - in: path
+ *         name: userId
  *         required: true
- *         description: ID użytkownika do usunięcia.
  *         schema:
  *           type: string
- *           example: '123e4567-e89b-12d3-a456-426614174000'
- *     requestBody:
- *       description: Brak dodatkowych danych w ciele żądania.
- *       required: false
+ *           format: uuid
+ *         description: ID of the user to be deleted
+ *     description: |
+ *       Deletes a user by ID. If the user is a host, their household and transactions are also removed. 
+ *       Requires the requester to be authenticated and have the `superadmin` role.
  *     responses:
  *       200:
- *         description: Użytkownik usunięty pomyślnie.
+ *         description: User deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -112,14 +111,12 @@ router.get('/collection', verifyJWT, verifyRole('superadmin'), usersController.g
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
  *                   example: success
  *                 message:
  *                   type: string
- *                   description: Wiadomość o sukcesie.
- *                   example: Użytkownik usunięty poprawnie.
- *       403:
- *         description: Brak uprawnień do usunięcia użytkownika.
+ *                   example: User 123e4567-e89b-12d3-a456-426614174000 deleted correctly.
+ *       400:
+ *         description: Invalid input data (e.g. missing user ID)
  *         content:
  *           application/json:
  *             schema:
@@ -127,29 +124,12 @@ router.get('/collection', verifyJWT, verifyRole('superadmin'), usersController.g
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: error
+ *                   example: badreq
  *                 message:
  *                   type: string
- *                   description: Opis błędu.
- *                   example: Nie masz uprawnień do usunięcia użytkownika.
- *       404:
- *         description: Użytkownik nie został znaleziony.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: error
- *                 message:
- *                   type: string
- *                   description: Opis błędu.
- *                   example: Nie znaleziono użytkownika.
+ *                   example: Invalid input data.
  *       500:
- *         description: Wystąpił błąd serwera podczas usuwania użytkownika.
+ *         description: Internal server error while deleting user
  *         content:
  *           application/json:
  *             schema:
@@ -157,28 +137,32 @@ router.get('/collection', verifyJWT, verifyRole('superadmin'), usersController.g
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
  *                   example: error
  *                 message:
  *                   type: string
- *                   description: Opis błędu.
- *                   example: Błąd podczas usuwania użytkownika.
+ *                   example: Internal server error.
  */
 
 router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersController.deleteUser);
 
 /**
  * @swagger
- * /users/delete/inhabitant:
+ * /users/delete/{inhabitant}:
  *   delete:
- *     summary: Usuń domownika
- *     description: Usuwa domownika z gospodarstwa, jeśli użytkownik posiada odpowiednie uprawnienia. Rola domownika w systemie zmienia się na 'user'
+ *     summary: Delete a housemate (only for host users)
  *     tags:
- *       - Inhabitants
+ *       - Users
  *     security:
  *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: inhabitant
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID of the inhabitant (housemate) to be deleted
  *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
@@ -186,11 +170,16 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *             properties:
  *               inhabitantId:
  *                 type: string
- *                 description: ID domownika do usunięcia.
- *                 example: '456e4567-e89b-12d3-a456-426614174000'
+ *                 format: uuid
+ *                 description: ID of the inhabitant to be removed from the house
+ *             required:
+ *               - inhabitantId
+ *     description: |
+ *       Deletes a housemate from the household, removes their transactions, and changes their role to "user". 
+ *       The request must be made by a host user. 
  *     responses:
  *       200:
- *         description: Domownik został pomyślnie usunięty.
+ *         description: Housemate deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -198,14 +187,12 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'success'
+ *                   example: success
  *                 message:
  *                   type: string
- *                   description: Wiadomość o sukcesie.
- *                   example: 'Domownik 456e4567-e89b-12d3-a456-426614174000 został usunięty poprawnie.'
+ *                   example: Housemate deleted correctly.
  *       400:
- *         description: Złe żądanie (np. brak uprawnień lub błędne dane).
+ *         description: Invalid input data (missing inhabitant ID)
  *         content:
  *           application/json:
  *             schema:
@@ -213,29 +200,12 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'error'
+ *                   example: error
  *                 message:
  *                   type: string
- *                   description: Opis błędu.
- *                   example: 'Nie masz uprawnień do usunięcia tego użytkownika.'
- *       404:
- *         description: Nie znaleziono domownika do usunięcia.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'error'
- *                 message:
- *                   type: string
- *                   description: Opis błędu.
- *                   example: 'Domownik o podanym ID nie istnieje.'
+ *                   example: Enter correctly data!
  *       500:
- *         description: Wystąpił błąd serwera podczas usuwania domownika.
+ *         description: Internal server error while deleting housemate
  *         content:
  *           application/json:
  *             schema:
@@ -243,12 +213,10 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'error'
+ *                   example: error
  *                 message:
  *                   type: string
- *                   description: Opis błędu.
- *                   example: 'Nie udało się usunąć domownika.'
+ *                   example: Failed to delete housemate.
  */
 
 router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersController.deleteInhabitant);
@@ -257,14 +225,12 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  * @swagger
  * /users/invite:
  *   post:
- *     summary: Dodaj użytkownika do gospodarstwa
- *     description: Dodaje użytkownika do gospodarstwa, jeśli spełnia odpowiednie warunki (np. nie jest już domownikiem lub gospodarzem).
+ *     summary: Invite a user to a house (only for users with 'mates' or 'host' role)
  *     tags:
  *       - Users
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
@@ -272,11 +238,13 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *             properties:
  *               userName:
  *                 type: string
- *                 description: Nazwa użytkownika, który ma zostać dodany do gospodarstwa.
+ *                 description: The username of the user to be invited to the house
  *                 example: "john_doe"
+ *             required:
+ *               - userName
  *     responses:
  *       200:
- *         description: Użytkownik pomyślnie dodany do gospodarstwa.
+ *         description: User successfully invited to the house
  *         content:
  *           application/json:
  *             schema:
@@ -284,14 +252,12 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'success'
+ *                   example: success
  *                 message:
  *                   type: string
- *                   description: Wiadomość o sukcesie.
- *                   example: 'Użytkownik john_doe został dodany do gospodarstwa.'
+ *                   example: User successfully invited by a mate. (or Host)
  *       400:
- *         description: Użytkownik już należy do gospodarstwa lub wystąpił inny błąd.
+ *         description: Invalid input data or invalid request (e.g., user not found, user already in house)
  *         content:
  *           application/json:
  *             schema:
@@ -299,14 +265,12 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'error'
+ *                   example: error
  *                 message:
  *                   type: string
- *                   description: Opis błędu.
- *                   example: 'Użytkownik jest już domownikiem.'
- *       404:
- *         description: Nie znaleziono gospodarstwa lub użytkownika.
+ *                   example: Invalid input user data.
+ *       401:
+ *         description: Unauthorized access (invalid or missing JWT token)
  *         content:
  *           application/json:
  *             schema:
@@ -314,14 +278,12 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'error'
+ *                   example: error
  *                 message:
  *                   type: string
- *                   description: Opis błędu.
- *                   example: 'Nie znaleziono gospodarstwa dla tego użytkownika.'
+ *                   example: Unauthorized. Invalid or missing JWT token.
  *       500:
- *         description: Wystąpił błąd serwera podczas przetwarzania żądania.
+ *         description: Internal server error while processing the invitation
  *         content:
  *           application/json:
  *             schema:
@@ -329,15 +291,157 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *               properties:
  *                 status:
  *                   type: string
- *                   description: Status odpowiedzi.
- *                   example: 'error'
+ *                   example: error
  *                 message:
  *                   type: string
- *                   description: Opis błędu.
- *                   example: 'Błąd przetwarzania żądania.'
+ *                   example: Failed to invite user. Please try again later.
+ *       403:
+ *         description: Forbidden action (the user must have the correct role to invite)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: You do not have permission to invite users.
+ *       404:
+ *         description: The house or invited user does not exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: House not found or invited user does not exist.
+ *       409:
+ *         description: Conflict (the invited user is already a housemate or host)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: User is already a housemate or host.
+ *       422:
+ *         description: User is being invited by someone who is not a host or a mate
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: Only hosts or mates can invite users.
  */
 
 router.post('/invite', verifyJWT, verifyRole('mates'), usersController.addUserToHouse);
+
+/**
+ * @swagger
+ * /users/changemail:
+ *   post:
+ *     summary: Change the user's email address
+ *     description: Allows a user to change their email address. The user must be authenticated.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newEmail:
+ *                 type: string
+ *                 format: email
+ *                 description: The new email address to be set for the user
+ *                 example: "newemail@example.com"
+ *             required:
+ *               - newEmail
+ *     responses:
+ *       200:
+ *         description: Email address changed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Email address changed successfully.
+ *       400:
+ *         description: Invalid email format or missing email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: "Enter correctly e-mail address!"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: "URL not found."
+ *       409:
+ *         description: The new email is already in use
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: "The new email address is already taken."
+ *       500:
+ *         description: Internal server error while changing the email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ */
 
 router.post('/changemail', verifyJWT, usersController.changeEmail);
 

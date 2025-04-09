@@ -6,6 +6,7 @@ const { saveNewHousemate } = require('../utils/householdUtils/saveNewHousemate')
 const { handleNotification } = require('../utils/handleNotification');
 const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
 const { invitationStatus } = require('../utils/invitationStatus');
+const invitationQueries = require('../database/invitationsQueries');
 const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
@@ -37,9 +38,7 @@ exports.acceptInvitation = async (req, res) => {
         }
 
         const [confirmInvitation] = await connection.query(
-            'UPDATE invitations SET status = ? WHERE id = ? AND hostId = ?',
-            [invitationStatus.accepted, invitationId, hostId]
-        );
+            invitationQueries.acceptQuery, [invitationStatus.accepted, invitationId, hostId]);
 
         if (confirmInvitation.affectedRows === 0) {
             return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
@@ -81,7 +80,7 @@ exports.rejectInvitation = async (req, res) => {
 
     try {
         await connection.beginTransaction();
-        const [rows] = await connection.query('SELECT status, invitingUserId, invitedUserId, houseId, hostId, date FROM invitations WHERE id=?', [invitationId]);
+        const [rows] = await connection.query(invitationQueries.getInvitationQuery, [invitationId]);
         const invitationData = rows[0];
 
         if (invitationData.length == 0 || invitationData.status !== 'new') {
@@ -92,7 +91,7 @@ exports.rejectInvitation = async (req, res) => {
             });
         };
 
-        const [rejectResult] = await connection.query('UPDATE invitations SET status=? WHERE id=?', [invitationStatus.rejected, invitationId]);
+        const [rejectResult] = await connection.query(invitationQueries.rejectQuery, [invitationStatus.rejected, invitationId]);
 
         if (rejectResult.affectedRows == 0) {
             await connection.rollback();
@@ -137,21 +136,7 @@ exports.getInvitationsCollection = async (req, res) => {
     const connection = await pool.getConnection();
 
     try {
-        const [invitations] = await connection.query(`
-            SELECT
-            i.id AS id,
-            i.status AS status,
-            i.hostId AS hostId,
-            i.invitedUserId AS invitedUser,
-            i.invitingUserId AS invitingUser,
-            i.date AS date,
-            invitingUser.userName AS invitingUserName,
-            invitedUser.userName AS invitedUserName
-            FROM invitations i 
-            LEFT JOIN householdUsers invitingUser ON i.invitingUserId = invitingUser.userId
-            LEFT JOIN householdUsers invitedUser ON i.invitedUserId = invitedUser.userId
-            WHERE status=?;
-            `, [invitationStatus.new]);
+        const [invitations] = await connection.query(invitationQueries.invitationsCollectionQuery, [invitationStatus.new]);
 
         if (invitations.length < 0) {
             return res.status(statusCode.NOT_FOUND).json({

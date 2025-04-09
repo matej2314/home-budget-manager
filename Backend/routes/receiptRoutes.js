@@ -6,6 +6,71 @@ const { uploadReceipt } = require('../store/receiptStorage');
 const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
+/**
+ * @swagger
+ * /receipt:
+ *   post:
+ *     summary: Extract total amount from uploaded receipt image
+ *     tags:
+ *       - Notice
+ *     description: |
+ *       Upload a receipt image and extract the total amount using OCR. 
+ *       Requires a multipart/form-data request with the file under the field name `receipt`.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               receipt:
+ *                 type: string
+ *                 format: binary
+ *                 description: Image of the receipt to analyze
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Total amount successfully extracted from the receipt
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 value:
+ *                   type: number
+ *                   example: 37.49
+ *       400:
+ *         description: Invalid input file or failed OCR extraction
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: Upload correct file.
+ *       500:
+ *         description: Internal server error during image processing
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: addTransaction.recognizeInternalError
+ */
+
 router.post('/',
     uploadReceipt.single('receipt'),
     async (req, res) => {

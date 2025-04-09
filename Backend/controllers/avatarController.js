@@ -57,6 +57,8 @@ exports.getAvatar = async (req, res) => {
     }
 };
 
+
+
 exports.deleteAvatar = async (req, res) => {
     try {
         const userName = req.userName;

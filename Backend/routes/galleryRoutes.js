@@ -5,9 +5,6 @@ const galleryController = require('../controllers/galleryController');
 const verifyJWT = require('../middlewares/verifyJWT');
 const verifyRole = require('../middlewares/verifyRole');
 
-
-router.get('/collection', galleryController.getImages);
-
 router.post('/save',
     verifyJWT,
     verifyRole('superadmin'),
