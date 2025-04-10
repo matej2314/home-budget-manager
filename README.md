@@ -1,5 +1,5 @@
 # Project: Web home budget manager
-**demo: https://budgetapp.msliwowski.net**
+**link to the demo: https://budgetapp.msliwowski.net**
 
 Test login data: testuser123 / Testuser123!!
 
