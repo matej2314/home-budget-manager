@@ -1,0 +1,19 @@
+name: Deploy to Jenkins
+
+on:
+  push:
+    branches:
+      - main  # Tylko zmiany na gałęzi main uruchomią ten workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Send webhook to Jenkins
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          --data '{"ref": "refs/heads/main"}' \
+           ${{ secrets.JENKINS_URL }}${{secrets.JENKINS_TOKEN}}
