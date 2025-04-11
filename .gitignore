@@ -1,5 +1,5 @@
 Backend/node_modules
-Backend-ts/node_modules
+Frontend-ts/node_modules
 Frontend/node_modules
 Backend/.env
 ./TODO.txt
