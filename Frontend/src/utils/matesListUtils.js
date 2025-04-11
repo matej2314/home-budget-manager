@@ -1,1 +1,0 @@
-export const thLabels = ['Name', 'Role', 'Actions'];
