@@ -20,7 +20,33 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Path & Base URL Configuration */
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@utils/*": ["utils/*"],
+      "@configs/*": ["configs/*"],
+      "@hooks/*": ["hooks/*"],
+      "@pages/*": ["pages/*"],
+      "@store/*": ["store/*"],
+      "@models/*": ["models/*"]
+    },
+
+    /* Additional Settings */
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "strictFunctionTypes": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "incremental": true,
+    "typeRoots": ["node_modules/@types", "src/models"],
+    "strictNullChecks": true,
+    "allowJs": true
   },
   "include": ["src"]
 }

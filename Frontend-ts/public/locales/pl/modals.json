@@ -1,0 +1,77 @@
+{
+    "cancel": "Anuluj",
+    "btnYes": "Tak",
+    "btnNo": "Nie",
+    "btnAccept": "Zaakceptuj",
+    "btnDecline": "Odrzuć",
+    "deleteMessage": {
+        "errorMessage": "Nie udało się usunąć wiadomości.",
+        "deletedCorrectlyMessage": "Wiadomość usunięta poprawnie.",
+        "confirmQuestion": "Jesteś pewny, że chcesz usunąć wiadomość"
+    },
+    "messageDetails": {
+        "heading": "Szczegóły:",
+        "senderLabel": "Od:",
+        "receiverLabel": "Do:",
+        "messageLabel": "Wiadomość:"
+    },
+    "addReview": {
+        "failedSaveMessage": "Nie udało się zapisać opinii. Spróbuj ponownie.",
+        "invalidOpinion": "Opinia musi mieć formę tekstu!",
+        "correctlySaveMessage": "Opinia dodana poprawnie.",
+        "ratingLabel": "Wybierz ocenę:",
+        "opinionLabel": "Wpisz swoją opinię:",
+        "opinionPlaceholder": "Twoja opinia",
+        "submitOpinionBtn": "Zapisz!"
+    },
+    "addTransaction": {
+        "heading": "Dodaj nową transakcję"
+    },
+    "addUserToHouse": {
+        "heading": "Dodaj nowego domownika"
+    },
+    "calendar": {
+        "heading": "Szczegóły transakcji:",
+        "category": "Kategoria:",
+        "type": "Typ:",
+        "value": "Wartość:",
+        "user": "Domownik:",
+        "date": "Data dodania:"
+    },
+    "changeEmail": {
+        "emailInputError": "Podaj prawidłowy adres e-mail!",
+        "checkEmailError": "Wprowadzony adres e-mail jest już wykorzystywany.",
+        "failedError": "Nie udało się zmienić adresu e-mail.",
+        "changedCorrectlyMessage": "Adres e-mail zmieniony poprawnie.",
+        "internalError": "Błąd przetwarzania żądania.",
+        "formHeading" : "Zmień adres e-mail:",
+        "emailLabel": "Podaj nowy adres e-mail:",
+        "emailPlaceholder": "nowy adres e-mail",
+        "newEmailSubmitBtn": "Zapisz nowy adres e-mail"
+    },
+    "cookies": {
+        "valueError": "Niepoprawna wartość.",
+        "internalError": "Błąd przetwarzania żądania.",
+        "successMessage": "Twoje zgody zostały zapisane.",
+        "cookieTxt": "Na tej stronie wykorzystujemy pliki cookies w celu uwierzytelniania użytkowników oraz zbierania anonimowych statystyk dotyczących ruchu i sposobu korzystania ze strony (Google Analytics). Nie przechowujemy żadnych danych reklamowych ani śledzących.Więcej informacji znajdziesz w naszej Polityce Prywatności.",
+        "allBtn": "Zaakceptuj wszystkie",
+        "mandatoryBtn": "Tylko wymagane"
+    },
+    "deleteTransaction": {
+        "successMessage": "Transakcja usunięta poprawnie.",
+        "failedMessage": "Nie udało się usunąć transakcji.",
+        "errorMessage": "Wystąpił błąd podczas usuwania transakcji.",
+        "heading": "Czy jesteś pewny, że chcesz usunąć transakcję?"
+    },
+    "logOut": {
+        "heading": "Czy na pewno chcesz się wylogować?"
+    },
+    "invitationModal": {
+        "housemate": "Domownik",
+        "invite": "zaprosił",
+        "acceptedMessage": "Zaproszenie zaakceptowane.",
+        "failedAccept": "Nie udało się zaakceptować zaproszenia.",
+        "rejectedMessage": "Zaproszenie odrzucone.",
+        "failedReject": "Nie udało się odrzucić zaproszenia"
+    }
+}

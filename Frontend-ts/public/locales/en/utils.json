@@ -1,0 +1,25 @@
+{
+    "actionsTableLabels": {
+        "Value": "value",
+        "Type": "type",
+        "Category": "category",
+        "User" : "user",
+        "Date": "date",
+        "Actions": "actions"
+    },
+    "messagesStates": {
+        "all": "all",
+        "new": "new",
+        "readed": "readed",
+        "sended": "sended"
+    },
+    "tableHeader": {
+        "Sender": "sender",
+        "Recipient": "recipient",
+        "Message": "message",
+        "Date": "date",
+        "Is readed": "status",
+        "Actions": "actions"
+
+    }
+}

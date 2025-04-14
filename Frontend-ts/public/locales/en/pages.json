@@ -1,0 +1,39 @@
+{
+    "userProfile": {
+        "avatarLabel": "Select your avatar file:",
+        "transactionsTitle": "Your transactions:",
+        "avatarInputError": "Choose a file!",
+        "failedError": "Failed to save avatar",
+        "successMessage": "Avatar saved correctly.",
+        "btnSave": "Save avatar",
+        "selectAvatar": "Select avatar"
+
+    },
+    "houseInfo": {
+        "transactionsLabel": "Previous day's transactions:",
+        "budgetLabel": "Previous day's budget:",
+        "housematesLabel": "Housemates:",
+        "housematesOpenBtn": "View housemates list",
+        "fiveActionsTitle": "Last 5 transactions:"
+    },
+    "messagesPage": {
+        "title": "Your messages:"
+    },
+    "transactionsPage": {
+        "addNewBtn": "Add new transaction",
+        "categoriesBtn": "Vew all categories"
+    },
+    "housematesPage" : {
+        "title": "Your housemates:"
+    },
+    "userDashboard": {
+        "heading": "To use website functions, add your household",
+        "inputLabel" : "Type name of your household:",
+        "infoParagraph": "If household exists, you will be added to it",
+        "emptyInputError": "Enter household name!",
+        "addBtnLabel": "Add",
+        "addedCorrectlyMessage": "Household added correctly!",
+        "assignedCorrectlyMessage": "User correctly assigned to household.",
+        "failedError": "Failed to add new household."
+    }
+}

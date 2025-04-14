@@ -1,0 +1,77 @@
+{
+    "cancel": "Cancel",
+    "btnYes": "Yes",
+    "btnNo": "No",
+    "btnAccept": "Accept",
+    "btnDecline": "Reject",
+    "deleteMessage": {
+        "errorMessage": "Failed to deleting message.",
+        "deletedCorrectlyMessage": "Message deleted correctly.",
+        "confirmQuestion": "Are you sure you want to delete the message"
+    },
+    "messageDetails": {
+        "heading": "Details:",
+        "senderLabel": "From:",
+        "receiverLabel": "For:",
+        "messageLabel": "Message"
+    },
+    "addReview": {
+        "failedSaveMessage": "Failed to save opinion :( Try again!",
+        "invalidOpinion": "Type valid opinion!",
+        "correctlySaveMessage": "Opinion added correctly.",
+        "ratingLabel": "Choose rating:",
+        "opinionLabel": "Type your opinion:",
+        "opinionPlaceholder": "Your opinion",
+        "submitOpinionBtn": "Save!"
+    },
+    "addTransaction": {
+        "heading": "Add New Transaction"
+    },
+    "addUserToHouse": {
+        "heading": "Invite new user to household"
+    },
+    "calendar": {
+        "heading": "Transaction details:",
+        "category": "Category:",
+        "type": "Type:",
+        "value": "Value:",
+        "user": "Housemate:",
+        "date": "Addition date:"
+    },
+    "changeEmail": {
+        "emailInputError": "Type correctly e-mail address!",
+        "checkEmailError": "Entered e-mail address already exists.",
+        "failedError": "Failed to change e-mail address.",
+        "changedCorrectlyMessage": "E-mail address changed correctly.",
+        "internalError": "Internal server error.",
+        "formHeading": "Change your e-mail",
+        "emailLabel": "Type your new e-mail address:",
+        "emailPlaceholder": "new e-mail",
+        "newEmailSubmitBtn": "Save new e-mail"
+    },
+    "cookies": {
+        "valuError": "Incorrect value",
+        "internalError": "Internal server error.",
+        "successMessage": "Your consent saved correctly.",
+        "cookieTxt": "On this site, we use cookies to authenticate users and collect anonymous statistics regarding traffic and usage of the site (Google Analytics). We do not store any advertising or tracking. For more information, please see our Privacy Policy.",
+        "allBtn": "Accept all",
+        "mandatoryBtn": "Only mandatory"
+    },
+    "deleteTransaction": {
+        "successMessage": "Transaction deleted correctly.",
+        "failedMessage": "Failed to delete transaction.",
+        "errorMessage": "An error occured during deleting transaction.",
+        "heading": "Are you sure you want to delete transaction?"
+    },
+    "logOut": {
+        "heading": "Are you sure you want to log out?"
+    },
+    "invitationModal": {
+        "housemate" : "Housemate",
+        "invite": "invite",
+        "acceptedMessage": "Invitation successfully accepted",
+        "failedAccept": "Failed to accept invitation",
+        "rejectedMessage": "Invitation successfully rejected.",
+        "failedReject": "Failed to reject invitation."
+    }
+}
