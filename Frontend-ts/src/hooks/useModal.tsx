@@ -1,22 +1,22 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback} from "react";
 
-interface modalState {
+
+interface ModalState<T = unknown> {
     isOpen: boolean;
     modalType: string;
-    data: unknown;
-};
+    data: T | null;
+}
 
-const initialModalState: modalState = {
+const initialModalState: ModalState = {
     isOpen: false,
     modalType: '',
     data: null,
-}
+};
 
+export const useModal = <T = unknown>(defaultState?: ModalState<T>) => {
+    const [modal, setModal] = useState<ModalState<T>>(defaultState ?? initialModalState as ModalState<T>);
 
-export const useModal = (defaultState: modalState = initialModalState) => {
-    const [modal, setModal] = useState<modalState>(defaultState);
-
-    const openModal = useCallback((modalType: string, data: unknown) => {
+    const openModal = useCallback((modalType: string, data: T) => {
         setModal({
             isOpen: true,
             modalType,

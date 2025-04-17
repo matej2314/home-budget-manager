@@ -1,0 +1,1 @@
+export const tableLabels: string[] = ["Value", "Type", "Category", "User", "Date"];
