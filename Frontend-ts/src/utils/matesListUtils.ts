@@ -1,0 +1,1 @@
+export const thLabels: string[] = ['Name', 'Role', 'Actions'];

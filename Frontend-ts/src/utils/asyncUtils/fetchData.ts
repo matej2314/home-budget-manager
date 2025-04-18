@@ -1,10 +1,9 @@
-type ResponseData<T> = {
+export interface BaseApiResponse {
     status: 'error' | 'success';
     message: string;
-    data: T;
 };
 
-const fetchData = async <T>(url: string): Promise<T> => {
+const fetchData = async <T extends BaseApiResponse>(url: string): Promise<T> => {
     try {
         const response = await fetch(url, {
             credentials: "include",
@@ -14,13 +13,13 @@ const fetchData = async <T>(url: string): Promise<T> => {
             throw new Error(`Błąd odpowiedzi HTTP: ${response.status}`);
         }
 
-        const responseData: ResponseData<T> = await response.json();
+        const responseData: T = await response.json();
 
         if (responseData.status === 'error') {
             throw new Error(responseData.message || "Błąd pobierania danych z API.");
         }
 
-        return responseData.data;
+        return responseData;
     } catch (error) {
         throw new Error("Błąd pobierania danych.");
     }

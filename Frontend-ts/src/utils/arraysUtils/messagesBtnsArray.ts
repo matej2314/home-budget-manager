@@ -5,6 +5,7 @@ export type Message = {
     sender: string;
     recipient: string;
     message: string;
+    readed?: boolean
 };
 
 type BtnElement = {
