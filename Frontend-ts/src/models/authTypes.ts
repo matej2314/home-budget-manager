@@ -9,6 +9,14 @@ export type User = {
     cookiesConsent?: boolean;
 };
 
+export type RegisterRequestData = {
+    reg_username: string;
+    reg_email: string;
+    reg_password: string;
+    role: string;
+    cookies: boolean;
+};
+
 export type AuthStatus = {
     message: string;
     error: string;
@@ -27,7 +35,7 @@ export type AuthContextType = {
     sessionStatus: SessionStatus;
     user: User;
     updateUser?: (updates: User) => void;
-    register: (data: User) => Promise<void>;
+    register: (data: RegisterRequestData) => Promise<void>;
     login: (data: LoginInputValue) => Promise<void>;
     logout: () => Promise<void>;
     checkSession?: () => Promise<void>;

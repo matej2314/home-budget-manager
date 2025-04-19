@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import sendRequest from "@utils/asyncUtils/sendRequest";
 import { type User } from "@models/authTypes";
-import { type AuthStatus, SessionStatus, AuthContextType, AuthProviderProps, LoginInputValue, LoginResponse,checkSessionResponse } from "@models/authTypes";
+import { type AuthStatus, SessionStatus, AuthContextType, AuthProviderProps, LoginInputValue, LoginResponse,checkSessionResponse, RegisterRequestData } from "@models/authTypes";
 import { type BaseApiResponse } from "@utils/asyncUtils/fetchData";
 import fetchData from "@utils/asyncUtils/fetchData";
 import { serverUrl } from "url";
@@ -29,10 +29,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 const emptyUser: User = { id: '', userName: '', role: '', avatar: '', cookiesConsent: false };
 
-    const register = async (data: User): Promise<void> => {
+    const register = async (data: RegisterRequestData): Promise<void> => {
+
+        const newUserData = data;
+
         setSignUpStatus({ message: '', error: '', isLoading: true });
         try {
-            const response = await sendRequest<User, BaseApiResponse>('POST', { data }, `${serverUrl}/auth/signup`);
+            const response = await sendRequest<RegisterRequestData, BaseApiResponse>('POST', newUserData, `${serverUrl}/auth/signup`);
 
             if (response.status === 'error') {
                 setSignUpStatus((prev) => ({ ...prev, error: response.message }));
@@ -51,7 +54,7 @@ const emptyUser: User = { id: '', userName: '', role: '', avatar: '', cookiesCon
         setLoginStatus({ error: '', isLoading: true, message: '' });
 
         try {
-            const response = await sendRequest<LoginInputValue, LoginResponse>('POST', { data }, `${serverUrl}/auth/login`);
+            const response = await sendRequest<LoginInputValue, LoginResponse>('POST', {email: data.email, password: data.password}, `${serverUrl}/auth/login`);
 
             if (response.status === 'success') {
                 updateUser({
@@ -79,7 +82,7 @@ const emptyUser: User = { id: '', userName: '', role: '', avatar: '', cookiesCon
         setLoginStatus({ error: '', isLoading: true, message: '' });
 
         try {
-            const response = await sendRequest<null, BaseApiResponse>('POST', { data: null }, `${serverUrl}/auth/logout`);
+            const response = await sendRequest < {}, BaseApiResponse>('POST', {}, `${serverUrl}/auth/logout`);
             
             if (response.status === 'success') {
                 setIsAuthenticated(false);
