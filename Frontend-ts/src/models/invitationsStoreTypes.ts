@@ -1,6 +1,6 @@
 import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
 
-type Invitation = {
+export type Invitation = {
     id: string;
     status: string;
     hostId: string;
@@ -11,7 +11,7 @@ type Invitation = {
     inviteduserName: string;
 };
 
-type Invitations = Invitation[] | [];
+export type Invitations = Invitation[] | [];
 
 
 export type InvitationsApiResponse = BaseApiResponse & {
