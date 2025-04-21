@@ -6,27 +6,28 @@ import { type MessagesStoreType, MessagesApiResponse } from "@models/messagesSto
 export const useMessagesStore = create<MessagesStoreType>((set) => ({
     messagesData: [],
     messagesLoading: false,
-    messagesError: '',
+    messagesError: null,
     messagesTotalPages: 1,
     currentPage: 1,
     isMessagesFetched: false,
 
+
     fetchMessages: async (page = 1) => {
-        set({ messagesLoading: true, messagesError: '', isMessagesFetched: false });
+        set({ messagesLoading: true, messagesError: null, isMessagesFetched: false });
 
         try {
-            const result = await fetchData<MessagesApiResponse>(`${serverUrl}/board/data/messages/${page}`);
+            const result: MessagesApiResponse = await fetchData(`${serverUrl}/board/data/messages/${page}`);
             set({
-                messagesData: result.dashboardData.messagesData || [0],
+                messagesData: result.dashboardData?.messagesData ,
                 messagesTotalPages: result.dashboardData.totalPages || 1,
                 currentPage: page,
                 messagesLoading: false,
                 isMessagesFetched: true,
             });
-        } catch (error: unknown) {
-            const err = error as Error;
-            set({ messagesLoading: false, messagesError: err.message });
+        } catch (error) {
+            set({ messagesLoading: false, messagesError: error });
         }
     },
+
     setCurrentPage: (page) => set({ currentPage: page }),
 }));

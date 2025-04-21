@@ -3,8 +3,7 @@ import { AuthContext } from "./authContext";
 import { serverUrl } from "url";
 import fetchData from "@utils/asyncUtils/fetchData";
 import {
-    type
-    DataProviderProps,
+    type DataProviderProps,
     DataContextType,
     Data,
     Filter,
@@ -20,14 +19,13 @@ export const DataContext = createContext<DataContextType>({
         dailyData: [],
         dataError: '',
         loading: true,
-
     },
     isLoading: true,
     refreshData: () => { },
+    contextError: '',
 });
 
 export const DataProvider = ({ children }: DataProviderProps) => {
-    
     const { isAuthenticated } = useContext(AuthContext)!;
 
     const [data, setData] = useState<Data>({
@@ -45,7 +43,8 @@ export const DataProvider = ({ children }: DataProviderProps) => {
 
         try {
             const result = await fetchData<DashboardApiResponse>(`${serverUrl}/board/data/${filter}`);
-            setData((prevData) => ({
+
+            setData(prevData => ({
                 ...prevData,
                 ...(result.dashboardData.houseData && { houseData: result.dashboardData.houseData }),
                 ...(result.dashboardData.houseMates && { houseMates: result.dashboardData.houseMates }),
@@ -56,7 +55,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
             }));
         } catch (error: unknown) {
             const err = error as Error;
-            setData(prevData => ({ ...prevData, dataError: err.message }));
+            setData(prevData => ({ ...prevData, dataError: err.message, loading: false }));
         }
     };
 
@@ -67,19 +66,19 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     useEffect(() => {
         if (isAuthenticated) {
             fetchBoardData();
-        };
+        }
     }, [isAuthenticated]);
 
     const dataContextValue: DataContextType = {
         data,
         isLoading: data.loading,
-        refreshData
+        contextError: data.dataError,
+        refreshData,
     };
 
     return (
         <DataContext.Provider value={dataContextValue}>
             {children}
         </DataContext.Provider>
-    )
-
-}
+    );
+};

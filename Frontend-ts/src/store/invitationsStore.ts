@@ -3,7 +3,6 @@ import { serverUrl } from 'url';
 import fetchData from '@utils/asyncUtils/fetchData';
 import { type InvitationsApiResponse, InvitationsStore } from '@models/invitationsStoreTypes';
 
-
 export const useInvitationsStore = create<InvitationsStore>((set) => ({
     invitationsData: [],
     invitationsLoading: false,

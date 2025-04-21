@@ -12,7 +12,7 @@ export type HouseDataObj = {
     lastBalanceDate: string;
     lastInitialBudget: string;
     initialValidUntil: string;
-    initialDefinedAt: Date;
+    initialDefinedAt: string;
 };
 
 export type HouseMatesObj = {
@@ -47,19 +47,20 @@ export type ActionsCatObj = {
 };
 
 export type Data = {
-    houseData: HouseDataObj[];
-    houseMates: HouseMatesObj[];
-    actionsCatData: ActionsCatObj[];
-    statsData: StatsDataObj[];
-    dailyData: DailyDataObj[];
-    dataError: string;
-    loading: boolean;
+        houseData: HouseDataObj[];
+        houseMates: HouseMatesObj[];
+        actionsCatData: ActionsCatObj[];
+        statsData: StatsDataObj[];
+        dailyData: DailyDataObj[];
+        dataError: Error | string ;
+        loading: boolean; 
 };
 
 export type DataContextType = {
     data: Data;
     isLoading: boolean;
     refreshData: () => void;
+    contextError: Error | string;
 };
 
 export type DataProviderProps = {

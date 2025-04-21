@@ -1,3 +1,98 @@
-import { type Notification, NotificationsMap } from "@models/notificationsTypes";
+import {  NotificationCategory } from "@models/notificationsStoreTypes";
+import { type NotificationsState, HeaderIconsContainerInput} from "@models/componentsTypes/HeaderIconsContainerTypes";
 import { useState, useEffect, useMemo } from "react";
+import { useSocket } from "@store/socketContext";
+import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { useTranslation } from "react-i18next";
+import { checkNotifications, mergeNotifications } from "@utils/notificationsUtils";
+import NotificationDot from "./NotificationDot";
+import NotificationsContainer from "./NotificationsContainer";
+import useNotificationsStore from "@store/notificationsStore";
+import { NewMessageType } from "@models/socketContextTypes";
 
+export default function HeaderIconsContainer({ filteredDataMessages, socketMessages }: HeaderIconsContainerInput) {
+    const { t } = useTranslation("dashboardInternal");
+    const [notificationsState, setNotificationsState] = useState<NotificationsState>({
+        isVisible: false,
+        hasNotifications: false,
+    });
+    const [userMessages, setUserMessages] = useState<NewMessageType[]>();
+    const {  messages, deleteNotification } = useSocket();
+    const { notifications, fetchNotifications, removeNotification } = useNotificationsStore()!;
+    const socketNotifications = messages?.notifications;
+
+    useEffect(() => {
+        fetchNotifications();
+    }, [fetchNotifications]);
+
+    const allNotifications = useMemo(() => ({
+        transactions: mergeNotifications(notifications.transactions, socketNotifications.transactions),
+        usersActions: mergeNotifications(notifications.usersActions, socketNotifications.usersActions),
+        monthlyBalance: mergeNotifications(notifications.monthlyBalance, socketNotifications.monthlyBalance),
+    }), [notifications, socketNotifications]);
+
+    const toggleNotifications = () => {
+        setNotificationsState(prevState => ({
+            ...prevState,
+            isVisible: !prevState.isVisible,
+        }));
+    };
+
+    useEffect(() => {
+        const hasNewNotifications = checkNotifications(allNotifications);
+        setNotificationsState(prevState => ({
+            ...prevState,
+            hasNotifications: hasNewNotifications,
+        }));
+
+        if (socketMessages) {
+            setUserMessages(socketMessages);
+        }
+    }, [allNotifications, socketMessages]);
+
+    const handleReadNotification = async (type: NotificationCategory, id: string) => {
+        await removeNotification(type, id);
+        setNotificationsState(prevState => ({
+            ...prevState,
+            hasNotifications: false,
+        }));
+        await deleteNotification(type, id);
+    };
+
+    const handleMessagesRead = () => {
+        setUserMessages([]);
+    };
+
+    return (
+        <div id="icons-container" className="w-fit flex justify-center items-center gap-3">
+            <button onClick={toggleNotifications} type="button" title={t("headerIcons.noticeTitle")} className="w-full h-full hover:text-lime-700">
+                {notificationsState.hasNotifications ?
+                    <Icon icon="ic:sharp-notifications-active" width={20} height={20} />
+                    : <Icon icon="material-symbols-light:notifications-outline" width={20} height={20} />
+                }
+            </button>
+            {filteredDataMessages.length > 0 && (
+                <NotificationDot color="bg-red-700" data={filteredDataMessages.length} head={true} />
+            )}
+            {userMessages && userMessages.length > 0 && (
+                <NotificationDot color="bg-green-700" data={userMessages.length} head={true} onClick={handleMessagesRead} />
+            )}
+            <Link to="/dashboard/messages" title={t("headerIcons.messagesTitle")} className="w-fit h-fit hover:text-sky-700" onClick={handleMessagesRead}>
+                <Icon icon="tabler:messages" width={20} height={20} />
+            </Link>
+            <Link to="/dashboard/myhouse" title={t("headerIcons.houseTitle")} className="w-fit h-fit hover:text-yellow-900">
+                <Icon icon="ph:house-bold" width={20} height={20} />
+            </Link>
+            {notificationsState.isVisible && (
+                <NotificationsContainer
+                    notifications={allNotifications}
+                    clickAction={handleReadNotification}
+                    onClose={() => setNotificationsState(prevState => ({ ...prevState, isVisible: false }))}
+                />
+            )}
+        </div>
+    );
+
+
+} 

@@ -28,6 +28,15 @@ export interface NewMessageType {
     }
 };
 
+export interface NewMessageDataType {
+    id: string;
+    sender: string;
+    recipient: string;
+    message: string;
+    date: string;
+    readed: string;
+};
+
 export interface InitBudgetType {
     type: 'initial_budget',
     data: {

@@ -1,6 +1,6 @@
 import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
 
-type Message = {
+export type Message = {
     id: string;
     message: string;
     readed: boolean;
@@ -12,7 +12,7 @@ type Message = {
 type TotalPages = number;
 type Page = number;
 
-type DashboardData = {
+export type DashboardData = {
     messagesData: Message[];
     totalPages: TotalPages;
     page: Page;
@@ -21,7 +21,7 @@ type DashboardData = {
 export type MessagesStoreType = {
     messagesData: Message[];
     messagesLoading: boolean;
-    messagesError: string;
+    messagesError: unknown;
     messagesTotalPages: number;
     currentPage: number;
     isMessagesFetched: boolean;
