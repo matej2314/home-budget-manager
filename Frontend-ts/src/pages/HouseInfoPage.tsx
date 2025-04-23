@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { getData } from '@utils/getData';
 import DashboardHeader from "@components/dashboard/dashboardComponents/DashboardHeader";
-// import TransactionsList from '@components/dashboard/dashboard-internal-components/TransactionsList';
+import TransactionsList from '@components/dashboard/dashboard-internal-components/TransactionsList';
 // import BudgetPerDay from "@components/dashboard/dashboardComponents/charts-dashboard-components/BudgetPerDay";
 // import TransactionsPerDay from "@components/dashboard/dashboardComponents/charts-dashboard-components/TransactionsPerDay";
 // import BalanceBudgetComparison from "@components/dashboard/dashboardComponents/charts-dashboard-components/BalanceBudgetComparison";
@@ -26,7 +26,7 @@ export default function HouseInfoPage() {
     } = useContext(DataContext);
 
     const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
-    const { user, isAuthenticated } = useContext(AuthContext)!;
+    const { user} = useContext(AuthContext)!;
     const { t } = useTranslation("pages");
     const { houseData, houseMates, statsData, dailyData } = data;
     const isMobile = useDeviceType();
@@ -103,7 +103,7 @@ export default function HouseInfoPage() {
                         <div id="content-section" className="w-full flex flex-row justify-center items-start gap-5 flex-wrap">
                             <div id="last-five-transactions" className="flex flex-col items-center gap-3  px-4 mx-5 rounded-md">
                                 <h2 className="text-xl flex justify-center">{t("houseInfo.fiveActionsTitle")}</h2>
-                                <TransactionsList limit={5} mainSite={true} transactions={actionsData && transactions} />
+                                <TransactionsList limit={5} mainSite={true} transactions={transactions} />
                             </div>
                             <div id="charts1" className="w-full h-full flex flex-col flex-wrap justify-around items-center mb-5 flex-grow px-5 gap-y-4 gap-x-4">
                                 <div className="w-full indirect:w-full md:w-full h-fit flex flex-col lg:flex-col xl:flex-row justicy-center items-center gap-5">

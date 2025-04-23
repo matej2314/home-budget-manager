@@ -1,10 +1,12 @@
 import { filterArray } from "./arraysUtils/arraysFunctions";
 import { type User } from "@models/authTypes";
-import { type Message } from "./arraysUtils/messagesBtnsArray";
+import { type Message } from "@models/messagesStoreTypes";
 import { type ActionType, type OpenModalFn, type HandleMessageFn } from "@models/msgsUtilsTypes";
-import { ReactNode } from "react";
+import { ComponentType, JSX, ReactNode } from "react";
+import { NewMessageType } from "@models/socketContextTypes";
 
-export const getFilterMap = (sortedMessages: Message[], newMessages: Message[], filteredMessages: Message[], user: User) => {
+
+export const getFilterMap = (sortedMessages: Message[], newMessages:Message[], filteredMessages: Message[], user: User): Record<string, Message[] > => {
     return {
         all: sortedMessages,
         new: newMessages,
@@ -12,6 +14,9 @@ export const getFilterMap = (sortedMessages: Message[], newMessages: Message[], 
         sended: filterArray(sortedMessages, (msg) => msg.sender === user.userName),
     };
 };
+
+
+
 
 export const getClickHandler = (
     actionType: ActionType,
@@ -33,11 +38,19 @@ export const getClickHandler = (
     };
 };
 
-export const getModalComponents = (DisplayMessageDetails: ReactNode, DeleteMessageModal: ReactNode, ReplyMessageModal: ReactNode) => {
+export const getModalComponents = (DisplayMessageDetails: ComponentType, DeleteMessageModal: ComponentType, ReplyMessageModal: ComponentType): Record<string, ComponentType | ReactNode> => {
 
     return {
         open: DisplayMessageDetails,
         delete: DeleteMessageModal,
         reply: ReplyMessageModal
     };
+};
+
+export const normalizeMessages = (newMessages: NewMessageType[]): Message[] => {
+    return newMessages
+        .filter(msg => msg?.data)
+        .map((msg): Message => ({
+            ...msg.data,
+        }));
 };

@@ -3,7 +3,7 @@ import { AuthContext } from '@store/authContext';
 import {useModal} from '@hooks/useModal';
 import { Icon } from '@iconify/react';
 import { useMediaQuery } from 'react-responsive';
-// import LoadingModal from '@modals/LoadingModal';
+import LoadingModal from '@components/modals/LoadingModal';
 import { tableLabels } from '../../../utils/arraysUtils/actionsTableLabels';
 import { formatDbDate } from '../../../utils/formattingUtils/formatDateToDisplay';
 import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
@@ -13,14 +13,14 @@ import { type Transaction } from '@models/transactionsStoreTypes';
 import { type AuthContextType } from '@models/authTypes';
 
 export type TransactionsListInput = {
-    limit: number;
+    limit?: number;
     mainSite: boolean;
-    filterId: string;
+    filterId?: string;
     transactions: Transaction[];
-    actionsLoading: boolean;
-    actionsError: string | null;
-    actionsTotalPages: number;
-    getTransactions: (page: number) => Promise<void>;
+    actionsLoading?: boolean;
+    actionsError?: string | null;
+    actionsTotalPages?: number;
+    getTransactions?: (page: number) => void;
 }
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, getTransactions }: TransactionsListInput) {
@@ -32,7 +32,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
 
     const filteredTransactions: Transaction[] = filterId ? filterArray(transactions, (transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)
-        ? [...filteredTransactions].sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
+        ? [...filteredTransactions].sort((a: Transaction, b: Transaction) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime())
         : [];
     const transactionsToDisplay: Transaction[] = limit ? sortedTransactions.slice(0, limit) : sortedTransactions;
 
@@ -43,11 +43,11 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
     return (
         <div className="w-full h-full overflow-auto pb-4">
             <div className='w-full h-fit flex justify-end gap-3 pr-5 mb-2'>
-                {Array.from({ length: actionsTotalPages }, (_, index) => (
+                {Array.from({ length: actionsTotalPages as number }, (_, index) => (
                     <button
                         key={index}
                         className=''
-                        onClick={() => getTransactions(index + 1)}
+                        onClick={() => getTransactions?.(index + 1)}
                     >
                         {index + 1}
                     </button>
@@ -71,15 +71,15 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                         </tr>
                     </thead>
                     <tbody className="border-x-[1px] border-slate-400 text-[0.6rem] indirect:text-sm md:text-sm text-center">
-                        {transactionsToDisplay.map((transaction) => (
+                        {transactionsToDisplay.map((transaction: Transaction, index: number) => (
                             <tr key={transaction.transactionId}
-                                className={`border-b ${transaction.transactionId === transactionsToDisplay.length - 1 ? 'border-b-2 border-slate-400' : 'border-none'}`}>
+                                className={`border-b ${index === transactionsToDisplay.length - 1 ? 'border-b-2 border-slate-400' : 'border-none'}`}>
                                 <td className="pl-2 transactions-list-table-data">{`${transaction.value} zł`}</td>
                                 <td className="transactions-list-table-data">{tInternal(`transactionsList.types.${transaction.type}`)}</td>
                                 <td className="transactions-list-table-data">{transaction.categoryName}</td>
                                 <td className="transactions-list-table-data">{transaction.userName}</td>
                                 <td className="transactions-list-table-data">
-                                    {!isMobile ? formatDbDate(new Date(transaction.addedAt), undefined) : formatDbDate(new Date(transaction.addedAt), true)}
+                                    {!isMobile ? formatDbDate(transaction.addedAt, undefined) : formatDbDate(transaction.addedAt, true)}
                                 </td>
                                 {!mainSite && transaction.userName === user.userName && (
                                     <td>
@@ -101,7 +101,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                 <p>{tInternal("transactionsList.noActionsError")}</p>
             )}
             {actionsLoading && <LoadingModal isOpen={actionsLoading} />}
-            {modal && modal.isOpen && modal.modalType === 'delete' && <DeleteTransactionModal isOpen={modal.isOpen} onRequestClose={closeModal} transaction={modal.data} />}
+            {/* {modal && modal.isOpen && modal.modalType === 'delete' && <DeleteTransactionModal isOpen={modal.isOpen} onRequestClose={closeModal} transaction={modal.data} />} */}
         </div>
     );
 }

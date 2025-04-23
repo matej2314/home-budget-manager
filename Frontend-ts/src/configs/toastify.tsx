@@ -1,6 +1,9 @@
 import { toast} from 'react-toastify';
 import { Icon } from '@iconify/react';
 import 'react-toastify/dist/ReactToastify.css';
+import { ReactNode} from 'react';
+
+type ToastMessage = string | ReactNode | (() => string | ReactNode);
 
 const toastStyles = {
     success: 'text-red-700',
@@ -9,20 +12,20 @@ const toastStyles = {
     message: ''
 };
 
-export const showSuccessToast = (message: string): void => {
+export const showSuccessToast = (message: ToastMessage): void => {
     toast.success(message, {
         className: toastStyles.success
     });
 };
 
-export const showErrorToast = (message: string): void => {
+export const showErrorToast = (message: ToastMessage): void => {
     toast.error(message, {
         className: toastStyles.error,
         autoClose: 2000
     });
 };
 
-export const showInfoToast = (message: string): void => {
+export const showInfoToast = (message: ToastMessage): void => {
     toast.info(message, {
         className: toastStyles.info,
         autoClose: 1000

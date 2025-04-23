@@ -10,7 +10,7 @@ type MarkMessageResponse = {
     message: string;
 };
 
-export const markMessage = async (message: Message, user: User, refreshData: () => void, mode: string) => {
+export const markMessage = async (message: Message, user: User, refreshData: (page: number) => void, mode: string) => {
     const tCommon = (key: string, options = {}) => t(key, { ns: 'common', ...options });
 
     if (user.userName !== message.recipient && mode && mode !== 'open') {
@@ -21,14 +21,14 @@ export const markMessage = async (message: Message, user: User, refreshData: () 
             
             const markMessage = await sendRequest<{ messageId: string }, MarkMessageResponse>(
                 'PUT', 
-                { data: { messageId: message.id } },
+                { messageId: message.id },
                 `${serverUrl}/message/readed`
             );
 
             // Obsługa odpowiedzi
             if (markMessage.status === 'success') {
                 showInfoToast(tCommon("messageMarkedAsRead"));
-                refreshData();
+                refreshData(1);
             } else {
                 showErrorToast(markMessage.message || tCommon("generalErrorMsg"));
             }

@@ -1,4 +1,4 @@
-export const formatDbDate = (date: Date, split: boolean | undefined) => {
+export const formatDbDate = (date: string, split: boolean | undefined) => {
     const inputDate: Date = new Date(date);
     const localDate: string = inputDate.toLocaleString();
     let formattedDate;

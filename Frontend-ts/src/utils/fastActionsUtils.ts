@@ -1,14 +1,15 @@
-import { showInfoToast } from "@configs/toastify";
 import { isHostRole } from "./checkUserRole";
 import { type User } from "@models/authTypes";
+import { ComponentType} from "react";
+import { type TFunction } from "i18next";
 
 interface ClickHandlerInput {
     actionType: string;
     handleButtonClick: (actionType: string) => void;
     openModal: (actionType: string) => void;
-    showInfoToast: (tInternal: () => void) => void;
+    showInfoToast: (message: string) => void;
     user: User;
-    tInternal: () => void;
+    tInternal: TFunction;
 }
 
 export const getClickHandler = ({ actionType, handleButtonClick, openModal, showInfoToast, user, tInternal }: ClickHandlerInput) => {
@@ -42,7 +43,7 @@ export const getModalComponents = ({
     DeclareBudgetModal,
     CookiesModal,
     AddReviewModal
-}) => ({
+}: ComponentType[]):Record<string, ComponentType> => ({
     transaction: AddTransactionModal,
     message: SendMessageModal,
     addUser: AddUserToHouseModal,

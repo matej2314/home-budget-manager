@@ -1,4 +1,4 @@
-type BtnObj = {
+export type BtnObj = {
     label: string;
     actionType: string;
     profilePage?: boolean;

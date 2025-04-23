@@ -1,18 +1,11 @@
 import { type User } from "@models/authTypes";
-
-export type Message = {
-    id: string;
-    sender: string;
-    recipient: string;
-    message: string;
-    readed?: boolean
-};
+import { Message } from "@models/messagesStoreTypes";
 
 type BtnElement = {
     label: string;
     icon: string;
     actionType: string;
-    condition?: (message: Message, user:User) => void;
+    condition?: (message: Message, user:User) => boolean;
 }
 
 

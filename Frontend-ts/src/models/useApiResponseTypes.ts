@@ -1,7 +1,7 @@
 export type ApiResponse = {
     status: 'success' | 'error';
     message: string;
-    [key: string]: string;
+    [key: string]: string | undefined;
 };
 
 export type CallbackOptions = {
