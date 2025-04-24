@@ -1,8 +1,7 @@
-import { ComponentType, useContext } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../../../store/authContext';
-import { useMessagesStore } from '../../../store/messagesStore';
 import Modal from 'react-modal';
-// import SendMessageForm from '../../forms/SendMessageForm';
+import SendMessageForm from '@components/forms/SendMessageForm';
 import { serverUrl } from '../../../url';
 import sendRequest from '../../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
@@ -126,13 +125,13 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }: Messa
 					/>
 				</form>
 			</div>
-			<div className="w-full flex justify-center mt-5 pb-5">{user.userName !== message.sender && <SendMessageForm reply={true} recipientName={message.sender} />}</div>
+			<div className="w-full flex justify-center mt-5 pb-5">{user.userName !== message.sender && <SendMessageForm onClose={onRequestClose} reply={true} recipientName={message.sender} />}</div>
 		</Modal>
 	);
 }
 
 export function ReplyMessageModal({ isOpen, onRequestClose, message }: MessageModalWithMsg) {
-	const recipientName = (isOpen && message && message.sender) || null;
+	const recipientName = isOpen && message ? message.sender : '';
 
 	return (
 		<Modal
@@ -144,7 +143,7 @@ export function ReplyMessageModal({ isOpen, onRequestClose, message }: MessageMo
 				X
 			</button>
 			<div className="w-full flex justify-center">
-				<SendMessageForm reply={true} recipientName={recipientName} />
+				<SendMessageForm onClose={onRequestClose} reply={true} recipientName={recipientName} />
 			</div>
 		</Modal>
 	);

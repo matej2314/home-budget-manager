@@ -1,38 +1,40 @@
-import { useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { useMessagesStore } from '../../store/messagesStore';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
-import useApiResponseHandler from '../../hooks/useApiResponseHandler';
-// import SendMessageBtn from './internal/SendMessageBtn';
+import SendMessageBtn from './internal/SendMessageBtn';
 import LoadingModal from '../modals/LoadingModal';
-import { isValidUsername } from '@utils/validation';
 
+type SendMessageFormInput = {
+    reply: boolean;
+    recipientName: string | null;
+    onClose: () => void;
+}
 
-
-export default function SendMessageForm({ reply, recipientName, onClose }) {
-	const [isLoading, setIsLoading] = useState(false);
-	const [actionState, setActionState] = useState({ type: null });
+export default function SendMessageForm({ reply, recipientName, onClose }: SendMessageFormInput) {
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [actionState, setActionState] = useState < { type: string}>({ type: '' });
 	const { fetchMessages } = useMessagesStore();
 	const { t } = useTranslation("forms");
-	const recipientRef = useRef<HTMLInputElement<>();
-	const messageContentRef = useRef();
+	const recipientRef = useRef<HTMLInputElement>(null);
+	const messageContentRef = useRef<HTMLTextAreaElement>(null);
 
-	const handleSetActionState = (action) => {
+	const handleSetActionState = (action: string) => {
 		setActionState({ type: action });
 	};
 
 	const handleResetActionState = () => {
-		setActionState({ type: null });
+		setActionState({ type: '' });
 	};
 
-	const handleSendMessage = async (e) => {
+	const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const recipient = recipientRef.current.value;
-		const message = messageContentRef.current.value;
+		const recipient = recipientRef.current?.value;
+		const message = messageContentRef.current?.value;
 
         const validRecipient = recipient;
         const validMessage = message;
@@ -46,17 +48,16 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 			setIsLoading(true);
 			const sendMessage = await sendRequest('POST', messageData, `${serverUrl}/message/send`);
 
-			useApiResponseHandler(sendMessage, {
-				onSuccess: async () => {
+			if (sendMessage.status === 'success') {
 					showInfoToast(t(sendMessage.message, { defaultValue: "sendMessage.successMessage" }));
-					await fetchMessages();
-					messageContentRef.current.value = '';
+					await fetchMessages(1);
+					if (messageContentRef.current) {
+                        messageContentRef.current.value = '';
+                };
 					setTimeout(onClose, 600);
-				},
-				onError: () => {
+				} else if (sendMessage.status === 'error') {
 					showErrorToast(t(sendMessage.message, { defaultValue: "sendMessage.errorMessage" }));
 				}
-			})
 		} catch (error) {
 			showErrorToast(t("sendMessage.errorMessage"));
 		} finally {
@@ -79,7 +80,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 						id="recipientName"
 						placeholder={t("sendMessage.recipientNamePlaceholder")}
 						ref={recipientRef} defaultValue={recipientName || ''}
-						required disabled={recipientName} onInput={(e) => (e.target.nextSibling.style.display = e.target.value ? 'none' : 'block')}
+						required disabled={isLoading} onInput={(e) => ((e.target as HTMLInputElement).nextSibling as HTMLElement).style.display = e.currentTarget.value ? 'none' : 'block'}
 						className={`${recipientName ? 'bg-gray-300 cursor-not-allowed' : ''} input-base`} />
 					<Icon icon="mage:user-fill" className="icon-base top-0.5 text-gray-500 text-xl text-opacity-40" />
 				</div>

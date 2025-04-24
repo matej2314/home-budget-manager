@@ -1,0 +1,33 @@
+export const calendarMessages = {
+    pl: {
+      allDay: 'Cały dzień',
+      previous: 'Poprzedni',
+      next: 'Następny',
+      today: 'Dziś',
+      month: 'Miesiąc',
+      week: 'Tydzień',
+      day: 'Dzień',
+      agenda: 'Agenda',
+      date: 'Data',
+      time: 'Czas',
+      event: 'Wydarzenie',
+      noEventsInRange: 'Brak wydarzeń w tym zakresie dat.',
+      showMore: (total: number) => `+ ${total} więcej`,
+    },
+    en: {
+      allDay: 'All day',
+      previous: 'Previous',
+      next: 'Next',
+      today: 'Today',
+      month: 'Month',
+      week: 'Week',
+      day: 'Day',
+      agenda: 'Agenda',
+      date: 'Date',
+      time: 'Time',
+      event: 'Event',
+      noEventsInRange: 'No events in this range.',
+      showMore: (total: number) => `+ ${total} more`,
+    },
+  };
+  

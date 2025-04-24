@@ -54,6 +54,7 @@ export interface InvitationSocketType {
         invitationId: string;
         invitingUser: string;
         invitedUser: string;
+        date?: string;
     };
 };
 

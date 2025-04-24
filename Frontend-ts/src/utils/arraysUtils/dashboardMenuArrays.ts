@@ -1,11 +1,11 @@
-type LinkObj = {
+export type LinkObj = {
     path: string,
     label: string;
     icon: string;
     dot?: boolean;
 };
 
-export const linkElements: LinkObj[] = [
+export const linksElements: LinkObj[] = [
     { path: '/', label: 'Home page', icon: 'solar:home-linear' },
     { path: '/dashboard', label: 'Dashboard', icon: 'carbon:dashboard-reference' },
     { path: 'myprofile', label: 'My profile', icon: 'healthicons:ui-user-profile' },

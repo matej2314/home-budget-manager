@@ -1,5 +1,9 @@
+export type Photo = {
+    src: string ;
+    srcSet: string;
+}
 
-type PhotosMap = {
+export type PhotosMap = {
     src: string | null;
     srcSet: string | null;
 };

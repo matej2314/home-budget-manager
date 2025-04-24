@@ -14,6 +14,7 @@
     "@tanstack/react-query": "^5.74.3",
     "@tanstack/react-table": "^8.21.2",
     "framer-motion": "^12.7.4",
+    "moment": "^2.30.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.5.0",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@types/moment": "^2.11.29",
     "@types/react": "^19.0.10",
     "@types/react-big-calendar": "^1.16.1",
     "@types/react-dom": "^19.0.4",

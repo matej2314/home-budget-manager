@@ -15,7 +15,7 @@ type Review = {
     date: string;
 };
 
-type Shots = string[];
+export type Shots = string[];
 
 type Technologies = Technology[];
 type Reviews = Review[];
