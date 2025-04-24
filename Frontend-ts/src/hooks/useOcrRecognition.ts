@@ -45,7 +45,7 @@ export default function useOcrRecognition() {
     });
 
     return {
-        recognizedValueFromFile: mutation.mutate,
+        recognizeValueFromFile: mutation.mutate,
         loadingImage: mutation.isPending,
         recognizedValue,
         setRecognizedValue

@@ -3,8 +3,8 @@ import { AuthContext } from "../../../store/authContext";
 import { DataContext } from "../../../store/dataContext";
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-// import { SendMessageModal } from "../../modals/messagesModals/messagesModals";
-// import UserTransactionsModal from '../../modals/UserTransactionsModal';
+import { SendMessageModal } from "@components/modals/messagesModals/messagesModals";
+import UserTransactionsModal from "@components/modals/UserTransactionsModal";
 import { useModal } from "@hooks/useModal";
 import { thLabels } from "../../../utils/matesListUtils";
 import { showInfoToast } from "../../../configs/toastify";
@@ -88,18 +88,18 @@ export default function MatesList({ mode }: MatesListInput) {
             ) : (
                 <p>{t("matesList.noHousematesError")}</p>
             )}
-            {modal && modal.isOpen && modal.type === 'message' &&
+            {modal && modal.isOpen && modal.modalType === 'message' &&
                 <SendMessageModal
                     isOpen={modal.isOpen}
                     onRequestClose={closeModal}
-                    recipient={modal.data} />
+                    recipient={modal.data as string} />
 
             }
-            {modal && modal.isOpen && modal.type === 'actions' &&
+            {modal && modal.isOpen && modal.modalType === 'actions' &&
                 <UserTransactionsModal
                     isOpen={modal.isOpen}
                     onRequestClose={closeModal}
-                    id={modal.data}
+                    id={modal.data as string}
                 />
             }
         </div>

@@ -1,12 +1,12 @@
 import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
 
-type Technology = {
+export type Technology = {
     id: string;
     name: string;
     icon: string;
 };
 
-type Review = {
+export type Review = {
     id: string;
     rating: number;
     userName: string;
@@ -17,8 +17,8 @@ type Review = {
 
 export type Shots = string[];
 
-type Technologies = Technology[];
-type Reviews = Review[];
+export type Technologies = Technology[];
+export type Reviews = Review[];
 
 export type HomePageData = {
     technologies: Technologies;

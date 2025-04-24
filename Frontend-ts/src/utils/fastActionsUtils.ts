@@ -1,6 +1,6 @@
 import { isHostRole } from "./checkUserRole";
 import { type User } from "@models/authTypes";
-import { ComponentType} from "react";
+import {ReactNode, ComponentType} from "react";
 import { type TFunction } from "i18next";
 
 interface ClickHandlerInput {
@@ -35,6 +35,10 @@ export const getClickHandler = ({ actionType, handleButtonClick, openModal, show
     }
 };
 
+interface ModalComponentMap {
+    [key: string]: ComponentType<{ isOpen: boolean; onRequestClose: () => void }>;
+}
+
 export const getModalComponents = ({
     AddTransactionModal,
     SendMessageModal,
@@ -43,7 +47,7 @@ export const getModalComponents = ({
     DeclareBudgetModal,
     CookiesModal,
     AddReviewModal
-}: ComponentType[]):Record<string, ComponentType> => ({
+  }: ModalComponentMap): ModalComponentMap => ({
     transaction: AddTransactionModal,
     message: SendMessageModal,
     addUser: AddUserToHouseModal,
@@ -51,4 +55,4 @@ export const getModalComponents = ({
     declare: DeclareBudgetModal,
     cookies: CookiesModal,
     review: AddReviewModal,
-});
+  });

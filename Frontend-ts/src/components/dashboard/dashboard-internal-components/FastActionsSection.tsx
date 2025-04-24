@@ -1,15 +1,15 @@
-import { ComponentType, useContext } from "react"
+import {useContext } from "react"
 import { AuthContext } from "@store/authContext";
 import {useModal} from "@hooks/useModal";
 import { useTranslation } from "react-i18next";
 import ModalComponent from "./ModalComponent";
-// import AddTransactionModal from '@modals/AddTransactionModal';
-// import { SendMessageModal } from "@modals/messagesModals/messagesModals";
-// import AddUserToHouseModal from '@modals/AddUserToHouseModal';
-// import ChangeEmailModal from "@modals/ChangeEmailModal";
-// import DeclareBudgetModal from "@modals/DeclareBudgetModal";
-// import CookiesModal from '@modals/CookiesModal';
-// import AddReviewModal from "@modals/AddReviewModal";
+import AddTransactionModal from "@components/modals/AddTransactionModal";
+import { SendMessageModal } from "@components/modals/messagesModals/messagesModals";
+import AddUserToHouseModal from "@components/modals/AddUserToHouseModal";
+import ChangeEmailModal from "@components/modals/ChangeEmailModal";
+import DeclareBudgetModal from "@components/modals/DeclareBudgetModal";
+import CookiesModal from "@components/modals/CookiesModal";
+import AddReviewModal from "@components/modals/AddReviewModal";
 import { dashboardBtnsArray } from "@utils/arraysUtils/fastActionsArray";
 import { filterArray, mapArray } from "@utils/arraysUtils/arraysFunctions";
 import { showInfoToast } from "@configs/toastify";
@@ -35,7 +35,7 @@ export default function FastActions({ profilePage, action }: FastActionsInput) {
         }
     };
 
-    const modalComponents: Record<string, ComponentType<any>> = getModalComponents({
+    const modalComponents = getModalComponents({
         AddTransactionModal,
         SendMessageModal,
         AddUserToHouseModal,
@@ -43,7 +43,7 @@ export default function FastActions({ profilePage, action }: FastActionsInput) {
         DeclareBudgetModal,
         CookiesModal,
         AddReviewModal
-    });
+      });
 
     return (
         <>
@@ -62,10 +62,11 @@ export default function FastActions({ profilePage, action }: FastActionsInput) {
                 }
             </div>
             {modal.isOpen && <ModalComponent
-                Component={modalComponents[modal.modalType]}
-                isOpen={modal.isOpen}
-                onRequestClose={closeModal}
-            />}
+  Component={modalComponents[modal.modalType]}
+  isOpen={modal.isOpen}
+  onRequestClose={closeModal}
+  props={modal.modalType === "message" ? { recipient: modal.data?.recipient ?? "" } : undefined}
+/>}
         </>
     )
 }
