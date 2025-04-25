@@ -6,13 +6,15 @@ import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import SignUpCookiesSettings from '@components/SignUpCookiesSettings';
 import { isValidUsername, isValidPassword, isValidEmail } from '../../utils/validation';
+import { type RegisterRequestData } from '@models/authTypes';
+
 import SubmitBtn from './internal/SubmitBtn';
 
 export default function SignUpForm() {
     const { register, signUpStatus } = useContext(AuthContext)!;
     const [sended, setSended] = useState<boolean>(false);
     const [showCookiesSettings, setShowCookiesSettings] = useState<boolean>(false);
-    const [cookiesConsent, setCookiesConsent] = useState<number>();
+    const [cookiesConsent, setCookiesConsent] = useState<boolean>();
     const navigate = useNavigate();
     const { t } = useTranslation("forms");
 
@@ -24,8 +26,7 @@ export default function SignUpForm() {
 
     const handleCookiesSettings = () => {
         setShowCookiesSettings(prevState => !prevState)
-    }
-
+    };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,12 +51,12 @@ export default function SignUpForm() {
             return;
         };
 
-        const data = {
+        const data: RegisterRequestData = {
             reg_username: name,
             reg_email: email,
             reg_password: password,
             role,
-            cookies: cookiesConsent ,
+            cookies: cookiesConsent as boolean,
         };
 
         await register(data);

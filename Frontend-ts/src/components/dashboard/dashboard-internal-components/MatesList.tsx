@@ -92,7 +92,7 @@ export default function MatesList({ mode }: MatesListInput) {
                 <SendMessageModal
                     isOpen={modal.isOpen}
                     onRequestClose={closeModal}
-                    recipient={modal.data as string} />
+                    data={modal.data as string} />
 
             }
             {modal && modal.isOpen && modal.modalType === 'actions' &&

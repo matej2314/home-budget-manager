@@ -9,7 +9,7 @@ type ModalComponentInput<T> = {
   Component: ComponentType<T & ReturnedComponentType>;
   isOpen: boolean;
   onRequestClose: () => void;
-  props?: T;
+  props?: T | string;
 };
 
 export default function ModalComponent<T>({

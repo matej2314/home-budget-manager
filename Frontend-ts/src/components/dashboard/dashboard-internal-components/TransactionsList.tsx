@@ -4,11 +4,11 @@ import {useModal} from '@hooks/useModal';
 import { Icon } from '@iconify/react';
 import { useMediaQuery } from 'react-responsive';
 import LoadingModal from '@components/modals/LoadingModal';
-import { tableLabels } from '../../../utils/arraysUtils/actionsTableLabels';
-import { formatDbDate } from '../../../utils/formattingUtils/formatDateToDisplay';
-import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
+import { tableLabels } from '@utils/arraysUtils/actionsTableLabels';
+import { formatDbDate } from '@utils/formattingUtils/formatDateToDisplay';
+import { filterArray } from '@utils/arraysUtils/arraysFunctions';
 import { useTranslation } from 'react-i18next';
-// import DeleteTransactionModal from '../../modals/DeleteTransactionModal';
+import DeleteTransactionModal from '@components/modals/DeleteTransactionModal';
 import { type Transaction } from '@models/transactionsStoreTypes';
 import { type AuthContextType } from '@models/authTypes';
 
@@ -101,7 +101,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                 <p>{tInternal("transactionsList.noActionsError")}</p>
             )}
             {actionsLoading && <LoadingModal isOpen={actionsLoading} />}
-            {/* {modal && modal.isOpen && modal.modalType === 'delete' && <DeleteTransactionModal isOpen={modal.isOpen} onRequestClose={closeModal} transaction={modal.data} />} */}
+            {modal && modal.isOpen && modal.modalType === 'delete' && <DeleteTransactionModal isOpen={modal.isOpen} onRequestClose={closeModal} transaction={modal.data as Transaction} />}
         </div>
     );
 }

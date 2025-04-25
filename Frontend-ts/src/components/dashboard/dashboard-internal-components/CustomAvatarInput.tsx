@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef, useState } from "react";
+import { ChangeEvent, forwardRef, RefObject, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
 const CustomAvatarInput = forwardRef<HTMLInputElement>((_, ref) => {
@@ -6,7 +6,7 @@ const CustomAvatarInput = forwardRef<HTMLInputElement>((_, ref) => {
     const { t } = useTranslation("pages");
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files[0];
+        const file = e.target.files?.[0];
         if (file) {
             setAvatarName(file.name);
         }
@@ -20,7 +20,7 @@ const CustomAvatarInput = forwardRef<HTMLInputElement>((_, ref) => {
             <button
                 type="button"
                 className='w-5/12 h-fit border-2 border-slate-400 rounded-md p-3 hover:bg-slate-400 hover:text-slate-50'
-                onClick={() => ref.current.click()}
+                onClick={() => (ref as RefObject<HTMLInputElement>)?.current?.click()}
             >
                 {t ? t('userProfile.selectAvatar', 'Select avatar') : 'Select avatar'}
             </button>

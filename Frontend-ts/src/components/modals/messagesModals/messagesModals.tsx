@@ -11,26 +11,18 @@ import { type Message } from '@models/messagesStoreTypes';
 import { AuthContextType } from '@models/authTypes';
 import { BaseApiResponse } from '@utils/asyncUtils/fetchData';
 
-type ModalProps = {
+export type MessageModalProps = {
     isOpen: boolean;
-    onRequestClose: () => void;
+	onRequestClose: () => void;
+	data?: string | Message;
 };
 
-export type SendMessageModalInput = ModalProps & {
-    recipient: string;
-};
-
-export type MessageModalWithMsg = ModalProps & {
-    message: Message;
-};
-
-
-interface DelData {
+type DelData = {
 	messageId: string;
 };
 
-
-export function SendMessageModal({ isOpen, onRequestClose, recipient }: SendMessageModalInput) {
+export function SendMessageModal({ isOpen, onRequestClose, data }: MessageModalProps) {
+	const recipient = data;
 
 	return (
 		<Modal
@@ -44,14 +36,15 @@ export function SendMessageModal({ isOpen, onRequestClose, recipient }: SendMess
 				</button>
 			</div>
 			<div className="w-full flex justify-center">
-				<SendMessageForm reply={false} recipientName={recipient} onClose={onRequestClose} />
+				<SendMessageForm reply={false} recipientName={recipient as string} onClose={onRequestClose} />
 			</div>
 		</Modal>
 	);
 };
 
-export function DeleteMessageModal({ isOpen, onRequestClose, message }: MessageModalWithMsg) {
+export function DeleteMessageModal({ isOpen, onRequestClose, data }: MessageModalProps) {
 	const { t } = useTranslation("modals");
+	const message = data as Message;
 	
 	const handleDeleteMessage = async (messageId: string) => {
 		const delData: DelData = {
@@ -82,9 +75,11 @@ export function DeleteMessageModal({ isOpen, onRequestClose, message }: MessageM
 		</Modal>
 	);
 }
-export function DisplayMessageDetails({ isOpen, onRequestClose, message }: MessageModalWithMsg) {
+export function DisplayMessageDetails({ isOpen, onRequestClose, data }: MessageModalProps) {
 	const { user } = useContext(AuthContext) as AuthContextType;
 	const { t } = useTranslation("modals");
+
+	const message = data as Message;
 
 	return (
 		<Modal isOpen={isOpen} onRequestClose={onRequestClose} className="display-msg-modal" overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -130,7 +125,9 @@ export function DisplayMessageDetails({ isOpen, onRequestClose, message }: Messa
 	);
 }
 
-export function ReplyMessageModal({ isOpen, onRequestClose, message }: MessageModalWithMsg) {
+export function ReplyMessageModal({ isOpen, onRequestClose, data }: MessageModalProps) {
+
+	const message = data as Message;
 	const recipientName = isOpen && message ? message.sender : '';
 
 	return (

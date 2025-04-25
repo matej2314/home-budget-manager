@@ -1,16 +1,18 @@
 import { isHostRole } from "./checkUserRole";
-import { type User } from "@models/authTypes";
-import {ReactNode, ComponentType} from "react";
-import { type TFunction } from "i18next";
+import { ComponentType} from "react";
+import { type ModalData, ClickHandlerInput } from "@models/componentsTypes/FastActionsSectionTypes";
 
-interface ClickHandlerInput {
-    actionType: string;
-    handleButtonClick: (actionType: string) => void;
-    openModal: (actionType: string) => void;
-    showInfoToast: (message: string) => void;
-    user: User;
-    tInternal: TFunction;
-}
+export const modalData: ModalData = {
+  message: { data: '' },
+  addTransaction: { data: '' },
+  addUserToHouse: { data: '' },
+  changeEmail: { data: '' },
+  declareBudget: { data: '' },
+  cookies: { data: '' },
+  addReview: { data: '' },
+};
+
+
 
 export const getClickHandler = ({ actionType, handleButtonClick, openModal, showInfoToast, user, tInternal }: ClickHandlerInput) => {
     switch (actionType) {
@@ -23,7 +25,7 @@ export const getClickHandler = ({ actionType, handleButtonClick, openModal, show
                     showInfoToast(tInternal("fastActions.noHostError"));
                     return;
                 }
-                openModal(actionType);
+                openModal(actionType, '');
             };
         case 'transaction':
         case 'message':
@@ -31,12 +33,12 @@ export const getClickHandler = ({ actionType, handleButtonClick, openModal, show
         case 'email':
         case 'cookies':
         case 'review':
-            return () => openModal(actionType);
+            return () => openModal(actionType, '');
     }
 };
 
 interface ModalComponentMap {
-    [key: string]: ComponentType<{ isOpen: boolean; onRequestClose: () => void }>;
+    [key: string]: ComponentType<{ isOpen: boolean; onRequestClose: () => void, data: string }>;
 }
 
 export const getModalComponents = ({

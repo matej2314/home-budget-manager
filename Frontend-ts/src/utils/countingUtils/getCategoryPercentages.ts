@@ -1,10 +1,5 @@
 import { mapArray, filterArray } from "@utils/arraysUtils/arraysFunctions";
-
-interface Transaction {
-    categoryName: string;
-    type: string;
-    value: number;
-};
+import { Transaction } from "@models/transactionsStoreTypes";
 
 interface CategoryPercentagesObj {
     label: string;

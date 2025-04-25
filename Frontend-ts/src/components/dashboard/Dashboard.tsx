@@ -2,17 +2,17 @@ import { useContext } from 'react';
 import { DataContext } from '@store/dataContext';
 import { useTransactionsStore } from '@store/transactionsStore';
 import DashboardHeader from '@components/dashboard/dashboardComponents/DashboardHeader';
-// import MatesCounter from './dashboardComponents/MatesCounter';
-// import MonthlyBudget from './dashboardComponents/DisplayMonthlyBudget';
-// import DisplayLiveBalance from './dashboardComponents/DisplayLiveBalance';
-// import MessagesCounter from './dashboardComponents/MessagesCounter';
-// import DisplayMatesList from './dashboardComponents/DisplayMatesList';
-// import LastTransactionsList from './dashboardComponents/LastTransactionsList';
-// import TopCategoriesList from './dashboardComponents/TopCategoriesList';
+import MatesCounter from './dashboardComponents/MatesCounter';
+import MonthlyBudget from './dashboardComponents/DisplayMonthlyBudget';
+import DisplayLiveBalance from './dashboardComponents/DisplayLiveBalance';
+import MessagesCounter from './dashboardComponents/MessagesCounter';
+import DisplayMatesList from './dashboardComponents/DisplayMatesList';
+import LastTransactionsList from './dashboardComponents/LastTransactionsList';
+import TopCategoriesList from './dashboardComponents/TopCategoriesList';
 import FastActions from '@components/dashboard/dashboard-internal-components/FastActionsSection';
-// import LossOrGainChart from './dashboardComponents/charts-dashboard-components/LossOrGainChart';
+import LossOrGainChart from './dashboardComponents/charts-dashboard-components/LossOrGainChart';
 
-export default function DashBoard() {
+export default function Dashboard() {
 
     const { data } = useContext(DataContext);
     const { actionsData } = useTransactionsStore();

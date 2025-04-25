@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, type ComponentType } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import { useSocket } from '@store/socketContext';
@@ -10,15 +10,14 @@ import { mapArray, filterArray } from "@utils/arraysUtils/arraysFunctions";
 import { formatDbDate } from "@utils/formattingUtils/formatDateToDisplay";
 import MessagesFilterBtns from "./MessagesFilterBtns";
 import ModalComponent from '../dashboard-internal-components/ModalComponent';
-import { DisplayMessageDetails, ReplyMessageModal, DeleteMessageModal } from '@components/modals/messagesModals/messagesModals';
+import { DisplayMessageDetails, ReplyMessageModal, DeleteMessageModal,type MessageModalProps } from '@components/modals/messagesModals/messagesModals';
 import { markMessage } from "@utils/asyncUtils/markMessage";
 import { messagesStates, tableHeader } from "@utils/arraysUtils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
 import { messagesBtnsArray } from "@utils/arraysUtils/messagesBtnsArray";
-import { getFilterMap, getClickHandler, getModalComponents, normalizeMessages } from "@utils/messagesListUtils";
+import { getFilterMap, getClickHandler, getMsgsModalComponents, normalizeMessages } from "@utils/messagesListUtils";
 import { type Message } from "@models/messagesStoreTypes";
 import { NewMessageType } from "@models/socketContextTypes";
-import {type MessageModalWithMsg, SendMessageModalInput} from '@components/modals/messagesModals/messagesModals'
 
 export type MessagesListInput = {
     userMessages: Message[],
@@ -80,7 +79,12 @@ export default function MessagesList({ userMessages, loading, getMessages, messa
         openModal(actionType, message);
     }
 
-    const modalComponents = getModalComponents(DisplayMessageDetails, DeleteMessageModal, ReplyMessageModal);
+    const modalComponents = getMsgsModalComponents(
+        DisplayMessageDetails,
+        DeleteMessageModal,
+        ReplyMessageModal
+    );
+    
 
     return (
         <>
@@ -162,11 +166,15 @@ export default function MessagesList({ userMessages, loading, getMessages, messa
                 )}
 
 {modal.isOpen && modal.modalType in modalComponents && (
-  <ModalComponent
-    Component={modalComponents[modal.modalType] as ComponentType<MessageModalWithMsg | SendMessageModalInput>}
+  <ModalComponent<MessageModalProps>
+    Component={modalComponents[modal.modalType]}
     isOpen={modal.isOpen}
     onRequestClose={closeModal}
-    props={modal.data ? { message: modal.data } : { recipient: modal.data?.recipient? }}
+    props={{
+        data: modal.data as Message,
+        isOpen: modal.isOpen,
+        onRequestClose: closeModal,
+    }}
   />
 )}
                 {loading && <LoadingModal isOpen={loading} />}

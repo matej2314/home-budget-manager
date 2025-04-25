@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
+import { type Dispatch } from 'react';
 
 
 interface SignUpCookiesSettingsProps {
-    clickAction: (data: number) => void;
+    clickAction: Dispatch<React.SetStateAction<boolean | undefined>>;
 };
 
 export default function SignUpCookiesSettings({ clickAction }: SignUpCookiesSettingsProps) {
@@ -24,14 +25,14 @@ export default function SignUpCookiesSettings({ clickAction }: SignUpCookiesSett
                     <button
                         className="form-submit-modal-btn"
                         type="button"
-                        onClick={() => clickAction(1)}
+                        onClick={() => clickAction(true)}
                     >
                         {t("signUpCookiesSettings.btnAll")}
                     </button>
                     <button
                         className="form-submit-modal-btn"
                         type="button"
-                        onClick={() => clickAction(0)}
+                        onClick={() => clickAction(false)}
                     >
                         {t("signUpCookiesSettings.btnMandatory")}
                     </button>
