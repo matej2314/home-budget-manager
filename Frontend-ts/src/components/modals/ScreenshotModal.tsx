@@ -1,11 +1,10 @@
 import Modal from 'react-modal';
 import { PhotosMap } from '@utils/arraysUtils/mapPhotos';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
-interface ScreenshotModalProps  {
-    isOpen: boolean;
-    onRequestClose: () => void;
+type ScreenshotModalProps = BasicModalProps & {
     imageData: PhotosMap | null,
-}
+};
 
 export default function ScreenShotModal({ isOpen, onRequestClose, imageData }: ScreenshotModalProps) {
 

@@ -8,14 +8,9 @@ import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { type Message } from '@models/messagesStoreTypes';
+import { type MessageModalProps } from '@models/componentsTypes/modalsTypes';
 import { AuthContextType } from '@models/authTypes';
 import { BaseApiResponse } from '@utils/asyncUtils/fetchData';
-
-export type MessageModalProps = {
-    isOpen: boolean;
-	onRequestClose: () => void;
-	data?: string | Message;
-};
 
 type DelData = {
 	messageId: string;

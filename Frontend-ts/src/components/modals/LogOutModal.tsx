@@ -1,9 +1,8 @@
 import Modal from 'react-modal';
 import { useTranslation } from 'react-i18next';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
-type LogOutModalInput = {
-    isOpen: boolean;
-    onRequestClose: () => void;
+type LogOutModalInput = BasicModalProps & {
     handleLogOut: () => void;
 };
 

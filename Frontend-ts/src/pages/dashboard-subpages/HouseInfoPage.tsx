@@ -4,20 +4,19 @@ import { DataContext } from "@store/dataContext";
 import { AuthContext } from "@store/authContext";
 import { useTransactionsStore } from '@store/transactionsStore'
 import useProcessedData from '@hooks/useProcessedData';
-import { useDeviceType } from "@hooks/useDeviceType";
 import { useTranslation } from "react-i18next";
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { getData } from '@utils/getData';
 import DashboardHeader from "@components/dashboard/dashboardComponents/DashboardHeader";
 import TransactionsList from '@components/dashboard/dashboard-internal-components/TransactionsList';
-// import BudgetPerDay from "@components/dashboard/dashboardComponents/charts-dashboard-components/BudgetPerDay";
-// import TransactionsPerDay from "@components/dashboard/dashboardComponents/charts-dashboard-components/TransactionsPerDay";
-// import BalanceBudgetComparison from "@components/dashboard/dashboardComponents/charts-dashboard-components/BalanceBudgetComparison";
-// import TransactionsOverTime from "@components/dashboard/dashboardComponents/charts-dashboard-components/TransactionsOverTime";
+import BudgetPerDay from "@components/dashboard/dashboardComponents/charts-dashboard-components/BudgetPerDay";
+import TransactionsPerDay from "@components/dashboard/dashboardComponents/charts-dashboard-components/TransactionsPerDay";
+import BalanceBudgetComparison from "@components/dashboard/dashboardComponents/charts-dashboard-components/BalanceBudgetComparison";
+import TransactionsOverTime from "@components/dashboard/dashboardComponents/charts-dashboard-components/TransactionsOverTime";
 import MostActiveMates from "@components/dashboard/dashboard-internal-components/MostActiveMates";
 import BasicHouseInfo from "@components/dashboard/dashboard-internal-components/BasicHouseInfo";
 import { HouseDataObj } from "@models/dataContextTypes";
-// import DashBoardForUser from "./DashboardForUser";
+import DashBoardForUser from "./DashboardForUser";
 
 export default function HouseInfoPage() {
     const { data,
@@ -29,7 +28,6 @@ export default function HouseInfoPage() {
     const { user} = useContext(AuthContext)!;
     const { t } = useTranslation("pages");
     const { houseData, houseMates, statsData, dailyData } = data;
-    const isMobile = useDeviceType();
     useDocumentTitle('House info');
 
     useEffect(() => {

@@ -7,13 +7,9 @@ import LoadingModal from '../modals/LoadingModal';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import SubmitBtn from '../forms/internal/SubmitBtn';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
-interface AddReviewModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
-};
-
-export default function AddReviewModal({ isOpen, onRequestClose }: AddReviewModalProps) {
+export default function AddReviewModal({ isOpen, onRequestClose }: BasicModalProps) {
     const [rating, setRating] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const userOpinionRef = useRef<HTMLTextAreaElement>(null);

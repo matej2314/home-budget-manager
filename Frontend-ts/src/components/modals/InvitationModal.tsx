@@ -7,22 +7,21 @@ import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import sendRequest from '../../utils/asyncUtils/sendRequest'
 import { formatDbDate } from '@utils/formattingUtils/formatDateToDisplay';
 import { ConvertedInvitation } from '@utils/convertSocketInvitation';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
-
-interface InvitationModalProps  {
-    isOpen: boolean;
-    onRequestClose: () => void;
+type InvitationModalProps = BasicModalProps & {
     invitationsData: (Invitation | ConvertedInvitation)[] | null;
 };
 
-interface InvitationData {
+type InvitationId = {
     invitationId: string;
+};
+
+type InvitationData = InvitationId & {
     invitedUserId: string;
 };
 
-interface DeclineInvitationPayload {
-    invitationId: string;
-};
+type DeclineInvitationPayload = InvitationId;
 
 export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }: InvitationModalProps) => {
     const { t } = useTranslation("modals");

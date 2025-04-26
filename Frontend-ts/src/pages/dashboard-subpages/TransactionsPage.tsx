@@ -9,13 +9,9 @@ import TransactionsCategoriesModal from "@components/modals/TransactionsCategori
 import { useModal } from "@hooks/useModal";
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import ModalComponent from "@components/dashboard/dashboard-internal-components/ModalComponent";
+import { type BasicModalProps } from "@models/componentsTypes/modalsTypes";
 
 Modal.setAppElement('#root');
-
-interface TransactionsModalsProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
-};
 
 export default function TransactionsPage() {
     const { fetchTransactions, actionsLoading, actionsDataError, actionsData, actionsTotalPages, isTransactionsFetched } = useTransactionsStore();
@@ -70,7 +66,7 @@ export default function TransactionsPage() {
                 />
             </div>
             {modal.isOpen &&
-                <ModalComponent<TransactionsModalsProps>
+                <ModalComponent<BasicModalProps>
                 Component={modalToRender}
                 isOpen={modal.isOpen}
                 onRequestClose={closeModal}

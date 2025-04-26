@@ -9,12 +9,11 @@ import { useTransactionsStore } from '@store/transactionsStore';
 import { showErrorToast, showInfoToast } from '@configs/toastify';
 import LoadingModal from './LoadingModal';
 import { useTranslation } from 'react-i18next';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
-interface DeleteTransactionModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
+type DeleteTransactionModalProps = BasicModalProps & {
     transaction: Transaction;
-};
+}
 
 export default function DeleteTransactionModal({ isOpen, onRequestClose, transaction }: DeleteTransactionModalProps) {
     const { fetchTransactions } = useTransactionsStore();

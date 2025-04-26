@@ -1,0 +1,32 @@
+import LineChart from '../../../charts/LineChart';
+import { useTranslation } from 'react-i18next';
+import { useSortedUniqueData } from '../../../../hooks/useSortedUniqueData';
+
+interface TransactionsPerDayProps {
+    data: {
+        labels: Date[];
+        dataValues: number[];
+    };
+};
+
+export default function TransactionsPerDay({ data }: TransactionsPerDayProps) {
+    const { uniqueLabels, uniqueDataValues } = useSortedUniqueData(data);
+    const { t } = useTranslation("dashboardComponents");
+
+    const convertedLabels = uniqueLabels.map((label) => String(label));
+
+    return (
+        <div id="transactions-per-day-chart" className="w-full h-fit border-2 border-slate-500/20 pt-2 mb-3 flex flex-col mx-auto lg:mx-0 gap-4">
+            <h2 className="w-full h-fit flex justify-center text-xl">{t("actionsPerDay.heading")}</h2>
+            <div className="w-full h-96 md:h-[450px] md:w[35vw]">
+                <LineChart
+                    labels={convertedLabels}
+                    dataValues={uniqueDataValues}
+                    title='Transactions per day'
+                    colors={["rgba(54, 162, 235, 0.5)"]}
+                    borderColors={["rgba(54, 162, 235, 1)"]}
+                />
+            </div>
+        </div>
+    );
+}

@@ -1,15 +1,11 @@
 import Modal from 'react-modal';
 import AddTransactionForm from '@components/forms/AddTransactionForm';
 import { useTranslation } from 'react-i18next';
-
-interface AddTransactionModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
-};
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
 Modal.setAppElement('#root');
 
-export default function AddTransactionModal({ isOpen, onRequestClose }: AddTransactionModalProps) {
+export default function AddTransactionModal({ isOpen, onRequestClose }: BasicModalProps) {
     const { t } = useTranslation("modals");
 
     return (

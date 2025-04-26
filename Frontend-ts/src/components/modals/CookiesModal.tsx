@@ -4,19 +4,15 @@ import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import { BaseApiResponse } from '@utils/asyncUtils/fetchData';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
 Modal.setAppElement('#root');
-
-interface CookiesModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
-};
 
 interface CookieDataPayload {
     cookieValue: number;
 }
 
-export default function CookiesModal({ isOpen, onRequestClose }: CookiesModalProps) {
+export default function CookiesModal({ isOpen, onRequestClose }: BasicModalProps) {
     const { t } = useTranslation("modals");
     
     const handleSaveCookieValue = async (value: number) => {

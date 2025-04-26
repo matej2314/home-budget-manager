@@ -5,15 +5,11 @@ import Authorization from '@components/homePageComponents/Authorization';
 import { showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import { AuthContextType } from '@models/authTypes';
-
-type AuthModalProps = {
-    isOpen: boolean;
-    onRequestClose: () => void;
-};
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
 type ModeStateType = "login" | "register" | null;
 
-export default function AuthModal({ isOpen, onRequestClose }: AuthModalProps) {
+export default function AuthModal({ isOpen, onRequestClose }: BasicModalProps) {
     const [mode, setMode] = useState<ModeStateType>(null);
     const { isAuthenticated } = useContext(AuthContext) as AuthContextType;
     const { t } = useTranslation("common");

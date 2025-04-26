@@ -3,15 +3,13 @@ import { AuthContext } from '../../store/authContext';
 import { DataContext } from '../../store/dataContext';
 import { useTranslation } from 'react-i18next';
 import { type AuthContextType } from '@models/authTypes';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 import Modal from 'react-modal';
 
-interface TransactionsCategoriesModal {
-    isOpen: boolean;
-    onRequestClose: () => void;
-}
 
 
-export default function TransactionsCategoriesModal({ isOpen, onRequestClose }: TransactionsCategoriesModal) {
+
+export default function TransactionsCategoriesModal({ isOpen, onRequestClose }: BasicModalProps) {
     const { data, isLoading, contextError:error } = useContext(DataContext);
     const actionCats = !isLoading && !error && data.actionsCatData || [];
     const { user } = useContext(AuthContext) as AuthContextType;

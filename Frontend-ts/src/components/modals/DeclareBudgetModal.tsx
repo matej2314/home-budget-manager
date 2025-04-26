@@ -1,13 +1,9 @@
 import Modal from 'react-modal';
 import DeclareBudgetForm from '@components/forms/DeclareBudgetForm';
 import { useTranslation } from 'react-i18next';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
-interface DeclareBudgetModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
-};
-
-export default function DeclareBudgetModal({ isOpen, onRequestClose }: DeclareBudgetModalProps) {
+export default function DeclareBudgetModal({ isOpen, onRequestClose }: BasicModalProps) {
     const { t } = useTranslation("modals");
 
     return (

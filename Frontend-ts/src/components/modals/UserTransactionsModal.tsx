@@ -2,12 +2,11 @@ import Modal from 'react-modal';
 import TransactionsList from '../dashboard/dashboard-internal-components/TransactionsList';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import { type Transaction } from '@models/transactionsStoreTypes';
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
-interface UserTransactionsModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
+type UserTransactionsModalProps = BasicModalProps & {
     id: string;
-}
+};
 
 export default function UserTransactionsModal({ isOpen, onRequestClose, id } : UserTransactionsModalProps) {
     const { actionsData } = useTransactionsStore();

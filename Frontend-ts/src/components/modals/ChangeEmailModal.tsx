@@ -9,17 +9,13 @@ import { Icon } from '@iconify/react';
 import LoadingModal from './LoadingModal';
 import SubmitBtn from '@components/forms/internal/SubmitBtn';
 import { BaseApiResponse } from '@utils/asyncUtils/fetchData';
-
-interface ChangeEmailModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
-};
+import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
 interface EmailDataPayload {
     newEmail: string;
 };
 
-export default function ChangeEmailModal({ isOpen, onRequestClose }: ChangeEmailModalProps) {
+export default function ChangeEmailModal({ isOpen, onRequestClose }: BasicModalProps) {
     const [requestState, setRequestState] = useState({
         sended: false,
         isLoading: false,
