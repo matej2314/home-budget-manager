@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { type Dispatch } from 'react';
 
-
 interface SignUpCookiesSettingsProps {
     clickAction: Dispatch<React.SetStateAction<boolean | undefined>>;
 };

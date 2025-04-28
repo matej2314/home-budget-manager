@@ -2,20 +2,9 @@ import { motion } from "framer-motion";
 import { Icon } from '@iconify/react';
 import { useTranslation } from "react-i18next";
 import { messageFormVariants, contactFormVariants } from "../../../utils/animationVariants";
+import { SendMessageBtnProps } from "@models/componentsTypes/SendMessageBtnTypes";
 
 const messageFormClasses = "relative w-[15rem] bg-transparent p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 btn-border border-slate-500/45 overflow-hidden";
-
-type StateType = {
-    type: string;
-};
-
-type SendMessageBtnProps = {
-    form: string;
-    setState: (param: string) => void;
-    resetState: () => void;
-    state:StateType;
-};
-
 
 export default function SendMessageBtn({ form, state, setState, resetState }: SendMessageBtnProps) {
     const { t } = useTranslation("forms");

@@ -12,7 +12,6 @@ export default function LanguageSwitch({ isHomePage }: LanguageSwitchProps) {
     const [selectedLang, setSelectedLang] = useState(i18next.language);
     const { isMobile } = useDeviceType();
 
-
     const languages: LanguageOption[] = [
         { value: 'en', icon: <Icon icon="flagpack:gb-ukm" width={!isMobile ? 20 : 18} height={!isMobile ? 20 : 18} /> },
         { value: 'pl', icon: <Icon icon="flagpack:pl" width={!isMobile ? 20 : 18} height={!isMobile ? 20 : 18} /> }

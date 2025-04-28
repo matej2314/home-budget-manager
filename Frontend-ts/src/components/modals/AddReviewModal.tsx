@@ -9,16 +9,7 @@ import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import SubmitBtn from '../forms/internal/SubmitBtn';
 import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
-import { BaseApiResponse } from '@utils/asyncUtils/fetchData';
-
-type ReviewData = {
-    content: string;
-    rating: number;
-};
-
-interface AddReviewResponse extends BaseApiResponse {
-    id?: string;
-};
+import { type ReviewData, AddReviewResponse } from '@models/componentsTypes/AddReviewModalTypes';
 
 const addReviewRequest = async (reviewData: ReviewData) => {
     return await sendRequest<ReviewData, AddReviewResponse>('POST', reviewData, `${serverUrl}/reviews/new`);
@@ -75,7 +66,7 @@ export default function AddReviewModal({ isOpen, onRequestClose }: BasicModalPro
             rating: rating,
         };
 
-        await saveReview(reviewData);
+        saveReview(reviewData);
     };
 
     return (

@@ -1,15 +1,16 @@
 import { StrictMode } from 'react'
+import { QueryClient} from '@tanstack/react-query'
 import { createRoot } from 'react-dom/client'
-import { AuthProvider } from '@store/authContext.tsx'
-import { DataProvider } from '@store/dataContext.tsx'
+import ComponentWithProviders from '@components/ComponentWithProviders.tsx'
 import App from './App.tsx'
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById('root')!).render(
+
   <StrictMode>
-    <AuthProvider>
-      <DataProvider>
-      <App />
-      </DataProvider>
-    </AuthProvider>
+    <ComponentWithProviders>
+      <App/>
+    </ComponentWithProviders>
   </StrictMode>,
 )

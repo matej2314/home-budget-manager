@@ -6,9 +6,6 @@ import { type AuthContextType } from '@models/authTypes';
 import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 import Modal from 'react-modal';
 
-
-
-
 export default function TransactionsCategoriesModal({ isOpen, onRequestClose }: BasicModalProps) {
     const { data, isLoading, contextError:error } = useContext(DataContext);
     const actionCats = !isLoading && !error && data.actionsCatData || [];

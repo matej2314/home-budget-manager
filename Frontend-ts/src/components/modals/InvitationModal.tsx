@@ -1,27 +1,11 @@
 import Modal from 'react-modal';
-import { type Invitation } from '@models/invitationsStoreTypes';
 import { type BaseApiResponse } from '@utils/asyncUtils/fetchData';
 import { useTranslation } from 'react-i18next';
 import { serverUrl } from '../../url';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import sendRequest from '../../utils/asyncUtils/sendRequest'
 import { formatDbDate } from '@utils/formattingUtils/formatDateToDisplay';
-import { ConvertedInvitation } from '@utils/convertSocketInvitation';
-import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
-
-type InvitationModalProps = BasicModalProps & {
-    invitationsData: (Invitation | ConvertedInvitation)[] | null;
-};
-
-type InvitationId = {
-    invitationId: string;
-};
-
-type InvitationData = InvitationId & {
-    invitedUserId: string;
-};
-
-type DeclineInvitationPayload = InvitationId;
+import { type InvitationModalProps, InvitationData, DeclineInvitationPayload } from '@models/componentsTypes/invitationModalTypes';
 
 export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }: InvitationModalProps) => {
     const { t } = useTranslation("modals");

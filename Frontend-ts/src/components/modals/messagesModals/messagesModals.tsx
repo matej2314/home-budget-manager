@@ -75,7 +75,7 @@ export function DeleteMessageModal({ isOpen, onRequestClose, data }: MessageModa
 			messageId: messageId,
 		};
 		
-		await delMessage(delData);
+		delMessage(delData);
 	};
 	return (
 		<Modal isOpen={isOpen} onRequestClose={onRequestClose} className="del-msg-modal" overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">

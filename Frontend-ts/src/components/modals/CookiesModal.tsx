@@ -10,7 +10,7 @@ Modal.setAppElement('#root');
 
 interface CookieDataPayload {
     cookieValue: number;
-}
+};
 
 export default function CookiesModal({ isOpen, onRequestClose }: BasicModalProps) {
     const { t } = useTranslation("modals");

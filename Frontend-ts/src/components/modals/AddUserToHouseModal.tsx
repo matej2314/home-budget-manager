@@ -3,8 +3,6 @@ import AddUserToHouseForm from '@components/forms/AddUserToHouseForm';
 import { useTranslation } from 'react-i18next';
 import { type BasicModalProps } from '@models/componentsTypes/modalsTypes';
 
-
-
 export default function AddUserToHouseModal({ isOpen, onRequestClose }: BasicModalProps) {
     const { t } = useTranslation("modals");
 

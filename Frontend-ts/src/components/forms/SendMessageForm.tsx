@@ -9,17 +9,7 @@ import SendMessageBtn from './internal/SendMessageBtn';
 import LoadingModal from '../modals/LoadingModal';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { BaseApiResponse } from '@utils/asyncUtils/fetchData';
-
-type SendMessageFormInput = {
-	reply: boolean;
-	recipientName: string | null;
-	onClose: () => void;
-};
-
-type MessageData = {
-	recipientName: string;
-	content: string;
-};
+import { type SendMessageFormInput, MessageData } from '@models/componentsTypes/SendMessageFormTypes';
 
 const sendMessageRequest = async (messageData: MessageData) => {
 	return await sendRequest<MessageData, BaseApiResponse>('POST', messageData, `${serverUrl}/message/send`);

@@ -9,19 +9,7 @@ import { Icon } from '@iconify/react';
 import LoadingModal from '@components/modals/LoadingModal';
 import SubmitBtn from "./internal/SubmitBtn";
 import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
-
-interface AddUserToHouseFormProps {
-    onClose: () => void;
-};
-
-interface InviteStatusType {
-    sended: boolean;
-    isLoading: boolean;
-};
-
-type AddUserPayload = {
-    userName: string;
-};
+import { type AddUserToHouseFormProps, InviteStatusType, AddUserPayload } from "@models/componentsTypes/AddUserToHouseFormTypes";
 
 const addUserRequest = async (userName: string) => {
     const data: AddUserPayload = { userName };

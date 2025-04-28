@@ -1,6 +1,5 @@
 import { useState, useCallback} from "react";
 
-
 interface ModalState<T = unknown> {
     isOpen: boolean;
     modalType: string;

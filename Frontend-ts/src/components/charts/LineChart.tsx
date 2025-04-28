@@ -11,21 +11,9 @@ import {
     ChartOptions,
     ChartData,
 } from 'chart.js';
+import { LineChartProps } from '@models/componentsTypes/LineChartTypes';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
-
-interface LineChartProps {
-    labels: string[];
-    dataValues: number[];
-    secondDataValues?: number[] | null;
-    title?: string;
-    secondTitle?: string;
-    colors?: string[];
-    borderColors?: string[];
-    secondColors?: string[];
-    secondBorderColors?: string[];
-    options?: ChartOptions<'line'>;
-};
 
 const LineChart = ({
     labels,

@@ -1,22 +1,8 @@
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartOptions, ChartData } from 'chart.js';
+import { type BarChartProps } from '@models/componentsTypes/BarChartTypes';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-interface BarChartProps {
-    labels: string[];
-    dataValues: number[];
-    secondDataValues?: number[];
-    title?: string;
-    secondTitle?: string;
-    colors?: string[];
-    borderColors?: string[];
-    secondColors?: string[];
-    secondBorderColors?: string[];
-    options?: ChartOptions<"bar">;
-    width?: number;
-    height?: number;
-}
 
 const BarChart = ({
     labels,
