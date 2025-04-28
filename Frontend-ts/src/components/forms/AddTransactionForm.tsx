@@ -1,15 +1,14 @@
 import { useRef, useContext, useState, FormEvent, type ChangeEvent } from 'react';
 import { DataContext } from '../../store/dataContext';
 import { Icon } from '@iconify/react';
-import { serverUrl } from '../../url';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import { useTranslation } from 'react-i18next';
-import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
 import useOcrRecognition from '../../hooks/useOcrRecognition';
 import SubmitBtn from './internal/SubmitBtn';
 import { isValidNumber } from '../../utils/validation';
+import { type NewActionData } from '@models/transactionsStoreTypes';
 
 interface AddTransactionFormProps {
     onClose: () => void;
@@ -18,7 +17,7 @@ interface AddTransactionFormProps {
 export default function AddTransactionForm({ onClose }: AddTransactionFormProps) {
     const { data, isLoading, contextError: error } = useContext(DataContext);
     const actionCategories = !isLoading && !error && data.actionsCatData || [];
-    const { fetchTransactions } = useTransactionsStore();
+    const { fetchTransactions, addTransaction } = useTransactionsStore();
     const [imageMode, setImageMode] = useState<boolean>(false);
     const { recognizeValueFromFile, loadingImage, recognizedValue } = useOcrRecognition();
     const { t: tForms } = useTranslation("forms");
@@ -55,21 +54,24 @@ export default function AddTransactionForm({ onClose }: AddTransactionFormProps)
 
         if (!typeRef.current || !catIdRef.current) return;
 
-        const newActionData = {
+        const newActionData: NewActionData = {
             type: typeRef.current.value,
             value: parsedValue.toFixed(2),
             catId: catIdRef.current.selectedOptions[0].dataset.id as string,
         };
 
-        const saveAction = await sendRequest('POST', newActionData, `${serverUrl}/action/new`);
 
-        if (saveAction.status === 'success') {
-            showInfoToast(tForms(saveAction.message, { defaultValue: "addTransaction.addTransactionCorrect" }));
-            await fetchTransactions(1);
-            setTimeout(onClose, 500);
-        } else {
-            showErrorToast(tForms(saveAction.message, { defaultValue: "addTransaction.addTransactionError" }));
-        };
+        await addTransaction(newActionData, {
+            onSuccess: async () => {
+                showInfoToast(tForms("addTransaction.addTransactionCorrect"));
+                await fetchTransactions(1);
+                setTimeout(onClose, 500);
+            },
+            onError: () => {
+                showErrorToast(tForms("addTransaction.addTransactionError" ));
+            },
+        });
+       
     };
 
     return (

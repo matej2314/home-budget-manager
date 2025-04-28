@@ -1,4 +1,5 @@
 import { useState, useRef, FormEvent } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import Modal from 'react-modal';
 import { serverUrl } from 'url';
 import sendRequest from '@utils/asyncUtils/sendRequest';
@@ -15,13 +16,36 @@ interface EmailDataPayload {
     newEmail: string;
 };
 
+const changeMailRequest = async (emailData: EmailDataPayload) => {
+return await sendRequest<EmailDataPayload, BaseApiResponse>('POST', emailData, `${serverUrl}/users/changemail`);
+}
+
 export default function ChangeEmailModal({ isOpen, onRequestClose }: BasicModalProps) {
-    const [requestState, setRequestState] = useState({
-        sended: false,
-        isLoading: false,
-    });
+    const [sended, setSended] = useState<boolean>(false);
     const { t } = useTranslation("modals");
     const newEmailAddr = useRef<HTMLInputElement>(null);
+
+    const { mutate: saveMail, isPending } = useMutation({
+        mutationFn: changeMailRequest,
+        onMutate: () => {
+            setSended(false);
+        },
+        onSuccess: (response: BaseApiResponse) => {
+            if(response.status === 'success') {
+                showInfoToast(t(response.message, { defaultValue: "changeEmail.changedCorrectlyMessage" }));
+                setTimeout(onRequestClose, 500);
+            } else if (response.status === 'error') {
+                showErrorToast(t(response.message, { defaultValue: "changeEmail.failedError" }));
+        };
+        },
+        onError: (error: Error | string) => {
+            showErrorToast(t("changeEmail.failedError"));
+            console.error(error);
+        },
+        onSettled: () => {
+            setSended(true);
+        },
+    })
 
     const handleSaveNewEmail = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,21 +62,7 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }: BasicModalP
             newEmail: newEmailAddr.current?.value as string,
         };
 
-        try {
-            setRequestState({ sended: false, isLoading: true });
-            const saveEmail = await sendRequest<EmailDataPayload, BaseApiResponse>('POST', emailData, `${serverUrl}/users/changemail`);
-
-            if(saveEmail.status === 'success') {
-                    showInfoToast(t(saveEmail.message, { defaultValue: "changeEmail.changedCorrectlyMessage" }));
-                    setTimeout(onRequestClose, 500);
-                }else {
-                    showErrorToast(t(saveEmail.message, { defaultValue: "changeEmail.failedError" }));
-            };
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setRequestState({ sended: true, isLoading: false });
-        };
+        await saveMail(emailData);
     };
 
     return (
@@ -91,12 +101,12 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }: BasicModalP
                     </div>
                     <SubmitBtn
                         className='form-submit-modal-btn'
-                        disabled={requestState.sended}
+                        disabled={sended || isPending}
                     >
                         {t("changeEmail.newEmailSubmitBtn")}
                     </SubmitBtn>
                 </form>
-                {requestState.isLoading && <LoadingModal isOpen={requestState.isLoading} />}
+                {isPending && <LoadingModal isOpen={isPending} />}
             </div>
         </Modal>
     )

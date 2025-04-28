@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { AuthContext } from '../../../store/authContext';
 import Modal from 'react-modal';
 import SendMessageForm from '@components/forms/SendMessageForm';
@@ -40,19 +41,41 @@ export function SendMessageModal({ isOpen, onRequestClose, data }: MessageModalP
 export function DeleteMessageModal({ isOpen, onRequestClose, data }: MessageModalProps) {
 	const { t } = useTranslation("modals");
 	const message = data as Message;
+	const [sended, setSended] = useState<boolean>(false);
+
+	const deleteMsgRequest = async (delData: DelData) => {
+		return await sendRequest<DelData, BaseApiResponse>('DELETE', delData, `${serverUrl}/message/delete`, 'messageId');
+	};
+
+
+	const { mutate: delMessage } = useMutation({
+		mutationFn: deleteMsgRequest,
+		onMutate: () => {
+			setSended(false);
+		},
+		onSuccess: (response: BaseApiResponse) => {
+			if (response.status === 'success') {
+				showInfoToast(t("deleteMessage.deletedCorrectlyMessage"));
+				onRequestClose();
+			} else if (response.status === 'error') {
+				showErrorToast(t("deleteMessage.errorMessage"));
+			}
+		},
+		onError: (error: Error | string) => {
+			showErrorToast(t("deleteMessage.errorMessage"));
+			console.error(error);
+		},
+		onSettled: () => {
+			setSended(true);
+		},
+	});
 	
 	const handleDeleteMessage = async (messageId: string) => {
 		const delData: DelData = {
 			messageId: messageId,
 		};
-		const result = await sendRequest<DelData, BaseApiResponse>('DELETE', delData, `${serverUrl}/message/delete`, 'messageId');
-
-		if (result.status === 'success') {
-			showInfoToast(t("deleteMessage.deletedCorrectlyMessage"));
-			onRequestClose();
-		} else if (result.status === 'error') {
-			showErrorToast(t("deleteMessage.errorMessage"));
-		}
+		
+		await delMessage(delData);
 	};
 	return (
 		<Modal isOpen={isOpen} onRequestClose={onRequestClose} className="del-msg-modal" overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">

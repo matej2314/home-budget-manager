@@ -1,8 +1,18 @@
-import type { ApiResponse, CallbackOptions } from "@models/useApiResponseTypes";
+export type ApiResponse<T = unknown> = {
+    status: 'success' | 'error';
+    message: string;
+} & T;
 
-export default function useApiResponseHandler() {
+export type CallbackOptions<T = unknown> = {
+    onSuccess?: (response?: ApiResponse<T>) => void;
+    onError?: (response?: ApiResponse<T>) => void;
+};
+
+export default function useApiResponseHandler<T = unknown>() {
     const handleApiResponse = async (
-        response: ApiResponse, { onSuccess, onError }: CallbackOptions = {}): Promise<void> => {
+        response: ApiResponse<T>, 
+        { onSuccess, onError }: CallbackOptions<T> = {}
+    ): Promise<void> => {
         try {
             if (response.status === 'success') {
                 onSuccess?.(response);
@@ -11,7 +21,8 @@ export default function useApiResponseHandler() {
             }
         } catch (error) {
             console.error(error);
-        };
+        }
     };
+    
     return handleApiResponse;
-};
+}

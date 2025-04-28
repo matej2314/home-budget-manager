@@ -1,38 +1,59 @@
 import { useState, useRef, FormEvent } from "react"
+import { useMutation } from "@tanstack/react-query";
 import { serverUrl } from "url";
 import sendRequest from "@utils/asyncUtils/sendRequest";
 import { useTranslation } from "react-i18next";
 import { showErrorToast, showInfoToast } from "@configs/toastify";
+import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
+
+type HouseData = {
+    houseName: string;
+};
+
+const addHouseRequest = async (houseData: HouseData) => {
+    return await sendRequest<HouseData, BaseApiResponse>('POST', houseData, `${serverUrl}/house/new`);
+};
 
 export default function DashBoardForUser() {
-    const [sended, setIsSended] = useState(false);
+    const [sended, setSended] = useState<boolean>(false);
     const houseNameRef = useRef<HTMLInputElement>(null);
     const { t } = useTranslation("pages");
+
+    const { mutate: addHouse, isPending } = useMutation({
+        mutationFn: addHouseRequest,
+        onMutate: () => {
+            setSended(false)
+        },
+        onSuccess: (response: BaseApiResponse) => {
+
+            if (response.status === 'success') {
+                showInfoToast(t(`${response.message}`));
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 1000);
+            } else if (response.status === 'error') {
+                console.error(response.message);
+            }
+        },
+        onError: (error: Error | string) => {
+            console.error(error);
+        },
+        onSettled: () => {
+            setSended(true);
+        },
+    });
     
     const handleAddHouse = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (houseNameRef.current?.value === '') {
             showErrorToast(t("userDashboard.emptyInputError"));
+            return;
         };
 
-        const houseData = { houseName: houseNameRef.current?.value };
+        const houseData: HouseData = { houseName: houseNameRef.current?.value as string };
 
-        try {
-            setIsSended(false);
-            const addHouse = await sendRequest('POST', houseData, `${serverUrl}/house/new`);
-            if (addHouse.status === 'success') {
-                showInfoToast(t(`${addHouse.message}`));
-                setTimeout(() => {
-                    window.location.href = "/dashboard";
-                }, 1000)
-
-            }
-        } catch (error) {
-            showErrorToast("userDashboard.failedError");
-        } finally {
-            setIsSended(true);
-        }
+        await addHouse(houseData);
     };
 
     return (
@@ -47,7 +68,7 @@ export default function DashBoardForUser() {
                     <input type="text" name="houseName" id="houseName" className="bg-slate-200 text-slate-700 pl-2 rounded-md" ref={houseNameRef} />
                     <button
                         type="submit"
-                        disabled={sended}
+                        disabled={sended || isPending}
                         className="w-fit h-fit flex justify-center mx-auto border-2 border-slate-400 p-3 mt-4 rounded-xl hover:bg-slate-400 hover:text-slate-100"
                     >
                         {t("userDashboard.addBtnLabel")}

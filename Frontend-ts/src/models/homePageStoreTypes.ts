@@ -34,6 +34,6 @@ export type HomePageDataStore = {
     homePageData: HomePageData | null;
     homePageDataError: string | null;
     isHomePageDataLoading: boolean;
-    fetchHomePageData: () => Promise<void>;
+    fetchHomePageData: () => void;
 }
 

@@ -1,7 +1,18 @@
 import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
+import { ApiResponse } from "./useApiResponseTypes";
 
 export type TotalPages = number;
 export type Page = number;
+
+export type NewActionData = {
+    type: string;
+    value: string;
+    catId: string;
+};
+
+export type DeleteActionData = {
+    transactionId: string;
+};
 
 export interface Transaction {
     transactionId: string;
@@ -21,6 +32,11 @@ export type DashboardData = {
     page: Page
 };
 
+export type Callbacks = {
+    onSuccess?: () => void;
+    onError?: () => void;
+}
+
 export interface TransactionsStoreType {
     actionsData: Transaction[] | [];
     actionsDataError: string | null;
@@ -29,6 +45,8 @@ export interface TransactionsStoreType {
     actionsTotalPages: number;
     isTransactionsFetched: boolean;
     fetchTransactions: (page: number) => Promise<void>;
+    addTransaction: (newActionData: NewActionData, { onSuccess, onError }: Callbacks) => Promise<void>;
+    deleteTransaction: (deleteActionData: DeleteActionData, { onSuccess, onError }: Callbacks) => Promise<void>;
     setCurrentPage: (page: number) => void;
 };
 

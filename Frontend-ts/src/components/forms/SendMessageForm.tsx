@@ -1,22 +1,32 @@
 import { FormEvent, useRef, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { useMessagesStore } from '../../store/messagesStore';
-import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { serverUrl } from '../../url';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import SendMessageBtn from './internal/SendMessageBtn';
 import LoadingModal from '../modals/LoadingModal';
+import sendRequest from '../../utils/asyncUtils/sendRequest';
+import { BaseApiResponse } from '@utils/asyncUtils/fetchData';
 
 type SendMessageFormInput = {
-    reply: boolean;
-    recipientName: string | null;
-    onClose: () => void;
-}
+	reply: boolean;
+	recipientName: string | null;
+	onClose: () => void;
+};
+
+type MessageData = {
+	recipientName: string;
+	content: string;
+};
+
+const sendMessageRequest = async (messageData: MessageData) => {
+	return await sendRequest<MessageData, BaseApiResponse>('POST', messageData, `${serverUrl}/message/send`);
+};
 
 export default function SendMessageForm({ reply, recipientName, onClose }: SendMessageFormInput) {
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [actionState, setActionState] = useState < { type: string}>({ type: '' });
+	const [actionState, setActionState] = useState<{ type: string }>({ type: '' });
 	const { fetchMessages } = useMessagesStore();
 	const { t } = useTranslation("forms");
 	const recipientRef = useRef<HTMLInputElement>(null);
@@ -30,40 +40,44 @@ export default function SendMessageForm({ reply, recipientName, onClose }: SendM
 		setActionState({ type: '' });
 	};
 
-	const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
+	const { mutate: sendMessage, isPending } = useMutation({
+		mutationFn: sendMessageRequest,
+		onMutate: () => {
+			setActionState({ type: 'loading' });
+		},
+		onSuccess: (data: BaseApiResponse) => {
+			if (data.status === 'success') {
+				showInfoToast(t(data.message, { defaultValue: "sendMessage.successMessage" }));
+				fetchMessages(1);
+				if (messageContentRef.current) {
+					messageContentRef.current.value = '';
+				}
+				setTimeout(onClose, 600);
+			} else if (data.status === 'error') {
+				showErrorToast(t(data.message, { defaultValue: "sendMessage.errorMessage" }));
+			}
+		},
+		onError: (error: Error | string) => {
+			showErrorToast(t("sendMessage.errorMessage"));
+			console.error(error);
+		},
+		onSettled: () => {
+			setActionState({ type: 'sended' });
+		},
+	});
+
+	const handleSendMessage = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const recipient = recipientRef.current?.value;
 		const message = messageContentRef.current?.value;
 
-        const validRecipient = recipient;
-        const validMessage = message;
-
-		const messageData = {
-			recipientName: validRecipient,
-			content: validMessage,
+		const messageData: MessageData = {
+			recipientName: recipient as string ?? '',
+			content: message as string ?? '',
 		};
 
-		try {
-			setIsLoading(true);
-			const sendMessage = await sendRequest('POST', messageData, `${serverUrl}/message/send`);
-
-			if (sendMessage.status === 'success') {
-					showInfoToast(t(sendMessage.message, { defaultValue: "sendMessage.successMessage" }));
-					await fetchMessages(1);
-					if (messageContentRef.current) {
-                        messageContentRef.current.value = '';
-                };
-					setTimeout(onClose, 600);
-				} else if (sendMessage.status === 'error') {
-					showErrorToast(t(sendMessage.message, { defaultValue: "sendMessage.errorMessage" }));
-				}
-		} catch (error) {
-			showErrorToast(t("sendMessage.errorMessage"));
-		} finally {
-			handleSetActionState('sended');
-			setIsLoading(false);
-		}
+		sendMessage(messageData);
 	};
 
 	return (
@@ -80,14 +94,14 @@ export default function SendMessageForm({ reply, recipientName, onClose }: SendM
 						id="recipientName"
 						placeholder={t("sendMessage.recipientNamePlaceholder")}
 						ref={recipientRef} defaultValue={recipientName || ''}
-						required disabled={isLoading} onInput={(e) => ((e.target as HTMLInputElement).nextSibling as HTMLElement).style.display = e.currentTarget.value ? 'none' : 'block'}
+						required disabled={isPending} onInput={(e) => ((e.target as HTMLInputElement).nextSibling as HTMLElement).style.display = e.currentTarget.value ? 'none' : 'block'}
 						className={`${recipientName ? 'bg-gray-300 cursor-not-allowed' : ''} input-base`} />
 					<Icon icon="mage:user-fill" className="icon-base top-0.5 text-gray-500 text-xl text-opacity-40" />
 				</div>
 				<label className="w-full h-fit flex justify-center" htmlFor="messageContent">
 					{t("sendMessage.messageLabel")}
 				</label>
-				<div className="relative w-[13rem] indirect:w-full indirectxl:w-10/12  sm:w-9/12 md:w-8/12 lg:w-6/12 xl:w-11/12 flex justify-center">
+				<div className="relative w-[13rem] indirect:w-full indirectxl:w-10/12 sm:w-9/12 md:w-8/12 lg:w-6/12 xl:w-11/12 flex justify-center">
 					<textarea
 						className=" resize-none input-base"
 						name="messageContent"
@@ -99,7 +113,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }: SendM
 				</div>
 				<SendMessageBtn form="sendMessage" state={actionState} setState={handleSetActionState} resetState={handleResetActionState} />
 			</form>
-			{isLoading && <LoadingModal isOpen={isLoading} />}
+			{isPending && <LoadingModal isOpen={isPending} />}
 		</div>
 	);
 }

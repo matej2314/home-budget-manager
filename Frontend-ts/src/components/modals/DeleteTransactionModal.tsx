@@ -1,10 +1,8 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '@store/authContext';
-import { type Transaction } from '@models/transactionsStoreTypes';
+import { DeleteActionData, type Transaction } from '@models/transactionsStoreTypes';
 import { type AuthContextType } from '@models/authTypes';
 import Modal from 'react-modal';
-import sendRequest from '@utils/asyncUtils/sendRequest';
-import { serverUrl } from 'url';
 import { useTransactionsStore } from '@store/transactionsStore';
 import { showErrorToast, showInfoToast } from '@configs/toastify';
 import LoadingModal from './LoadingModal';
@@ -16,7 +14,7 @@ type DeleteTransactionModalProps = BasicModalProps & {
 }
 
 export default function DeleteTransactionModal({ isOpen, onRequestClose, transaction }: DeleteTransactionModalProps) {
-    const { fetchTransactions } = useTransactionsStore();
+    const { fetchTransactions, deleteTransaction } = useTransactionsStore();
     const [isLoading, setIsLoading] = useState(false);
     const { user } = useContext(AuthContext) as AuthContextType;
     const { t } = useTranslation("modals");
@@ -30,16 +28,19 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
 
         try {
             setIsLoading(true);
-            const actionData = { transactionId: transaction.transactionId };
-            const deleteAction = await sendRequest('DELETE', actionData, `${serverUrl}/action`);
+            const deleteActionData: DeleteActionData = { transactionId: transaction.transactionId };
 
-            if (deleteAction.status === 'success') {
+            await deleteTransaction(deleteActionData, {
+                onSuccess: () => {
                     showInfoToast(t("deleteTransaction.successMessage"));
                     fetchTransactions(1);
                     onRequestClose();
-                }else {
+                },
+                onError: () => {
                     showErrorToast(t("deleteTransaction.failedMessage"));
-            };
+                },
+            });
+
         } catch (error) {
             showErrorToast(t("deleteTransaction.errorMessage"));
             console.error('Delete transaction error:', error);

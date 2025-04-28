@@ -1,4 +1,5 @@
 import { useContext, useState, useRef, useEffect, FormEvent } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { AuthContext } from '@store/authContext';
 import { useTransactionsStore } from '@store/transactionsStore';
 import useDocumentTitle from '@hooks/useDocumentTitle';
@@ -39,46 +40,52 @@ export default function UserProfilePage() {
 
     };
 
-    const handleChangeAvatar = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (avatarFile.current?.files?.length == 0) {
-            showErrorToast(t("userProfile.avatarInputError"));
-            return;
-        }
-
-        const avatarData = new FormData();
-
-        if (avatarFile.current?.files?.length == 0) {
-            showErrorToast(t("userProfile.avatarInputError"));
-        };
-
-        avatarData.append('avatar', avatarFile.current!.files![0]);
-
-        try {
-            setSended(false);
-            const addAvatar = await fetch(`${serverUrl}/avatars/save`, {
+    const { mutate: changeAvatar, isPending } = useMutation({
+        mutationFn: async (avatarData: FormData) => {
+            const response = await fetch(`${serverUrl}/avatars/save`, {
                 method: 'POST',
                 body: avatarData,
                 credentials: 'include',
             });
-
-            const avatarResponse = await addAvatar.json();
-
-            if (avatarResponse.status === 'success') {
-                showInfoToast(t("userProfile.successMessage"));
-                setTimeout(() => {
-                    window.location.reload();
-                }, 600);
-            } else if (avatarResponse.status === 'error') {
-                showErrorToast(t("userProfile.failedError"));
+    
+            const data = await response.json();
+            if (data.status !== 'success') {
+                throw new Error('Failed to upload avatar');
             }
-        } catch (error) {
+            return data;
+        },
+        onMutate: () => {
+            setSended(false);
+        },
+        onSuccess: () => {
+            showInfoToast(t("userProfile.successMessage"));
+            setTimeout(() => {
+                window.location.reload();
+            }, 600);
+        },
+        onError: (error: Error | string) => {
             showErrorToast(t("userProfile.failedError"));
-        } finally {
+            console.error(error);
+        },
+        onSettled: () => {
             setSended(true);
         }
+    });
+
+    const handleChangeAvatar = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    
+        if (avatarFile.current?.files?.length === 0) {
+            showErrorToast(t("userProfile.avatarInputError"));
+            return;
+        }
+    
+        const avatarData = new FormData();
+        avatarData.append('avatar', avatarFile!.current!.files![0]);
+    
+        changeAvatar(avatarData as FormData);
     };
+    
 
     const transactions = !actionsDataError && !actionsLoading && Array.isArray(actionsData) ? actionsData : [];
 
@@ -108,7 +115,7 @@ export default function UserProfilePage() {
                             <CustomAvatarInput ref={avatarFile} />
                             <button
                                 type="submit"
-                                disabled={sended}
+                                disabled={sended || isPending}
                                 className='w-fit h-fit border-2 border-slate-400 rounded-md p-3 hover:bg-slate-400 hover:text-slate-50'
                             >
                                 {t("userProfile.btnSave")}

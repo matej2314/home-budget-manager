@@ -1,5 +1,6 @@
 import { useState, useRef, FormEvent } from "react"
 import { serverUrl } from '../../url';
+import { useMutation } from "@tanstack/react-query";
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { countDeclaredBudgetPeriod } from "@utils/countingUtils/countDeclaredBudgetPeriod";
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
@@ -10,54 +11,57 @@ import { useTranslation } from 'react-i18next';
 import SubmitBtn from "./internal/SubmitBtn";
 import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
 
-interface DeclarationStatusType {
-    sended: boolean;
-    isLoading: boolean;
-};
-
 interface BudgetDataPayload {
     value: number;
 };
 
+const declareBudgetRequest = async (value: number) => {
+    const budgetData: BudgetDataPayload = { value };
+    return await sendRequest<BudgetDataPayload, BaseApiResponse>('POST', budgetData, `${serverUrl}/initmonthly/new`);
+};
+
 export default function DeclareBudgetForm() {
-    const [declarationStatus, setDeclarationStatus] = useState<DeclarationStatusType>({
-        sended: false,
-        isLoading: false,
-    });
     const { t } = useTranslation("forms");
     const declaredBudgetRef = useRef<HTMLInputElement>(null);
     const declaredPeriod = countDeclaredBudgetPeriod();
+    const [sended, setSended] = useState<boolean>(false);
+    
+    const mutation = useMutation({
+        mutationFn: declareBudgetRequest,
+        onMutate: () => {
+            setSended(false);
+        },
+        onSuccess: (data: BaseApiResponse) => {
+            if (data.status === 'success') {
+                showInfoToast(t(data.message, { defaultValue: "declareBudget.declaredCorrectlyMessage" }));
+            } else if (data.status === 'error') {
+                showErrorToast(t(data.message, { defaultValue: "declareBudget.declareInternalError" }));
+            }
+        },
+        onError: (error: Error | string) => {
+            showErrorToast(t("declareBudget.error"));
+            console.error(error);
+        },
+        onSettled: () => {
+            setSended(true);
+        },
+    });
 
-    const handleDeclareBudget = async (e: FormEvent<HTMLFormElement>) => {
+    const handleDeclareBudget = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+    
         const declaredBudget = declaredBudgetRef.current?.value.trim().replace(',', '.');
-
+    
         if (!declaredBudget || !isValidNumber(declaredBudget)) {
             showInfoToast(t("declareBudget.inputError"));
             return;
         };
-
+    
         const budgetData: BudgetDataPayload = {
             value: +parseFloat(declaredBudget).toFixed(2),
         };
-
-        try {
-            setDeclarationStatus({ sended: false, isLoading: true });
-
-            const addBudget = await sendRequest<BudgetDataPayload, BaseApiResponse>('POST', budgetData, `${serverUrl}/initmonthly/new`);
-
-            if(addBudget.status === 'success') {
-                    showInfoToast(t(addBudget.message, { defaultValue: "declareBudget.declaredCorrectlyMessage" }));
-                    // setTimeout(onRequestClose, 600);
-                }else {
-                    showErrorToast(t(addBudget.message, { defaultValue: "declareBudget.declareInternalError" }));
-            };
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setDeclarationStatus({ sended: true, isLoading: false });
-        }
+    
+        mutation.mutate(budgetData.value);
     }
 
     return (
@@ -78,7 +82,7 @@ export default function DeclareBudgetForm() {
                             const input = e.currentTarget;
                             const icon = input.nextSibling as HTMLElement;
                             icon.style.display = input.value ? 'none' : 'block';
-                          }}
+                        }}
                         className="input-base"
                     />
                     <Icon
@@ -88,13 +92,13 @@ export default function DeclareBudgetForm() {
                 </div>
                 <SubmitBtn
                     className='form-submit-modal-btn'
-                    disabled={declarationStatus.sended}
+                    disabled={sended} // Zablokowanie przycisku podczas ładowania
                 >
                     {t("declareBudget.declareSubmitBtn")}
                 </SubmitBtn>
                 <p>{t("declareBudget.periodParagraph")} {declaredPeriod.startPeriod} - {declaredPeriod.endPeriodString}</p>
             </form>
-            {declarationStatus.isLoading && <LoadingModal isOpen={declarationStatus.isLoading} />}
+            {mutation.isPending && <LoadingModal isOpen={mutation.isPending} />}
         </>
     )
 }
