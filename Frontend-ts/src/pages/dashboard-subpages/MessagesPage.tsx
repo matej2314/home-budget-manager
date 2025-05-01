@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import DashboardHeader from "@components/dashboard/dashboardComponents/DashboardHeader";
 import MessagesList from '@components/dashboard/dashboard-internal-components/MessagesList';
-import LoadingModal from "components/modals/LoadingModal";
+import LoadingModal from "@components/modals/LoadingModal";
 
 export default function MessagesPage() {
     useDocumentTitle('Inbox');

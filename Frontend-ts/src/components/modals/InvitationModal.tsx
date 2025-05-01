@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { type BaseApiResponse } from '@utils/asyncUtils/fetchData';
 import { useTranslation } from 'react-i18next';
-import { serverUrl } from '../../url';
+import { serverUrl } from '../../configs/url';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import sendRequest from '../../utils/asyncUtils/sendRequest'
 import { formatDbDate } from '@utils/formattingUtils/formatDateToDisplay';

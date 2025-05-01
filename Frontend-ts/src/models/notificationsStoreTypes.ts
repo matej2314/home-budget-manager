@@ -1,9 +1,9 @@
 import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
 
 export interface NotificationsMap {
-    transactions: Notification[];
-    usersActions: Notification[];
-    monthlyBalance: Notification[];
+    transactions: NoticeData[];
+    usersActions: NoticeData[];
+    monthlyBalance: NoticeData[];
 };
 
 export type NotificationCategory = 'transactions' | 'usersActions' | 'monthlyBalance';

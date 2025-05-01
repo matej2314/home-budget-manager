@@ -1,5 +1,5 @@
 import { type BalanceUpdateType, SetMessagesType, InitBudgetType, NewMessageType, InvitationSocketType, MessagesState } from "@models/socketContextTypes";
-import { type Notification, NotificationCategory, NotificationsStoreType } from "@models/notificationsStoreTypes";
+import { type Notification, NotificationCategory } from "@models/notificationsStoreTypes";
 import useNotificationsStore from "@store/notificationsStore";
 
 export const handleBalanceUpdate = (data: BalanceUpdateType, setMessages: SetMessagesType) => {

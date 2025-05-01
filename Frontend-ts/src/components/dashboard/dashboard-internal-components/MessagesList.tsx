@@ -10,13 +10,14 @@ import { mapArray, filterArray } from "@utils/arraysUtils/arraysFunctions";
 import { formatDbDate } from "@utils/formattingUtils/formatDateToDisplay";
 import MessagesFilterBtns from "./MessagesFilterBtns";
 import ModalComponent from '../dashboard-internal-components/ModalComponent';
-import { DisplayMessageDetails, ReplyMessageModal, DeleteMessageModal,type MessageModalProps } from '@components/modals/messagesModals/messagesModals';
+import { DisplayMessageDetails, ReplyMessageModal, DeleteMessageModal } from '@components/modals/messagesModals/messagesModals';
 import { markMessage } from "@utils/asyncUtils/markMessage";
 import { messagesStates, tableHeader } from "@utils/arraysUtils/messagesMapArrays";
 import LoadingModal from "../../modals/LoadingModal";
 import { messagesBtnsArray } from "@utils/arraysUtils/messagesBtnsArray";
 import { getFilterMap, getClickHandler, getMsgsModalComponents, normalizeMessages } from "@utils/messagesListUtils";
 import { type Message } from "@models/messagesStoreTypes";
+import { type MessageModalProps } from "@models/componentsTypes/modalsTypes";
 import { NewMessageType } from "@models/socketContextTypes";
 
 export type MessagesListInput = {
@@ -35,9 +36,10 @@ export default function MessagesList({ userMessages, loading, getMessages, messa
     const { t: tUtils } = useTranslation("utils");
     const { modal, openModal, closeModal } = useModal<Message>({ isOpen: false, modalType: '', data: null });
     const [messagesType, setMessagesType] = useState<string>(filter || "all");
-    const [newMessages, setNewMessages] = useState<Message[]>([]);
+    // const [newMessages, setNewMessages] = useState<Message[]>([]);
     const navigate = useNavigate();
     const { isMobile } = useDeviceType();
+
 
     const liveMessages: NewMessageType[] = (
         connected && socketMessages?.newMessages?.length ? socketMessages.newMessages : []
@@ -49,13 +51,13 @@ export default function MessagesList({ userMessages, loading, getMessages, messa
     const filterMap = getFilterMap(sortedMessages, normalizedLiveMessages, filteredMessages, user);
 
     useEffect(() => {
-        if (normalizedLiveMessages.length > 0) {
-            setNewMessages((prevMessages) => {
-                const existingIds = new Set(prevMessages?.map(msg => msg.id));
-                const onlyNew = normalizedLiveMessages.filter(msg => !existingIds.has(msg.id));
-                return [...onlyNew, ...prevMessages];
-            });
-        }
+        // if (normalizedLiveMessages.length > 0) {
+        //     setNewMessages((prevMessages) => {
+        //         const existingIds = new Set(prevMessages?.map(msg => msg.id));
+        //         const onlyNew = normalizedLiveMessages.filter(msg => !existingIds.has(msg.id));
+        //         return [...onlyNew, ...prevMessages];
+        //     });
+        // }
     
         if (filterMap[filter as string]) {
             setMessagesType(filter as string);

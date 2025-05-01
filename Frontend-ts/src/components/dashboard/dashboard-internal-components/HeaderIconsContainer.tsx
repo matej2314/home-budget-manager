@@ -10,6 +10,7 @@ import NotificationDot from "./NotificationDot";
 import NotificationsContainer from "./NotificationsContainer";
 import useNotificationsStore from "@store/notificationsStore";
 import { NewMessageType } from "@models/socketContextTypes";
+import { type NotificationsMap } from "@models/notificationsStoreTypes";
 
 export default function HeaderIconsContainer({ filteredDataMessages, socketMessages }: HeaderIconsContainerInput) {
     const { t } = useTranslation("dashboardInternal");
@@ -26,7 +27,7 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
         fetchNotifications();
     }, [fetchNotifications]);
 
-    const allNotifications = useMemo(() => ({
+    const allNotifications: NotificationsMap = useMemo(() => ({
         transactions: mergeNotifications(notifications.transactions, socketNotifications.transactions),
         usersActions: mergeNotifications(notifications.usersActions, socketNotifications.usersActions),
         monthlyBalance: mergeNotifications(notifications.monthlyBalance, socketNotifications.monthlyBalance),

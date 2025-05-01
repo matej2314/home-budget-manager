@@ -1,8 +1,8 @@
 import { t } from 'i18next';
 import { showInfoToast, showErrorToast } from '@configs/toastify';
 import sendRequest from './sendRequest';
-import { serverUrl } from 'url';
-import { type Message } from '@utils/arraysUtils/messagesBtnsArray';
+import { serverUrl } from '@configs/url';
+import { type Message } from '@models/messagesStoreTypes';
 import { type User } from '@models/authTypes';
 
 type MarkMessageResponse = {

@@ -1,6 +1,6 @@
 import { useState, useRef, FormEvent } from "react"
 import { useMutation } from "@tanstack/react-query";
-import { serverUrl } from "url";
+import { serverUrl } from "@configs/url";
 import sendRequest from "@utils/asyncUtils/sendRequest";
 import { useTranslation } from "react-i18next";
 import { showErrorToast, showInfoToast } from "@configs/toastify";

@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { serverUrl } from '../../url';
+import { serverUrl } from '../../configs/url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';

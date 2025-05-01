@@ -1,7 +1,7 @@
 import { useState, useRef, FormEvent } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import Modal from 'react-modal';
-import { serverUrl } from '../../url';
+import { serverUrl } from '../../configs/url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import StarRating from '../StarRating';
 import LoadingModal from '../modals/LoadingModal';

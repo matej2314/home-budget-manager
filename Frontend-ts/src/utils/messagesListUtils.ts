@@ -2,7 +2,7 @@ import { filterArray } from "./arraysUtils/arraysFunctions";
 import { type User } from "@models/authTypes";
 import { type Message } from "@models/messagesStoreTypes";
 import { type ActionType, type OpenModalFn, type HandleMessageFn } from "@models/msgsUtilsTypes";
-import { MessageModalProps } from "@components/modals/messagesModals/messagesModals";
+import { MessageModalProps } from "@models/componentsTypes/modalsTypes";
 import { ComponentType} from "react";
 import { NewMessageType } from "@models/socketContextTypes";
 

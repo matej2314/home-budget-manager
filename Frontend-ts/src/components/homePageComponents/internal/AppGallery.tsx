@@ -2,7 +2,7 @@ import { useState, useEffect, useRef} from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useDeviceType } from '@hooks/useDeviceType';
 import { useModal } from '@hooks/useModal';
-import { serverUrl } from '../../../url';
+import { serverUrl } from '../../../configs/url';
 import { mapPhotos } from '@utils/arraysUtils/mapPhotos';
 import ScreenShotModal from '@components/modals/ScreenshotModal';
 import { type Shots } from '@models/homePageStoreTypes'

@@ -1,7 +1,7 @@
 import { FormEvent, useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useMessagesStore } from '../../store/messagesStore';
-import { serverUrl } from '../../url';
+import { serverUrl } from '../../configs/url';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { serverUrl } from 'url';
+import { serverUrl } from '@configs/url';
 import fetchData from '@utils/asyncUtils/fetchData';
 import { type InvitationsApiResponse, InvitationsStore } from '@models/invitationsStoreTypes';
 

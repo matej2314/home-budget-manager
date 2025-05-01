@@ -5,7 +5,7 @@ import { useTransactionsStore } from '@store/transactionsStore';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { useTranslation } from 'react-i18next';
 import CustomAvatarInput from '@components/dashboard/dashboard-internal-components/CustomAvatarInput';
-import { serverUrl } from 'url';
+import { serverUrl } from '@configs/url';
 import DashboardHeader from '@components/dashboard/dashboardComponents/DashboardHeader';
 import FastActions from '@components/dashboard/dashboard-internal-components/FastActionsSection';
 import TransactionsList from '@components/dashboard/dashboard-internal-components/TransactionsList';

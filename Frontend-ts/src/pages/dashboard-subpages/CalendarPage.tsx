@@ -8,7 +8,6 @@ import useDocumentTitle from '@hooks/useDocumentTitle';
 import CalendarModal from '@components/modals/CalendarModal';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { type Transaction } from '@models/transactionsStoreTypes';
-import i18n from '@configs/i18n';
 import { calendarMessages } from '@utils/calendarMessages';
 
 interface Event {

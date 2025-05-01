@@ -4,7 +4,7 @@ import { type User } from "@models/authTypes";
 import { type AuthStatus, SessionStatus, AuthContextType, AuthProviderProps, LoginInputValue, LoginResponse,checkSessionResponse, RegisterRequestData } from "@models/authTypes";
 import { type BaseApiResponse } from "@utils/asyncUtils/fetchData";
 import fetchData from "@utils/asyncUtils/fetchData";
-import { serverUrl } from "url";
+import { serverUrl } from "@configs/url";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 

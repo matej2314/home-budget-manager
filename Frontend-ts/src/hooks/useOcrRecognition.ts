@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation } from '@tanstack/react-query';
 import useApiResponseHandler from "./useApiResponseHandler";
-import { serverUrl } from "url";
+import { serverUrl } from "@configs/url";
 import { showErrorToast } from "@configs/toastify";
 import { useTranslation } from 'react-i18next';
 

@@ -1,4 +1,4 @@
-import { type Message } from "@utils/arraysUtils/messagesBtnsArray";
+import { type Message } from "@models/messagesStoreTypes";
 import { type NewMessageType } from "@models/socketContextTypes";
 
 export type HeaderIconsContainerInput = {

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import fetchData, {type BaseApiResponse} from '../utils/asyncUtils/fetchData';
 
-import { serverUrl } from '../url';
+import { serverUrl } from '../configs/url';
 import sendRequest from '../utils/asyncUtils/sendRequest';
 import { type NotificationsStoreType, NotificationsApiResponse, SendReqData } from '@models/notificationsStoreTypes';
 

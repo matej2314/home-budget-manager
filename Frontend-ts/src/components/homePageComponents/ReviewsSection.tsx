@@ -1,5 +1,5 @@
 import StarRating from '@components/StarRating';
-import { serverUrl } from '../../url';
+import { serverUrl } from '../../configs/url';
 import { formatDbDate } from "../../utils/formattingUtils/formatDateToDisplay";
 import { useTranslation } from "react-i18next";
 import { Reviews } from "@models/homePageStoreTypes";

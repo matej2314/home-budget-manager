@@ -1,5 +1,4 @@
 import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
-import { ApiResponse } from "./useApiResponseTypes";
 
 export type TotalPages = number;
 export type Page = number;

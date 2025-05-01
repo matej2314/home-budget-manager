@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext} from "react";
 import { AuthContext } from "./authContext";
 import { io, type Socket } from 'socket.io-client';
-import { socketPath } from "url";
+import { socketPath } from "@configs/url";
 import { handleSetConnected, handleSocketError } from "@utils/socketUtils/defaultSocketMessagesHandlers";
 import { handleBalanceUpdate, handleInitBudget, handleNewMessage, socketInvitationHandler, socketNotificationHandler } from "@utils/socketUtils/socketMessagesHandlers";
 import { type NotificationCategory, Notification } from "@models/notificationsStoreTypes";

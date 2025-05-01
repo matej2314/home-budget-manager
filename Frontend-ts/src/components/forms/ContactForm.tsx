@@ -1,10 +1,10 @@
 import { useState, useRef, type FormEvent } from 'react';
-import sendRequest from '../../utils/asyncUtils/sendRequest';
+// import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import SendMessageBtn from './internal/SendMessageBtn';
-import LoadingModal from '../modals/LoadingModal';
+// import LoadingModal from '../modals/LoadingModal';
 
 type ActionStateType = {
     type: string;
@@ -12,7 +12,7 @@ type ActionStateType = {
 
 export default function ContactForm() {
     const [actionState, setActionState] = useState<ActionStateType>({ type: '' });
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    // const [isLoading, setIsLoading] = useState<boolean>(false);
     const { t } = useTranslation("forms");
 
     const userNameRef = useRef<HTMLInputElement>(null);
@@ -91,7 +91,7 @@ export default function ContactForm() {
                 resetState={handleResetActionState}
             />
 
-            {isLoading && <LoadingModal isOpen={isLoading} />}
+            {/* {isLoading && <LoadingModal isOpen={isLoading} />} */}
         </form>
     );
 }

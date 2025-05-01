@@ -8,7 +8,7 @@ import LanguageSelector from "../../LanguageSelector";
 import { loggingOut } from "../../../utils/handleLogOut";
 import HeaderIconsContainer from "../dashboard-internal-components/HeaderIconsContainer";
 import LogOutModal from "../../modals/LogOutModal";
-import { serverUrl } from "../../../url";
+import { serverUrl } from "../../../configs/url";
 import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
 import { NewMessageType } from "@models/socketContextTypes";
 import { AuthContextType } from "@models/authTypes";

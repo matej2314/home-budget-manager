@@ -20,23 +20,38 @@ export default function LanguageSwitch({ isHomePage }: LanguageSwitchProps) {
     const handleLangChange = (selectedOption: SingleValue<LanguageOption>) => {
         if (selectedOption) {
             const newLang = selectedOption.value;
-            setSelectedLang(newLang);
-            i18next.changeLanguage(newLang);
-            setLocalStorage("i18nextLng", newLang);
-        }
+
+            i18next.loadLanguages(newLang, () => {
+                i18next.changeLanguage(newLang);
+                setSelectedLang(newLang);
+                setLocalStorage("i18nextLng", newLang);
+            });
+        };
     };
 
     useEffect(() => {
-        const storedLang = localStorage.getItem('i18nextLng');
-        if (storedLang) {
-            setSelectedLang(storedLang);
-            i18next.changeLanguage(storedLang);
-        } else {
+        const changeLang = (lang: string) => {
+            setSelectedLang(lang);
+            i18next.changeLanguage(lang);
+        };
+    
+        const initLang = () => {
+            const storedLang = localStorage.getItem('i18nextLng');
             const browserLang = navigator.language.split('-')[0];
-            setSelectedLang(browserLang);
-            i18next.changeLanguage(browserLang);
+            changeLang(storedLang || browserLang || 'en');
+        };
+    
+        if (i18next.isInitialized) {
+            initLang();
+        } else {
+            i18next.on('initialized', initLang);
         }
+    
+        return () => {
+            i18next.off('initialized', initLang);
+        };
     }, []);
+    
 
     useEffect(() => {
         const handleLanguageChange = (lng: string) => setSelectedLang(lng);

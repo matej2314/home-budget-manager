@@ -1,5 +1,5 @@
 import { FormEvent, useRef, useState } from "react";
-import { serverUrl } from "url";
+import { serverUrl } from "@configs/url";
 import { useMutation } from "@tanstack/react-query";
 import sendRequest from '@utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from "@configs/toastify";

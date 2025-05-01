@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { AuthContext } from '../../../store/authContext';
 import Modal from 'react-modal';
 import SendMessageForm from '@components/forms/SendMessageForm';
-import { serverUrl } from '../../../url';
+import { serverUrl } from '../../../configs/url';
 import sendRequest from '../../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import { useTranslation } from 'react-i18next';
@@ -48,7 +48,7 @@ export function DeleteMessageModal({ isOpen, onRequestClose, data }: MessageModa
 	};
 
 
-	const { mutate: delMessage } = useMutation({
+	const { mutate: delMessage, isPending } = useMutation({
 		mutationFn: deleteMsgRequest,
 		onMutate: () => {
 			setSended(false);
@@ -82,10 +82,10 @@ export function DeleteMessageModal({ isOpen, onRequestClose, data }: MessageModa
 			<div className="w-full h-fit flex flex-col justify-center items-center gap-5">
 				<p>{`${t("deleteMessage.confirmQuestion")} '${message.message}' ?`}</p>
 				<div id="btnsDiv" className="w-full h-fit flex justify-around">
-					<button type="button" className="form-submit-modal-btn" onClick={() => handleDeleteMessage(message.id)}>
+					<button type="button" disabled={sended || isPending} className="form-submit-modal-btn" onClick={() => handleDeleteMessage(message.id)}>
 						{t("btnYes")}
 					</button>
-					<button onClick={onRequestClose} type="button" className="form-submit-modal-btn">
+					<button onClick={onRequestClose} disabled={sended || isPending} type="button" className="form-submit-modal-btn">
 						{t("btnNo")}
 					</button>
 				</div>

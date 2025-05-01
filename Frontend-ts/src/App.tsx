@@ -2,8 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import BackToUsMessage from '@components/BackToUsMessage';
 import { ToastContainer } from 'react-toastify';
 import routes from '@configs/routerConfig';
-
-import './App.css'
+import '@configs/i18n';
 
 const App = () => {
   const router = createBrowserRouter(routes)
