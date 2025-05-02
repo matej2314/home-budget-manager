@@ -4,6 +4,7 @@ import { AuthContext } from '@store/authContext';
 import { useTransactionsStore } from '@store/transactionsStore';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { useTranslation } from 'react-i18next';
+import { useModal } from '@hooks/useModal';
 import CustomAvatarInput from '@components/dashboard/dashboard-internal-components/CustomAvatarInput';
 import { serverUrl } from '@configs/url';
 import DashboardHeader from '@components/dashboard/dashboardComponents/DashboardHeader';
@@ -17,7 +18,7 @@ export default function UserProfilePage() {
     const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
     const { user } = useContext(AuthContext) as AuthContextType;
     const [type, setType] = useState<string>('');
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const { openModal } = useModal({ isOpen: false, modalType: '', data: null });
     const [sended, setSended] = useState<boolean>(false);
     const { t } = useTranslation("pages");
     const avatarFile = useRef<HTMLInputElement>(null);
@@ -35,8 +36,7 @@ export default function UserProfilePage() {
     };
 
     const handleOpenModal = () => {
-        setType('email');
-        setIsModalOpen(true);
+        openModal('email', null);
 
     };
 
@@ -47,7 +47,7 @@ export default function UserProfilePage() {
                 body: avatarData,
                 credentials: 'include',
             });
-    
+
             const data = await response.json();
             if (data.status !== 'success') {
                 throw new Error('Failed to upload avatar');
@@ -74,18 +74,18 @@ export default function UserProfilePage() {
 
     const handleChangeAvatar = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-    
+
         if (avatarFile.current?.files?.length === 0) {
             showErrorToast(t("userProfile.avatarInputError"));
             return;
         }
-    
+
         const avatarData = new FormData();
         avatarData.append('avatar', avatarFile!.current!.files![0]);
-    
+
         changeAvatar(avatarData as FormData);
     };
-    
+
 
     const transactions = !actionsDataError && !actionsLoading && Array.isArray(actionsData) ? actionsData : [];
 

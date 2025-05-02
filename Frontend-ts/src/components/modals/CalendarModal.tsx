@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 import { useTranslation } from 'react-i18next'
-import { type SelectedEvent, CalendarModalProps } from '@models/componentsTypes/CalendarModalTypes';
+import { type CalendarModalProps } from '@models/componentsTypes/CalendarModalTypes';
 
 export default function CalendarModal({ selectedEvent, handleCloseModal }: CalendarModalProps) {
     const { t } = useTranslation("modals");

@@ -3,7 +3,7 @@ import { BaseApiResponse } from "@utils/asyncUtils/fetchData";
 export type Message = {
     id: string;
     message: string;
-    readed: boolean;
+    readed: string | number;
     date: string;
     sender: string;
     recipient: string;

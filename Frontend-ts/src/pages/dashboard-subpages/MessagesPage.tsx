@@ -24,7 +24,7 @@ export default function MessagesPage() {
 
     return (
         <>
-            {messagesData && <div id="pagecontent" className="h-screen bg-slate-200 overflow-y-hidden">
+            {messagesData && <div id="pagecontent" className="w-full h-screen bg-slate-200 overflow-y-hidden">
                 <DashboardHeader />
                 <div
                     id="middle-content"

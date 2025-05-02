@@ -36,7 +36,6 @@ export default function MessagesList({ userMessages, loading, getMessages, messa
     const { t: tUtils } = useTranslation("utils");
     const { modal, openModal, closeModal } = useModal<Message>({ isOpen: false, modalType: '', data: null });
     const [messagesType, setMessagesType] = useState<string>(filter || "all");
-    // const [newMessages, setNewMessages] = useState<Message[]>([]);
     const navigate = useNavigate();
     const { isMobile } = useDeviceType();
 
@@ -46,27 +45,21 @@ export default function MessagesList({ userMessages, loading, getMessages, messa
     );
     const normalizedLiveMessages = normalizeMessages(liveMessages);
     const sortedMessages = Array.isArray(userMessages) ? [...userMessages].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : [];
-    const filteredMessages: Message[] = Array.isArray(userMessages) ? filterArray(userMessages, msg => msg.recipient === user.userName) : [];
 
-    const filterMap = getFilterMap(sortedMessages, normalizedLiveMessages, filteredMessages, user);
+    const allMessages = [...sortedMessages, ...normalizedLiveMessages];
+
+    const filterMap = getFilterMap(allMessages, user);
+
 
     useEffect(() => {
-        // if (normalizedLiveMessages.length > 0) {
-        //     setNewMessages((prevMessages) => {
-        //         const existingIds = new Set(prevMessages?.map(msg => msg.id));
-        //         const onlyNew = normalizedLiveMessages.filter(msg => !existingIds.has(msg.id));
-        //         return [...onlyNew, ...prevMessages];
-        //     });
-        // }
-    
         if (filterMap[filter as string]) {
             setMessagesType(filter as string);
         } else {
             navigate('/dashboard/messages/all', { replace: true });
         }
     }, [normalizedLiveMessages, filter, navigate]);
-    
-    
+
+
 
     const handleChangeFilter = (type: string) => {
         navigate(`/dashboard/messages/${type}`);
@@ -86,11 +79,10 @@ export default function MessagesList({ userMessages, loading, getMessages, messa
         DeleteMessageModal,
         ReplyMessageModal
     );
-    
 
     return (
         <>
-            <div className="mx-auto min-h-full lg:px-3 xl:px-3">
+            <div className="w-full mx-auto min-h-full lg:px-3 xl:px-3">
                 <div className="ml-5">
                     <MessagesFilterBtns messagesStates={messagesStates} handleChangeFilter={handleChangeFilter} />
                 </div>
@@ -167,18 +159,18 @@ export default function MessagesList({ userMessages, loading, getMessages, messa
                     </p>
                 )}
 
-{modal.isOpen && modal.modalType in modalComponents && (
-  <ModalComponent<MessageModalProps>
-    Component={modalComponents[modal.modalType]}
-    isOpen={modal.isOpen}
-    onRequestClose={closeModal}
-    props={{
-        data: modal.data as Message,
-        isOpen: modal.isOpen,
-        onRequestClose: closeModal,
-    }}
-  />
-)}
+                {modal.isOpen && modal.modalType in modalComponents && (
+                    <ModalComponent<MessageModalProps>
+                        Component={modalComponents[modal.modalType]}
+                        isOpen={modal.isOpen}
+                        onRequestClose={closeModal}
+                        props={{
+                            data: modal.data as Message,
+                            isOpen: modal.isOpen,
+                            onRequestClose: closeModal,
+                        }}
+                    />
+                )}
                 {loading && <LoadingModal isOpen={loading} />}
             </div>
         </>

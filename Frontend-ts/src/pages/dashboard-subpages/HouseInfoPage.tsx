@@ -25,7 +25,7 @@ export default function HouseInfoPage() {
     } = useContext(DataContext);
 
     const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
-    const { user} = useContext(AuthContext)!;
+    const { user } = useContext(AuthContext)!;
     const { t } = useTranslation("pages");
     const { houseData, houseMates, statsData, dailyData } = data;
     useDocumentTitle('House info');
@@ -63,6 +63,11 @@ export default function HouseInfoPage() {
         dailyBudgetLabels: 'dailyBudgetDate',
         dailyBudgetValues: 'dailyBudgetValue',
     });
+
+    const dailyTransactionsObject = {
+        labels: actionLabels.map(action => String(action)),
+        dataValues: dailyTransactions.map(action => Number(action))
+    }
 
     return (
         <>
@@ -110,7 +115,7 @@ export default function HouseInfoPage() {
                                 </div>
 
                                 <div className="w-full h-fit flex flex-col md:flex-row justify-center gap-3 px-5">
-                                    <TransactionsPerDay data={{ labels: actionLabels, dataValues: dailyTransactions }} />
+                                    <TransactionsPerDay data={dailyTransactionsObject} />
                                     <BudgetPerDay data={{ labels: dailyBudgetLabels, dataValues: dailyBudgetValues }} />
                                 </div>
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTransactionsStore } from '@store/transactionsStore';
 import { getCalendarLocalizer } from '@configs/calendarLocalizer';
 import { useTranslation } from 'react-i18next';
-import { Calendar, type SlotInfo, View } from 'react-big-calendar';
+import { Calendar } from 'react-big-calendar';
 import DashboardHeader from '@components/dashboard/dashboardComponents/DashboardHeader';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import CalendarModal from '@components/modals/CalendarModal';
@@ -22,10 +22,8 @@ interface Event {
 export default function CalendarPage() {
     const { actionsData, isTransactionsFetched, actionsDataError, actionsLoading, fetchTransactions } = useTransactionsStore();
     const [selectedEvent, setSelectedEvent] = useState<Event | null>();
-    const [view, setView] = useState<View>('month');
-    const [selectedDate, setSelectedDate] = useState<Event[] | null>(null);
     useDocumentTitle('Calendar');
-    const  {i18n}  = useTranslation();
+    const { i18n } = useTranslation();
     const lang = i18n.language;
 
     const localizer = getCalendarLocalizer(lang);
@@ -57,14 +55,6 @@ export default function CalendarPage() {
         setSelectedEvent(event);
     };
 
-    const handleDateClick = (slotInfo: SlotInfo) => {
-        const clickedDate = new Date(slotInfo.start);
-        const eventsOnDate = events.filter(event =>
-            event.start.toLocaleDateString() === clickedDate.toLocaleDateString()
-        );
-        setSelectedDate(eventsOnDate);
-    };
-
     const handleCloseModal = () => {
         setSelectedEvent(null);
     };
@@ -80,8 +70,6 @@ export default function CalendarPage() {
                     endAccessor="end"
                     className="h-[550px] border-[2px] border-slate-300 rounded-md gap-2"
                     onSelectEvent={handleEventClick}
-                    onSelectSlot={handleDateClick}
-                    onView={setView}
                     formats={{
                         timeGutterFormat: 'HH:mm',
                         dayHeaderFormat: 'dddd, MMMM DD',

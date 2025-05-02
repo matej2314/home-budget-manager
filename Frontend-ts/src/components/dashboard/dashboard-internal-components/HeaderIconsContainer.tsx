@@ -1,5 +1,5 @@
-import {  NotificationCategory } from "@models/notificationsStoreTypes";
-import { type NotificationsState, HeaderIconsContainerInput} from "@models/componentsTypes/HeaderIconsContainerTypes";
+import { NotificationCategory } from "@models/notificationsStoreTypes";
+import { type NotificationsState, HeaderIconsContainerInput } from "@models/componentsTypes/HeaderIconsContainerTypes";
 import { useState, useEffect, useMemo } from "react";
 import { useSocket } from "@store/socketContext";
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
         hasNotifications: false,
     });
     const [userMessages, setUserMessages] = useState<NewMessageType[]>();
-    const {  messages, deleteNotification } = useSocket();
+    const { messages, deleteNotification } = useSocket();
     const { notifications, fetchNotifications, removeNotification } = useNotificationsStore()!;
     const socketNotifications = messages?.notifications;
 
@@ -62,7 +62,7 @@ export default function HeaderIconsContainer({ filteredDataMessages, socketMessa
     };
 
     const handleMessagesRead = () => {
-        setUserMessages([]);
+        window.location.href = '/dashboard/messages/new'
     };
 
     return (

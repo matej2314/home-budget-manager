@@ -33,7 +33,8 @@
     "messagesList": {
         "readed": "Readed",
         "unreaded": "Unreaded",
-        "failedFetchError": "Failed to fetch messages."
+        "failedFetchError": "Failed to fetch messages.",
+        "noMessages": "No messages"
     },
     "mostActiveMates": {
         "heading": "Most active mates:",

@@ -4,7 +4,7 @@ import { useSortedUniqueData } from '../../../../hooks/useSortedUniqueData';
 
 interface TransactionsPerDayProps {
     data: {
-        labels: Date[];
+        labels: string[];
         dataValues: number[];
     };
 };

@@ -24,7 +24,7 @@ export interface NewMessageType {
         recipient: string;
         message: string;
         date: string;
-        readed: boolean;
+        readed: string | number;
     }
 };
 
@@ -34,7 +34,7 @@ export interface NewMessageDataType {
     recipient: string;
     message: string;
     date: string;
-    readed: string;
+    readed: string | number;
 };
 
 export interface InitBudgetType {

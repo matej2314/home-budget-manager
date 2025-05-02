@@ -119,7 +119,7 @@
 }
 
 .messages-list-table {
-    @apply w-fit mx-2 md:w-[97%] lg:w-[99%] lg:mx-auto h-full table-fixed border-collapse lg:text-base rounded-b-xl
+    @apply w-full mx-2 md:w-[97%] lg:w-[99%] lg:mx-auto h-full table-fixed border-collapse lg:text-base rounded-b-xl
 }
 
 .messages-list-table-body {

@@ -2,17 +2,19 @@ import { useState, useEffect } from "react";
 import { mapArray } from "@utils/arraysUtils/arraysFunctions";
 
 type DataType = {
-    labels: Date[];
+    labels: Date[] | string[];
     dataValues: number[];
 };
 
 export const useSortedUniqueData = (data: DataType) => {
     const [uniqueDataMap, setUniqueDataMap] = useState<Map<Date, number>>(new Map());
 
+    const convertedLabels: Date[] = data.labels.map(label => typeof label === 'string' ? new Date(label) : label);
+
     useEffect(() => {
         const newMap = new Map(uniqueDataMap);
 
-        data.labels.forEach((label: Date, index: number) => {
+        convertedLabels.forEach((label: Date, index: number) => {
             if (!newMap.has(label)) {
                 newMap.set(label, data.dataValues[index]);
             }

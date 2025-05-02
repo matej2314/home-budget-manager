@@ -6,13 +6,11 @@ import { MessageModalProps } from "@models/componentsTypes/modalsTypes";
 import { ComponentType} from "react";
 import { NewMessageType } from "@models/socketContextTypes";
 
-
-
-export const getFilterMap = (sortedMessages: Message[], newMessages:Message[], filteredMessages: Message[], user: User): Record<string, Message[] > => {
+export const getFilterMap = (sortedMessages: Message[], user: User): Record<string, Message[] > => {
     return {
         all: sortedMessages,
-        new: newMessages,
-        readed: filterArray(filteredMessages, (msg) => msg.readed === true),
+        new: filterArray(sortedMessages, (msg) => msg.readed === 0 as number),
+        readed: filterArray(sortedMessages, (msg) => msg.readed === 1 as number),
         sended: filterArray(sortedMessages, (msg) => msg.sender === user.userName),
     };
 };

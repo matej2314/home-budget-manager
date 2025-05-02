@@ -33,7 +33,8 @@
     "messagesList": {
         "readed": "Przeczytana",
         "unreaded": "Nieprzeczytana",
-        "failedFetchError": "Nie udało się pobrać wiadomości"
+        "failedFetchError": "Nie udało się pobrać wiadomości",
+        "noMessages": "Brak wiadomości"
     },
     "mostActiveMates": {
         "heading": "Najbardziej aktywni domownicy:",
