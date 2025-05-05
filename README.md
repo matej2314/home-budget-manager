@@ -1,48 +1,56 @@
-# Project: Web home budget manager
-**link to the demo: https://budgetapp.msliwowski.net**
+# Project: Web Home Budget Manager
 
-Test login data: testuser123 / Testuser123!!
+**UPDATE:** A new `developer` branch with a TypeScript frontend version has been added.
 
-## Idea of the project
-Main idea of this project was to create web application that allows to control user's household budget. Each registered member can add their own household (by enter the name, not sensitive information), invite other mates and take control of house finances.
+**🔗 [Live demo](https://budgetapp.msliwowski.net)**
 
-## Functionality
-Each user after register and log in have to add their own household. This is necessary to use Web home budget manager. Adding is done after entering the name of the house, application does not require sharing the sensitive information. When household is in the system, every functionality is available like:
-- inviting new housemates,
-- adding transactions (incomes and expenses),
-- internal communnication between housemates,
-- expanded statistics.
+**🧪 Test credentials:**  
+`Username: testuser123`  
+`Password: Testuser123!!`
 
-In addition, every host can manage housemates. What does it mean? Only host (user that add household) can delete every housemate.
+## 💡 Project Idea
+
+The goal of this web application is to help users manage their household budgets. Each registered user can create a household (by simply entering a name – no sensitive data required), invite housemates, and collaboratively manage household finances.
+
+## 🚀 Features
+
+Once registered and logged in, users must first create their household to use the application. After that, the following functionalities are available:
+
+- Invite other housemates
+- Add transactions (income and expenses)
+- Internal chat between housemates
+- Advanced financial statistics
+
+Only the *host* (the user who created the household) can manage housemates — including the ability to remove any member.
 
 ## Tech stack / libraries
 1. **Frontend:**
-    1. React.js.
-    2. TailwindCSS.
-    3. Zustand.
-    4. Framer Motion.
-    5. i18next.
-    6. socket.io-client.
-    7. chart.js.
+    - React.js.
+    - TailwindCSS.
+    - Zustand.
+    - Framer Motion.
+    - i18next.
+    - socket.io-client.
+    - chart.js.
 
 2. **Backend / API:**
-    1. Express.js.
-    2. Socket.io.
-    3. Mysql2.
-    4. multer.
-    5. tesseract.js.
+    - Express.js.
+    - Socket.io.
+    - Mysql2.
+    - multer.
+    - tesseract.js.
       
 3. **DevOps:**
-    1. Jenkins
-    2. Docker
-    3. NGINX
-    4. phpMyAdmin
+    - Jenkins
+    - Docker
+    - NGINX
+    - phpMyAdmin
    
 ## Installation
-   1. Clone repository
-   2. Choose part of the project (backend or frontend) and install dependencies.
-   3. Backend: type 'npm run start'.
-   4. Frontend: type 'npm run dev' or 'npm run build'.
+   - Clone repository
+   - Choose part of the project (backend or frontend) and install dependencies.
+   - Backend: type 'npm run start'.
+   - Frontend: type 'npm run dev' or 'npm run build'.
 
 ## Conclusion
 This project was the second that I made using React.js. Application is much bigger than my portfolio I've maded recently and during work of this project I've learned a lot of new libraries and practises in work with framework like React.js.  
