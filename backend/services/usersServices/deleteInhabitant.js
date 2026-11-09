@@ -1,9 +1,9 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const usersQueries = require('../../database/usersQueries');
-const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
-const { v4: uuidv4 } = require('uuid');
-const { handleNotification } = require('../../utils/handleNotification');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import usersQueries from '../../database/usersQueries.js';
+import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
+import { v4 as uuidv4 } from 'uuid';
+import { handleNotification } from '../../utils/handleNotification.js';
 
 const deleteInhabitant = async (inhabitantId) => {
 
@@ -66,4 +66,4 @@ const deleteInhabitant = async (inhabitantId) => {
     }
 };
 
-module.exports = { deleteInhabitant };
+export { deleteInhabitant };

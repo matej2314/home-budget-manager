@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import * as usersController from '../controllers/usersController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import verifyRole from '../middlewares/verifyRole.js';
+
 const router = express.Router();
-const usersController = require('../controllers/usersController.js');
-const verifyJWT = require('../middlewares/verifyJWT');
-const verifyRole = require('../middlewares/verifyRole.js');
 
 /**
  * @swagger
@@ -445,4 +446,4 @@ router.post('/invite', verifyJWT, verifyRole('mates'), usersController.addUserTo
 
 router.post('/changemail', verifyJWT, usersController.changeEmail);
 
-module.exports = router;
+export default router;

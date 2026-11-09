@@ -1,7 +1,7 @@
-const logger = require('../../configs/logger');
-const { broadcastToHouseMates } = require('../../configs/websocketConfig');
+import logger from '../../configs/logger.js';
+import { broadcastToHouseMates } from '../../configs/websocketConfig.js';
 
-exports.liveUpdateBalance = async (type, value, houseId, userId, connection) => {
+export const liveUpdateBalance = async (type, value, houseId, userId, connection) => {
 	try {
 		const [houseBalance] = await connection.query('SELECT currentBalance, initBudget FROM households WHERE houseId=?', [houseId]);
 

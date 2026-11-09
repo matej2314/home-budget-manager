@@ -1,18 +1,23 @@
-const dotenv = require('dotenv').config({ path: './.env' });
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const logger = require('./configs/logger.js');
-const express = require('express');
-const swaggerDocs = require('./configs/swaggerConfig.js');
-const balanceHouseActions = require('./tasks/balanceHouseTransactions.js');
-const saveDailyTransactions = require('./tasks/saveDailyTransactions.js');
-const saveDailyBudget = require('./tasks/saveDailyBudget.js');
-const { initializeWebSocket } = require('./configs/websocketConfig.js');
-const { clearSocketConnections } = require('./utils/clearSocketConnections.js');
-const http = require('http');
+import 'dotenv/config';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import http from 'node:http';
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import logger from './configs/logger.js';
+import swaggerDocs from './configs/swaggerConfig.js';
+import balanceHouseActions from './tasks/balanceHouseTransactions.js';
+import saveDailyTransactions from './tasks/saveDailyTransactions.js';
+import saveDailyBudget from './tasks/saveDailyBudget.js';
+import { initializeWebSocket } from './configs/websocketConfig.js';
+import { clearSocketConnections } from './utils/clearSocketConnections.js';
+import setupRoutes from './routes/index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-const setupRoutes = require('./routes/index.js');
 
 app.disable('x-powered-by');
 
@@ -48,7 +53,6 @@ app.all(['/sitemap.xml', '/robots.txt'], (req, res) => {
 setupRoutes(app);
 swaggerDocs(app);
 
-
 const server = http.createServer(app);
 
 try {
@@ -59,7 +63,6 @@ try {
 		saveDailyTransactions();
 		saveDailyBudget();
 		balanceHouseActions();
-
 	});
 	server.setTimeout(0);
 

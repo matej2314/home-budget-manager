@@ -1,27 +1,41 @@
+import authRoutes from './authRoutes.js';
+import usersRoutes from './usersRoutes.js';
+import householdRoutes from './householdRoutes.js';
+import transactionsRoutes from './transactionsRoutes.js';
+import dashboardRoutes from './dashboardRoutes.js';
+import actionCatRoutes from './actionCatRoutes.js';
+import messagesRoutes from './messagesRoutes.js';
+import initialMonthlyBudgetsRoutes from './initialMonthlyBudgetsRoutes.js';
+import receiptRoutes from './receiptRoutes.js';
+import homePageDataRoutes from './homePageDataRoutes.js';
+import noticeRoutes from './noticeRoutes.js';
+import galleryRoutes from './galleryRoutes.js';
+import avatarsRoutes from './avatarsRoutes.js';
+import invitationRoutes from './invitationRoutes.js';
+import cookiesTourRoutes from './cookiesTourRoutes.js';
+import reviewsRoutes from './reviewsRoutes.js';
+
 const routes = [
-    { path: '/auth', file: 'authRoutes.js' },
-    { path: '/users', file: 'usersRoutes.js' },
-    { path: '/house', file: 'householdRoutes.js' },
-    { path: '/action', file: 'transactionsRoutes.js' },
-    { path: '/board', file: 'dashboardRoutes.js' },
-    { path: '/actioncat', file: 'actionCatRoutes.js' },
-    { path: '/message', file: 'messagesRoutes.js' },
-    { path: '/initmonthly', file: 'initialMonthlyBudgetsRoutes.js' },
-    { path: '/receipt', file: 'receiptRoutes.js' },
-    { path: '/homepage', file: 'homePageDataRoutes.js' },
-    { path: '/notice', file: 'noticeRoutes.js' },
-    { path: '/gallery', file: './galleryRoutes.js' },
-    { path: '/avatars', file: 'avatarsRoutes.js' },
-    { path: '/invitation', file: 'invitationRoutes.js' },
-    { path: '/cookiestour', file: 'cookiesTourRoutes.js' },
-    { path: '/reviews', file: 'reviewsRoutes.js' },
+  { path: '/auth', router: authRoutes },
+  { path: '/users', router: usersRoutes },
+  { path: '/house', router: householdRoutes },
+  { path: '/action', router: transactionsRoutes },
+  { path: '/board', router: dashboardRoutes },
+  { path: '/actioncat', router: actionCatRoutes },
+  { path: '/message', router: messagesRoutes },
+  { path: '/initmonthly', router: initialMonthlyBudgetsRoutes },
+  { path: '/receipt', router: receiptRoutes },
+  { path: '/homepage', router: homePageDataRoutes },
+  { path: '/notice', router: noticeRoutes },
+  { path: '/gallery', router: galleryRoutes },
+  { path: '/avatars', router: avatarsRoutes },
+  { path: '/invitation', router: invitationRoutes },
+  { path: '/cookiestour', router: cookiesTourRoutes },
+  { path: '/reviews', router: reviewsRoutes },
 ];
 
-const setupRoutes = (app) => {
-    routes.forEach(({ path, file }) => {
-        const route = require(`./${file}`);
-        app.use(path, route);
-    });
-};
-
-module.exports = setupRoutes;
+export default function setupRoutes(app) {
+  for (const { path, router } of routes) {
+    app.use(path, router);
+  }
+}

@@ -1,6 +1,6 @@
-const usersQueries = require('../../database/usersQueries');
+import usersQueries from '../../database/usersQueries.js';
 
-exports.invitedUserData = async (connection, userName) => {
+export const invitedUserData = async (connection, userName) => {
 
     const [getInvitedUser] = await connection.query(usersQueries.selectUserByName, [userName]);
 

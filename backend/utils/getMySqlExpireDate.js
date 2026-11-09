@@ -13,4 +13,4 @@ const getMysqlExpireDate = () => {
 	return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-module.exports = getMysqlExpireDate;
+export default getMysqlExpireDate;

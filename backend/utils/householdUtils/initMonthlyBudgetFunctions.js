@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = require('uuid');
-const logger = require('../../configs/logger');
+import { v4 as uuidv4 } from 'uuid';
+import logger from '../../configs/logger.js';
 
 const addNewBudget = async (connection, value, userHouse) => {
     try {
@@ -73,4 +73,4 @@ const clearExtraValues = async (connection, houseId, lastAddedAt) => {
 };
 
 
-module.exports = { addNewBudget, clearExtraValues };
+export { addNewBudget, clearExtraValues };

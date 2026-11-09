@@ -1,8 +1,8 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const houseQueries = require('../../database/householdQueries');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import houseQueries from '../../database/householdQueries.js';
 
-exports.getHousesCollection = async () => {
+export const getHousesCollection = async () => {
     const connection = await pool.getConnection();
 
     try {

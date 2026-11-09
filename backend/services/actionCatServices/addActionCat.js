@@ -1,7 +1,7 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const { v4: uuidv4 } = require('uuid');
-const actionCatQueries = require('../../database/transactionCategoriesQueries');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { v4 as uuidv4 } from 'uuid';
+import actionCatQueries from '../../database/transactionCategoriesQueries.js';
 
 const addActionCat = async (name, type) => {
     const id = uuidv4();
@@ -41,4 +41,4 @@ const addActionCat = async (name, type) => {
     };
 };
 
-module.exports = { addActionCat };
+export { addActionCat };

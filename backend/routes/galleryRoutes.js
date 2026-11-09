@@ -1,9 +1,10 @@
-const express = require('express')
+import express from 'express';
+import saveScreen from '../store/screensStorage.js';
+import * as galleryController from '../controllers/galleryController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import verifyRole from '../middlewares/verifyRole.js';
+
 const router = express.Router();
-const saveScreen = require('../store/screensStorage');
-const galleryController = require('../controllers/galleryController');
-const verifyJWT = require('../middlewares/verifyJWT');
-const verifyRole = require('../middlewares/verifyRole');
 
 router.post('/save',
     verifyJWT,
@@ -11,4 +12,4 @@ router.post('/save',
     saveScreen.array('screens', 15),
     galleryController.saveImages);
 
-module.exports = router;
+export default router;

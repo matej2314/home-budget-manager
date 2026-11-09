@@ -1,6 +1,6 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const usersQueries = require('../../database/usersQueries');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import usersQueries from '../../database/usersQueries.js';
 
 const getUsersCollection = async () => {
     const connection = await pool.getConnection();
@@ -29,4 +29,4 @@ const getUsersCollection = async () => {
     }
 };
 
-module.exports = { getUsersCollection };
+export { getUsersCollection };

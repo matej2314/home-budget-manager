@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import * as householdController from '../controllers/householdController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import verifyRole from '../middlewares/verifyRole.js';
+
 const router = express.Router();
-const householdController = require('../controllers/householdController.js');
-const verifyJWT = require('../middlewares/verifyJWT.js');
-const verifyRole = require('../middlewares/verifyRole.js');
 
 
 /**
@@ -360,4 +361,4 @@ router.get('/info', verifyJWT, verifyRole('mates'), householdController.getHouse
 router.delete('/delete', verifyJWT, verifyRole('host'), householdController.deleteHouse);
 
 
-module.exports = router;
+export default router;

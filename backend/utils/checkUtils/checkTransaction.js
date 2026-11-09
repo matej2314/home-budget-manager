@@ -1,4 +1,4 @@
-const logger = require('../../configs/logger');
+import logger from '../../configs/logger.js';
 
 const checkTransaction = async (connection, transactionId) => {
 
@@ -16,4 +16,4 @@ const checkTransaction = async (connection, transactionId) => {
 
 };
 
-module.exports = { checkTransaction };
+export { checkTransaction };

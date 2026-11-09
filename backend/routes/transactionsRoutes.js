@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import * as actionsController from '../controllers/transactionsController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import verifyRole from '../middlewares/verifyRole.js';
+
 const router = express.Router();
-const actionsController = require('../controllers/transactionsController');
-const verifyJWT = require('../middlewares/verifyJWT');
-const verifyRole = require('../middlewares/verifyRole');
 
 
 /**
@@ -380,4 +381,4 @@ router.get('/my', verifyJWT, verifyRole('mates'), actionsController.getHouseActi
 
 router.delete('/', verifyJWT, verifyRole('mates'), actionsController.deleteAction);
 
-module.exports = router;
+export default router;

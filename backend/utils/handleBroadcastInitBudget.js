@@ -1,6 +1,6 @@
-const { broadcastToHouseMates } = require("../configs/websocketConfig");
+import { broadcastToHouseMates } from '../configs/websocketConfig.js';
 
-exports.handleBroadcastInitBudget = async (id, value, addedAt, validUntil, houseId) => {
+export const handleBroadcastInitBudget = async (id, value, addedAt, validUntil, houseId) => {
 
     const data = {
         id,

@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import * as actionCatController from '../controllers/actionCatController.js';
+import verifyRole from '../middlewares/verifyRole.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+
 const router = express.Router();
-const actionCatController = require('../controllers/actionCatController');
-const verifyRole = require('../middlewares/verifyRole');
-const verifyJWT = require('../middlewares/verifyJWT');
 
 /**
  * @swagger
@@ -240,4 +241,4 @@ router.get('/collection', verifyJWT, verifyRole('superadmin'), actionCatControll
 
 router.delete('/delete', verifyJWT, verifyRole('superadmin'), actionCatController.deleteActionCat);
 
-module.exports = router;
+export default router;

@@ -1,10 +1,10 @@
-const { v4: uuidv4 } = require('uuid');
-const logger = require('../../configs/logger');
-const usersQueries = require('../../database/usersQueries');
-const { handleNotification } = require('../../utils/handleNotification');
-const { saveNewHousemate } = require('./saveNewHousemate');
+import { v4 as uuidv4 } from 'uuid';
+import logger from '../../configs/logger.js';
+import usersQueries from '../../database/usersQueries.js';
+import { handleNotification } from '../../utils/handleNotification.js';
+import { saveNewHousemate } from './saveNewHousemate.js';
 
-exports.addUserByHost = async (connection, userName, houseId, invitedUserData) => {
+export const addUserByHost = async (connection, userName, houseId, invitedUserData) => {
 
     try {
 

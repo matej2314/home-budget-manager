@@ -1,7 +1,12 @@
-const fs = require('fs/promises');
-const path = require('path');
-const logger = require('../configs/logger');
-const { StatusCodes } = require('http-status-codes');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs/promises';
+import logger from '../configs/logger.js';
+import { StatusCodes } from 'http-status-codes';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const statusCode = StatusCodes;
 
 const deleteFiles = async (req, res, next) => {
@@ -44,4 +49,4 @@ const deleteFiles = async (req, res, next) => {
     }
 };
 
-module.exports = deleteFiles;
+export default deleteFiles;

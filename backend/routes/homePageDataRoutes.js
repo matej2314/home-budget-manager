@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import * as homeDataController from '../controllers/homePageDataController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import verifyRole from '../middlewares/verifyRole.js';
+
 const router = express.Router();
-const homeDataController = require('../controllers/homePageDataController');
-const verifyJWT = require('../middlewares/verifyJWT');
-const verifyRole = require('../middlewares/verifyRole');
 
 
 /**
@@ -135,4 +136,4 @@ router.get('/dataCollection', homeDataController.getDataCollection);
 
 router.post('/technology', verifyJWT, verifyRole('superadmin'), homeDataController.addTechnology);
 
-module.exports = router;
+export default router;

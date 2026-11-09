@@ -1,10 +1,11 @@
-const logger = require('../configs/logger');
-const { getHomePageCollection } = require('../services/homePageDataServices/homePageDataCollection');
-const { addTechnologyContent } = require('../services/homePageDataServices/addTechnologyService');
-const { StatusCodes } = require('http-status-codes');
+import logger from '../configs/logger.js';
+import { getHomePageCollection } from '../services/homePageDataServices/homePageDataCollection.js';
+import { addTechnologyContent } from '../services/homePageDataServices/addTechnologyService.js';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.getDataCollection = async (req, res) => {
+export const getDataCollection = async (req, res) => {
 
     try {
         const response = await getHomePageCollection();
@@ -30,7 +31,7 @@ exports.getDataCollection = async (req, res) => {
     }
 };
 
-exports.addTechnology = async (req, res) => {
+export const addTechnology = async (req, res) => {
     const { name, icon } = req.body;
 
     if (!name || !icon) {

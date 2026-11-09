@@ -1,7 +1,7 @@
-const houseQueries = require('../../database/householdQueries');
-const logger = require('../../configs/logger');
+import houseQueries from '../../database/householdQueries.js';
+import logger from '../../configs/logger.js';
 
-exports.resetHostProps = async (userId, connection) => {
+export const resetHostProps = async (userId, connection) => {
     await connection.execute(houseQueries.hostQuery, [0, 'user', userId]);
     await connection.execute(houseQueries.updateroleHu, ['user', userId]);
     await connection.execute(houseQueries.updatehouseIdHu, [0, userId]);
@@ -9,7 +9,7 @@ exports.resetHostProps = async (userId, connection) => {
     logger.info(`Parameters of user ${userId} reseted.`);
 };
 
-exports.resetInmatesProps = async (userId, connection) => {
+export const resetInmatesProps = async (userId, connection) => {
     await connection.execute(houseQueries.mateQuery, [0, 'user', userId]);
     await connection.execute(houseQueries.updateroleHu, ['user', userId]);
     await connection.execute(houseQueries.updatehouseIdHu, [0, userId]);
@@ -17,14 +17,14 @@ exports.resetInmatesProps = async (userId, connection) => {
     logger.info(`Parameters of housemates deleted.`);
 };
 
-exports.setHostProps = async (userId, houseId, connection) => {
+export const setHostProps = async (userId, houseId, connection) => {
     await connection.query(houseQueries.updateroleHu, ['host', userId]);
     await connection.query(houseQueries.updatehouseIdHu, [houseId, userId]);
 
     logger.info(`Parameters of host ${userId} set.`);
 };
 
-exports.setInmateProps = async (userId, existingId, connection) => {
+export const setInmateProps = async (userId, existingId, connection) => {
     await connection.query(houseQueries.updateroleHu, ['inmate', userId]);
     await connection.query(houseQueries.updatehouseIdHu, [existingId, userId]);
 

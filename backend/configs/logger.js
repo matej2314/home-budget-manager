@@ -1,29 +1,14 @@
-const path = require('path');
-const { createLogger, format, transports } = require('winston');
+import { createLogger, format, transports } from 'winston';
+
 const { combine, timestamp, printf } = format;
-const DailyRotateFile = require('winston-daily-rotate-file');
 
-const logFormat = printf(({ level, message, timestamp }) => {
-    return `${timestamp} [${level.toUpperCase()}] : ${message}`;
+const logFormat = printf(({ level, message, timestamp: ts }) => {
+  return `${ts} [${level.toUpperCase()}] : ${message}`;
 });
-
-const logDir = path.join(__dirname, '../logs');
 
 const logger = createLogger({
-    format: combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), logFormat),
-    transports: [
-        new DailyRotateFile({
-            filename: path.join(logDir, 'error-%DATE%.log'),
-            datePattern: 'YYYY-MM-DD',
-            level: 'error',
-            maxFiles: '3d',
-        }),
-        new DailyRotateFile({
-            filename: path.join(logDir, 'combined-%DATE%.log'),
-            datePattern: 'YYYY-MM-DD',
-            maxFiles: '3d',
-        }),
-    ],
+  format: combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), logFormat),
+  transports: [new transports.Console()],
 });
 
-module.exports = logger;
+export default logger;

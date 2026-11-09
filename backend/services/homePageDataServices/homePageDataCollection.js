@@ -1,8 +1,8 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const { getFilesList } = require('../../utils/getFilesList');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { getFilesList } from '../../utils/getFilesList.js';
 
-exports.getHomePageCollection = async () => {
+export const getHomePageCollection = async () => {
     const connection = await pool.getConnection();
 
     try {

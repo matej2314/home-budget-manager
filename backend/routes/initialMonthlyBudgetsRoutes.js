@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import * as initMonthlyController from '../controllers/initMonthlyBudgetController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import verifyRole from '../middlewares/verifyRole.js';
+
 const router = express.Router();
-const initMonthlyController = require('../controllers/initMonthlyBudgetController.js');
-const verifyJWT = require('../middlewares/verifyJWT.js');
-const verifyRole = require('../middlewares/verifyRole.js');
 
 /**
  * @swagger
@@ -75,4 +76,4 @@ const verifyRole = require('../middlewares/verifyRole.js');
 
 router.post('/new', verifyJWT, verifyRole('mates'), initMonthlyController.addNewMonthlyBudget);
 
-module.exports = router;
+export default router;

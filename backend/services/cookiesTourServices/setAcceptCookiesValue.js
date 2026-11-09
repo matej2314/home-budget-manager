@@ -1,5 +1,5 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
 
 const setAcceptCookies = async (cookieValue, userId) => {
     try {
@@ -22,4 +22,4 @@ const setAcceptCookies = async (cookieValue, userId) => {
     };
 };
 
-module.exports = { setAcceptCookies };
+export { setAcceptCookies };

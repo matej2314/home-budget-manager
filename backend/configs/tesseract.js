@@ -1,6 +1,6 @@
-const Tesseract = require('tesseract.js');
-const sharp = require('sharp');
-const logger = require('./logger');
+import Tesseract from 'tesseract.js';
+import sharp from 'sharp';
+import logger from './logger.js';
 
 async function extractPhotoData(imageBuffer) {
     try {
@@ -23,4 +23,4 @@ async function extractPhotoData(imageBuffer) {
     }
 }
 
-module.exports = { extractPhotoData };
+export { extractPhotoData };

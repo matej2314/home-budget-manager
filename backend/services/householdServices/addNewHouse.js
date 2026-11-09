@@ -1,8 +1,8 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const { v4: uuidv4 } = require('uuid');
-const houseQueries = require('../../database/householdQueries');
-const { setHostProps, setInmateProps } = require('../../utils/dbUtils/modifyUsersProps');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { v4 as uuidv4 } from 'uuid';
+import houseQueries from '../../database/householdQueries.js';
+import { setHostProps, setInmateProps } from '../../utils/dbUtils/modifyUsersProps.js';
 
 const addNewHouse = async (userId, userName, houseName, initBudget) => {
     const houseId = uuidv4();
@@ -60,4 +60,4 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
 };
 
 
-module.exports = { addNewHouse };
+export { addNewHouse };

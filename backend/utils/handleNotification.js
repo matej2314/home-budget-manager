@@ -1,5 +1,5 @@
-const { saveNotification } = require('../controllers/notificationController');
-const { broadcastToHouseMates } = require('../configs/websocketConfig');
+import { saveNotification } from '../controllers/notificationController.js';
+import { broadcastToHouseMates } from '../configs/websocketConfig.js';
 
 const handleNotification = async ({ id, category, houseId, message, extraData = {} }) => {
 
@@ -14,4 +14,4 @@ const handleNotification = async ({ id, category, houseId, message, extraData = 
     await broadcastToHouseMates(houseId, { type: 'notification', data })
 };
 
-module.exports = { handleNotification };
+export { handleNotification };

@@ -1,9 +1,9 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const houseQueries = require('../../database/householdQueries');
-const { resetHostProps, resetInmatesProps } = require('../../utils/dbUtils/modifyUsersProps');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import houseQueries from '../../database/householdQueries.js';
+import { resetHostProps, resetInmatesProps } from '../../utils/dbUtils/modifyUsersProps.js';
 
-exports.deleteHouse = async (userId, houseName) => {
+export const deleteHouse = async (userId, houseName) => {
     const connection = await pool.getConnection();
 
     try {

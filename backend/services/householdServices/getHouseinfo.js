@@ -1,9 +1,9 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const houseQueries = require('../../database/householdQueries');
-const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import houseQueries from '../../database/householdQueries.js';
+import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
 
-exports.getHouseInfo = async (userId) => {
+export const getHouseInfo = async (userId) => {
     if (!userId) {
         logger.error('Enter correctly household data.');
         return { status: 'error', message: 'Enter correctly data.' };

@@ -3,4 +3,4 @@ const checkUserEmail = async (connection, reg_email) => {
     return result.length > 0 ? result[0] : null;
 };
 
-module.exports = { checkUserEmail };
+export { checkUserEmail };

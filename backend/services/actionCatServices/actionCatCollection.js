@@ -1,6 +1,6 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const actionCatQueries = require('../../database/transactionCategoriesQueries');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import actionCatQueries from '../../database/transactionCategoriesQueries.js';
 
 const getActionCatColl = async () => {
 
@@ -34,4 +34,4 @@ const getActionCatColl = async () => {
     };
 };
 
-module.exports = { getActionCatColl };
+export { getActionCatColl };

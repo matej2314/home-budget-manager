@@ -1,6 +1,6 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const actionQueries = require('../../database/transactionsQueries');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import actionQueries from '../../database/transactionsQueries.js';
 
 const getActionsCollection = async () => {
 
@@ -31,4 +31,4 @@ const getActionsCollection = async () => {
     };
 };
 
-module.exports = { getActionsCollection };
+export { getActionsCollection };

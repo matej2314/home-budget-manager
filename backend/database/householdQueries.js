@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     checkQuery: 'SELECT * FROM households WHERE houseName = ? LIMIT 1',
     addQuery: 'INSERT INTO households (houseId, userId, userName, houseName, initBudget) VALUES (?, ?, ?, ?, ?)',
     mateQuery: 'UPDATE users SET inmate = ?, role = ? WHERE id = ?',

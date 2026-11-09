@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     delUsersQuery: 'DELETE FROM users WHERE id = ?',
     deleteHouse: 'DELETE FROM households WHERE houseId = ?',
     checkQuery: 'SELECT inmate FROM users WHERE id = ?',

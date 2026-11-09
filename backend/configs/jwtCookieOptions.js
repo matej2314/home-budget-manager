@@ -4,4 +4,4 @@ const jwtCookieOptions = {
 	sameSite: 'lax',
 };
 
-module.exports = jwtCookieOptions;
+export default jwtCookieOptions;

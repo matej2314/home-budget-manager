@@ -1,8 +1,8 @@
-const pool = require('../database/db');
-const logger = require('../configs/logger');
-const dashboardQueries = require('../database/dashboardQueries');
-const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
-const { countTotalPages } = require('../utils/dbUtils/countTotalPages');
+import pool from '../database/db.js';
+import logger from '../configs/logger.js';
+import dashboardQueries from '../database/dashboardQueries.js';
+import checkUserHouse from '../utils/checkUtils/checkUserHouse.js';
+import { countTotalPages } from '../utils/dbUtils/countTotalPages.js';
 
 const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
     const connection = await pool.getConnection();
@@ -88,4 +88,4 @@ const getBoardData = async (userId, filter = 'all', page = 1, limit = 10) => {
     }
 };
 
-module.exports = { getBoardData };
+export { getBoardData };

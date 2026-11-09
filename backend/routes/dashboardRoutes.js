@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+import logger from '../configs/logger.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import verifyRole from '../middlewares/verifyRole.js';
+import { getBoardData } from '../controllers/boardController.js';
+import { StatusCodes } from 'http-status-codes';
+
 const router = express.Router();
-const logger = require('../configs/logger');
-const verifyJWT = require('../middlewares/verifyJWT');
-const verifyRole = require('../middlewares/verifyRole');
-const { getBoardData } = require('../controllers/boardController');
-const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
 /**
@@ -100,4 +101,4 @@ router.get('/data/:filter?/:page?', verifyJWT, verifyRole('mates'), async (req, 
     };
 });
 
-module.exports = router;
+export default router;

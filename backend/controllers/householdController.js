@@ -1,15 +1,16 @@
-const logger = require('../configs/logger');
-const jwt = require('jsonwebtoken');
-const jwtCookieOptions = require('../configs/jwtCookieOptions');
+import logger from '../configs/logger.js';
+import jwt from 'jsonwebtoken';
+import jwtCookieOptions from '../configs/jwtCookieOptions.js';
+import { addNewHouse as addNewHouseService } from '../services/householdServices/addNewHouse.js';
+import { getHousesCollection } from '../services/householdServices/getHousesCollection.js';
+import { getHouseInfo as getHouseInfoService } from '../services/householdServices/getHouseinfo.js';
+import { deleteHouse as deleteHouseService } from '../services/householdServices/deleteHouse.js';
+import { StatusCodes } from 'http-status-codes';
+
 const JWT_SECRET = process.env.JWT_SECRET;
-const { addNewHouse } = require('../services/householdServices/addNewHouse');
-const { getHousesCollection } = require('../services/householdServices/getHousesCollection');
-const { getHouseInfo } = require('../services/householdServices/getHouseinfo');
-const { deleteHouse } = require('../services/householdServices/deleteHouse');
-const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
-exports.addNewHouse = async (req, res) => {
+export const addNewHouse = async (req, res) => {
     const userId = req.userId;
     const userName = req.userName;
     const { houseName, initBudget = null } = req.body;
@@ -23,7 +24,7 @@ exports.addNewHouse = async (req, res) => {
     }
 
     try {
-        const result = await addNewHouse(userId, userName, houseName, initBudget);
+        const result = await addNewHouseService(userId, userName, houseName, initBudget);
 
         switch (result.status) {
             case 'success':
@@ -54,7 +55,7 @@ exports.addNewHouse = async (req, res) => {
     }
 };
 
-exports.getAllHouses = async (req, res) => {
+export const getAllHouses = async (req, res) => {
     try {
         const result = await getHousesCollection();
 
@@ -81,11 +82,11 @@ exports.getAllHouses = async (req, res) => {
     }
 };
 
-exports.getHouseInfo = async (req, res) => {
+export const getHouseInfo = async (req, res) => {
     const userId = req.userId;
 
     try {
-        const result = await getHouseInfo(userId);
+        const result = await getHouseInfoService(userId);
 
         switch (result.status) {
             case 'error':
@@ -107,7 +108,7 @@ exports.getHouseInfo = async (req, res) => {
     };
 };
 
-exports.deleteHouse = async (req, res) => {
+export const deleteHouse = async (req, res) => {
     const userId = req.userId;
     const { houseName } = req.body;
 
@@ -120,7 +121,7 @@ exports.deleteHouse = async (req, res) => {
     };
 
     try {
-        const result = await deleteHouse(userId, houseName);
+        const result = await deleteHouseService(userId, houseName);
 
         switch (result.status) {
             case 'error':

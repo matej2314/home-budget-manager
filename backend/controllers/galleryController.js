@@ -1,4 +1,5 @@
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
 /**
@@ -69,7 +70,7 @@ const statusCode = StatusCodes;
  *         description: Internal server error
  */
 
-exports.saveImages = async (req, res) => {
+export const saveImages = async (req, res) => {
     if (!req.file && (!req.files || req.files.length === 0)) {
         return res.status(statusCode.BAD_REQUEST).json({
             status: 'error',

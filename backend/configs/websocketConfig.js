@@ -1,16 +1,16 @@
-const logger = require('./logger');
-const pool = require('../database/db');
-const { v4: uuidv4 } = require('uuid');
-const io = require('socket.io');
-const getMysqlExpireDate = require('../utils/getMySqlExpireDate');
-const authMiddleware = require('../middlewares/websocket/authMiddleware');
-const socketQueries = require('../database/websocketQueries');
-const path = require('path');
+import logger from './logger.js';
+import pool from '../database/db.js';
+import { v4 as uuidv4 } from 'uuid';
+import { Server } from 'socket.io';
+import getMysqlExpireDate from '../utils/getMySqlExpireDate.js';
+import authMiddleware from '../middlewares/websocket/authMiddleware.js';
+import socketQueries from '../database/websocketQueries.js';
+import path from 'node:path';
 
 let ioInstance;
 
 const initializeWebSocket = (server) => {
-	ioInstance = io(server, {
+	ioInstance = new Server(server, {
 		cors: {
 			origin: (origin, callback) => {
 				const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:5052', 'https://budgetapp.msliwowski.net', 'https://budgetapi.msliwowski.net'];
@@ -152,4 +152,4 @@ const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
 	}
 };
 
-module.exports = { initializeWebSocket, broadcastMessage, broadcastToHouseMates };
+export { initializeWebSocket, broadcastMessage, broadcastToHouseMates };

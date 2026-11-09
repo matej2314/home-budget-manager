@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import * as messagesController from '../controllers/messagesController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+
 const router = express.Router();
-const messagesController = require('../controllers/messagesController');
-const verifyJWT = require('../middlewares/verifyJWT');
 
 /**
  * @swagger
@@ -238,4 +239,4 @@ router.put('/readed', verifyJWT, messagesController.markMessage);
 
 router.delete('/delete', verifyJWT, messagesController.deleteMessage);
 
-module.exports = router;
+export default router;

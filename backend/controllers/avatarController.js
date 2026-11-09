@@ -1,10 +1,15 @@
-const logger = require('../configs/logger');
-const path = require('path');
-const fs = require('fs/promises')
-const { StatusCodes } = require('http-status-codes');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs/promises';
+import logger from '../configs/logger.js';
+import { StatusCodes } from 'http-status-codes';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const statusCode = StatusCodes;
 
-exports.addAvatar = async (req, res) => {
+export const addAvatar = async (req, res) => {
     try {
 
         if (!req.file) {
@@ -27,7 +32,7 @@ exports.addAvatar = async (req, res) => {
     }
 };
 
-exports.getAvatar = async (req, res) => {
+export const getAvatar = async (req, res) => {
     try {
         const userId = req.params.userId || req.userId;
 
@@ -59,7 +64,7 @@ exports.getAvatar = async (req, res) => {
 
 
 
-exports.deleteAvatar = async (req, res) => {
+export const deleteAvatar = async (req, res) => {
     try {
         const userName = req.userName;
 

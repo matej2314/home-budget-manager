@@ -1,12 +1,13 @@
-const express = require('express');
+import express from 'express';
+import path from 'node:path';
+import logger from '../configs/logger.js';
+import * as avatarController from '../controllers/avatarController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import createUserDirectory from '../middlewares/createUserDirectory.js';
+import deleteFiles from '../middlewares/deleteFilesInDirectory.js';
+import saveAvatar from '../store/avatarStorage.js';
+
 const router = express.Router();
-const path = require('path');
-const logger = require('../configs/logger');
-const avatarController = require('../controllers/avatarController');
-const verifyJWT = require('../middlewares/verifyJWT');
-const createUserDirectory = require('../middlewares/createUserDirectory');
-const deleteFiles = require('../middlewares/deleteFilesInDirectory');
-const saveAvatar = require('../store/avatarStorage');
 
 /**
  * @swagger
@@ -176,4 +177,4 @@ router.delete('/delete',
 );
 
 
-module.exports = router;
+export default router;

@@ -1,7 +1,11 @@
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const path = require('path');
-const helmet = require('helmet');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import helmet from 'helmet';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const swaggerOptions = {
   definition: {
@@ -35,4 +39,4 @@ const swaggerDocs = (app) => {
   });
 };
 
-module.exports = swaggerDocs;
+export default swaggerDocs;

@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import * as authController from '../controllers/authController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import { StatusCodes } from 'http-status-codes';
+
 const router = express.Router();
-const authController = require('../controllers/authController');
-const verifyJWT = require('../middlewares/verifyJWT');
-const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
 /**
@@ -228,4 +229,4 @@ router.get('/verify', verifyJWT, (req, res) => {
     });
 });
 
-module.exports = router;
+export default router;

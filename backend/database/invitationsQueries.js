@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     acceptQuery: 'UPDATE invitations SET status = ? WHERE id = ? AND hostId = ?',
     getInvitationQuery: 'SELECT status, invitingUserId, invitedUserId, houseId, hostId, date FROM invitations WHERE id=?',
     rejectQuery: 'UPDATE invitations SET status=? WHERE id=?',

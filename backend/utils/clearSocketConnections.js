@@ -1,4 +1,4 @@
-const pool = require('../database/db');
+import pool from '../database/db.js';
 
 const clearSocketConnections = async () => {
 
@@ -18,4 +18,4 @@ const clearSocketConnections = async () => {
     };
 };
 
-module.exports = { clearSocketConnections };
+export { clearSocketConnections };

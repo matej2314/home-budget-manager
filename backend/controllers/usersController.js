@@ -1,13 +1,14 @@
-const logger = require('../configs/logger');
-const { addUserToHouse } = require('../services/usersServices/addUserToHouse');
-const { getUsersCollection } = require('../services/usersServices/getUsersCollection');
-const { deleteUser } = require('../services/usersServices/deleteUser');
-const { deleteInhabitant } = require('../services/usersServices/deleteInhabitant');
-const { changeUserEmail } = require('../services/usersServices/changeUserEmail');
-const { StatusCodes } = require('http-status-codes');
+import logger from '../configs/logger.js';
+import { addUserToHouse as addUserToHouseService } from '../services/usersServices/addUserToHouse.js';
+import { getUsersCollection } from '../services/usersServices/getUsersCollection.js';
+import { deleteUser as deleteUserService } from '../services/usersServices/deleteUser.js';
+import { deleteInhabitant as deleteInhabitantService } from '../services/usersServices/deleteInhabitant.js';
+import { changeUserEmail } from '../services/usersServices/changeUserEmail.js';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.addUserToHouse = async (req, res) => {
+export const addUserToHouse = async (req, res) => {
     const userId = req.userId;
     const role = req.role;
     const invitingUserName = req.userName;
@@ -21,7 +22,7 @@ exports.addUserToHouse = async (req, res) => {
     };
 
     try {
-        const response = await addUserToHouse(userId, userName, invitingUserName, role);
+        const response = await addUserToHouseService(userId, userName, invitingUserName, role);
 
         switch (response.status) {
             case 'badreq':
@@ -54,7 +55,7 @@ exports.addUserToHouse = async (req, res) => {
 
 };
 
-exports.getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
 
     try {
         const response = await getUsersCollection();
@@ -79,11 +80,11 @@ exports.getAllUsers = async (req, res) => {
     };
 };
 
-exports.deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
     const userId = req.params.userId;
 
     try {
-        const response = await deleteUser(userId);
+        const response = await deleteUserService(userId);
 
         switch (response.status) {
             case 'error':
@@ -101,7 +102,7 @@ exports.deleteUser = async (req, res) => {
 
 };
 
-exports.deleteInhabitant = async (req, res) => {
+export const deleteInhabitant = async (req, res) => {
     const { inhabitantId } = req.body;
 
     if (!inhabitantId) {
@@ -112,7 +113,7 @@ exports.deleteInhabitant = async (req, res) => {
     };
 
     try {
-        const response = await deleteInhabitant(inhabitantId);
+        const response = await deleteInhabitantService(inhabitantId);
 
         switch (response.status) {
             case 'error':
@@ -134,7 +135,7 @@ exports.deleteInhabitant = async (req, res) => {
     };
 };
 
-exports.changeEmail = async (req, res) => {
+export const changeEmail = async (req, res) => {
     const userId = req.userId;
     const { newEmail } = req.body;
 

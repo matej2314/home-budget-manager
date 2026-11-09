@@ -1,11 +1,12 @@
-const pool = require('../database/db');
-const logger = require('../configs/logger');
-const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
-const { checkNotice } = require('../utils/checkUtils/checkNotice');
-const { StatusCodes } = require('http-status-codes');
+import pool from '../database/db.js';
+import logger from '../configs/logger.js';
+import checkUserHouse from '../utils/checkUtils/checkUserHouse.js';
+import { checkNotice } from '../utils/checkUtils/checkNotice.js';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.GetNoticesCollection = async (req, res) => {
+export const GetNoticesCollection = async (req, res) => {
     const userId = req.userId;
 
     if (!userId) {
@@ -65,7 +66,7 @@ exports.GetNoticesCollection = async (req, res) => {
     }
 };
 
-exports.saveNotification = async (id, category, noticeData, houseId) => {
+export const saveNotification = async (id, category, noticeData, houseId) => {
     if (!category || !noticeData || !houseId) {
         return {
             status: 'error',
@@ -104,7 +105,7 @@ exports.saveNotification = async (id, category, noticeData, houseId) => {
     }
 };
 
-exports.deleteNotification = async (req, res) => {
+export const deleteNotification = async (req, res) => {
     const noticeId = req.body.noticeId;
     const userId = req.userId;
 

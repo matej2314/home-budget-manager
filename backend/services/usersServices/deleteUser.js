@@ -1,6 +1,6 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
 
 const deleteUser = async (userId) => {
     const connection = await pool.getConnection();
@@ -56,4 +56,4 @@ const deleteUser = async (userId) => {
     }
 };
 
-module.exports = { deleteUser };
+export { deleteUser };

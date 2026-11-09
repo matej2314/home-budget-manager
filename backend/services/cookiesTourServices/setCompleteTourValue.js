@@ -1,5 +1,5 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
 
 const setCompleteTour = async (userId) => {
     const connection = await pool.getConnection();
@@ -24,4 +24,4 @@ const setCompleteTour = async (userId) => {
     };
 };
 
-module.exports = { setCompleteTour };
+export { setCompleteTour };

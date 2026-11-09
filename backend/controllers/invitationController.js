@@ -1,16 +1,17 @@
-const pool = require('../database/db');
-const logger = require('../configs/logger');
-const { v4: uuidv4 } = require('uuid');
-const usersQueries = require('../database/usersQueries');
-const { saveNewHousemate } = require('../utils/householdUtils/saveNewHousemate');
-const { handleNotification } = require('../utils/handleNotification');
-const checkUserHouse = require('../utils/checkUtils/checkUserHouse');
-const { invitationStatus } = require('../utils/invitationStatus');
-const invitationQueries = require('../database/invitationsQueries');
-const { StatusCodes } = require('http-status-codes');
+import pool from '../database/db.js';
+import logger from '../configs/logger.js';
+import { v4 as uuidv4 } from 'uuid';
+import usersQueries from '../database/usersQueries.js';
+import { saveNewHousemate } from '../utils/householdUtils/saveNewHousemate.js';
+import { handleNotification } from '../utils/handleNotification.js';
+import checkUserHouse from '../utils/checkUtils/checkUserHouse.js';
+import { invitationStatus } from '../utils/invitationStatus.js';
+import invitationQueries from '../database/invitationsQueries.js';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.acceptInvitation = async (req, res) => {
+export const acceptInvitation = async (req, res) => {
     const { invitationId, invitedUserId } = req.body;
     const hostId = req.userId;
 
@@ -72,7 +73,7 @@ exports.acceptInvitation = async (req, res) => {
 };
 
 
-exports.rejectInvitation = async (req, res) => {
+export const rejectInvitation = async (req, res) => {
     const invitationId = req.body.invitationId;
     const hostId = req.userId;
 
@@ -132,7 +133,7 @@ exports.rejectInvitation = async (req, res) => {
     }
 };
 
-exports.getInvitationsCollection = async (req, res) => {
+export const getInvitationsCollection = async (req, res) => {
     const connection = await pool.getConnection();
 
     try {

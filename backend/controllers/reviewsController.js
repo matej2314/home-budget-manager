@@ -1,10 +1,11 @@
-const pool = require('../database/db');
-const logger = require('../configs/logger');
-const { v4: uuidv4 } = require('uuid');
-const { StatusCodes } = require('http-status-codes');
+import pool from '../database/db.js';
+import logger from '../configs/logger.js';
+import { v4 as uuidv4 } from 'uuid';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.addReview = async (req, res) => {
+export const addReview = async (req, res) => {
     const userId = req.userId;
     const userName = req.userName;
     const { content, rating } = req.body;
@@ -45,7 +46,7 @@ exports.addReview = async (req, res) => {
     };
 };
 
-exports.getReviewsCollection = async (req, res) => {
+export const getReviewsCollection = async (req, res) => {
     const connection = await pool.getConnection();
 
     try {

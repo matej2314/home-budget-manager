@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     newitemQuery: 'INSERT INTO transactions (id, transactionId, userId, houseId, catId, type, value) VALUES (?, ?, ?, ?, ?, ?, ?)',
     allQuery: 'SELECT * FROM transactions ORDER BY transactionId',
     getQuery: `SELECT t.transactionId AS transaction_id, t.value, t.addedAt, t.houseId, t.catId, t.userId AS userId,

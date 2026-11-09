@@ -1,10 +1,11 @@
-const logger = require('../configs/logger');
-const { setAcceptCookies } = require('../services/cookiesTourServices/setAcceptCookiesValue');
-const { setCompleteTour } = require('../services/cookiesTourServices/setCompleteTourValue');
-const { StatusCodes } = require('http-status-codes');
+import logger from '../configs/logger.js';
+import { setAcceptCookies } from '../services/cookiesTourServices/setAcceptCookiesValue.js';
+import { setCompleteTour } from '../services/cookiesTourServices/setCompleteTourValue.js';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.setCookieValue = async (req, res) => {
+export const setCookieValue = async (req, res) => {
     const userId = req.userId;
     const cookieValue = req.body.cookieValue;
 

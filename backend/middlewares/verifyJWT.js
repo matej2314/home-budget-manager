@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import { StatusCodes } from 'http-status-codes';
+
 const JWT_SECRET = process.env.JWT_SECRET;
-const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
 const verifyJWT = (req, res, next) => {
@@ -27,4 +28,4 @@ const verifyJWT = (req, res, next) => {
     };
 };
 
-module.exports = verifyJWT;
+export default verifyJWT;

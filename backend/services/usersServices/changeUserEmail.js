@@ -1,6 +1,6 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const { checkUserEmail } = require('../../utils/checkUtils/checkUserEmail');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { checkUserEmail } from '../../utils/checkUtils/checkUserEmail.js';
 
 const changeUserEmail = async (newEmail, userId) => {
 
@@ -36,4 +36,4 @@ const changeUserEmail = async (newEmail, userId) => {
     }
 };
 
-module.exports = { changeUserEmail };
+export { changeUserEmail };

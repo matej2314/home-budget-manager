@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import logger from '../configs/logger.js';
+import { extractPhotoData } from '../configs/tesseract.js';
+import { uploadReceipt } from '../store/receiptStorage.js';
+import { StatusCodes } from 'http-status-codes';
+
 const router = express.Router();
-const logger = require('../configs/logger');
-const { extractPhotoData } = require('../configs/tesseract');
-const { uploadReceipt } = require('../store/receiptStorage');
-const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
 /**
@@ -108,4 +109,4 @@ router.post('/',
 );
 
 
-module.exports = router;
+export default router;

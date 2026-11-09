@@ -1,4 +1,4 @@
-const pool = require('../../database/db');
+import pool from '../../database/db.js';
 
 const countTotalPages = async (dataType, houseId, userId) => {
     const connection = await pool.getConnection();
@@ -36,4 +36,4 @@ const countTotalPages = async (dataType, houseId, userId) => {
     }
 };
 
-module.exports = { countTotalPages };
+export { countTotalPages };

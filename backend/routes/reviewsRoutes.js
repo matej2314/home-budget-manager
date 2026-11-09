@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import * as reviewsController from '../controllers/reviewsController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+
 const router = express.Router();
-const reviewsController = require('../controllers/reviewsController');
-const verifyJWT = require('../middlewares/verifyJWT');
 
 /**
  * @swagger
@@ -154,4 +155,4 @@ router.post('/new', verifyJWT, reviewsController.addReview);
 
 router.get('/collection', reviewsController.getReviewsCollection);
 
-module.exports = router;
+export default router;

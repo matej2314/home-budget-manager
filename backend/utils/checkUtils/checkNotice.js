@@ -4,4 +4,4 @@ const checkNotice = async (noticeId, connection) => {
     return result.length > 0 ? result[0] : null;
 };
 
-module.exports = { checkNotice };
+export { checkNotice };

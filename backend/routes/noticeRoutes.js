@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import verifyJWT from '../middlewares/verifyJWT.js';
+import * as noticeController from '../controllers/notificationController.js';
+
 const router = express.Router();
-const verifyJWT = require('../middlewares/verifyJWT');
-const noticeController = require('../controllers/notificationController');
 
 /**
  * @swagger
@@ -188,4 +189,4 @@ router.get('/collection', verifyJWT, noticeController.GetNoticesCollection);
 
 router.delete('/', verifyJWT, noticeController.deleteNotification);
 
-module.exports = router;
+export default router;

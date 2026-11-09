@@ -1,11 +1,12 @@
-const logger = require('../configs/logger');
-const { addActionCat } = require('../services/actionCatServices/addActionCat');
-const { getActionCatColl } = require('../services/actionCatServices/actionCatCollection');
-const { deleteActionCat } = require('../services/actionCatServices/deleteActionCat');
-const { StatusCodes } = require('http-status-codes');
+import logger from '../configs/logger.js';
+import { addActionCat } from '../services/actionCatServices/addActionCat.js';
+import { getActionCatColl } from '../services/actionCatServices/actionCatCollection.js';
+import { deleteActionCat as deleteActionCatService } from '../services/actionCatServices/deleteActionCat.js';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.addNewActionCat = async (req, res) => {
+export const addNewActionCat = async (req, res) => {
     const { name, type } = req.body;
 
     try {
@@ -39,7 +40,7 @@ exports.addNewActionCat = async (req, res) => {
     };
 };
 
-exports.actionCatCollection = async (req, res) => {
+export const actionCatCollection = async (req, res) => {
     try {
         const response = await getActionCatColl();
 
@@ -72,11 +73,11 @@ exports.actionCatCollection = async (req, res) => {
 
 };
 
-exports.deleteActionCat = async (req, res) => {
+export const deleteActionCat = async (req, res) => {
     const { catName, catId } = req.body;
 
     try {
-        const response = await deleteActionCat(catName, catId);
+        const response = await deleteActionCatService(catName, catId);
 
         switch (response.status) {
             case 'badreq':

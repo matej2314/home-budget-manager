@@ -1,7 +1,11 @@
-const multer = require('multer');
-const pool = require('../database/db');
-const path = require('path');
-const logger = require('../configs/logger');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import multer from 'multer';
+import pool from '../database/db.js';
+import logger from '../configs/logger.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const avatarStorage = multer.diskStorage({
     destination: async (req, file, cb) => {
@@ -50,4 +54,4 @@ const saveAvatar = multer({
     },
 });
 
-module.exports = saveAvatar;
+export default saveAvatar;

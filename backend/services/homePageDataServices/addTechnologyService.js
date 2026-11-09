@@ -1,8 +1,8 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const { v4: uuidv4 } = require('uuid');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { v4 as uuidv4 } from 'uuid';
 
-exports.addTechnologyContent = async (name, icon) => {
+export const addTechnologyContent = async (name, icon) => {
     const connection = await pool.getConnection();
 
     try {

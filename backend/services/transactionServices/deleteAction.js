@@ -1,11 +1,11 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const { v4: uuidv4 } = require('uuid');
-const actionQueries = require('../../database/transactionsQueries');
-const checkHouse = require('../../utils/checkUtils/checkUserHouse');
-const { checkTransaction } = require('../../utils/checkUtils/checkTransaction');
-const { liveUpdateBalance } = require('../../utils/householdUtils/liveUpdateBalance');
-const { handleNotification } = require('../../utils/handleNotification.js');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { v4 as uuidv4 } from 'uuid';
+import actionQueries from '../../database/transactionsQueries.js';
+import checkHouse from '../../utils/checkUtils/checkUserHouse.js';
+import { checkTransaction } from '../../utils/checkUtils/checkTransaction.js';
+import { liveUpdateBalance } from '../../utils/householdUtils/liveUpdateBalance.js';
+import { handleNotification } from '../../utils/handleNotification.js';
 
 const deleteAction = async (transactionId, userId) => {
     const connection = await pool.getConnection();
@@ -83,4 +83,4 @@ const deleteAction = async (transactionId, userId) => {
     }
 };
 
-module.exports = { deleteAction };
+export { deleteAction };

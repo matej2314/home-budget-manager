@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
 const pool = mysql.createPool({
 	connectionLimit: 55,
@@ -12,4 +12,4 @@ pool.on('acquire', (connection) => {
 	console.log(`Połączenie nawiązane: ID połączenia - ${connection.threadId}`);
 });
 
-module.exports = pool;
+export default pool;

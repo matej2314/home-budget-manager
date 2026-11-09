@@ -1,6 +1,10 @@
-const multer = require('multer');
-const path = require('path');
-const logger = require('../configs/logger');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import multer from 'multer';
+import logger from '../configs/logger.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const screensStorage = multer.diskStorage({
     destination: async (req, file, cb) => {
@@ -40,4 +44,4 @@ const saveScreen = multer({
     }
 });
 
-module.exports = saveScreen;
+export default saveScreen;

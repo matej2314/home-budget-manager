@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import pool from '../database/db.js';
+import * as invitationController from '../controllers/invitationController.js';
+import verifyRole from '../middlewares/verifyRole.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+
 const router = express.Router();
-const pool = require('../database/db');
-const invitationController = require('../controllers/invitationController');
-const verifyRole = require('../middlewares/verifyRole');
-const verifyJWT = require('../middlewares/verifyJWT');
 
 /**
  * @swagger
@@ -226,4 +227,4 @@ router.post('/decline', verifyJWT, verifyRole('host'), invitationController.reje
 
 router.get('/collection', verifyJWT, verifyRole('host'), invitationController.getInvitationsCollection);
 
-module.exports = router;
+export default router;

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     householdData: `SELECT
     h.houseName AS houseName,
     h.currentBalance AS liveBalance,

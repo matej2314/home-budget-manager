@@ -1,9 +1,8 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const { v4: uuidv4 } = require('uuid');
-const messagesQueries = require('../../database/messagesQueries');
-const { broadcastMessage } = require('../../configs/websocketConfig');
-
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { v4 as uuidv4 } from 'uuid';
+import messagesQueries from '../../database/messagesQueries.js';
+import { broadcastMessage } from '../../configs/websocketConfig.js';
 
 const sendNewMessage = async (userId, userName, recipientName, content) => {
     const id = uuidv4();
@@ -53,4 +52,4 @@ const sendNewMessage = async (userId, userName, recipientName, content) => {
     }
 };
 
-module.exports = { sendNewMessage };
+export { sendNewMessage };

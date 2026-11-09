@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import * as cookiestourController from '../controllers/cookiesTourController.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
+
 const router = express.Router();
-const cookiestourController = require('../controllers/cookiesTourController');
-const verifyJWT = require('../middlewares/verifyJWT');
 
 /**
  * @swagger
@@ -86,4 +87,4 @@ const verifyJWT = require('../middlewares/verifyJWT');
 
 router.post('/cookie_value', verifyJWT, cookiestourController.setCookieValue);
 
-module.exports = router;
+export default router;

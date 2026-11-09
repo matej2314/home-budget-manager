@@ -1,8 +1,12 @@
-const path = require('path');
-const fs = require('fs/promises');
-const logger = require('../configs/logger');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs/promises';
+import logger from '../configs/logger.js';
 
-exports.getFilesList = async (filesPath) => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const getFilesList = async (filesPath) => {
 
     const filePath = path.join(__dirname, filesPath);
 

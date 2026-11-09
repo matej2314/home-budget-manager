@@ -1,6 +1,6 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const actionCatQueries = require('../../database/transactionCategoriesQueries');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import actionCatQueries from '../../database/transactionCategoriesQueries.js';
 
 const deleteActionCat = async (catName, catId) => {
     const connection = await pool.getConnection();
@@ -54,4 +54,4 @@ const deleteActionCat = async (catName, catId) => {
 };
 
 
-module.exports = { deleteActionCat };
+export { deleteActionCat };

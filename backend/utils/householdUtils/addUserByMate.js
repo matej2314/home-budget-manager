@@ -1,9 +1,9 @@
-const logger = require('../../configs/logger');
-const { broadcastMessage } = require('../../configs/websocketConfig');
-const { v4: uuidv4 } = require('uuid');
-const { invitationStatus } = require('../../utils/invitationStatus');
+import logger from '../../configs/logger.js';
+import { broadcastMessage } from '../../configs/websocketConfig.js';
+import { v4 as uuidv4 } from 'uuid';
+import { invitationStatus } from '../../utils/invitationStatus.js';
 
-exports.addUserByMate = async (connection, invitingUserId, invitedUser, houseId, userName, invitingUserName) => {
+export const addUserByMate = async (connection, invitingUserId, invitedUser, houseId, userName, invitingUserName) => {
 
     try {
         if (invitedUser) {

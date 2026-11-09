@@ -1,12 +1,13 @@
-const logger = require('../configs/logger');
-const { addNewAction } = require('../services/transactionServices/addNewAction');
-const { deleteAction } = require('../services/transactionServices/deleteAction');
-const { getActionsCollection } = require('../services/transactionServices/getActionsCollection');
-const { getHouseActions } = require('../services/transactionServices/getHouseActions');
-const { StatusCodes } = require('http-status-codes');
+import logger from '../configs/logger.js';
+import { addNewAction as addNewActionService } from '../services/transactionServices/addNewAction.js';
+import { deleteAction as deleteActionService } from '../services/transactionServices/deleteAction.js';
+import { getActionsCollection } from '../services/transactionServices/getActionsCollection.js';
+import { getHouseActions as getHouseActionsService } from '../services/transactionServices/getHouseActions.js';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.addNewAction = async (req, res) => {
+export const addNewAction = async (req, res) => {
     const { type, value, catId } = req.body;
     const userId = req.userId;
 
@@ -18,7 +19,7 @@ exports.addNewAction = async (req, res) => {
     };
 
     try {
-        const response = await addNewAction(userId, type, value, catId);
+        const response = await addNewActionService(userId, type, value, catId);
 
         switch (response.status) {
             case 'success':
@@ -46,7 +47,7 @@ exports.addNewAction = async (req, res) => {
 
 };
 
-exports.getAllActions = async (req, res) => {
+export const getAllActions = async (req, res) => {
     try {
         const result = await getActionsCollection();
 
@@ -75,11 +76,11 @@ exports.getAllActions = async (req, res) => {
     };
 };
 
-exports.getHouseActions = async (req, res) => {
+export const getHouseActions = async (req, res) => {
     const userId = req.userId;
 
     try {
-        const response = await getHouseActions(userId);
+        const response = await getHouseActionsService(userId);
 
 
         switch (response.status) {
@@ -111,12 +112,12 @@ exports.getHouseActions = async (req, res) => {
     };
 };
 
-exports.deleteAction = async (req, res) => {
+export const deleteAction = async (req, res) => {
     const { transactionId } = req.body;
     const userId = req.userId;
 
     try {
-        const response = await deleteAction(transactionId, userId);
+        const response = await deleteActionService(transactionId, userId);
 
         switch (response.status) {
             case 'badreq':

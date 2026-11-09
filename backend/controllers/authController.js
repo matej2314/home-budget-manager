@@ -1,18 +1,19 @@
-const pool = require('../database/db');
-const logger = require('../configs/logger');
-const bcrypt = require('bcrypt');
-const { v4: uuidv4 } = require('uuid');
-const jwt = require('jsonwebtoken');
+import pool from '../database/db.js';
+import logger from '../configs/logger.js';
+import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
+import jwt from 'jsonwebtoken';
+import jwtCookieOptions from '../configs/jwtCookieOptions.js';
+import { registerValidations, loginValidations } from '../utils/validation.js';
+import { checkUserEmail } from '../utils/checkUtils/checkUserEmail.js';
+import queries from '../database/authQueries.js';
+import socketQueries from '../database/websocketQueries.js';
+import { StatusCodes } from 'http-status-codes';
+
 const JWT_SECRET = process.env.JWT_SECRET;
-const jwtCookieOptions = require('../configs/jwtCookieOptions');
-const { registerValidations, loginValidations } = require('../utils/validation');
-const { checkUserEmail } = require('../utils/checkUtils/checkUserEmail');
-const queries = require('../database/authQueries');
-const socketQueries = require('../database/websocketQueries');
-const { StatusCodes } = require('http-status-codes');
 const statusCode = StatusCodes;
 
-exports.registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
 	const { reg_username, reg_email, reg_password, role, cookies } = req.body;
 
 	const validations = registerValidations(reg_username, reg_email, reg_password, role)
@@ -85,7 +86,7 @@ exports.registerUser = async (req, res) => {
 	}
 };
 
-exports.loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
 	const { email, password } = req.body;
 	const connection = await pool.getConnection();
 
@@ -153,7 +154,7 @@ exports.loginUser = async (req, res) => {
 	}
 };
 
-exports.logoutUser = async (req, res) => {
+export const logoutUser = async (req, res) => {
 
 	await pool.query(socketQueries.deleteConnection, [req.userId]);
 

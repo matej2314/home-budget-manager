@@ -50,4 +50,4 @@ const loginValidations = (email, password) => [
 
 const validTransactionTypes = ['income', 'expense'];
 
-module.exports = { registerValidations, loginValidations, validTransactionTypes, isNoSQL, isNoXSS, isValidNumber };
+export { registerValidations, loginValidations, validTransactionTypes, isNoSQL, isNoXSS, isValidNumber };

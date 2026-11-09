@@ -1,4 +1,5 @@
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
 const verifyRole = (reqRole) => {
@@ -54,4 +55,4 @@ const verifyRole = (reqRole) => {
     };
 };
 
-module.exports = verifyRole;
+export default verifyRole;

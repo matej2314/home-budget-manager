@@ -1,11 +1,12 @@
-const logger = require('../configs/logger');
-const { sendNewMessage } = require('../services/messagesServices/sendNewMessage');
-const { markAsReaded } = require('../services/messagesServices/markAsReaded');
-const { delMessage } = require('../services/messagesServices/deleteMessage');
-const { StatusCodes } = require('http-status-codes');
+import logger from '../configs/logger.js';
+import { sendNewMessage } from '../services/messagesServices/sendNewMessage.js';
+import { markAsReaded } from '../services/messagesServices/markAsReaded.js';
+import { delMessage } from '../services/messagesServices/deleteMessage.js';
+import { StatusCodes } from 'http-status-codes';
+
 const statusCode = StatusCodes;
 
-exports.sendMessage = async (req, res) => {
+export const sendMessage = async (req, res) => {
     const userId = req.userId;
     const userName = req.userName;
     const { recipientName, content } = req.body;
@@ -52,7 +53,7 @@ exports.sendMessage = async (req, res) => {
     };
 };
 
-exports.markMessage = async (req, res) => {
+export const markMessage = async (req, res) => {
     const messageId = req.body.messageId;
     const userId = req.userId;
 
@@ -96,7 +97,7 @@ exports.markMessage = async (req, res) => {
     };
 };
 
-exports.deleteMessage = async (req, res) => {
+export const deleteMessage = async (req, res) => {
     const { messageId } = req.body;
 
     if (!messageId) {

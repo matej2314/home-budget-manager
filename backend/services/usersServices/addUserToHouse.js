@@ -1,9 +1,9 @@
-const pool = require('../../database/db');
-const logger = require('../../configs/logger');
-const { addUserByHost } = require('../../utils/householdUtils/addUserByHost');
-const checkUserHouse = require('../../utils/checkUtils/checkUserHouse');
-const { addUserByMate } = require('../../utils/householdUtils/addUserByMate');
-const { invitedUserData } = require('../../utils/householdUtils/getInvitedUserData');
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { addUserByHost } from '../../utils/householdUtils/addUserByHost.js';
+import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
+import { addUserByMate } from '../../utils/householdUtils/addUserByMate.js';
+import { invitedUserData } from '../../utils/householdUtils/getInvitedUserData.js';
 
 const addUserToHouse = async (userId, userName, invitingUserName, role) => {
     const connection = await pool.getConnection();
@@ -70,4 +70,4 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
     }
 };
 
-module.exports = { addUserToHouse };
+export { addUserToHouse };

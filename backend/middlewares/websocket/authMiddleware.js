@@ -1,7 +1,8 @@
-const cookieParser = require('cookie');
-const jwt = require('jsonwebtoken');
+import cookieParser from 'cookie';
+import jwt from 'jsonwebtoken';
+import logger from '../../configs/logger.js';
+
 const JWT_SECRET = process.env.JWT_SECRET;
-const logger = require('../../configs/logger');
 
 
 const authMiddleware = (socket, next) => {
@@ -28,4 +29,4 @@ const authMiddleware = (socket, next) => {
 	}
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;
