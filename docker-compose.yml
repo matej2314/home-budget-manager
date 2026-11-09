@@ -1,7 +1,7 @@
 services:
   backend:
     build:
-      context: ./Backend
+      context: ./backend
     container_name: budgetApp-backend
     restart: always
     networks:
@@ -16,7 +16,7 @@ services:
       - BACKEND_ORIGIN=https://budgetapi.msliwowski.net
   app:
     build:
-      context: ./Frontend
+      context: ./frontend
     container_name: budgetApp-frontend
     restart: always
     networks:

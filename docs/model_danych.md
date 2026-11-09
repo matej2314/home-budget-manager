@@ -1,5 +1,5 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-09
 ---
@@ -213,7 +213,7 @@ Pliki w storage backendu (`app-images` / multer) — **bez** osobnej tabeli jako
 
 | Norma | Opis |
 |-------|------|
-| Źródło prawdy schematu | `Backend/prisma/schema.prisma` — modele odpowiadają encjom poniżej (mapowanie nazw tabel/pól w schema) |
+| Źródło prawdy schematu | `backend/prisma/schema.prisma` — modele odpowiadają encjom poniżej (mapowanie nazw tabel/pól w schema) |
 | Zmiana modelu | Najpierw aktualizacja `schema.prisma`, potem **obowiązkowa** migracja Prisma Migrate w `prisma/migrations/` |
 | Dostęp runtime | Wyłącznie Prisma Client przez warstwę `database/` — bez raw SQL |
 | Ręczne DDL | Zabronione jako proces utrzymania schematu (phpMyAdmin tylko diagnostyka / awaryjne odczyty — nie jako pipeline zmian) |

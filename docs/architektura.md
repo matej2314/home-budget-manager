@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 5
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-08
+data_modyfikacji: 2026-11-09
 ---
 
 # Architektura — Home Budget Manager
@@ -18,8 +18,8 @@ System to **dwa deployable’e** plus zewnętrzna baza:
 
 | Element | Rola |
 |---------|------|
-| **Frontend** (React + Vite, SPA) | UI, routing, stan klienta, klient HTTP i Socket.io |
-| **Backend** (Express) | HTTP API, Socket.io, cron w tym samym procesie, upload/OCR |
+| **Frontend** (React + Vite, SPA; katalog procesu `frontend/`) | UI, routing, stan klienta, klient HTTP i Socket.io |
+| **Backend** (Express, katalog procesu `backend/`) | HTTP API, Socket.io, cron w tym samym procesie, upload/OCR |
 | **MySQL** | Magazyn stanu (poza `docker-compose` aplikacji; host DB w sieci zewnętrznej); dostęp przez **Prisma ORM** (norma docelowa) |
 
 ```mermaid
@@ -101,6 +101,17 @@ HTTP / WS / cron
 | `configs` | Logger, Swagger, JWT cookie, WebSocket, OCR | Business rules w configu |
 | `tasks` | Harmonogramy (bilans, dzienne snapshoty); wołają **te same** `services` co HTTP | Ukryta logika domenowa i bezpośrednie wołanie DB z pominięciem services |
 
+### Model modułów Node (stan docelowy)
+
+| Norma | Opis |
+|-------|------|
+| Format | **ES modules (ESM)** — obowiązujący model ładowania modułów w procesie API (`backend/`) |
+| Manifest | `package.json` z `"type": "module"`; w kodzie `import` / `export` |
+| As-is | CommonJS (`require` / `module.exports`) — **obowiązkowe** przejście na ESM przed dalszym refaktorem struktury i warstw |
+| Poza normą | Mieszanie CJS i ESM „na stałe”; nowy kod w CJS |
+
+Szczegóły drzewa: [architektura_katalogi_pliki.md](./architektura_katalogi_pliki.md). Norma egzekwowalna: [SPEC-BACKEND.md](../spec/SPEC-BACKEND.md).
+
 ### Dostęp do danych: Prisma ORM
 
 | Norma | Opis |
@@ -115,7 +126,7 @@ HTTP / WS / cron
 | Norma | Opis |
 |-------|------|
 | Narzędzie | Wyłącznie **Prisma Migrate** |
-| Źródło prawdy schematu | `prisma/schema.prisma` (w `Backend/`) |
+| Źródło prawdy schematu | `prisma/schema.prisma` (w `backend/`) |
 | Historia | Katalog `prisma/migrations/` w repozytorium — migracje są **obowiązkowe** przy każdej zmianie schematu |
 | Dev | Tworzenie / stosowanie migracji przez workflow Prisma Migrate (np. `prisma migrate dev`) względem bazy deweloperskiej |
 | Prod / deploy | Stosowanie już zatwierdzonych migracji (np. `prisma migrate deploy`) przed lub wraz z uruchomieniem nowej wersji API — bez ręcznego DDL „obok” Prisma |
@@ -138,7 +149,7 @@ Stan obecny w repo jest **bliski** modelowi warstw, ale niespójny przy dostępi
 | Transactions | `/action` |
 | Categories | `/actioncat` |
 | Monthly budget | `/initmonthly` |
-| Dashboard / board | `/board` |
+| Dashboard / board | `/board` — logika aplikacji w `services/board/` (norma katalogów) |
 | Messages | `/message` |
 | Notifications | `/notice` |
 | Receipt / OCR | `/receipt` |
@@ -184,8 +195,9 @@ Cel: **czytelność i spójność**, nie przebudowa systemu od zera.
 | ID | Kierunek | Zakres | Poza zakresem tego kroku |
 |----|----------|--------|---------------------------|
 | **R1** | Role | `mate` → `inmate` w tokenie, middleware, komunikatach, UI | Zmiana modelu uprawnień host/inmate |
-| **R2** | Pipeline warstw | Cienkie controllery; reguły w services; dostęp do danych tylko przez `database/` + Prisma | Hexagonal, kontener DI, nowe warstwy „domain/use-case” |
-| **R3** | Obszary | Wyraźny podział rdzeń vs otoczka; spójne granice modułów | Wydzielanie osobnych serwisów |
+| **R2** | Pipeline warstw | Cienkie controllery; reguły i orkiestracja w `services/`; dostęp do danych wyłącznie przez warstwę `database/` (controllers / routes / tasks jej nie omijają). W tym samym przejściu co mapa Bloku B (`services/<obszar>/`, w tym `board/`, `shell/`) — jak major plan backendu Faza 2. `database/` może nadal używać historycznego pool / `*Queries` | Hexagonal, kontener DI, nowe warstwy „domain/use-case”; **pełna migracja na Prisma** (to **R6** / major Faza 7) |
+| **R3** | Obszary | Wyraźny podział rdzeń vs otoczka; spójne granice modułów (w tym jawne `services/board/`) | Wydzielanie osobnych serwisów |
+| **ESM** | Moduły Node | CommonJS → ES modules w `backend/` (przed głębokim refaktorem katalogów/warstw) | Zmiana runtime Node poza dokumentowanym stackiem v1 |
 | **R4** | WS / cron | Zostają adapterami w procesie API; **później do rozważenia** osobne workery pod wydajność | Implementacja workerów „teraz” |
 | **R5** | Frontend | Bez zmiany modelu stanu w tym dokumencie; porządek katalogów w dokumencie katalogów | React Query / SWR, BFF |
 | **R6** | Prisma + Migrate | Wprowadzenie Prisma ORM, usunięcie raw SQL / `*Queries`+pool; schemat i migracje w `prisma/` | Zmiana silnika DB; CQRS / osobny read-model |

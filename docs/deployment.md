@@ -1,7 +1,7 @@
 ---
-wersja: 4
+wersja: 6
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-08
+data_modyfikacji: 2026-11-09
 ---
 
 # Wdrożenie i operacje — Home Budget Manager
@@ -14,7 +14,7 @@ data_modyfikacji: 2026-11-08
 
 | Środowisko | Cel | Jak stoi |
 |------------|-----|----------|
-| **local** | Rozwój | npm w `Backend/` i `Frontend/` (Vite); opcjonalnie Docker |
+| **local** | Rozwój | npm w `backend/` i `frontend/` (Vite); opcjonalnie Docker |
 | **production** | Demo / prod | Obrazy Docker + compose, sieć zewnętrzna, Jenkins po pushu na `main` |
 
 Brak osobnego staging w normie v1 docs.
@@ -23,7 +23,7 @@ Brak osobnego staging w normie v1 docs.
 
 | Usługa | Obraz / proces | Host (compose) | Uwagi |
 |--------|----------------|----------------|--------|
-| Backend | `Backend/Dockerfile` → `node server.js` | `127.0.0.1:5053:5053` | Env `DB_HOST`, `BACKEND_ORIGIN`; volume `.env`; logi → **stdout** (bez volume `logs/` w stanie docelowym) |
+| Backend | `backend/Dockerfile` → `node server.js` | `127.0.0.1:5053:5053` | Env `DB_HOST`, `BACKEND_ORIGIN`; volume `.env`; logi → **stdout** (bez volume `logs/` w stanie docelowym) |
 | Frontend | multi-stage: build Vite → **nginx:alpine** | `127.0.0.1:5052:80` | SPA + `try_files` → `index.html` |
 | MySQL | Poza tym compose | `main_db` w sieci `main_network` | Aplikacja łączy się po nazwie hosta DB |
 | Sieć | `main_network` (external) | — | Współdzielona z resztą hosta |
@@ -39,26 +39,26 @@ Publiczne domeny (as-is): frontend `budgetapp.msliwowski.net`, API `budgetapi.ms
 | **Nigdy w git** | `.env`, tokeny Jenkins, `JWT_SECRET`, hasła DB |
 | Production | Plik `.env` montowany do kontenera backendu z hosta; zmienne w compose (`DB_HOST`, origin) |
 | CI | `secrets.JENKINS_URL`, `secrets.JENKINS_TOKEN` w GitHub Actions |
-| Local | Własny `.env` w `Backend/` (poza repo) |
+| Local | Własny `.env` w `backend/` (poza repo) |
 
 Wymagane kategorie env backendu (orientacyjnie): port (`SERV_PORT`), `JWT_SECRET`, dane MySQL, origin frontendu/API zgodnie z CORS.
 
 ## Local — ścieżka deweloperska
 
 1. MySQL dostępny lokalnie lub przez sieć (spójne dane połączenia w `.env`, w tym URL/połączenie wymagane przez Prisma).
-2. **Backend:** w `Backend/` → `npm install` → (po R6) wygeneruj klienta i **zastosuj migracje** Prisma Migrate na bazie deweloperskiej → `npm run start` (nodemon / `server.js`).
-3. **Frontend:** w `Frontend/` → `npm install` → `npm run dev` (Vite, typowo `:5173`; origin na whitelist CORS).
+2. **Backend:** w `backend/` → `npm install` → (po przejściu na ESM: `"type": "module"`) → (po R6) wygeneruj klienta i **zastosuj migracje** Prisma Migrate na bazie deweloperskiej → `npm run start` (nodemon / `server.js`).
+3. **Frontend:** w `frontend/` → `npm install` → `npm run dev` (Vite, typowo `:5173`; origin na whitelist CORS).
 4. Opcjonalnie: build frontu `npm run build` / podgląd jak w README.
 
 Zmiany schematu DB wyłącznie przez Prisma Migrate (`schema.prisma` + `prisma/migrations/`) — norma w [architektura.md](./architektura.md) / [model_danych.md](./model_danych.md).
 
-Socket i API w dev: lokalne URL w `Frontend/src/url.js` (zakomentowane warianty localhost).
+Socket i API w dev: lokalne URL w `frontend/src/url.js` (zakomentowane warianty localhost).
 
 ## Production — Docker
 
 Skrót z root `docker-compose.yml`:
 
-- Build kontekstów `./Backend`, `./Frontend`.
+- Build kontekstów `./backend`, `./frontend` (katalogi procesów w rootcie repo — małe litery).
 - `restart: always`.
 - Backend: port 5053, volume `.env`, `DB_HOST=main_db`; logi aplikacji na **stdout** (as-is może jeszcze montować `logs/` — do usunięcia przy refaktorze loggera).
 - Frontend: port hosta 5052 → 80 w kontenerze NGINX.
@@ -103,7 +103,7 @@ Po wdrożeniu (lub po zmianach kontraktu `/api/v1`):
 
 | Temat | Działanie |
 |-------|-----------|
-| Logi | Winston → **stdout**; odczyt przez runtime (`docker logs` / host); bez plików `Backend/logs/` w normie docelowej — [observability.md](./observability.md) |
+| Logi | Winston → **stdout**; odczyt przez runtime (`docker logs` / host); bez plików `backend/logs/` w normie docelowej — [observability.md](./observability.md) |
 | Restart | Polityka compose `restart: always`; ręczny restart kontenera przy złym stanie |
 | DB | Diagnostyka: phpMyAdmin / klient SQL — ostrożnie na prod; **zmiany schematu tylko Prisma Migrate** |
 | Cert / TLS | Terminacja po stronie hosta / reverse proxy (poza tym compose) |

@@ -1,19 +1,19 @@
 ---
-wersja: 3
+wersja: 6
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-08
+data_modyfikacji: 2026-11-09
 ---
 
 # Anty-patterny — Home Budget Manager
 
-Pułapki typowe dla **tego** stacku i ustalonego stylu (modularny monolit warstwowy, SPA, adaptery WS/cron/OCR w procesie API).  
-Forma: hasło → dlaczego boli → co robić zamiast. Odniesienia do kierunku refaktoru (R1–R5) i kontraktu `/api/v1` tam, gdzie pasują.
+Pułapki typowe dla **tego** stacku i ustalonego stylu (modularny monolit warstwowy, SPA, adaptery WS/cron/OCR w procesie API; katalogi `backend/` / `frontend/`).  
+Forma: hasło → dlaczego boli → co robić zamiast. Odniesienia do kierunku refaktoru (R1–R6, ESM) i kontraktu `/api/v1` tam, gdzie pasują.
 
 ## 1. Gruby controller / Prisma lub SQL poza warstwą `database`
 
 **Dlaczego boli:** Łamie pipeline `routes → controllers → services → database`. Trudny test, duplikacja zapytań, ukryte reguły w HTTP, omijanie Prisma Migrate.
 
-**Zamiast:** Cienki controller (statusy, mapowanie); reguły w `services/`; dostęp do MySQL wyłącznie przez Prisma w `database/` (**R2**, **R6**). Bez raw SQL i bez importu Prisma Client w controllerach / routes / tasks.
+**Zamiast:** Cienki controller (statusy, mapowanie); reguły w `services/`; dostęp do danych wyłącznie przez warstwę `database/` (**R2**). Podmiana pool / `*Queries` na Prisma + zakaz raw SQL = **R6** — nie mylić z domknięciem pipeline. Controllers / routes / tasks nie importują Prisma Client ani SQL.
 
 ## 2. Reguły uprawnień tylko na froncie
 
@@ -59,9 +59,9 @@ Forma: hasło → dlaczego boli → co robić zamiast. Odniesienia do kierunku r
 
 ## 9. Zmyślanie roomów Socket.io / innego kontraktu WS
 
-**Dlaczego boli:** Integracja „według wyobrażenia” zamiast `broadcastMessage` / `broadcastToHouseMates` i ustalonych `type`. Martwy kod po stronie klienta, niedostarczone eventy.
+**Dlaczego boli:** Integracja „według wyobrażenia” zamiast `broadcastMessage` / `broadcastToHousehold` i ustalonych `type`. Martwy kod po stronie klienta, niedostarczone eventy.
 
-**Zamiast:** Trzymać się zdarzeń z `dokumentacja_komunikacji.md` (`notification`, `newMessage`, `balance_update`, …) i modelu push po użytkowniku / domu.
+**Zamiast:** Trzymać się zdarzeń z `dokumentacja_komunikacji.md` (`notification`, `newMessage`, `balance_update`, …) i modelu push po użytkowniku / domu (`broadcastToHousehold` — nie zmyślać room API ani wracać do historycznej nazwy `…Mates`).
 
 ## 10. Traktowanie otoczki jak rdzenia uprawnień budżetu
 
@@ -71,9 +71,9 @@ Forma: hasło → dlaczego boli → co robić zamiast. Odniesienia do kierunku r
 
 ## 11. (Bonus kontraktu) Nowe ścieżki bez prefiksu `/api/v1`
 
-**Dlaczego boli:** Rozjechanie normy docs z klientem; trudniejsza wersjonowanie API.
+**Dlaczego boli:** Rozjechanie normy docs z klientem; trudniejsze wersjonowanie API; „wieczne” legacy.
 
-**Zamiast:** Montować i wołać wyłącznie pod `/api/v1` zgodnie z `dokumentacja_komunikacji.md`.
+**Zamiast:** Norma docelowa = montaż i wołanie pod `/api/v1`. **Wyjątek przejściowy:** dual mount tych samych handlerów pod legacy as-is **oraz** `/api/v1` do cutoveru SPA — bez dodawania *nowych* ścieżek poza v1. Po cutoverze usuń legacy. Szczegóły: [dokumentacja_komunikacji.md](./dokumentacja_komunikacji.md).
 
 ---
 

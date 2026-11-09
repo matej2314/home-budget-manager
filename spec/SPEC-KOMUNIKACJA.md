@@ -1,5 +1,5 @@
 ---
-wersja: 1
+wersja: 3
 data_utworzenia: 2026-11-09
 data_modyfikacji: 2026-11-09
 ---
@@ -20,15 +20,20 @@ Ten SPEC **nie** dubluje pełnej tabeli endpointów z docs — egzekwuje reguły
 | Ustalenie | Egzekwowanie |
 |-----------|--------------|
 | Powierzchnie v1 | HTTP + Socket.io + e-mail (kierunek outbound); cron / webhooki / broker / CLI **nie** są powierzchnią produktu |
-| Prefiks HTTP | Wszystkie ścieżki API pod **`/api/v1`** (norma docs; as-is bez prefiksu = do refaktoru) |
+| Prefiks HTTP | Norma docelowa: wszystkie ścieżki pod **`/api/v1`**; as-is bez prefiksu = do refaktoru; **wyjątek przejściowy** dual mount (K-1) |
 | Pipeline | Route → controller → service → `database`/Prisma — jak SPEC-BACKEND |
-| Wyjątek vs styl globalny | **Brak** — I/O nie wprowadza osobnego stylu warstw |
+| Wyjątek vs styl globalny | **Tylko** dual mount HTTP legacy↔v1 jako wyjątek kontraktu przejściowego (K-1) — bez osobnego stylu warstw |
 
 ## Wymagania egzekwowalne
 
 ### HTTP — kontrakt wspólny
 
-K-1. Każdy endpoint HTTP montowany i wołany wyłącznie pod prefiksem `/api/v1/...`. Nowe ścieżki bez prefiksu są niedozwolone.
+K-1. Prefiks HTTP:
+
+- **Norma docelowa:** każdy endpoint HTTP montowany i wołany pod `/api/v1/...`. Klient SPA po cutoverze woła wyłącznie v1.
+- **Nowe** ścieżki API powstają wyłącznie pod `/api/v1` — niedozwolone jest poszerzanie zestawu ścieżek bez prefiksu.
+- **Wyjątek przejściowy (dual mount):** do czasu cutoveru SPA wolno montować **te same** handlery równolegle pod `/api/v1/...` oraz pod zamkniętym zbiorem ścieżek legacy as-is (`/auth`, `/house`, …). Legacy nie jest normą docelową ani miejscem na nowe endpointy.
+- **Koniec wyjątku:** po potwierdzeniu, że klient woła wyłącznie v1 — usunięcie montażu legacy (poza DoD samej fazy kontraktu w major BE; osobna decyzja / praca po cutoverze FE).
 
 K-2. Envelope odpowiedzi:
 
@@ -69,7 +74,7 @@ K-10. Dozwolone zdarzenia serwer → klient (norma docs): m.in. `connect_success
 K-11. Adresowanie push wyłącznie przez:
 
 - `broadcastMessage(userId, { type, data })`
-- `broadcastToHouseMates(houseId, { type, data })`
+- `broadcastToHousehold(houseId, { type, data })` — wszyscy członkowie domu z aktywnym socketem (rename względem historycznego `broadcastToHouseMates`; bez trwałego aliasu w stanie docelowym)
 
 Zakaz zmyślania osobnego „room API” / eventów spoza ustalonego katalogu bez aktualizacji docs i tego SPEC.
 
@@ -102,13 +107,15 @@ K-14. Gdy wdrażany outbound (norma):
 ## Wolno
 
 - Refaktorować montowanie routera i klienta SPA na `/api/v1`.
+- Trzymać dual mount legacy + v1 (K-1) wyłącznie do cutoveru SPA, bez nowych ścieżek poza v1.
 - Emisować ustalone eventy WS po mutacjach (transakcja → `balance_update` / `notification`, wiadomość → `newMessage`, itd. wg docs).
 - Dodać nodemailer pod K-14 przy wdrożeniu outbound.
 - Utrzymywać Swagger jako pomoc, o ile nie staje się sprzeczny z normą bez aktualizacji.
 
 ## Nie wolno
 
-- Nowych ścieżek API poza `/api/v1`.
+- Nowych ścieżek API poza `/api/v1` (dual mount legacy ≠ licencja na nowe endpointy bez prefiksu).
+- Traktowania legacy mount jako trwałej normy po cutoverze SPA.
 - Eventów / roomów WS spoza katalogu docs bez zmiany normy.
 - Publicznego OCR bez `SESSID`.
 - Traktowania e-maila jako jedynego kanału zaproszenia przed wdrożeniem K-14.
@@ -128,7 +135,7 @@ Poza zakresem v1 tego SPEC (nie jako „zakaz na zawsze” produktu): GraphQL, g
 
 ## Kryteria akceptacji (obserwowalne)
 
-- [ ] Klient i serwer wołają chronione/publiczne API pod `/api/v1/...`.
+- [ ] Po cutoverze: klient i serwer wołają chronione/publiczne API pod `/api/v1/...`. W trakcie dual mount: te same handlery odpowiadają też pod legacy as-is; nowe ścieżki tylko pod v1.
 - [ ] Odpowiedzi sukces/błąd mają `status` + `message` (klucz); błędy mapują się na statusy z K-3.
 - [ ] `POST` OCR bez ważnego `SESSID` → 401 (lub równoważna odmowa auth).
 - [ ] Po mutacji wyzwalającej push klient otrzymuje ustalony `type` (np. `balance_update` / `newMessage`) bez custom room API.

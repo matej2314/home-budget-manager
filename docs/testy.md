@@ -1,5 +1,5 @@
 ---
-wersja: 4
+wersja: 7
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-09
 ---
@@ -9,9 +9,9 @@ data_modyfikacji: 2026-11-09
 ## Cel i zakres v1
 
 Strategia pod **utrzymanie i refaktor backendu**.  
-**Frontend:** świadomie **poza zakresem** testów w tej wersji dokumentacji (bez Vitest/RTL/E2E UI).
+**Frontend** (`frontend/`): świadomie **poza zakresem** testów w tej wersji dokumentacji (bez Vitest/RTL/E2E UI).
 
-As-is w repo: brak realnej suity (stub `npm test` w Backend). Ten dokument opisuje **normę docelową**, nie stan pokrycia.
+As-is w repo: brak realnej suity (stub `npm test` w `backend/`). Ten dokument opisuje **normę docelową**, nie stan pokrycia.
 
 ## Narzędzie
 
@@ -62,13 +62,21 @@ Prefiks ścieżek: **`/api/v1`** (norma kontraktu). Środowisko testowe musi mon
 
 ## Reguła procesowa (DoD)
 
-Testy są **częścią Definition of Done** kroku implementacji zmian w backendzie — tam, gdzie zmiana ma sens testowalny (reguła domenowa, endpoint, refaktor R1–R2, kontrakt).
+Testy są **częścią Definition of Done** kroku implementacji zmian w `backend/` — tam, gdzie zmiana ma sens testowalny (reguła domenowa, endpoint, refaktor R1–R2/R6/ESM, kontrakt).
 
 **Wymagane przed merge / przed pushem commita** obejmującego taki krok:
 
 1. Nowe lub zaktualizowane testy Jest przechodzą lokalnie.
 2. Pokryty jest zachowany / zmieniony kontrakt zachowania (nie tylko „zielony build bez asercji”).
 3. Ścieżki krytyczne z listy E2E nie są świadomie psute bez aktualizacji testów.
+
+### Refaktor fazowy (major plan backend)
+
+Źródło numeracji: `home-budget-manager_major_plan-backend.md` (po scaleniu / przenumerowaniu faz).
+
+Przy pracach według major planu backendu: **każda faza 1–8** domyka **scoped** testy powierzchni tej fazy (pliki testów + zielona komenda Jest w `backend/`) — nie odkłada pierwszej asercji na fazę jakości. **Faza 9** major = **weryfikacja / domknięcie** piramidy i minimum E2E (lista wyżej), nie „pierwsze testy”. Fazy 1–8 nie muszą powtarzać całego T-5, tylko powierzchnię, którą właśnie zmieniają.
+
+Major frontend (`home-budget-manager_major_plan-frontend.md`) **nie** wprowadza fazy piramidy testów UI — zgodnie z zakresem v1 powyżej.
 
 Wyjątki (np. czysty chore docs-only, komentarz): bez wymuszania testów — ale **nie** dotyczy zmian w `services`, routes, auth, rolach, transakcjach.
 

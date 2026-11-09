@@ -1,7 +1,7 @@
 ---
-wersja: 2
+wersja: 4
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-07
+data_modyfikacji: 2026-11-09
 ---
 
 # Dokumentacja koncepcyjna — Home Budget Manager
@@ -38,7 +38,7 @@ Norma koncepcyjna (obowiązuje w dokumentacji; **zmiana względem obecnego kodu*
 | `inmate` | Domownik dołączony do gospodarstwa; korzysta z finansów, chatu i pozostałego rdzenia w granicach uprawnień innych niż zarządzanie składem domu. |
 | `superadmin` | Administrator witryny — panel operacyjny poza rdzeniem budżetowym gospodarstwa. |
 
-**Refaktor obowiązkowy (późniejszy):** w kodzie Backend/Frontend oraz kontraktach API należy ujednolicić nazwę roli domownika na `inmate` (zamiast `mate` / ewentualnych aliasów) oraz dopasować middleware, komunikaty i UI do tej normy.
+**Refaktor obowiązkowy (późniejszy):** w kodzie `backend/` / `frontend/` oraz kontraktach API należy ujednolicić nazwę roli domownika na `inmate` (zamiast `mate` / ewentualnych aliasów) oraz dopasować middleware, komunikaty i UI do tej normy.
 
 ## Zakres produktu
 
@@ -109,6 +109,6 @@ Obecna wersja produktu spełnia oczekiwania, gdy:
 
 ## Powiązane
 
-- Architektura i refaktor R1–R5: [architektura.md](./architektura.md)
+- Architektura i lekki refaktor **R1–R6** (+ ESM): [architektura.md](./architektura.md) — m.in. role (`inmate`), pipeline warstw, obszary, adaptery WS/cron, porządek SPA oraz **R6: Prisma ORM + Migrate** zamiast raw SQL / pool.
 - Kontrakt I/O: [dokumentacja_komunikacji.md](./dokumentacja_komunikacji.md)
-- Model danych: [model_danych.md](./model_danych.md)
+- Model danych (encje + norma Prisma): [model_danych.md](./model_danych.md)

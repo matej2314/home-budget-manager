@@ -1,5 +1,5 @@
 ---
-wersja: 1
+wersja: 2
 data_utworzenia: 2026-11-09
 data_modyfikacji: 2026-11-09
 ---
@@ -8,7 +8,7 @@ data_modyfikacji: 2026-11-09
 
 ## Cel / zakres względem dokumentacji
 
-Norma implementacji **klienta SPA**: routing, stan (Zustand + Context), komunikacja HTTP/WebSocket, i18n oraz granica UI vs reguły API.
+Norma implementacji **klienta SPA** w katalogu procesu **`frontend/`**: routing, stan (Zustand + Context), komunikacja HTTP/WebSocket, i18n oraz granica UI vs reguły API.
 
 Uszczegóławia: [docs/architektura.md](../docs/architektura.md) (Frontend, R5), [docs/architektura_katalogi_pliki.md](../docs/architektura_katalogi_pliki.md), [docs/i18n_kontrakt_ui.md](../docs/i18n_kontrakt_ui.md), [docs/anty_patterny.md](../docs/anty_patterny.md).  
 Kontrakt I/O → [SPEC-KOMUNIKACJA.md](./SPEC-KOMUNIKACJA.md) / [docs/dokumentacja_komunikacji.md](../docs/dokumentacja_komunikacji.md). Auth egzekwowane na API → [SPEC-BEZPIECZENSTWO.md](./SPEC-BEZPIECZENSTWO.md).
@@ -17,6 +17,7 @@ Kontrakt I/O → [SPEC-KOMUNIKACJA.md](./SPEC-KOMUNIKACJA.md) / [docs/dokumentac
 
 | Ustalenie | Egzekwowanie |
 |-----------|--------------|
+| Katalog procesu | Kod SPA w `frontend/` (nie `Frontend/`) |
 | SPA Vite + React Router | Jedyny klient web v1; strony publiczne + dashboard po sesji |
 | Stan | **Zustand + Context** w katalogu `store/` — bez React Query / SWR w v1 (R5) |
 | Komunikacja | HTTP z credentials + Socket.io-client; ścieżki pod **`/api/v1`** |
@@ -28,7 +29,7 @@ Kontrakt I/O → [SPEC-KOMUNIKACJA.md](./SPEC-KOMUNIKACJA.md) / [docs/dokumentac
 
 ### Struktura i routing
 
-F-1. Układ katalogów zgodny z normą docs: `pages/` (w tym dashboard / admin), `components/`, `store/`, `configs/`, `hooks/`, `utils/` — bez wymuszanej migracji na `features/<name>/` w v1.
+F-1. Układ katalogów zgodny z normą docs w `frontend/`: `pages/` (w tym dashboard / admin), `components/`, `store/`, `configs/`, `hooks/`, `utils/` — bez wymuszanej migracji na `features/<name>/` w v1.
 
 F-2. Routing przez React Router: trasy publiczne (landing, about, contact, …) oraz chronione UX-em dashboardu; ochrona tras UI **nie zastępuje** middleware API.
 

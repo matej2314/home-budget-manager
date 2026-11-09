@@ -1,5 +1,5 @@
 ---
-wersja: 1
+wersja: 4
 data_utworzenia: 2026-11-09
 data_modyfikacji: 2026-11-09
 ---
@@ -62,11 +62,13 @@ T-10. Seed Prisma / fixtures minimalne (user, kategorie gdy potrzeba) — zgodni
 
 ### Definition of Done
 
-T-11. Zmiana backendu z sensem testowalnym (reguła domenowa, endpoint, R1–R2/R6, kontrakt) **wymaga** nowych lub zaktualizowanych testów Jest **przed merge / przed pushem** takiego commita.
+T-11. Zmiana backendu z sensem testowalnym (reguła domenowa, endpoint, R1–R2/R6/ESM, kontrakt) **wymaga** nowych lub zaktualizowanych testów Jest **przed merge / przed pushem** takiego commita.
 
 T-12. DoD obejmuje: testy przechodzą lokalnie; pokryty zachowany/zmieniony kontrakt zachowania; ścieżki krytyczne E2E nie są świadomie psute bez aktualizacji testów.
 
 T-13. Wyjątki bez wymuszania testów: czysty chore docs-only, komentarz. **Nie** dotyczy zmian w `services`, routes, auth, rolach, transakcjach, warstwie danych.
+
+T-15. Przy refaktorze według major planu backendu (`home-budget-manager_major_plan-backend.md`): **każda faza 1–8** ma scoped testy powierzchni tej fazy (pliki + zielona komenda Jest w `backend/`) jako część DoD fazy. **Faza 9** (weryfikacja / domknięcie piramidy i minimum E2E T-5) = audyt kompletności, nie pierwsze testy w projekcie. Fazy 1–8 **nie** muszą powtarzać całego T-5 — tylko zmieniany zakres. Major frontend nie wprowadza fazy testów UI (poza strategią v1).
 
 ### CI
 
@@ -108,7 +110,8 @@ Nic poza tą listą w v1 strategii testów.
 
 ## Kryteria akceptacji (obserwowalne)
 
-- [ ] `npm test` (lub ustalona komenda Jest w Backend) przechodzi lokalnie na bazie testowej.
+- [ ] `npm test` (lub ustalona komenda Jest w `backend/`) przechodzi lokalnie na bazie testowej.
+- [ ] Fazy major planu backendu domykają scoped zielone testy obszaru fazy (T-15), nie tylko końcową suitę.
 - [ ] Scenariusz auth E2E API (T-5.1) istnieje i asertuje kontrakt `/api/v1` + cookie.
 - [ ] Zmiana reguły salda/membership ma test unit lub integration dowodzący zachowania.
 - [ ] CI failuje przy padających testach Jest (po podpięciu pipeline).

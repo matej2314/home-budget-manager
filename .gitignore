@@ -1,7 +1,8 @@
-Backend/node_modules
-Frontend-ts/node_modules
-Frontend/node_modules
-Backend/.env
+backend/node_modules
+frontend-ts/node_modules
+frontend/node_modules
+backend/.env
+.env
 ./TODO.txt
 TODO.txt
-Backend-ts/src/.env
+backend-ts/src/.env

@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 5
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-08
+data_modyfikacji: 2026-11-09
 ---
 
 # Katalog zmiennych środowiskowych — Home Budget Manager
@@ -9,7 +9,7 @@ data_modyfikacji: 2026-11-08
 ## Cel
 
 Spis konfiguracji i sekretów **bez wartości**. Uzupełnia [deployment.md](./deployment.md) i [bezpieczenstwo.md](./bezpieczenstwo.md).  
-Źródła: `Backend` (`process.env`), `docker-compose.yml`, kierunek e-mail outbound.
+Źródła: katalog procesu `backend/` (`process.env`), `docker-compose.yml`, kierunek e-mail outbound.
 
 **Zasada:** wartości tylko w lokalnym `.env` / na hoście prod / menedżerze sekretów — **nigdy w git**.
 
@@ -29,7 +29,7 @@ Spis konfiguracji i sekretów **bez wartości**. Uzupełnia [deployment.md](./de
 
 Po R6: Prisma czyta `DATABASE_URL`. Pola `DB_*` mogą zostać przejściowo (compose / legacy) albo zostać zmapowane wyłącznie do budowy URL — bez drugiego, równoległego raw-SQL poola.
 
-Plik typowy: `Backend/.env` (local) lub montowany volume w kontenerze (prod).
+Plik typowy: `backend/.env` (local) lub montowany volume w kontenerze (prod).
 
 ## Compose / origin (production)
 

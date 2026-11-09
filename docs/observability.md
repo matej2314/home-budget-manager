@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 4
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-08
+data_modyfikacji: 2026-11-09
 ---
 
 # Observability — Home Budget Manager
@@ -27,12 +27,12 @@ Wdrożenie i środowiska: `deployment.md`. Kontrakt I/O: `dokumentacja_komunikac
 |---------|------|
 | **Winston** | Logger aplikacji backendu |
 | **Transport** | **stdout** procesu (Console / stream procesu Node) — jedyny kanał logów aplikacji w normie docelowej |
-| **Docker / runtime** | Odczyt logów kontenera / procesu (`docker logs`, agregator hosta podpięty pod stdout/stderr) — **bez** volume `Backend/logs/` |
+| **Docker / runtime** | Odczyt logów kontenera / procesu (`docker logs`, agregator hosta podpięty pod stdout/stderr) — **bez** volume `backend/logs/` |
 | **Jenkins / CI** | Sygnał operacyjny: fail build / pipeline = eskalacja „coś poszło nie tak” przy zmianach |
 
 | As-is (do usunięcia przy refaktorze loggera) | Uwaga |
 |-----------------------------------------------|--------|
-| `winston-daily-rotate-file`, pliki w `Backend/logs/`, volume logów w compose | Historyczne; **nie** są normą docelową |
+| `winston-daily-rotate-file`, pliki w `backend/logs/`, volume logów w compose | Historyczne; **nie** są normą docelową |
 
 Brak centralnego ELK/Loki/Grafana w normie v1 (stdout może być zbierany przez infrastrukturę hosta poza tym dokumentem — bez wymogu nowego stacku w aplikacji).
 

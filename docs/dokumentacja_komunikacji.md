@@ -1,7 +1,7 @@
 ---
-wersja: 2
+wersja: 5
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-07
+data_modyfikacji: 2026-11-09
 ---
 
 # Dokumentacja komunikacji — Home Budget Manager
@@ -26,9 +26,23 @@ Szczegóły warstw: [architektura.md](./architektura.md). Pojęcia domenowe: [di
 
 Wszystkie ścieżki HTTP w tym dokumencie mają prefiks **`/api/v1`**.
 
-To **świadoma zmiana** względem obecnego kodu (montowanie bez prefiksu, np. `/auth/login`). Wdrożenie prefiksu = obowiązkowy element późniejszego refaktoru routingu / klienta (`Frontend/src/url.js` i proxy).
+To **świadoma zmiana** względem obecnego kodu (montowanie bez prefiksu, np. `/auth/login`). Wdrożenie prefiksu = obowiązkowy element późniejszego refaktoru routingu / klienta (`frontend/src/url.js` i proxy).
 
 Przykład: docs `POST /api/v1/auth/login` ↔ dziś w repo `POST /auth/login`.
+
+#### Wyjątek przejściowy: dual mount (v1 + legacy)
+
+Do czasu cutoveru klienta SPA na `/api/v1` backend **może** montować te same handlery równolegle:
+
+| Reguła | Opis |
+|--------|------|
+| Norma docelowa | Klient i nowe endpointy: wyłącznie `/api/v1/...` |
+| Dual mount | Te same handlery dostępne pod `/api/v1/...` **oraz** pod ścieżkami legacy as-is (`/auth`, `/house`, …) |
+| Nowe ścieżki | **Tylko** pod `/api/v1` — zakaz poszerzania zestawu legacy |
+| Legacy | Zamknięty zbiór ścieżek istniejących w as-is; nie jest normą docelową kontraktu |
+| Koniec wyjątku | Po potwierdzeniu, że SPA woła wyłącznie v1 — usunięcie montażu legacy (poza samym zapisem tej normy; w major planach: poza DoD fazy kontraktu / osobna decyzja po cutoverze FE) |
+
+Testy i dokumentacja endpointów w tym pliku opisują **ścieżki v1**. Smoke legacy jest dopuszczalny wyłącznie jako kompatybilność przejściowa, nie jako druga norma.
 
 ### Auth
 
@@ -283,7 +297,7 @@ Payload: obiekt `data` zależny od typu (np. `houseId`, `newBalance`, treść wi
 ### Model push
 
 - **`broadcastMessage(userId, { type, data })`** — jeden użytkownik.
-- **`broadcastToHouseMates(houseId, { type, data })`** — wszyscy członkowie domu z aktywnym socketem.
+- **`broadcastToHousehold(houseId, { type, data })`** — wszyscy członkowie domu z aktywnym socketem (norma docs; as-is w kodzie: historyczna nazwa `broadcastToHouseMates` — rename w R1 / major BE Krok 5.3).
 
 Klient może emitować standardowe zdarzenia cyklu życia Socket.io (`disconnect`); biznesowe eventy wychodzące z przeglądarki nie są osobnym katalogiem kontraktu v1 poza flow HTTP, które **wyzwala** push.
 
@@ -326,7 +340,7 @@ Do czasu wdrożenia: klient **nie** polega na mailu jako jedynym kanale zaprosze
 
 | Temat | Działanie |
 |-------|-----------|
-| Prefiks `/api/v1` | Montaż w Express + update klienta |
+| Prefiks `/api/v1` | Montaż v1 (+ dual mount legacy do cutoveru SPA) + update klienta; potem usunięcie legacy |
 | R1 role | `mate` → `inmate`, grupa `mates` → spójna nazwa |
 | OCR | Rozważyć obowiązkowy JWT — [bezpieczenstwo.md](./bezpieczenstwo.md) |
 | Envelope / i18n | Klucze — [i18n_kontrakt_ui.md](./i18n_kontrakt_ui.md) |

@@ -1,5 +1,5 @@
 ---
-wersja: 1
+wersja: 2
 data_utworzenia: 2026-11-09
 data_modyfikacji: 2026-11-09
 ---
@@ -38,7 +38,7 @@ D-4. Drugi ORM (TypeORM, Sequelize, Knex jako warstwa modelu itd.) obok Prisma �
 
 ### Schemat i migracje
 
-D-5. Źródło prawdy schematu: `Backend/prisma/schema.prisma`. Modele odpowiadają encjom z [docs/model_danych.md](../docs/model_danych.md) (mapowanie nazw tabel/pól w schema).
+D-5. Źródło prawdy schematu: `backend/prisma/schema.prisma`. Modele odpowiadają encjom z [docs/model_danych.md](../docs/model_danych.md) (mapowanie nazw tabel/pól w schema).
 
 D-6. Każda zmiana schematu = aktualizacja `schema.prisma` + **obowiązkowa** migracja w `prisma/migrations/` (Prisma Migrate).
 
