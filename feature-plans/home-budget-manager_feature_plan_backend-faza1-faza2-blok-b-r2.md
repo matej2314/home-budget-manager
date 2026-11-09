@@ -41,7 +41,7 @@
 
 ### KROK 1 — Inwentaryzacja zależności vs stack docs/SPEC
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Jawna lista wyjściowa i decyzji upgrade / usunięcie przed zmianą lockfile (major 1.1).
 
@@ -71,7 +71,7 @@
 
 ### KROK 2 — Upgrade lockfile + ESM + minimalny logger stdout
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Manifest/lockfile zaktualizowane; cały `backend/**/*.js` na `import`/`export`; proces startuje (major 1.2 + część 1.3).
 
@@ -282,7 +282,7 @@ Każdy plik `*Routes.js`: `export default router` zamiast `module.exports = rout
 
 ### KROK 3 — Setup Jest (ESM) + smoke fundamentu
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Scoped testy Fazy 1 (T-15): Jest ładuje ESM; smoke importów entry / logger / setupRoutes (major 1.3).
 
