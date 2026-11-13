@@ -16,7 +16,7 @@ import StatsPage from '../pages/dashboard-subpages/StatsPage';
 import TransactionsPage from "../pages/dashboard-subpages/TransactionsPage";
 
 
-import AdminPanelPage from '../pages/dashboard-subpages/AdminPanelPage';
+import AdminPanelPage from '../pages/adminpanel-subpages/AdminPanelPage';
 import ManageUsers from '../pages/adminpanel-subpages/ManageUsers';
 
 import { DataProvider } from '../store/dataContext';
@@ -35,6 +35,7 @@ const routes = [
         ],
     },
     {
+        // shell dashboard: rdzeń budżetu + świadomy wyjątek URL adminpanel pod tym samym layoutem
         path: 'dashboard',
         element: <DataProvider>
             <SocketProvider>
@@ -50,6 +51,7 @@ const routes = [
             { path: 'calendar', element: <CalendarPage /> },
             { path: 'messages/:filter?', element: <MessagesPage /> },
             {
+                // otoczka operatorska (superadmin): pliki w adminpanel-subpages/; URL pod shellem dashboardu as-is
                 path: 'adminpanel', element: <AdminPanelPage />,
                 children: [
                     { path: 'manage-users', element: <ManageUsers /> },

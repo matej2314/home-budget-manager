@@ -64,7 +64,7 @@
 
 ### KROK 1 — Inwentaryzacja zależności vs stack SPEC-FRONTEND
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Jawna lista wyjściowa i decyzji upgrade / usunięcie przed zmianą lockfile (major 1.1).
 
@@ -96,7 +96,7 @@
 
 ### KROK 2 — Upgrade wersji + dostosowanie kodu pod przechodzący build
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Lockfile/manifest na nowych majorach; Tailwind 4 + React 19 uruchamialne; `npm run build` przechodzi (major 1.2).
 
@@ -266,7 +266,7 @@ Bring dependencies to the current approved stack and adapt CSS/toolchain so prod
 
 ### KROK 1 — Mapa katalogów: audit as-is ↔ Blok B + outliery
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Krytyczne obszary UI mają dom w katalogach normy; jawna mapa bez migracji na `features/<name>/` (major 2.1).
 
@@ -313,7 +313,7 @@ Trasa URL `/dashboard/adminpanel` **zostaje** (zagnieżdżenie pod layoutem dash
 
 ### KROK 2 — Podział rdzeń UX vs otoczka
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Rdzeń budżetu i otoczka (landing / superadmin) nie mieszają się w mapie stron/komponentów bez świadomego uzasadnienia (major 2.2).
 
@@ -352,7 +352,7 @@ Trasa URL `/dashboard/adminpanel` **zostaje** (zagnieżdżenie pod layoutem dash
 
 ### KROK 3 — Widoki prezentacyjne vs orkiestracja
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** W objętych powierzchniach: fetch/mutacje/składanie danych poza grubym JSX z regułami; UI nie jest SoT uprawnień (major 2.3, F-7, F-15).
 

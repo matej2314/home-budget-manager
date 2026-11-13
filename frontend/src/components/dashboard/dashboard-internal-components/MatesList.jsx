@@ -66,11 +66,14 @@ export default function MatesList({ mode }) {
                                             >
                                                 <Icon icon='hugeicons:transaction' width={20} height={20} />
                                             </button>
+                                            {/* Hint UX — usuwanie egzekwuje wyłącznie API; brak lokalnej reguły biznesowej / handlera SoT */}
                                             <button
                                                 type="button"
                                                 className="w-fit h-fit"
                                                 hidden={user.role !== 'superadmin'}
                                                 title={t("matesList.deleteBtnTitle")}
+                                                disabled
+                                                aria-disabled="true"
                                             >
                                                 <Icon icon='mi:delete' width={20} height={20} />
                                             </button>

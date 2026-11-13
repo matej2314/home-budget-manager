@@ -1,13 +1,7 @@
-import { useContext, useMemo, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import { DataContext } from "../../store/dataContext";
-import { AuthContext } from "../../store/authContext";
-import { useTransactionsStore } from '../../store/transactionsStore'
-import useProcessedData from '../../hooks/useProcessedData';
-import { useIsMobile } from "../../hooks/useIsMobile";
 import { useTranslation } from "react-i18next";
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import { getData } from '../../utils/getData';
+import useHouseInfoDashboard from '../../hooks/useHouseInfoDashboard';
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader";
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
 import BudgetPerDay from "../../components/dashboard/dashboardComponents/charts-dashboard-components/BudgetPerDay";
@@ -19,51 +13,24 @@ import BasicHouseInfo from "../../components/dashboard/dashboard-internal-compon
 import DashBoardForUser from "./DashboardForUser";
 
 export default function HouseInfoPage() {
-    const { data,
-        isLoading,
-        error: contextError,
-    } = useContext(DataContext);
-
-    const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
-    const { user, isAuthenticated } = useContext(AuthContext);
     const { t } = useTranslation("pages");
-    const { houseData, houseMates, statsData, dailyData } = data;
-    const isMobile = useIsMobile();
     useDocumentTitle('House info');
 
-    useEffect(() => {
-        if (!isTransactionsFetched) {
-            fetchTransactions();
-        }
-    }, [isTransactionsFetched]);
+    const {
+        user,
+        isLoading,
+        houseMates,
+        basicHouseInfo,
+        dailyInfo,
+        matesData,
+        transactions,
+        actionsData,
+        chartMonthly,
+        chartDaily,
+    } = useHouseInfoDashboard();
 
-    const basicHouseInfo = !isLoading && !contextError && houseData[0] || [];
-    const dailyInfo = getData(isLoading, contextError, true, dailyData, []);
-    const stats = getData(isLoading, contextError, true, statsData, []);
-    const matesData = getData(isLoading, contextError, true, houseMates, []);
-    const transactions = !actionsDataError && !actionsLoading && isTransactionsFetched && actionsData || [];
-
-    const { actionCountLabels } = useMemo(() => {
-        if (!stats || !stats.length) {
-            return { actionCountLabels: [] };
-        }
-        return { actionCountLabels: stats.map(item => `${item.countStartDate} - ${item.monthlyBalanceDate}`) }
-    }, [stats]);
-
-
-    const { labels, monthlyBalances, definedBudgets, monthlyTransactionCounts } = useProcessedData(stats, {
-        labels: 'monthlyBalanceDate',
-        monthlyBalances: 'monthlyBalanceValue',
-        definedBudgets: 'definedMonthlyBudgets',
-        monthlyTransactionCounts: 'transactionCount',
-    });
-
-    const { actionLabels, dailyTransactions, dailyBudgetLabels, dailyBudgetValues } = useProcessedData(dailyInfo, {
-        actionLabels: 'dailyActionsDate',
-        dailyTransactions: 'dailyActionCount',
-        dailyBudgetLabels: 'dailyBudgetDate',
-        dailyBudgetValues: 'dailyBudgetValue',
-    });
+    const { labels, monthlyBalances, definedBudgets, monthlyTransactionCounts, actionCountLabels } = chartMonthly;
+    const { actionLabels, dailyTransactions, dailyBudgetLabels, dailyBudgetValues } = chartDaily;
 
     return (
         <>

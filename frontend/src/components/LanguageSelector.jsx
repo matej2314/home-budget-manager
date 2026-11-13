@@ -111,7 +111,7 @@ export default function LanguageSwitch({ isHomepage }) {
                     onClick={() => handleLangChange(languages.find(lang => lang.value !== selectedLang))}
                 >
                     <motion.div
-                        className={`absolute w-1/2 h-full ${isHomepage ? 'bg-slate-600 border-2 border-slate-400' : 'bg-customGray/55 border-2 border-slate-300'} rounded-full`}
+                        className={`absolute w-1/2 h-full ${isHomepage ? 'bg-slate-600 border-2 border-slate-400' : 'bg-custom-gray/55 border-2 border-slate-300'} rounded-full`}
                         animate={{ x: selectedLang === 'en' ? 0 : '100%' }}
                         transition={{ duration: 0.15, ease: 'easeIn' }}
                     />

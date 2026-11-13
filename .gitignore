@@ -7,3 +7,5 @@ backend/.env
 ./TODO.txt
 TODO.txt
 backend-ts/src/.env
+graphify-out/cache/
+graphify-out/2026-*

@@ -33,7 +33,7 @@ export default function DashBoardMenu() {
                 initial={{ opacity: 0, x: isMobile ? '-100%' : 0 }}
                 animate={{ opacity: 1, x: isMobile && !isOpened ? '-100%' : 0 }}
                 transition={{ type: 'tween', duration: 0.3 }}
-                className={`bg-customGray opacity-0 flex flex-col justify-start items-center text-slate-300 gap-12 pl-3 pr-3 lg:px-7 border-r-2 border-slate-900 ${isMobile ? 'fixed top-0 left-0 h-full w-[10rem] md:w-64 pt-4 shadow-lg z-10' : 'pt-9'}`}
+                className={`bg-custom-gray opacity-0 flex flex-col justify-start items-center text-slate-300 gap-12 pl-3 pr-3 lg:px-7 border-r-2 border-slate-900 ${isMobile ? 'fixed top-0 left-0 h-full w-[10rem] md:w-64 pt-4 shadow-lg z-10' : 'pt-9'}`}
             >
                 <div className='h-full flex flex-col items-center justify-start gap-6'>
                     <ul className='w-full flex flex-col items-center justify-start gap-6'>

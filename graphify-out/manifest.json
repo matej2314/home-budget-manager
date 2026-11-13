@@ -780,21 +780,15 @@
     "semantic_hash": ""
   },
   "frontend/eslint.config.js": {
-    "mtime": 1793976398.3560143,
-    "seen": 1794239133.2654567,
-    "ast_hash": "bfe13b9e25d0af7959d0396aa103d88c",
+    "mtime": 1794582275.6961157,
+    "seen": 1794582722.2347915,
+    "ast_hash": "0a2560f5a3a6111d96439641e6ddea9c",
     "semantic_hash": ""
   },
   "frontend/package.json": {
-    "mtime": 1793976398.3561773,
-    "seen": 1794239133.2654572,
-    "ast_hash": "929c2389c3b420d31b79cbcf07830dec",
-    "semantic_hash": ""
-  },
-  "frontend/postcss.config.js": {
-    "mtime": 1793976398.3561773,
-    "seen": 1794239133.2654576,
-    "ast_hash": "ef3ba2a81ba19f8ea5ddf625521e96f0",
+    "mtime": 1794582301.207897,
+    "seen": 1794582722.2347934,
+    "ast_hash": "984186582528e4e5c02505c9388ad4a0",
     "semantic_hash": ""
   },
   "frontend/public/locales/en/aboutUs.json": {
@@ -930,9 +924,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/LanguageSelector.jsx": {
-    "mtime": 1793976398.3568406,
-    "seen": 1794239133.26547,
-    "ast_hash": "5466351d52012bc93c99c9be3c276634",
+    "mtime": 1794582278.1106255,
+    "seen": 1794582722.2348177,
+    "ast_hash": "da9bdbde9420ca4d66cc292590a6143f",
     "semantic_hash": ""
   },
   "frontend/src/components/SignUpCookiesSettings.jsx": {
@@ -990,9 +984,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/dashboard/dashboard-internal-components/MatesList.jsx": {
-    "mtime": 1793976398.357143,
-    "seen": 1794239133.2654753,
-    "ast_hash": "c8040ddbfdc6cc1c87643ea1ecddf27f",
+    "mtime": 1794582717.0611403,
+    "seen": 1794582722.234828,
+    "ast_hash": "27c0bac4a7380a3e84c30b191dcf982e",
     "semantic_hash": ""
   },
   "frontend/src/components/dashboard/dashboard-internal-components/MessagesFilterBtns.jsx": {
@@ -1050,9 +1044,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/dashboard/dashboardComponents/DashBoardMenu.jsx": {
-    "mtime": 1793976398.357376,
-    "seen": 1794239133.2654815,
-    "ast_hash": "08141ec9aadfc4c10c66b277a7fad569",
+    "mtime": 1794582278.5450952,
+    "seen": 1794582722.2348394,
+    "ast_hash": "12e5e775b0aaa892b12f91088844325d",
     "semantic_hash": ""
   },
   "frontend/src/components/dashboard/dashboardComponents/DisplayLiveBalance.jsx": {
@@ -1338,9 +1332,9 @@
     "semantic_hash": ""
   },
   "frontend/src/configs/routerConfig.jsx": {
-    "mtime": 1793976398.3584774,
-    "seen": 1794239133.2655065,
-    "ast_hash": "ca494713fce79e81901565e0f221ad47",
+    "mtime": 1794582691.2587695,
+    "seen": 1794582722.2348921,
+    "ast_hash": "3bafe334eac3d520bf8c7143bcf8b2ab",
     "semantic_hash": ""
   },
   "frontend/src/configs/toastify.jsx": {
@@ -1392,9 +1386,9 @@
     "semantic_hash": ""
   },
   "frontend/src/main.jsx": {
-    "mtime": 1793976398.3586466,
-    "seen": 1794239133.2655113,
-    "ast_hash": "00694674b21ec822ee09969bbecf7c18",
+    "mtime": 1794582275.2261193,
+    "seen": 1794582722.234906,
+    "ast_hash": "466f6703bc53a7b5a1bfc9edba2b0499",
     "semantic_hash": ""
   },
   "frontend/src/pages/AboutUsPage.jsx": {
@@ -1410,9 +1404,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/DashboardPage.jsx": {
-    "mtime": 1793976398.3587155,
-    "seen": 1794239133.2655127,
-    "ast_hash": "d131d378fcef9ec21381582a757112b8",
+    "mtime": 1794582703.1428785,
+    "seen": 1794582722.2349093,
+    "ast_hash": "cc349bf27d2ec8e165ddacc74f4dc82f",
     "semantic_hash": ""
   },
   "frontend/src/pages/ErrorPage.jsx": {
@@ -1433,12 +1427,6 @@
     "ast_hash": "b6454e2bc59c18c7731367e56b999206",
     "semantic_hash": ""
   },
-  "frontend/src/pages/dashboard-subpages/AdminPanelPage.jsx": {
-    "mtime": 1793976398.358749,
-    "seen": 1794239133.2655149,
-    "ast_hash": "d864b1050799636240c286cf40bd8753",
-    "semantic_hash": ""
-  },
   "frontend/src/pages/dashboard-subpages/CalendarPage.jsx": {
     "mtime": 1793976398.3587945,
     "seen": 1794239133.2655153,
@@ -1452,9 +1440,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/dashboard-subpages/HouseInfoPage.jsx": {
-    "mtime": 1793976398.3588889,
-    "seen": 1794239133.2655163,
-    "ast_hash": "45559fcdf71dda97b9c120bb97ace2d8",
+    "mtime": 1794582715.3877854,
+    "seen": 1794582722.2349167,
+    "ast_hash": "79e86300e245540ab55717267fbeeffe",
     "semantic_hash": ""
   },
   "frontend/src/pages/dashboard-subpages/HouseMatesPage.jsx": {
@@ -1709,16 +1697,10 @@
     "ast_hash": "395487a41cbe6f52b770515d3c278dc6",
     "semantic_hash": ""
   },
-  "frontend/tailwind.config.js": {
-    "mtime": 1793976398.3595703,
-    "seen": 1794239133.265539,
-    "ast_hash": "d2906b2a06e5478ff36a3f25eb664df1",
-    "semantic_hash": ""
-  },
   "frontend/vite.config.js": {
-    "mtime": 1793976398.3595703,
-    "seen": 1794239133.2655394,
-    "ast_hash": "88439104b3c207f17d33ef3160e3b080",
+    "mtime": 1794582274.2644017,
+    "seen": 1794582722.2349632,
+    "ast_hash": "60b22c6831f3f0493394a9ffb67a7852",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1823,16 +1805,10 @@
     "ast_hash": "33f409ac15cc8a4fcafae525ba55fdb5",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_backend-faza1-faza2-blok-b-r2.md": {
-    "mtime": 1794581306.3206496,
-    "seen": 1794581843.3557937,
-    "ast_hash": "13fbc11fde71baa7a7739dff2f1532ac",
-    "semantic_hash": ""
-  },
   "feature-plans/home-budget-manager_feature_plan_frontend-faza1-faza2-mapa-spa.md": {
-    "mtime": 1794225570.4893255,
-    "seen": 1794239133.2655487,
-    "ast_hash": "5e12aaf4516bc2e1f90941417bf24fd8",
+    "mtime": 1794582454.1807723,
+    "seen": 1794582722.2349825,
+    "ast_hash": "942b40d7a8303188224348e73f01f7e3",
     "semantic_hash": ""
   },
   "frontend/README.md": {
@@ -1848,9 +1824,9 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-backend.md": {
-    "mtime": 1794223975.625359,
-    "seen": 1794239133.2655506,
-    "ast_hash": "beb2f511d451f3a69909582568286ad1",
+    "mtime": 1794582010.6710348,
+    "seen": 1794582722.2349868,
+    "ast_hash": "4fc5d34e64e6615efbb1066375ab1596",
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
@@ -2019,6 +1995,30 @@
     "mtime": 1793976398.356453,
     "seen": 1794239133.2655659,
     "ast_hash": "da1221461672a317bde8fcdf67e0f9ee",
+    "semantic_hash": ""
+  },
+  "frontend/src/hooks/useDashboardShell.js": {
+    "mtime": 1794582696.0058064,
+    "seen": 1794582722.234896,
+    "ast_hash": "25b73b6d221e6bd974e3657ddbbd124f",
+    "semantic_hash": ""
+  },
+  "frontend/src/hooks/useHouseInfoDashboard.js": {
+    "mtime": 1794582700.9617229,
+    "seen": 1794582722.2348988,
+    "ast_hash": "3cce19397c918fb1fbb5069d9e5d9fa3",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/adminpanel-subpages/AdminPanelPage.jsx": {
+    "mtime": 1793976398.358749,
+    "seen": 1794582722.2349124,
+    "ast_hash": "d864b1050799636240c286cf40bd8753",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza1-faza2-blok-b-r2.md": {
+    "mtime": 1794581306.3206496,
+    "seen": 1794582722.2349834,
+    "ast_hash": "13fbc11fde71baa7a7739dff2f1532ac",
     "semantic_hash": ""
   }
 }

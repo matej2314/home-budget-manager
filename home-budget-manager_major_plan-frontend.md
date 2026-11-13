@@ -9,6 +9,10 @@
 **Milestone:** domyślnie bez statusu; po spełnieniu DoD → wyłącznie `OSIĄGNIĘTY`  
 **Milestone zamykający całość:** nie — bramki tylko między fazami.
 
+### Historia zmian planu (operacyjne)
+
+- **2026-11-13 — sync statusów z feature planu:** po wycinku `feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza1-faza2-mapa-spa.md` oznaczono Fazę 1 (kroki 1.1–1.2) i Fazę 2 (kroki 2.1–2.3) jako `WYKONANY` oraz milestone’y „Frontend na zaktualizowanych zależnościach” i „Mapa SPA zgodna z normą katalogów” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”).
+
 ### Założenie as-is vs docs
 
 Dokumentacja i SPEC opisują **stan docelowy**. Kod w `frontend/` może się różnić (m.in. ścieżki API bez `/api/v1`, rola `mate`, brak namespace `api`). Ten major planuje dojście do normy docs/SPEC — nie utrwalanie as-is.
@@ -21,7 +25,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 1 — Aktualizacja zależności frontendu
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Pierwszy etap prac SPA: inwentaryzacja zależności z lockfile / manifestu w `frontend/` oraz aktualizacja do możliwie najnowszych wersji w granicach zatwierdzonego stacku z docs / SPEC-FRONTEND (React, Vite, React Router, Zustand, Context, i18next, socket.io-client). Cel: dalszy refaktor startuje na aktualnym fundamencie zależności, a nie na historycznym zestawie. Faza może biec równolegle do prac backendu.
 
@@ -33,7 +37,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 1.1 — Inwentaryzacja zależności
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Spis zależności produkcyjnych i deweloperskich z `frontend/package.json` / lockfile oraz oznaczenie pozycji sprzecznych z normą docelową (m.in. biblioteki server-state poza stackiem v1, jeśli występują).
 
@@ -44,7 +48,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 1.2 — Aktualizacja wersji i weryfikacja uruchamialności
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Podniesienie zależności do możliwie najnowszych wersji zgodnych ze stackiem docs/SPEC oraz potwierdzenie, że SPA startuje i ładuje krytyczne ścieżki UI po upgrade.
 
@@ -58,6 +62,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## MILESTONE — Frontend na zaktualizowanych zależnościach
 
+**Status:** `OSIĄGNIĘTY`
+
 **Opis:** Bramka po Fazie 1. Zależności SPA są domknięte; wolno wchodzić w porządek katalogów i granic UI.
 
 **DoD (milestone):**
@@ -70,7 +76,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 2 — Układ SPA (R5) + granice prezentacja vs orkiestracja
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Porządek katalogów i odpowiedzialności UI zgodnie z Blokiem B frontu w `docs/architektura_katalogi_pliki.md` oraz R5 / SPEC-FRONTEND F-1–F-2: `pages/` (dashboard / admin), `components/`, `store/`, `configs/`, `hooks/`, `utils/` — bez migracji na `features/<name>/`. Wyraźny podział rdzenia UX budżetu vs otoczki oraz granica widoków prezentacyjnych vs orkiestracji (bez reguł biznesowych w „grubym JSX”). Faza może biec równolegle do prac backendu.
 
@@ -82,7 +88,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 2.1 — Mapa pages / components / store / configs / hooks / utils
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Doprowadzenie drzewa `frontend/src/` do normy katalogów z docs: strony, komponenty, stan, konfiguracja routingu/i18n, hooki, utils — bez osobnego `contexts/` poza `store/`.
 
@@ -93,7 +99,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 2.2 — Podział rdzeń UX vs otoczka
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Utrwalenie podziału: `dashboard-subpages` / komponenty dashboardu = rdzeń budżetu; landing / home-page / `adminpanel-subpages` = otoczka operacyjna — zgodnie z `docs/dokumentacja_koncepcyjna.md` i mapą katalogów.
 
@@ -104,7 +110,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 2.3 — Widoki prezentacyjne vs orkiestracja
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** W refaktorowanych powierzchniach: formatowanie i interakcja w widokach; fetch/mutacje i aktualizacja store poza grubym JSX z regułami (SPEC-FRONTEND — presentational vs orkiestracja).
 
@@ -116,6 +122,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 ---
 
 ## MILESTONE — Mapa SPA zgodna z normą katalogów
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 2. Układ SPA i granice prezentacji/orkiestracji są domknięte; wolno porządkować model stanu.
 
