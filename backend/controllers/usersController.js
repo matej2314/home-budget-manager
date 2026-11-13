@@ -1,181 +1,62 @@
-import logger from '../configs/logger.js';
-import { addUserToHouse as addUserToHouseService } from '../services/usersServices/addUserToHouse.js';
-import { getUsersCollection } from '../services/usersServices/getUsersCollection.js';
-import { deleteUser as deleteUserService } from '../services/usersServices/deleteUser.js';
-import { deleteInhabitant as deleteInhabitantService } from '../services/usersServices/deleteInhabitant.js';
-import { changeUserEmail } from '../services/usersServices/changeUserEmail.js';
-import { StatusCodes } from 'http-status-codes';
+import { runController } from '../utils/http/runController.js';
+import { AppError } from '../utils/errors/AppError.js';
+import { addUserToHouse as addUserToHouseService } from '../services/users/addUserToHouse.js';
+import { getUsersCollection } from '../services/users/getUsersCollection.js';
+import { deleteUser as deleteUserService } from '../services/users/deleteUser.js';
+import { deleteInhabitant as deleteInhabitantService } from '../services/users/deleteInhabitant.js';
+import { changeUserEmail } from '../services/users/changeUserEmail.js';
 
-const statusCode = StatusCodes;
-
-export const addUserToHouse = async (req, res) => {
-    const userId = req.userId;
-    const role = req.role;
-    const invitingUserName = req.userName;
-    const { userName } = req.body;
-
+export async function addUserToHouse(req, res) {
+  const userId = req.userId;
+  const role = req.role;
+  const invitingUserName = req.userName;
+  const { userName } = req.body;
+  return runController(res, async () => {
     if (!userName) {
-        return res.status(statusCode.BAD_REQUEST).json({
-            status: 'error',
-            message: 'Invalid input user data.',
-        });
-    };
+      throw new AppError({
+        code: 'USER_CTRL_INVITE_INPUT',
+        messageKey: 'Invalid input user data.',
+        httpStatus: 400,
+      });
+    }
+    return addUserToHouseService(userId, userName, invitingUserName, role);
+  });
+}
 
-    try {
-        const response = await addUserToHouseService(userId, userName, invitingUserName, role);
+export async function getAllUsers(req, res) {
+  return runController(res, () => getUsersCollection());
+}
 
-        switch (response.status) {
-            case 'badreq':
-                return res.status(statusCode.BAD_REQUEST).json({
-                    status: 'error',
-                    message: response.message
-                });
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
-            case 'inmate':
-                return res.status(statusCode.BAD_REQUEST).json({
-                    status: 'error',
-                    message: response.message
-                });
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                });
-        };
-    } catch (error) {
-        logger.error(error);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
-    };
+export async function deleteUser(req, res) {
+  return runController(res, () => deleteUserService(req.params.userId));
+}
 
-};
-
-export const getAllUsers = async (req, res) => {
-
-    try {
-        const response = await getUsersCollection();
-
-        switch (response.status) {
-            case 'notfound':
-                return res.status(statusCode.NOT_FOUND).json(response);
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                });
-        };
-    } catch (error) {
-        logger.error(`Error fetching user's list: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: `Error fetching user's list.`
-        });
-    };
-};
-
-export const deleteUser = async (req, res) => {
-    const userId = req.params.userId;
-
-    try {
-        const response = await deleteUserService(userId);
-
-        switch (response.status) {
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-        };
-    } catch (error) {
-        logger.error(`deleteUser error: ${userId}: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Deleting user error.'
-        });
-    };
-
-};
-
-export const deleteInhabitant = async (req, res) => {
-    const { inhabitantId } = req.body;
-
+export async function deleteInhabitant(req, res) {
+  const { inhabitantId } = req.body;
+  return runController(res, async () => {
     if (!inhabitantId) {
-        return res.status(statusCode.BAD_REQUEST).json({
-            status: 'error',
-            message: 'Enter correctly data!',
-        });
-    };
+      throw new AppError({
+        code: 'USER_CTRL_INHAB_INPUT',
+        messageKey: 'Enter correctly data!',
+        httpStatus: 400,
+      });
+    }
+    return deleteInhabitantService(inhabitantId);
+  });
+}
 
-    try {
-        const response = await deleteInhabitantService(inhabitantId);
-
-        switch (response.status) {
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                });
-        };
-    } catch (error) {
-        logger.error(`deleteInhabitant error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Failed to delete housemate.'
-        });
-    };
-};
-
-export const changeEmail = async (req, res) => {
-    const userId = req.userId;
-    const { newEmail } = req.body;
-
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
+export async function changeEmail(req, res) {
+  const userId = req.userId;
+  const { newEmail } = req.body;
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return runController(res, async () => {
     if (!newEmail || !emailRegex.test(newEmail)) {
-        return res.status(statusCode.BAD_REQUEST).json({
-            status: 'error',
-            message: 'Enter correctly e-mail address!'
-        });
-    };
-
-    try {
-        const response = await changeUserEmail(newEmail, userId);
-
-        switch (response.status) {
-            case 'emailexist':
-                return res.status(statusCode.CONFLICT).json({
-                    status: 'error',
-                    message: response.message
-                });
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-                    status: 'error',
-                    message: response.message
-                });
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                });
-        };
-    } catch (error) {
-        logger.error(`changeEmail error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
-    };
-};
-
+      throw new AppError({
+        code: 'USER_CTRL_EMAIL_INPUT',
+        messageKey: 'Enter correctly e-mail address!',
+        httpStatus: 400,
+      });
+    }
+    return changeUserEmail(newEmail, userId);
+  });
+}

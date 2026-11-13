@@ -1,83 +1,32 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import fs from 'node:fs/promises';
 import logger from '../configs/logger.js';
-import { StatusCodes } from 'http-status-codes';
+import { runController } from '../utils/http/runController.js';
+import { addAvatar } from '../services/users/addAvatar.js';
+import { deleteAvatar } from '../services/users/deleteAvatar.js';
+import { resolveAvatarPath } from '../services/users/resolveAvatarPath.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+export async function addAvatarHandler(req, res) {
+  return runController(res, () => addAvatar(req.file));
+}
 
-const statusCode = StatusCodes;
+export async function getAvatar(req, res) {
+  try {
+    const userId = req.params.userId || req.userId;
+    const { avatarPath, defaultPath } = await resolveAvatarPath(userId);
+    return res.sendFile(avatarPath || defaultPath);
+  } catch (error) {
+    logger.error(`getAvatar error: ${error?.message || error}`);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Internal server error.',
+    });
+  }
+}
 
-export const addAvatar = async (req, res) => {
-    try {
+export async function deleteAvatarHandler(req, res) {
+  return runController(res, () => deleteAvatar(req.userName));
+}
 
-        if (!req.file) {
-            return res.status(statusCode.BAD_REQUEST).json({
-                status: 'error',
-                message: 'Upload the correct file.',
-            });
-        }
-        res.status(statusCode.OK).json({
-            status: 'success',
-            message: 'Avatar saved correctly.',
-            avatarName: req.file.filename,
-        })
-    } catch (error) {
-        logger.error(`Saving avatar error: ${error}`)
-        res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Saving avatar error.',
-        });
-    }
+export {
+  addAvatarHandler as addAvatar,
+  deleteAvatarHandler as deleteAvatar,
 };
-
-export const getAvatar = async (req, res) => {
-    try {
-        const userId = req.params.userId || req.userId;
-
-        const avatarDir = path.join(__dirname, '../public/user-photos');
-        const avatarExtensions = ['.jpg', '.jpeg', '.png'];
-        let avatarPath = null;
-
-        for (const ext of avatarExtensions) {
-            const filePath = `${avatarDir}/${userId}/${userId}${ext}`;
-            try {
-                await fs.access(filePath);
-                avatarPath = filePath;
-                break;
-            } catch (err) {
-                continue;
-            }
-        }
-
-        if (!avatarPath) {
-            return res.sendFile(path.join(avatarDir, 'default.jpg'));
-        }
-
-        res.sendFile(avatarPath);
-    } catch (error) {
-        console.error(error);
-        res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
-    }
-};
-
-
-
-export const deleteAvatar = async (req, res) => {
-    try {
-        const userName = req.userName;
-
-        res.status(statusCode.OK).json({
-            status: 'success',
-            message: `User's  ${userName} avatar removed correctly.`
-        })
-    } catch (error) {
-        logger.error(`Removing avatar error: ${error}`);
-        res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: `Removing avatar error.`
-        });
-    };
-};
-

@@ -1,47 +1,23 @@
-import logger from '../configs/logger.js';
-import { setAcceptCookies } from '../services/cookiesTourServices/setAcceptCookiesValue.js';
-import { setCompleteTour } from '../services/cookiesTourServices/setCompleteTourValue.js';
-import { StatusCodes } from 'http-status-codes';
+import { runController } from '../utils/http/runController.js';
+import { AppError } from '../utils/errors/AppError.js';
+import { setAcceptCookies } from '../services/shell/cookiesTour/setAcceptCookiesValue.js';
+import { setCompleteTour } from '../services/shell/cookiesTour/setCompleteTourValue.js';
 
-const statusCode = StatusCodes;
-
-export const setCookieValue = async (req, res) => {
-    const userId = req.userId;
-    const cookieValue = req.body.cookieValue;
-
+export async function setCookieValue(req, res) {
+  const userId = req.userId;
+  const cookieValue = req.body.cookieValue;
+  return runController(res, async () => {
     if (!cookieValue) {
-        return res.status(statusCode.BAD_REQUEST).json({
-            status: 'error',
-            message: "cookies.valueError"
-        });
-    };
+      throw new AppError({
+        code: 'SHELL_CT_INPUT',
+        messageKey: 'cookies.valueError',
+        httpStatus: 400,
+      });
+    }
+    return setAcceptCookies(cookieValue, userId);
+  });
+}
 
-    try {
-        const setResult = await setAcceptCookies(cookieValue, userId);
-
-        switch (setResult.status) {
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-                    status: 'error',
-                    message: setResult.message
-                });
-            case 'success':
-                return res.status(statusCode.OK).json({
-                    status: 'success',
-                    message: setResult.message,
-                });
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                });
-        };
-    } catch (error) {
-        logger.error(`setCookieValue error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
-    };
-
-};
+export async function setTourValue(req, res) {
+  return runController(res, () => setCompleteTour(req.userId));
+}

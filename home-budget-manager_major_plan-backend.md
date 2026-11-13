@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-13 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza1-faza2-blok-b-r2.md` oznaczono Fazę 1 (kroki 1.1–1.3) i Fazę 2 (kroki 2.1–2.4) jako `WYKONANY` oraz milestone’y „Backend na zaktualizowanych zależnościach” i „Struktura Blok B + pipeline R2” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”).
 - **Scalenie Fazy 2 + dawnej Fazy 6 (opcja B):** mapa katalogów Blok B i pipeline R2 (cienkie controllery, B-10) w **jednej** fazie — bez etapu „gruba logika pod właściwym folderem”. Prisma (dawna Faza 8) pozostaje późniejszą fazą globalną.
 - **Dual mount HTTP (opcja 1):** Faza kontraktu montuje `/api/v1` **oraz** legacy ścieżki as-is; usunięcie legacy poza tym major (po przejściu klienta SPA na v1).
 - **Przenumerowanie:** po scaleniu: dawne Fazy 7→6, 8→7, 9→8, 10→9. Scoped T-15: fazy **1–8**; weryfikacja piramidy = **Faza 9**.
@@ -25,7 +26,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 1 — Aktualizacja zależności backendu
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Pierwszy etap prac backendu: inwentaryzacja zależności z lockfile / manifestu, aktualizacja do możliwie najnowszych wersji w granicach zatwierdzonego stacku z docs/SPEC oraz przejście na ES modules (norma docs/SPEC-BACKEND B-18–B-19). Cel: dalszy refaktor startuje na aktualnym fundamencie zależności i ESM, a nie na historycznym CJS.
 
@@ -38,7 +39,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 1.1 — Inwentaryzacja zależności
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Spis zależności produkcyjnych i deweloperskich z `backend/package.json` / `package-lock` oraz oznaczenie pozycji sprzecznych z normą docelową (np. zapis logów do plików zamiast stdout — zgodnie z `docs/observability.md` / SPEC-BACKEND). Uwzględnić pozycje „zainstalowane ≠ wdrożone” (np. `helmet`, `nodemailer`) oraz do usunięcia przy normie docelowej (np. `winston-daily-rotate-file`).
 
@@ -49,7 +50,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 1.2 — Aktualizacja wersji i przejście na ES modules
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Podniesienie zależności do możliwie najnowszych wersji zgodnych ze stackiem docs/SPEC oraz **przejście na moduły ES modules** w `backend/` (import/export, spójny model ładowania modułów w całym procesie API).
 
@@ -61,7 +62,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 1.3 — Weryfikacja uruchamialności i scoped testy fundamentu
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Potwierdzenie, że po aktualizacji i ESM proces API startuje; równolegle setup Jest i smoke testów fundamentu (ładowanie entry / krytycznych importów ESM) — zanim ruszy refaktor struktury i pipeline.
 
@@ -75,6 +76,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## MILESTONE — Backend na zaktualizowanych zależnościach
 
+**Status:** `OSIĄGNIĘTY`
+
 **Opis:** Bramka po Fazie 1. Zależności, ES modules i scoped testy fundamentu są domknięte; wolno wchodzić w refaktor struktury katalogów **wraz z** pipeline R2.
 
 **DoD (milestone):**
@@ -87,7 +90,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 2 — Struktura katalogów (Blok B) + pipeline warstw (R2)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Jedna faza zamiast dawnego rozdzielenia „najpierw mapa folderów, potem cienkie controllery”: przeniesienie `backend/` do drzewa docelowego z `docs/architektura_katalogi_pliki.md` (**Blok B**) **oraz** domknięcie pipeline `routes → controllers → services → database` (R2, SPEC-BACKEND B-1–B-4, B-10) w tym samym przejściu. Podfoldery `services/<obszar>/` (w tym **`services/board/`**), `shell/` dla otoczki; przy przenosinach **od razu** cienki controller + reguły w service — **bez** etapu „gruba logika pod właściwym obszarem”.
 
@@ -106,7 +109,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 2.1 — Podfoldery services rdzenia i shell
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Uporządkowanie services pod obszary z `docs/architektura.md`: auth, household, invitations, transactions, categories, budget, **board**, messages, notifications, users, receipt oraz `shell/` (homepage, reviews, gallery, cookiesTour).
 
@@ -118,7 +121,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 2.2 — Domknięcie luk as-is: mapa + cienkie controllery
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Domknięcie obszarów rozproszonych w as-is (m.in. zaproszenia, budżet, **board/dashboard**, powiadomienia, receipt/OCR): przeniesienie do mapy Bloku B **wraz z** przesunięciem reguł i orkiestracji do services; controllery tylko mapują wejście/wyjście HTTP i wołają service.
 
@@ -130,7 +133,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 2.3 — Układ warstw i granice (Blok B, bez Prisma)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Spójność poziomego układu `routes` / `controllers` / `services` / `database` / `configs` / `tasks` / `store` / `utils` z drzewem docelowym; pilnowanie granic importów. Przygotowanie miejsca pod Prisma bez wdrażania pełnego R6. Domknięcie adapterów cron/WS — Faza 6.
 
@@ -142,7 +145,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 2.4 — Jednolity kształt błędu aplikacji (B-10)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Ujednolicenie obiektu błędu service (`code`, `messageKey`, `httpStatus`, opcjonalne `details`) i mapowania na HTTP (SPEC-BACKEND B-10).
 
@@ -155,6 +158,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 ---
 
 ## MILESTONE — Struktura Blok B + pipeline R2
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 2. Katalogi, mapa obszarów (w tym `board/`) oraz cienkie controllery / B-10 są domknięte na refaktorowanych ścieżkach; Prisma jeszcze nie. Kolejne fazy budują observability, kontrakt HTTP i adaptery wewnątrz tej struktury.
 

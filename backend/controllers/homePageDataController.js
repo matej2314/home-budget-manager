@@ -1,72 +1,22 @@
-import logger from '../configs/logger.js';
-import { getHomePageCollection } from '../services/homePageDataServices/homePageDataCollection.js';
-import { addTechnologyContent } from '../services/homePageDataServices/addTechnologyService.js';
-import { StatusCodes } from 'http-status-codes';
+import { runController } from '../utils/http/runController.js';
+import { AppError } from '../utils/errors/AppError.js';
+import { getHomePageCollection } from '../services/shell/homepage/homePageDataCollection.js';
+import { addTechnologyContent } from '../services/shell/homepage/addTechnologyService.js';
 
-const statusCode = StatusCodes;
+export async function getDataCollection(req, res) {
+  return runController(res, () => getHomePageCollection());
+}
 
-export const getDataCollection = async (req, res) => {
-
-    try {
-        const response = await getHomePageCollection();
-
-        switch (response.status) {
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-                    status: 'error',
-                    message: response.message,
-                });
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                })
-        }
-
-    } catch (error) {
-        logger.error(`homePageDataController/getDataCollection error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({ status: 'error', message: 'Internal server error.' });
-    }
-};
-
-export const addTechnology = async (req, res) => {
-    const { name, icon } = req.body;
-
+export async function addTechnology(req, res) {
+  const { name, icon } = req.body;
+  return runController(res, async () => {
     if (!name || !icon) {
-        return res.status(statusCode.BAD_REQUEST).json({
-            status: 'error',
-            message: 'Enter technology details!'
-        });
-    };
-
-    try {
-        const result = await addTechnologyContent(name, icon);
-
-        switch (result.status) {
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-                    status: 'error',
-                    message: result.message
-                });
-            case 'success':
-                return res.status(statusCode.CREATED).json({
-                    status: 'success',
-                    message: result.message
-                });
-            default:
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: 'URL not found',
-                });
-        };
-    } catch (error) {
-        logger.error(`homePageDataController/addTechnology error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
+      throw new AppError({
+        code: 'SHELL_HP_CTRL_INPUT',
+        messageKey: 'Enter technology details!',
+        httpStatus: 400,
+      });
     }
-
-};
+    return addTechnologyContent(name, icon);
+  });
+}

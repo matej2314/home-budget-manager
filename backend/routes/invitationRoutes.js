@@ -1,5 +1,4 @@
 import express from 'express';
-import pool from '../database/db.js';
 import * as invitationController from '../controllers/invitationController.js';
 import verifyRole from '../middlewares/verifyRole.js';
 import verifyJWT from '../middlewares/verifyJWT.js';

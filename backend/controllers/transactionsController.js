@@ -1,151 +1,33 @@
-import logger from '../configs/logger.js';
-import { addNewAction as addNewActionService } from '../services/transactionServices/addNewAction.js';
-import { deleteAction as deleteActionService } from '../services/transactionServices/deleteAction.js';
-import { getActionsCollection } from '../services/transactionServices/getActionsCollection.js';
-import { getHouseActions as getHouseActionsService } from '../services/transactionServices/getHouseActions.js';
-import { StatusCodes } from 'http-status-codes';
+import { runController } from '../utils/http/runController.js';
+import { AppError } from '../utils/errors/AppError.js';
+import { addNewAction as addNewActionService } from '../services/transactions/addNewAction.js';
+import { deleteAction as deleteActionService } from '../services/transactions/deleteAction.js';
+import { getActionsCollection } from '../services/transactions/getActionsCollection.js';
+import { getHouseActions as getHouseActionsService } from '../services/transactions/getHouseActions.js';
 
-const statusCode = StatusCodes;
-
-export const addNewAction = async (req, res) => {
-    const { type, value, catId } = req.body;
-    const userId = req.userId;
-
+export async function addNewAction(req, res) {
+  const { type, value, catId } = req.body;
+  const userId = req.userId;
+  return runController(res, async () => {
     if (!type || !value || !catId) {
-        return res.status(statusCode.BAD_REQUEST).json({
-            status: 'error',
-            message: 'Invalid input data.'
-        });
-    };
-
-    try {
-        const response = await addNewActionService(userId, type, value, catId);
-
-        switch (response.status) {
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-            case 'nodata':
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: response.message
-                });
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
-            default:
-                return res.status(statusCode.BAD_REQUEST).json({
-                    status: 'error',
-                    message: 'URL not found.'
-                });
-        }
-    } catch (error) {
-        logger.error(error);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
+      throw new AppError({
+        code: 'TX_CTRL_INPUT',
+        messageKey: 'Invalid input data.',
+        httpStatus: 400,
+      });
     }
+    return addNewActionService(userId, type, value, catId);
+  });
+}
 
-};
+export async function getAllActions(req, res) {
+  return runController(res, () => getActionsCollection());
+}
 
-export const getAllActions = async (req, res) => {
-    try {
-        const result = await getActionsCollection();
+export async function getHouseActions(req, res) {
+  return runController(res, () => getHouseActionsService(req.userId));
+}
 
-        switch (result.status) {
-            case 'notfound':
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: result.message
-                });
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(result);
-            case 'success':
-                return res.status(statusCode.OK).json(result);
-            default:
-                return res.status(statusCode.BAD_REQUEST).json({
-                    status: 'error',
-                    message: 'URL not found.'
-                });
-        };
-    } catch (error) {
-        logger.error(`getAllActions error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
-    };
-};
-
-export const getHouseActions = async (req, res) => {
-    const userId = req.userId;
-
-    try {
-        const response = await getHouseActionsService(userId);
-
-
-        switch (response.status) {
-            case 'notfound':
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: response.message
-                });
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-                    status: 'error',
-                    message: response.message
-                });
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-            default:
-                return res.status(statusCode.BAD_REQUEST).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                });
-        };
-
-    } catch (error) {
-        logger.error(`getHouseActions error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
-    };
-};
-
-export const deleteAction = async (req, res) => {
-    const { transactionId } = req.body;
-    const userId = req.userId;
-
-    try {
-        const response = await deleteActionService(transactionId, userId);
-
-        switch (response.status) {
-            case 'badreq':
-                return res.status(statusCode.BAD_REQUEST).json({
-                    status: 'error',
-                    message: response.message
-                });
-            case 'notfound':
-                return res.status(statusCode.NOT_FOUND).json({
-                    status: 'error',
-                    message: response.message,
-                });
-            case 'error':
-                return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
-            case 'success':
-                return res.status(statusCode.OK).json(response);
-            default:
-                return res.status(statusCode.BAD_REQUEST).json({
-                    status: 'error',
-                    message: 'URL not found.',
-                });
-        };
-
-    } catch (error) {
-        logger.error(`deleteAction error: ${error}`);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
-            message: 'Internal server error.'
-        });
-    }
-};
+export async function deleteAction(req, res) {
+  return runController(res, () => deleteActionService(req.body.transactionId, req.userId));
+}
