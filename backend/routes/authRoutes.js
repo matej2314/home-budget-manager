@@ -222,10 +222,11 @@ router.post('/logout', verifyJWT, authController.logoutUser);
 router.get('/verify', verifyJWT, (req, res) => {
     res.status(statusCode.OK).json({
         status: 'success',
+        message: 'auth.verify.success',
         userId: req.userId,
         userName: req.userName,
         role: req.role,
-        avatar: req.avatar
+        avatar: req.avatar,
     });
 });
 

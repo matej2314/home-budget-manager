@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   "backend/configs/swaggerConfig.js": {
-    "mtime": 1794237145.304009,
-    "seen": 1794239133.2653823,
-    "ast_hash": "2e57583a3dcc329791bbb3f78b14bd60",
+    "mtime": 1795088548.9816318,
+    "seen": 1795088583.954408,
+    "ast_hash": "04e775c58ed015f893897ef75c513907",
     "semantic_hash": ""
   },
   "backend/configs/tesseract.js": {
@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "backend/configs/websocketConfig.js": {
-    "mtime": 1794237297.127932,
-    "seen": 1794239133.2653842,
-    "ast_hash": "edbf3ef5c5be6bcc8beb8cfe09b76304",
+    "mtime": 1795088998.1516118,
+    "seen": 1795089007.0080967,
+    "ast_hash": "e563c8e092f749bf8626d999f78ef3cc",
     "semantic_hash": ""
   },
   "backend/controllers/actionCatController.js": {
@@ -36,15 +36,15 @@
     "semantic_hash": ""
   },
   "backend/controllers/authController.js": {
-    "mtime": 1794238953.2733302,
-    "seen": 1794239133.2653854,
-    "ast_hash": "f04955b56a727f1098f383511adfeeca",
+    "mtime": 1795087348.9835706,
+    "seen": 1795087360.8522751,
+    "ast_hash": "931714ad70cecb47436558f561dc59a7",
     "semantic_hash": ""
   },
   "backend/controllers/avatarController.js": {
-    "mtime": 1794581815.531448,
-    "seen": 1794581843.355587,
-    "ast_hash": "63ffeaa5d1cd686d6ada43660ba61556",
+    "mtime": 1795087351.528254,
+    "seen": 1795087360.8522763,
+    "ast_hash": "78890b875134cff72adce45da60e81b4",
     "semantic_hash": ""
   },
   "backend/controllers/boardController.js": {
@@ -192,9 +192,9 @@
     "semantic_hash": ""
   },
   "backend/jest.config.js": {
-    "mtime": 1794237384.665553,
-    "seen": 1794239133.2654011,
-    "ast_hash": "dff611b35e8ac61596c0b3e5800d9986",
+    "mtime": 1795090180.919886,
+    "seen": 1795090197.523556,
+    "ast_hash": "470840c378d19fcde9e1f2182bd21fc7",
     "semantic_hash": ""
   },
   "backend/middlewares/createUserDirectory.js": {
@@ -210,9 +210,9 @@
     "semantic_hash": ""
   },
   "backend/middlewares/verifyJWT.js": {
-    "mtime": 1794237145.3055909,
-    "seen": 1794239133.2654026,
-    "ast_hash": "b512c896b65edc6bae8e3e27377f6498",
+    "mtime": 1795089231.0756116,
+    "seen": 1795089245.768609,
+    "ast_hash": "c1d8396192ca46699d9b511d583672db",
     "semantic_hash": ""
   },
   "backend/middlewares/verifyRole.js": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "backend/routes/authRoutes.js": {
-    "mtime": 1794237145.2883081,
-    "seen": 1794239133.2654054,
-    "ast_hash": "9cd0c8786f2a0935cf2c748eda013f67",
+    "mtime": 1795089232.5762508,
+    "seen": 1795089245.7686133,
+    "ast_hash": "9fc88094883f48c5c3b4095a0cb4b277",
     "semantic_hash": ""
   },
   "backend/routes/avatarsRoutes.js": {
@@ -282,9 +282,9 @@
     "semantic_hash": ""
   },
   "backend/routes/index.js": {
-    "mtime": 1794237065.0735304,
-    "seen": 1794239133.2654107,
-    "ast_hash": "f32b0460fe5b16eb4d24dd8b3f612f92",
+    "mtime": 1795089229.3692324,
+    "seen": 1795089245.768619,
+    "ast_hash": "64d541d375792d259dd84bde24c2f6c0",
     "semantic_hash": ""
   },
   "backend/routes/initialMonthlyBudgetsRoutes.js": {
@@ -312,9 +312,9 @@
     "semantic_hash": ""
   },
   "backend/routes/receiptRoutes.js": {
-    "mtime": 1794239050.1580927,
-    "seen": 1794239133.265413,
-    "ast_hash": "4d1e7142a146628f48768716e1156f90",
+    "mtime": 1795089233.685948,
+    "seen": 1795089245.7686224,
+    "ast_hash": "9419b747a09160ab0c8eb9b19df7a742",
     "semantic_hash": ""
   },
   "backend/routes/reviewsRoutes.js": {
@@ -336,9 +336,9 @@
     "semantic_hash": ""
   },
   "backend/server.js": {
-    "mtime": 1794237061.4295554,
-    "seen": 1794239133.2654157,
-    "ast_hash": "889670e874e6135a33bc26ae0c1975b4",
+    "mtime": 1795088536.3290195,
+    "seen": 1795088583.9544532,
+    "ast_hash": "03b430890aefa533608fa1dfc8dc26ff",
     "semantic_hash": ""
   },
   "backend/services/auth/loginUser.js": {
@@ -678,9 +678,9 @@
     "semantic_hash": ""
   },
   "backend/utils/clearSocketConnections.js": {
-    "mtime": 1794237145.298392,
-    "seen": 1794239133.2654471,
-    "ast_hash": "f8adb33ffbfb9addaf1dfdc9aa8e598e",
+    "mtime": 1795090182.8848715,
+    "seen": 1795090197.5236487,
+    "ast_hash": "abe4d5b7a3bd0913f70cc24e1684da9b",
     "semantic_hash": ""
   },
   "backend/utils/dbUtils/countTotalPages.js": {
@@ -1740,9 +1740,9 @@
     "semantic_hash": ""
   },
   "docs/bezpieczenstwo.md": {
-    "mtime": 1794216398.6126068,
-    "seen": 1794239133.265543,
-    "ast_hash": "5255c8edde66e204b712a84dfe525af5",
+    "mtime": 1795089004.0426638,
+    "seen": 1795089007.0082932,
+    "ast_hash": "216d075a75d73f001f25b238ef329be0",
     "semantic_hash": ""
   },
   "docs/data_flow.md": {
@@ -1782,9 +1782,9 @@
     "semantic_hash": ""
   },
   "docs/katalog_env.md": {
-    "mtime": 1794220774.979601,
-    "seen": 1794239133.2655466,
-    "ast_hash": "2d2b1eff2527e765044c1a0f42e3d5b2",
+    "mtime": 1795089000.284692,
+    "seen": 1795089007.0082977,
+    "ast_hash": "6451c559944808fc6252009d49bfd9f4",
     "semantic_hash": ""
   },
   "docs/model_danych.md": {
@@ -1805,12 +1805,6 @@
     "ast_hash": "33f409ac15cc8a4fcafae525ba55fdb5",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_frontend-faza1-faza2-mapa-spa.md": {
-    "mtime": 1794582454.1807723,
-    "seen": 1794582722.2349825,
-    "ast_hash": "942b40d7a8303188224348e73f01f7e3",
-    "semantic_hash": ""
-  },
   "frontend/README.md": {
     "mtime": 1793976398.356,
     "seen": 1794239133.2655494,
@@ -1824,15 +1818,15 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-backend.md": {
-    "mtime": 1794582010.6710348,
-    "seen": 1794582722.2349868,
-    "ast_hash": "4fc5d34e64e6615efbb1066375ab1596",
+    "mtime": 1795089330.1302273,
+    "seen": 1795090197.5238564,
+    "ast_hash": "b1c373c194c6cbb64b534da80c236765",
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
-    "mtime": 1794222994.8301148,
-    "seen": 1794239133.265551,
-    "ast_hash": "f1512bd30f52a1c0c7a8c3d1aa827db1",
+    "mtime": 1794582856.120715,
+    "seen": 1795087360.8524969,
+    "ast_hash": "252e18539758d138b3198bc6242c6c79",
     "semantic_hash": ""
   },
   "spec/SPEC-BACKEND.md": {
@@ -2019,6 +2013,66 @@
     "mtime": 1794581306.3206496,
     "seen": 1794582722.2349834,
     "ast_hash": "13fbc11fde71baa7a7739dff2f1532ac",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza1-faza2-mapa-spa.md": {
+    "mtime": 1794582780.118293,
+    "seen": 1795087360.8524938,
+    "ast_hash": "a1a9cd3a6717f8464c48a46a9b43042a",
+    "semantic_hash": ""
+  },
+  "backend/app.js": {
+    "mtime": 1795088533.5619159,
+    "seen": 1795088583.9543848,
+    "ast_hash": "3c31341706106a26d5206e7c13774889",
+    "semantic_hash": ""
+  },
+  "backend/configs/allowedOrigins.js": {
+    "mtime": 1795088529.5624745,
+    "seen": 1795088583.95439,
+    "ast_hash": "bb81ada15e52ea6720f89e4e6556d6a5",
+    "semantic_hash": ""
+  },
+  "backend/routes/healthRoutes.js": {
+    "mtime": 1795088530.2360668,
+    "seen": 1795088583.954445,
+    "ast_hash": "2ca5524f84312571a6a4aed52b1bcadb",
+    "semantic_hash": ""
+  },
+  "backend/tests/foundation/ops-health-helmet.test.js": {
+    "mtime": 1795088538.7731738,
+    "seen": 1795088583.9544878,
+    "ast_hash": "e37db32f78ab818e8caa91e9654fc4de",
+    "semantic_hash": ""
+  },
+  "feature-plans/home-budget-manager_feature_plan_backend-faza3-faza4-ops-kontrakt.md": {
+    "mtime": 1795089315.06734,
+    "seen": 1795090197.5238502,
+    "ast_hash": "6e38982dcf2f33b4c8d83632ce85578b",
+    "semantic_hash": ""
+  },
+  "feature-plans/home-budget-manager_feature_plan_frontend-faza3-faza4-stan-http.md": {
+    "mtime": 1795088039.1166933,
+    "seen": 1795088583.9546287,
+    "ast_hash": "1e054d6f541598ecaace0b656e69714e",
+    "semantic_hash": ""
+  },
+  "backend/tests/foundation/contract-v1-dual-mount-ocr.test.js": {
+    "mtime": 1795090190.9218123,
+    "seen": 1795090197.5236342,
+    "ast_hash": "a1f4a08661a3a715c1eff2a0120edfa0",
+    "semantic_hash": ""
+  },
+  "backend/tests/unit/ws-authMiddleware.test.js": {
+    "mtime": 1795089236.4343667,
+    "seen": 1795089245.7686646,
+    "ast_hash": "94a2a1a3df4dfcdd88fe0a38c71e4637",
+    "semantic_hash": ""
+  },
+  "backend/tests/setup-env.js": {
+    "mtime": 1795090179.6362655,
+    "seen": 1795090197.5236382,
+    "ast_hash": "5235d4f56942f17a3d77647eb2ce294f",
     "semantic_hash": ""
   }
 }

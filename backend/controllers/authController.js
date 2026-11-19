@@ -9,23 +9,15 @@ export async function registerUserHandler(req, res) {
 }
 
 export async function loginUserHandler(req, res) {
-  try {
+  return runController(res, async () => {
     const result = await loginUser(req.body);
-    const { token, messageKey, ...publicData } = result;
+    const { token, ...publicData } = result;
     res.cookie('SESSID', token, {
       ...jwtCookieOptions,
       maxAge: 86400000,
     });
-    return res.status(200).json({
-      status: 'success',
-      message: messageKey,
-      ...publicData,
-    });
-  } catch (error) {
-    return runController(res, async () => {
-      throw error;
-    });
-  }
+    return publicData;
+  });
 }
 
 export async function logoutUserHandler(req, res) {

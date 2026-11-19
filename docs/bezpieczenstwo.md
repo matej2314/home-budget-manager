@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 4
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-19
 ---
 
 # Bezpieczeństwo — Home Budget Manager
@@ -49,11 +49,11 @@ Role normatywne: `user`, `host`, `inmate`, `superadmin`.
 
 | Norma | Opis |
 |-------|------|
-| Biblioteka | **helmet** na aplikacji Express (stan docelowy) |
+| Biblioteka | **helmet** na aplikacji Express (`app.use(helmet())` w fabryce `backend/app.js`) |
 | Cel | Sensowne domyślne nagłówki bezpieczeństwa HTTP (XSS/clickjacking/MIME itd. wg domyślnej polityki helmet) |
 | Zakres | Hardening odpowiedzi HTTP API — **nie** zastępuje JWT, ról, CORS ani walidacji uploadów |
 
-As-is może jeszcze nie montować helmet — wprowadzenie jest częścią normy bezpieczeństwa przy refaktorze brzegu HTTP.
+Helmet jest zamontowany na brzegu HTTP; nie zastępuje JWT, ról ani CORS.
 
 ## CORS
 

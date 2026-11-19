@@ -1,4 +1,3 @@
-import logger from '../configs/logger.js';
 import { runController } from '../utils/http/runController.js';
 import { addAvatar } from '../services/users/addAvatar.js';
 import { deleteAvatar } from '../services/users/deleteAvatar.js';
@@ -14,10 +13,8 @@ export async function getAvatar(req, res) {
     const { avatarPath, defaultPath } = await resolveAvatarPath(userId);
     return res.sendFile(avatarPath || defaultPath);
   } catch (error) {
-    logger.error(`getAvatar error: ${error?.message || error}`);
-    return res.status(500).json({
-      status: 'error',
-      message: 'Internal server error.',
+    return runController(res, async () => {
+      throw error;
     });
   }
 }

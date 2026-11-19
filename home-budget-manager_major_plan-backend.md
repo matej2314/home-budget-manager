@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-19 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza3-faza4-ops-kontrakt.md` (FAZA 1 + FAZA 2, review zaakceptowany) oznaczono Fazę 3 (kroki 3.1–3.3) i Fazę 4 (kroki 4.1–4.3) jako `WYKONANY` oraz milestone’y „Fundament observability i bezpieczeństwa HTTP” i „Kontrakt API v1 (z dual mount legacy)” jako `OSIĄGNIĘTY`.
 - **2026-11-13 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza1-faza2-blok-b-r2.md` oznaczono Fazę 1 (kroki 1.1–1.3) i Fazę 2 (kroki 2.1–2.4) jako `WYKONANY` oraz milestone’y „Backend na zaktualizowanych zależnościach” i „Struktura Blok B + pipeline R2” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”).
 - **Scalenie Fazy 2 + dawnej Fazy 6 (opcja B):** mapa katalogów Blok B i pipeline R2 (cienkie controllery, B-10) w **jednej** fazie — bez etapu „gruba logika pod właściwym folderem”. Prisma (dawna Faza 8) pozostaje późniejszą fazą globalną.
 - **Dual mount HTTP (opcja 1):** Faza kontraktu montuje `/api/v1` **oraz** legacy ścieżki as-is; usunięcie legacy poza tym major (po przejściu klienta SPA na v1).
@@ -173,7 +174,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 3 — Fundament operacyjny backendu
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Domknięcie normy observability i bazowego bezpieczeństwa HTTP: logger na stdout, publiczny health liveness, helmet oraz CORS zgodne z `docs/observability.md`, `docs/bezpieczenstwo.md`, SPEC-BACKEND i SPEC-BEZPIECZENSTWO.
 
@@ -186,7 +187,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 3.1 — Logger na stdout
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Ustalenie Winston → stdout jako jedynego kanału logów aplikacji; odejście od zapisu do plików jako normy (`docs/observability.md`, SPEC-BACKEND B-14–B-15).
 
@@ -197,7 +198,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 3.2 — Health liveness
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Publiczny endpoint liveness procesu pod `/api/v1/health` — proste body, bez auth i bez sekretów (SPEC-BACKEND B-16, SPEC-BEZPIECZENSTWO S-18).
 
@@ -209,7 +210,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 3.3 — Helmet i CORS
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Montaż helmet na aplikacji Express oraz whitelist CORS z credentials — zgodnie z SPEC-BEZPIECZENSTWO S-10–S-11 i docs bezpieczeństwa. DoD = **zachowanie** (nagłówki / whitelist), nie sam fakt obecności paczki w `package.json`.
 
@@ -221,6 +222,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 ---
 
 ## MILESTONE — Fundament observability i bezpieczeństwa HTTP
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 3. Backend ma obserwowalny fundament logów/health oraz bazowe nagłówki/CORS zanim wchodzi w kontrakt I/O.
 
@@ -234,7 +237,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 4 — Kontrakt komunikacji po stronie backendu
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Egzekwowanie kontraktu I/O po stronie API: prefiks `/api/v1` z **równoległym** montażem legacy (as-is bez prefiksu) do czasu przejścia klienta SPA, envelope sukces/błąd z `message` jako kluczem i18n, ochrona OCR/uploadów sesją oraz handshake WebSocket ze `SESSID` — zgodnie z `docs/dokumentacja_komunikacji.md`, SPEC-KOMUNIKACJA i powiązanymi SPEC bezpieczeństwa.
 
@@ -248,7 +251,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 4.1 — Prefiks `/api/v1` + dual mount legacy
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Montowanie ścieżek API pod `/api/v1/...` (SPEC-KOMUNIKACJA K-1) **równolegle** z legacy montażem as-is (`/auth`, `/house`, … — ten sam router / te same handlery), żeby SPA poza tym major nie traciła dostępu. Nowe endpointy tylko pod v1. Usunięcie aliasów legacy — **poza tym major**, po potwierdzeniu że klient woła v1 (zewnętrzna bramka FE / osobny major).
 
@@ -261,7 +264,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 4.2 — Envelope i klucze i18n
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Ujednolicenie envelope HTTP oraz kierunku `message` / `messageKey` jako klucza i18n (SPEC-KOMUNIKACJA K-2, SPEC-BACKEND B-10–B-11, `docs/i18n_kontrakt_ui.md`). Dotyczy odpowiedzi niezależnie od prefiksu (v1 i legacy).
 
@@ -272,7 +275,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 4.3 — OCR, uploady i handshake WS
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Wymuszenie `SESSID` na OCR i uploadach oraz odrzucenie handshake Socket.io bez ważnej sesji (SPEC-KOMUNIKACJA K-8–K-9, SPEC-BEZPIECZENSTWO S-12–S-14).
 
@@ -285,6 +288,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 ---
 
 ## MILESTONE — Kontrakt API v1 (z dual mount legacy)
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 4. Kontrakt HTTP/WS po stronie backendu jest domknięty na poziomie prefiksu v1, kompatybilności legacy, envelope i auth brzegu. Usunięcie legacy nie jest DoD tej bramki.
 

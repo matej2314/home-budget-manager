@@ -6,6 +6,7 @@ import getMysqlExpireDate from '../utils/getMySqlExpireDate.js';
 import authMiddleware from '../middlewares/websocket/authMiddleware.js';
 import socketQueries from '../database/websocketQueries.js';
 import path from 'node:path';
+import { allowedOrigins } from './allowedOrigins.js';
 
 let ioInstance;
 
@@ -13,8 +14,7 @@ const initializeWebSocket = (server) => {
 	ioInstance = new Server(server, {
 		cors: {
 			origin: (origin, callback) => {
-				const allowedOrigins = ['http://localhost:5173', 'http://185.170.196.107:5052', 'https://budgetapp.msliwowski.net', 'https://budgetapi.msliwowski.net'];
-				if (allowedOrigins.includes(origin)) {
+				if (!origin || allowedOrigins.includes(origin)) {
 					callback(null, true);
 				} else {
 					callback(new Error('Unauthorized URL'), false);
@@ -75,7 +75,6 @@ const initializeWebSocket = (server) => {
 	});
 
 	logger.info('Websocket server initialized.');
-	console.log('Websocket server initialized.');
 };
 
 const broadcastMessage = async (userId, { type, data } = {}) => {

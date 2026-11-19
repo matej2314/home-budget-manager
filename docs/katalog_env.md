@@ -1,7 +1,7 @@
 ---
-wersja: 5
+wersja: 6
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-19
 ---
 
 # Katalog zmiennych środowiskowych — Home Budget Manager
@@ -41,7 +41,7 @@ Ustawiane w `docker-compose.yml` (lub nadpisywane env hosta):
 | `BACKEND_ORIGIN` | Nie | Publiczny origin API (np. domena API) |
 | `FRONTEND_ORIGIN` | Nie | Publiczny origin SPA |
 
-Uwaga: CORS w kodzie trzyma też listę originów w `server.js` / websocket — przy zmianie domeny zaktualizuj **i** env/compose, **i** whitelist w kodzie.
+Uwaga: CORS trzyma listę originów w `backend/configs/allowedOrigins.js` (HTTP Express + Socket.io) — przy zmianie domeny zaktualizuj **i** env/compose, **i** tę whitelistę.
 
 ## E-mail outbound (kierunek — jeszcze nieużywane w kodzie)
 

@@ -14,6 +14,7 @@ import avatarsRoutes from './avatarsRoutes.js';
 import invitationRoutes from './invitationRoutes.js';
 import cookiesTourRoutes from './cookiesTourRoutes.js';
 import reviewsRoutes from './reviewsRoutes.js';
+import healthRoutes from './healthRoutes.js';
 
 const routes = [
   { path: '/auth', router: authRoutes },
@@ -35,7 +36,11 @@ const routes = [
 ];
 
 export default function setupRoutes(app) {
+  // Wyłącznie v1 — poza dual mount legacy (B-16 / K-1).
+  app.use('/api/v1/health', healthRoutes);
+
   for (const { path, router } of routes) {
     app.use(path, router);
+    app.use(`/api/v1${path}`, router);
   }
 }
