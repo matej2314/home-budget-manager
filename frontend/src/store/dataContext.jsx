@@ -1,19 +1,18 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import { AuthContext } from './authContext';
-import { serverUrl } from "../url";
+import { createContext, useState, useEffect } from "react";
+import { useAuth } from './authContext';
+import { apiBaseUrl } from "../url";
 import fetchData from '../utils/asyncUtils/fetchData';
 
 export const DataContext = createContext({
     data: {},
-    actionsData: {},
     isLoading: true,
+    dataError: null,
     refreshData: () => { },
-
 });
 
 export const DataProvider = ({ children }) => {
 
-    const { isAuthenticated } = useContext(AuthContext);
+    const { isAuthenticated } = useAuth();
 
     const [data, setData] = useState({
         houseData: [],
@@ -29,7 +28,7 @@ export const DataProvider = ({ children }) => {
         setData(prevData => ({ ...prevData, loading: true, dataError: null }));
 
         try {
-            const result = await fetchData(`${serverUrl}/board/data/${filter}`);
+            const result = await fetchData(`${apiBaseUrl}/board/data/${filter}`);
             setData((prevData) => ({
                 ...prevData,
                 ...(result.dashboardData.houseData && { houseData: result.dashboardData.houseData }),
@@ -55,11 +54,14 @@ export const DataProvider = ({ children }) => {
     }, [isAuthenticated]);
 
     return (
-        <DataContext.Provider value={{
-            data,
-            isLoading: data.loading,
-            refreshData,
-        }}>
+        <DataContext.Provider
+            value={{
+                data,
+                isLoading: data.loading,
+                dataError: data.dataError,
+                refreshData,
+            }}
+        >
             {children}
         </DataContext.Provider>
     );

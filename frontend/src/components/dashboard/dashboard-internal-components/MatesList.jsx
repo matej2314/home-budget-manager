@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from "../../../store/authContext";
+import { useAuth } from "../../../store/authContext";
 import { DataContext } from "../../../store/dataContext";
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
@@ -12,10 +12,10 @@ import { getData } from "../../../utils/getData";
 
 export default function MatesList({ mode }) {
     const { t } = useTranslation("dashboardInternal");
-    const { user } = useContext(AuthContext);
-    const { data, isLoading, error } = useContext(DataContext);
+    const { user } = useAuth();
+    const { data, isLoading, dataError } = useContext(DataContext);
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null, data: null });
-    const houseMates = getData(isLoading, error, true, data.houseMates, []);
+    const houseMates = getData(isLoading, dataError, true, data.houseMates, []);
 
     const handleOpenMsgModal = (recipient) => {
         if (user.userName === recipient) {
@@ -27,10 +27,10 @@ export default function MatesList({ mode }) {
 
     return (
         <div className={`${mode === 'subpage' ? 'w-11/12' : 'w-full'} h-full overflow-auto`}>
-            {error ? (
+            {dataError ? (
                 <p>{t("matesList.loadingError")}</p>
             ) : houseMates.length > 0 ? (
-                <table className={`${mode === 'subpage' ? 'w-11/12 mx-auto' : 'w-[100%] mx-auto'} h-full table-auto text-sm`}>
+                <table className={`${mode === 'subpage' ? 'w-11/12 mx-auto' : 'w-full mx-auto'} h-full table-auto text-sm`}>
                     <thead>
                         <tr className={`w-full ${mode === 'subpage' ? 'bg-slate-400/80' : 'bg-slate-400/50'}`}>
                             {thLabels.map((label, index) => (
@@ -47,7 +47,7 @@ export default function MatesList({ mode }) {
                     </thead>
                     <tbody className="w-full">
                         {houseMates.map((mate) => (
-                            <tr key={mate.userId} className="w-11/12 border-[1px] border-slate-400">
+                            <tr key={mate.userId} className="w-11/12 border border-slate-400">
                                 <td className="mates-list-table-data-base text-center">{mate.userName}</td>
                                 <td className="mates-list-table-data-base text-center">{t(`matesList.${mate.role}`)}</td>
                                 <td className="mates-list-table-data-base flex justify-center gap-3">

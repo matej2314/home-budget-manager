@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { AuthContext } from "./authContext";
+import { useAuth } from './authContext';
 import { io } from "socket.io-client";
 import { socketPath } from "../url";
 import useNotificationsStore from './notificationsStore';
@@ -9,18 +9,14 @@ export const SocketContext = createContext();
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
-    const { isAuthenticated } = useContext(AuthContext);
+    const { isAuthenticated } = useAuth();
     const [socket, setSocket] = useState(null);
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState(null);
+    // ephemeral buffers for header UI; domain notifications live in notificationsStore
     const [messages, setMessages] = useState({
         balanceUpdates: [],
         newMessages: [],
-        notifications: {
-            transactions: [],
-            usersActions: [],
-            monthlyBalance: [],
-        },
         initBudgets: [],
         invitations: [],
     });
@@ -59,6 +55,7 @@ export const SocketProvider = ({ children }) => {
                 console.error('Connection error:', error);
             });
 
+            // shortcut: balance_update tylko bufor ephemeral; pełna synchronizacja board/transactions = major Faza 7, gdy BE emituje spójnie
             newSocket.on("balance_update", (data) => {
                 setMessages((prevMessages) => ({
                     ...prevMessages,
@@ -95,25 +92,14 @@ export const SocketProvider = ({ children }) => {
                     return;
                 }
 
-                setMessages((prevMessages) => {
-                    if (!prevMessages.notifications[category].some(n => n.id === noticeData.id)) {
-                        return {
-                            ...prevMessages,
-                            notifications: {
-                                ...prevMessages.notifications,
-                                [category]: [...prevMessages.notifications[category], noticeData],
-                            }
-                        };
-                    }
-                    return prevMessages;
-                });
-
-                const existingNotifications = useNotificationsStore.getState().notifications[category] || [];
-                if (!existingNotifications.some(n => n.id === noticeData.id)) {
+                const existing = useNotificationsStore.getState().notifications[category] || [];
+                if (!existing.some((n) => n.id === noticeData.id)) {
                     useNotificationsStore.getState().addNotification(category, noticeData);
                 }
             });
 
+            // socket.io connection handle — external system subscription (react-hooks/set-state-in-effect)
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- store client from io()
             setSocket(newSocket);
 
             return () => {
@@ -128,6 +114,7 @@ export const SocketProvider = ({ children }) => {
                 setConnected(false);
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reconnect only on auth change
     }, [isAuthenticated]);
 
     const sendMessage = (type, message) => {
@@ -138,21 +125,8 @@ export const SocketProvider = ({ children }) => {
         }
     };
 
-    const deleteNotification = (notificationType, notificationId) => {
-        setMessages((prevMessages) => {
-            const updatedNotifications = { ...prevMessages.notifications };
-            updatedNotifications[notificationType] = updatedNotifications[notificationType].filter(
-                (notification) => notification.id !== notificationId
-            );
-            return {
-                ...prevMessages,
-                notifications: updatedNotifications,
-            };
-        });
-    };
-
     return (
-        <SocketContext.Provider value={{ socket, connected, messages, sendMessage, error, deleteNotification }}>
+        <SocketContext.Provider value={{ socket, connected, messages, sendMessage, error }}>
             {children}
         </SocketContext.Provider>
     );

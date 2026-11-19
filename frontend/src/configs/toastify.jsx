@@ -2,8 +2,6 @@ import { toast } from 'react-toastify';
 import { Icon } from '@iconify/react';
 import "react-toastify/dist/ReactToastify.css";
 
-const baseStyles = 'p-4 rounded-lg shadow-md text-slate-700';
-
 const toastStyles = {
     success: `text-red-700`,
     error: `color: #E91616`,

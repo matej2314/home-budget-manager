@@ -11,8 +11,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 export default function CalendarPage() {
     const { actionsData, isTransactionsFetched, actionsDataError, actionsLoading, fetchTransactions } = useTransactionsStore();
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const [view, setView] = useState('month');
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [_view, setView] = useState('month');
+    const [_selectedDate, setSelectedDate] = useState(null);
     useDocumentTitle('Calendar');
 
     useEffect(() => {

@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
@@ -23,7 +23,7 @@ export default function CookiesModal({ isOpen, onRequestClose }) {
         };
 
         try {
-            const saveValue = await sendRequest('POST', data, `${serverUrl}/cookiestour/cookie_value`);
+            const saveValue = await sendRequest('POST', data, `${apiBaseUrl}/cookiestour/cookie_value`);
 
             handleApiResponse(saveValue, {
                 onSuccess: () => {

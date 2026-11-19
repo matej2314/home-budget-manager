@@ -1,17 +1,14 @@
+import { parseApiEnvelope } from '../utils/asyncUtils/parseApiEnvelope';
+
 export default function useApiResponseHandler() {
+  const handleApiResponse = (response, { onSuccess, onError } = {}) => {
+    const envelope = parseApiEnvelope(response);
+    if (envelope.ok) {
+      onSuccess?.(envelope);
+    } else {
+      onError?.(envelope);
+    }
+  };
 
-    const handleApiResponse = async (response, { onSuccess, onError } = {}) => {
-        try {
-            if (response.status === 'success') {
-                onSuccess();
-            } else if (response.status === 'error') {
-                onError();
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    return handleApiResponse;
-};
-
+  return handleApiResponse;
+}

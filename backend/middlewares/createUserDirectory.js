@@ -22,7 +22,7 @@ const createUserDirectory = (req, res, next) => {
 
         logger.info(`Katalog na avatar użytkownika ${userId} utworzony.`);
         next();
-    } catch (error) {
+    } catch {
         logger.error(`Błąd podczas tworzenia katalogu użytkownika: ${userId}`);
         return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: 'error',

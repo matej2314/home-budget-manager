@@ -1,5 +1,5 @@
 import logger from '../../configs/logger.js';
-import { broadcastToHouseMates } from '../../configs/websocketConfig.js';
+import { broadcastMessage, broadcastToHouseMates } from '../../configs/websocketConfig.js';
 
 export const liveUpdateBalance = async (type, value, houseId, userId, connection) => {
 	try {
@@ -20,7 +20,7 @@ export const liveUpdateBalance = async (type, value, houseId, userId, connection
 
 		const newBalanceToDb = parseFloat(newBalance);
 
-		const [addNewBalance] = await connection.query('UPDATE households SET currentBalance = ? WHERE houseId = ?', [newBalanceToDb, houseId]);
+		await connection.query('UPDATE households SET currentBalance = ? WHERE houseId = ?', [newBalanceToDb, houseId]);
 		logger.info(`Nowe saldo gospodarstwa ${houseId}: ${newBalanceToDb}`);
 
 		try {

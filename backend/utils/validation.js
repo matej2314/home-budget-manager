@@ -1,5 +1,5 @@
 function isValidPassword(password) {
-	const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[*!#^%$@?_+\[\]='"|,.<>?])[a-zA-Z\d*!#^%$@?_+\[\]='"|,.<>?]{10,30}$/;
+	const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[*!#^%$@?_+[\]='"|,.<>?])[a-zA-Z\d*!#^%$@?_+[\]='"|,.<>?]{10,30}$/;
 	return regex.test(password);
 };
 

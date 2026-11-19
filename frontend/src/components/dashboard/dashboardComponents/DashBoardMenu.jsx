@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
-import { AuthContext } from '../../../store/authContext';
+import { useAuth } from '../../../store/authContext';
 import { useSocket } from '../../../store/socketContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { motion } from 'framer-motion';
@@ -13,7 +13,7 @@ import { locationEffect } from '../../../utils/locationEffect';
 
 export default function DashBoardMenu() {
     const { messages, error } = useSocket();
-    const { user, isAuthenticated } = useContext(AuthContext);
+    const { user, isAuthenticated } = useAuth();
     const location = useLocation();
     const { isMobile } = useIsMobile();
     const [isOpened, setIsOpened] = useState(false);

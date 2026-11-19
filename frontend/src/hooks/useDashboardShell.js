@@ -1,7 +1,7 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AuthContext } from '../store/authContext';
+import { useAuth } from '../store/authContext';
 import { useSocket } from '../store/socketContext';
 import { useInvitationsStore } from '../store/invitationsStore';
 import { mateOrHostRole, isHostRole, isUserRole } from '../utils/checkUserRole';
@@ -14,7 +14,7 @@ import { showMessageToast } from '../configs/toastify';
  */
 export default function useDashboardShell() {
   const navigate = useNavigate();
-  const { loginStatus, isAuthenticated, user } = useContext(AuthContext);
+  const { loginStatus, isAuthenticated, user } = useAuth();
   const { connected, messages } = useSocket();
   const {
     invitationsData,

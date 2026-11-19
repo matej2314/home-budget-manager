@@ -1,9 +1,7 @@
 import LineChart from "../../../charts/LineChart"
-import { useIsMobile } from "../../../../hooks/useIsMobile"
 import { useTranslation } from 'react-i18next';
 
 export default function TransactionsOverTime({ data }) {
-    const isMobile = useIsMobile();
     const { t } = useTranslation("dashboardComponents");
 
     return (

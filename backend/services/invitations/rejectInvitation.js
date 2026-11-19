@@ -6,7 +6,7 @@ import { invitationStatus } from '../../utils/invitationStatus.js';
 import { emitNotification } from '../notifications/emitNotification.js';
 import { AppError } from '../../utils/errors/AppError.js';
 
-export async function rejectInvitation({ invitationId, hostId }) {
+export async function rejectInvitation({ invitationId, hostId: _hostId }) {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();

@@ -1,5 +1,5 @@
-import { useState, useContext } from 'react';
-import { AuthContext } from '../../store/authContext';
+import { useState } from 'react';
+import { useAuth } from '../../store/authContext';
 import Modal from 'react-modal';
 import Authorization from '../home-page-components/Authorization';
 import { showErrorToast } from '../../configs/toastify';
@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function AuthModal({ isOpen, onRequestClose }) {
     const [mode, setMode] = useState(null);
-    const { isAuthenticated } = useContext(AuthContext);
+    const { isAuthenticated } = useAuth();
     const { t } = useTranslation("common");
 
     const handleModeChange = (selectedMode) => {

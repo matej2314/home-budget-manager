@@ -1,21 +1,20 @@
 import { create } from 'zustand';
-import { serverUrl } from '../url';
+import { apiBaseUrl } from '../url';
 import fetchData from '../utils/asyncUtils/fetchData';
 
 export const useMessagesStore = create((set) => ({
     messagesData: [],
-    messaagesLoading: false,
+    messagesLoading: false,
     messagesError: null,
     messagesTotalPages: 1,
     currentPage: 1,
     isMessagesFetched: false,
 
-
     fetchMessages: async (page = 1) => {
-        set({ messaagesLoading: true, messagesError: null, isMessagesFetched: false });
+        set({ messagesLoading: true, messagesError: null, isMessagesFetched: false });
 
         try {
-            const result = await fetchData(`${serverUrl}/board/data/messages/${page}`);
+            const result = await fetchData(`${apiBaseUrl}/board/data/messages/${page}`);
             set({
                 messagesData: result.dashboardData.messagesData || [0],
                 messagesTotalPages: result.dashboardData.totalPages || 1,
@@ -24,7 +23,7 @@ export const useMessagesStore = create((set) => ({
                 isMessagesFetched: true,
             });
         } catch (error) {
-            set({ messaagesLoading: false, messagesError: error });
+            set({ messagesLoading: false, messagesError: error });
         }
     },
 

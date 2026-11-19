@@ -1,6 +1,6 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { AuthContext } from "../store/authContext";
+import { useAuth } from '../store/authContext';
 import { showCookiesInfo } from "../configs/toastify";
 import useHomePageStore from "../store/homePageStore";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ import { getSessionStorage, setSessionStorage } from "../utils/storageUtils";
 
 export default function HomePage() {
     useDocumentTitle('Home');
-    const { isAuthenticated, loginStatus } = useContext(AuthContext);
+    const { isAuthenticated, loginStatus } = useAuth();
     const { fetchHomePageData } = useHomePageStore();
     const isCookiesInfo = getSessionStorage('isCookiesInfo');
     const { t } = useTranslation("common");

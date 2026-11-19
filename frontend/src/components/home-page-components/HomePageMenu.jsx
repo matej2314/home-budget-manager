@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { AuthContext } from '../../store/authContext';
+import { useAuth } from '../../store/authContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
@@ -17,8 +16,8 @@ import LoadingModal from '../modals/LoadingModal';
 Modal.setAppElement('#root');
 
 export default function HomePageMenu() {
-    const { isMobile, isTablet } = useIsMobile();
-    const { user, isAuthenticated, loginStatus, logout } = useContext(AuthContext);
+    const { isMobile } = useIsMobile();
+    const { user, isAuthenticated, loginStatus, logout } = useAuth();
     const { t } = useTranslation("homePage");
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
     const navigate = useNavigate();
@@ -38,7 +37,7 @@ export default function HomePageMenu() {
     };
 
     if (loginStatus.isLoading) {
-        return <LoadingModal isOpen={isLoading} />
+        return <LoadingModal isOpen={loginStatus.isLoading} />
     }
 
     return (

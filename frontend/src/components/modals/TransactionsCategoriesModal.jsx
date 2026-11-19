@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import { AuthContext } from '../../store/authContext';
+import { useAuth } from '../../store/authContext';
 import { DataContext } from '../../store/dataContext';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-modal';
 
 
 export default function TransactionsCategoriesModal({ isOpen, onRequestClose }) {
-    const { data, isLoading, error } = useContext(DataContext);
+    const { data, isLoading, dataError: error } = useContext(DataContext);
     const actionCats = !isLoading && !error && data.actionsCatData || [];
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     const { t } = useTranslation("common");
 
     return (

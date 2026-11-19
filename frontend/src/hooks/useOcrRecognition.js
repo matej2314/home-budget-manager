@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useApiResponseHandler from '../hooks/useApiResponseHandler';
-import { serverUrl } from "../url";
+import sendMultipart from '../utils/asyncUtils/sendMultipart';
+import { apiBaseUrl } from "../url";
 import { showErrorToast } from "../configs/toastify";
 import { useTranslation } from "react-i18next";
 
@@ -19,13 +20,7 @@ export default function useOcrRecognition() {
 
         try {
             setLoadingImage(true);
-            const response = await fetch(`${serverUrl}/receipt`, {
-                method: 'POST',
-                body: formData,
-                credentials: 'include',
-            });
-
-            const result = await response.json();
+            const result = await sendMultipart('POST', formData, `${apiBaseUrl}/receipt`);
 
             handleApiResponse(result, {
                 onSuccess: () => {

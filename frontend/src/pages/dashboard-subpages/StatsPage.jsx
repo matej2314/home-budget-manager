@@ -1,10 +1,7 @@
-import { useContext } from "react"
-import { AuthContext } from "../../store/authContext"
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import DashboardHeader from "../../components/dashboard/dashboardComponents/DashBoardHeader"
 
 export default function StatsPage() {
-    const { user } = useContext(AuthContext);
     useDocumentTitle('Page stats');
 
     return (

@@ -1,10 +1,11 @@
 import { useRef, useContext, useState } from 'react';
 import { DataContext } from '../../store/dataContext';
 import { Icon } from '@iconify/react';
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import { useTranslation } from 'react-i18next';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
+import { resolveApiMessage } from '../../utils/asyncUtils/parseApiEnvelope';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import LoadingModal from '../modals/LoadingModal';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
@@ -13,8 +14,8 @@ import SubmitBtn from './internal/SubmitBtn';
 import { isValidNumber } from '../../utils/validation';
 
 export default function AddTransactionForm({ onClose }) {
-    const { data, isLoading, error } = useContext(DataContext);
-    const actionCategories = !isLoading && !error && data.actionsCatData || [];
+    const { data, isLoading, dataError, refreshData } = useContext(DataContext);
+    const actionCategories = !isLoading && !dataError && data.actionsCatData || [];
     const { fetchTransactions } = useTransactionsStore();
     const handleApiResponse = useApiResponseHandler();
     const [imageMode, setImageMode] = useState(false);
@@ -54,18 +55,27 @@ export default function AddTransactionForm({ onClose }) {
             catId: catIdRef.current.selectedOptions[0].dataset.id,
         };
 
-        const saveAction = await sendRequest('POST', newActionData, `${serverUrl}/action/new`);
+        try {
+            const saveAction = await sendRequest('POST', newActionData, `${apiBaseUrl}/action/new`);
 
-        handleApiResponse(saveAction, {
-            onSuccess: async () => {
-                showInfoToast(tForms(saveAction.message, { defaultValue: "addTransaction.addTransactionCorrect" }));
-                await fetchTransactions();
-                setTimeout(onClose, 500);
-            },
-            onError: () => {
-                showErrorToast(tForms(saveAction.message, { defaultValue: "addTransaction.addTransactionError" }));
-            }
-        });
+            handleApiResponse(saveAction, {
+                onSuccess: async (envelope) => {
+                    showInfoToast(
+                        resolveApiMessage(tForms, envelope.messageKey, 'addTransaction.addTransactionCorrect')
+                    );
+                    await fetchTransactions();
+                    await refreshData();
+                    setTimeout(onClose, 500);
+                },
+                onError: (envelope) => {
+                    showErrorToast(
+                        resolveApiMessage(tForms, envelope.messageKey, 'addTransaction.addTransactionError')
+                    );
+                }
+            });
+        } catch {
+            showErrorToast(tForms('addTransaction.addTransactionError'));
+        }
     };
 
     return (
@@ -112,7 +122,7 @@ export default function AddTransactionForm({ onClose }) {
                     </button>
                 </div>
                 <select name="actionCat" id="actionCat" ref={catIdRef} className='border-2 border-slate-300 rounded-md'>
-                    {!isLoading && !error ? (
+                    {!isLoading && !dataError ? (
                         actionCategories.map((cat) => (
                             <option key={cat.id} data-id={cat.id} value={cat.name}>{tCommon(`actionCats.${cat.name}`)}</option>
                         ))

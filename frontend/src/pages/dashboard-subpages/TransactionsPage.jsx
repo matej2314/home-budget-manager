@@ -26,10 +26,6 @@ export default function TransactionsPage() {
 
     const transactions = Array.isArray(actionsData) ? actionsData : [];
 
-    const handleOpenModal = (type) => {
-        openModal(type);
-    }
-
     const modalComponents = {
         transaction: AddTransactionModal,
         categories: TransactionsCategoriesModal,

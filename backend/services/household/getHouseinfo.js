@@ -31,7 +31,6 @@ export const getHouseInfo = async (userId) => {
         return {
             messageKey: 'Household data fetched successfully.',
             info: basicData,
-            stats: statsData,
         };
     } catch (error) {
         if (error instanceof AppError) throw error;

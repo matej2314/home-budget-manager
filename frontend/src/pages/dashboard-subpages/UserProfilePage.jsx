@@ -1,10 +1,11 @@
-import { useContext, useState, useRef, useEffect } from 'react';
-import { AuthContext } from '../../store/authContext';
+import { useState, useRef, useEffect } from 'react';
+import { useAuth } from '../../store/authContext';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { useTranslation } from 'react-i18next';
 import CustomAvatarInput from '../../components/dashboard/dashboard-internal-components/CustomAvatarInput';
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
+import sendMultipart from '../../utils/asyncUtils/sendMultipart';
 import DashboardHeader from '../../components/dashboard/dashboardComponents/DashBoardHeader';
 import FastActions from '../../components/dashboard/dashboard-internal-components/FastActionsSection';
 import TransactionsList from '../../components/dashboard/dashboard-internal-components/TransactionsList';
@@ -13,9 +14,9 @@ import { showInfoToast, showErrorToast } from '../../configs/toastify';
 
 export default function UserProfilePage() {
     const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } = useTransactionsStore();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     const [type, setType] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [, setIsModalOpen] = useState(false);
     const [sended, setSended] = useState(false);
     const { t } = useTranslation("pages");
     const avatarFile = useRef();
@@ -52,13 +53,7 @@ export default function UserProfilePage() {
 
         try {
             setSended(false);
-            const addAvatar = await fetch(`${serverUrl}/avatars/save`, {
-                method: 'POST',
-                body: avatarData,
-                credentials: 'include',
-            });
-
-            const avatarResponse = await addAvatar.json();
+            const avatarResponse = await sendMultipart('POST', avatarData, `${apiBaseUrl}/avatars/save`);
 
             if (avatarResponse.status === 'success') {
                 showInfoToast(t("userProfile.successMessage"));
@@ -68,7 +63,7 @@ export default function UserProfilePage() {
             } else if (avatarResponse.status === 'error') {
                 showErrorToast(t("userProfile.failedError"));
             }
-        } catch (error) {
+        } catch {
             showErrorToast(t("userProfile.failedError"));
         } finally {
             setSended(true);
@@ -84,7 +79,7 @@ export default function UserProfilePage() {
                 <div id="middle-content" className="w-full flex flex-col gap-5 py-4 px-5">
                     <div id='page-header' className='w-full h-fit flex justify-center items-center gap-7'>
                         <div className='w-28 h-28 flex rounded-full'>
-                            <img src={user && `${serverUrl}/avatars/avatar/${user.id}`} className="rounded-full w-full h-full border-2 border-slate-100" />
+                            <img src={user && `${apiBaseUrl}/avatars/avatar/${user.id}`} className="rounded-full w-full h-full border-2 border-slate-100" />
                         </div>
                         <div className='flex flex-col items-center'>
                             <p className='text-xl'>{user.userName}</p>

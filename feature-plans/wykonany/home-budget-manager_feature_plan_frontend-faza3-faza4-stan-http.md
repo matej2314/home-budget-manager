@@ -53,7 +53,7 @@
 
 ### KROK 1 — Context: sesja / socket / data / theme
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Domknięcie granic Contextów cross-cutting w `store/` — auth / socket / data / theme bez wrzucania list domenowych do Context (major 3.1, F-4).
 
@@ -147,7 +147,7 @@ value={{ socket, connected, messages, sendMessage, error }}
 
 ### KROK 2 — Zustand: właściciele store per obszar
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Jawny właściciel kolekcji domenowej per obszar + spójne eksporty / drobne bugi uniemożliwiające poprawne odświeżanie (major 3.2, F-5).
 
@@ -299,7 +299,7 @@ const { messagesData: data, messagesLoading: isLoading } = useMessagesStore();
 
 ### KROK 3 — Stan lokalny UI i odświeżanie po mutacji
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Lokalny stan UI zostaje lokalny; po udanej mutacji HTTP store/widok są spójne; gotowość pod WS bez własnego protokołu (major 3.3, F-6, F-7 częściowo).
 
@@ -395,7 +395,7 @@ per-area stores; refresh stores after HTTP mutations without React Query.
 
 ### KROK 1 — Prefiks `/api/v1` w konfiguracji klienta
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Wszystkie wywołania HTTP kontraktu API idą pod `/api/v1` przez `apiBaseUrl`; ujednolicenie raw `fetch` (OCR, awatar) (major 4.1, F-3). **Bez** proxy Vite.
 
@@ -553,7 +553,7 @@ Analogicznie upload awatara w `UserProfilePage`.
 
 ### KROK 2 — Credentials oraz obsługa 401/403
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Sesyjne HTTP z credentials; 401 → toast + `logout`; 403 → toast; guard UI ≠ authz (major 4.2, F-8, F-15).
 
@@ -721,7 +721,7 @@ Dopisz te same gałęzie 401/403 do `sendMultipart.js`.
 
 ### KROK 3 — Envelope `status` / `message` pod i18n
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Wspólny odczyt envelope; `message` jako kandydat klucza i18n z fallbackiem do surowego stringa; bez big-bang ns `api` (major 4.3, F-8; pełny ns = F6).
 

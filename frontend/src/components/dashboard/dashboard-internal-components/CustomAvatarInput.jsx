@@ -1,7 +1,7 @@
 import { forwardRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
-const CustomAvatarInput = forwardRef((_, ref) => {
+const CustomAvatarInput = forwardRef(function CustomAvatarInput(_, ref) {
     const [avatarName, setAvatarName] = useState('');
     const { t } = useTranslation("pages");
 

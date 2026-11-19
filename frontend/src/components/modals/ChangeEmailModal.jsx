@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import Modal from 'react-modal';
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
@@ -37,7 +37,7 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
 
         try {
             setRequestState({ sended: false, isLoading: true });
-            const saveEmail = await sendRequest('POST', emailData, `${serverUrl}/users/changemail`);
+            const saveEmail = await sendRequest('POST', emailData, `${apiBaseUrl}/users/changemail`);
 
             handleApiResponse(saveEmail, {
                 onSuccess: () => {

@@ -21,8 +21,8 @@ const deleteUser = async (userId) => {
             const [deleteHouse] = await connection.query('DELETE FROM households WHERE houseId=? AND userId=?', [houseId, userId]);
 
             if (deleteHouse.affectedRows === 1) {
-                const [deleteUserTransactions] = await connection.query('DELETE FROM transactions WHERE userId=?', [userId]);
-                const [updateHouseHu] = await connection.query('UPDATE householdUsers SET houseId = NULL WHERE houseId = ?', [houseId]);
+                await connection.query('DELETE FROM transactions WHERE userId=?', [userId]);
+                await connection.query('UPDATE householdUsers SET houseId = NULL WHERE houseId = ?', [houseId]);
             };
 
             const [deleteFromUsers] = await connection.query('DELETE FROM users WHERE id=?', [userId]);
@@ -35,11 +35,10 @@ const deleteUser = async (userId) => {
             const [deleteFromTransactions] = await connection.query('DELETE FROM transactions WHERE userId=?', [userId]);
 
             if (deleteFromTransactions.length > 0) {
-
-                const [deleteFromHu] = await connection.query('DELETE FROM householdUsers WHERE userId=?', [userId]);
+                await connection.query('DELETE FROM householdUsers WHERE userId=?', [userId]);
             };
 
-            const [deleteFromUsers] = await connection.query('DELETE FROM users WHERE id=?', [userId]);
+            await connection.query('DELETE FROM users WHERE id=?', [userId]);
 
         };
         await connection.commit();

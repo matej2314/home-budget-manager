@@ -1,41 +1,19 @@
-import { v4 as uuidv4 } from 'uuid';
 import logger from '../../configs/logger.js';
 
 const addNewBudget = async (connection, value, userHouse) => {
     try {
-        const id = uuidv4();
         const addedAt = new Date();
         const validUntil = new Date(addedAt);
         validUntil.setDate(validUntil.getDate() + 30);
 
         const addedAtFormatted = addedAt.toISOString().split('T')[0];
         const validUntilFormatted = validUntil.toISOString().split('T')[0];
-        const addedAtToDb = addedAt.toISOString();
         const valueToDb = parseFloat(value).toFixed(2);
 
         await connection.query('UPDATE initialMonthlyBudgets SET value=? ,validUntil=? WHERE houseId =?',
             [valueToDb, validUntilFormatted, userHouse]);
 
         return { addedAtFormatted, validUntilFormatted, valueToDb };
-    } catch (error) {
-        logger.error(error);
-    }
-};
-
-const changeMonthlyBudget = async (connection, addedAt, value, userHouse) => {
-    try {
-        const budgetAddedAt = new Date(addedAt);
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-        if (new Date(budgetAddedAt) < new Date(sevenDaysAgo)) {
-            throw new Error('Failed to find budget.');
-        } else {
-            const { addedAtFormatted, validUntilFormatted, valueToDb } = await addNewBudget(connection, value, userHouse);
-
-            logger.info(`New budget added to household ${userHouse} with value ${valueToDb}.`);
-            return { addedAtFormatted, validUntilFormatted, valueToDb };
-        }
     } catch (error) {
         logger.error(error);
     }

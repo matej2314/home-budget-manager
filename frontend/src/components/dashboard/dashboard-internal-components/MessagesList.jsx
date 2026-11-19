@@ -1,11 +1,11 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import { useSocket } from '../../../store/socketContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import useModal from '../../../hooks/useModal';
 import { useTranslation } from "react-i18next";
-import { AuthContext } from "../../../store/authContext";
+import { useAuth } from '../../../store/authContext';
 import { mapArray, filterArray } from "../../../utils/arraysUtils/arraysFunctions";
 import { formatDbDate } from "../../../utils/formattingUtils/formatDateToDisplay";
 import MessagesFilterBtns from "./MessagesFilterBtns";
@@ -17,14 +17,13 @@ import LoadingModal from "../../modals/LoadingModal";
 import { messagesBtnsArr } from "../../../utils/arraysUtils/messagesBtnsArray";
 import { getFilterMap, getClickHandler, getModalComponents } from "../../../utils/messagesListUtils";
 
-export default function MessagesList({ userMessages, messagesError, loading, getMessages, messagesPages }) {
+export default function MessagesList({ userMessages, messagesError: _messagesError, loading, getMessages, messagesPages }) {
     const { filter } = useParams();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     const { connected, messages: socketMessages } = useSocket();
     const { t: tInternal } = useTranslation("dashboardInternal");
     const { t: tUtils } = useTranslation("utils");
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null, data: null });
-    const [messagesType, setMessagesType] = useState(filter || "all");
     const [newMessages, setNewMessages] = useState([]);
     const navigate = useNavigate();
     const { isMobile } = useIsMobile();
@@ -34,27 +33,28 @@ export default function MessagesList({ userMessages, messagesError, loading, get
     const filteredMessages = Array.isArray(userMessages) && filterArray(userMessages, (msg) => msg.recipient === user.userName);
 
     useEffect(() => {
-        const newMessagesSet = new Set(mapArray(newMessages, (msg) => msg.id));
-        const uniqueMessages = filterArray(liveMessages, (message) => !newMessagesSet.has(message.id));
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- merge live socket messages into list buffer
+        setNewMessages((prevMessages) => {
+            const newMessagesSet = new Set(mapArray(prevMessages, (msg) => msg.id));
+            const uniqueMessages = filterArray(liveMessages, (message) => !newMessagesSet.has(message.id));
+            if (uniqueMessages.length === 0) return prevMessages;
+            return [...uniqueMessages, ...prevMessages];
+        });
+    }, [liveMessages]);
 
-        if (uniqueMessages.length > 0) {
-            setNewMessages((prevMessages) => [...uniqueMessages, ...prevMessages]);
-        };
+    const filterMap = getFilterMap(sortedMessages, newMessages, filteredMessages, user);
+    const messagesType = filterMap[filter] ? filter : (filter || "all");
+    const hasValidFilter = Boolean(filterMap[filter]);
 
-        if (filterMap[filter]) {
-            setMessagesType(filter);
-        } else {
+    useEffect(() => {
+        if (!hasValidFilter) {
             navigate('/dashboard/messages/all', { replace: true });
         }
-
-
-    }, [liveMessages, filter, navigate]);
+    }, [hasValidFilter, navigate]);
 
     const handleChangeFilter = (type) => {
         navigate(`/dashboard/messages/${type}`);
     }
-
-    const filterMap = getFilterMap(sortedMessages, newMessages, filteredMessages, user);
 
     const handleMarkMessage = (message, mode) => markMessage(message, user, getMessages, mode);
 

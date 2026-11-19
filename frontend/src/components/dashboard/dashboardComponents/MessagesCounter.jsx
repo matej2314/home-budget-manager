@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom';
 import { useSocket } from '../../../store/socketContext';
 import { Icon } from '@iconify/react';
@@ -7,18 +6,11 @@ import { useTranslation } from 'react-i18next';
 
 export default function MessagesCounter() {
     const { connected, messages, error } = useSocket();
-    const [userMessages, setUserMessages] = useState([]);
     const { t } = useTranslation("dashboardComponents");
 
-    useEffect(() => {
-        if (connected && !error && messages.length > 0) {
-            const userMessages = filterArray(messages, (message) => message.type === 'newMessage');
-
-            if (userMessages) {
-                setUserMessages(userMessages);
-            }
-        }
-    }, [messages, connected]);
+    const userMessages = (connected && !error && messages.length > 0)
+        ? filterArray(messages, (message) => message.type === 'newMessage')
+        : [];
 
     return (
         <Link to='messages/new'

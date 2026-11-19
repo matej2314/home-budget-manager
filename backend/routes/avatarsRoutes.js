@@ -1,6 +1,4 @@
 import express from 'express';
-import path from 'node:path';
-import logger from '../configs/logger.js';
 import * as avatarController from '../controllers/avatarController.js';
 import verifyJWT from '../middlewares/verifyJWT.js';
 import createUserDirectory from '../middlewares/createUserDirectory.js';

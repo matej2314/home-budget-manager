@@ -16,7 +16,7 @@ const deleteFiles = async (req, res, next) => {
     try {
         await fs.access(userPath);
         logger.info(`Folder użytkownika ${userId} istnieje.`);
-    } catch (error) {
+    } catch {
         logger.error(`Folder użytkownika ${userId} nie istnieje.`);
         return res.status(statusCode.NOT_FOUND).json({
             status: 'error',

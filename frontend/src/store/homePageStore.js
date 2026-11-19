@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { serverUrl } from '../url';
+import { apiBaseUrl } from '../url';
 import fetchData from '../utils/asyncUtils/fetchData';
 
 const useHomePageStore = create((set) => ({
@@ -11,7 +11,7 @@ const useHomePageStore = create((set) => ({
         set({ isHomePageDataLoading: true, homePageDataError: null });
 
         try {
-            const response = await fetchData(`${serverUrl}/homepage/dataCollection`);
+            const response = await fetchData(`${apiBaseUrl}/homepage/dataCollection`);
 
             if (response.status === 'success') {
                 set({ homePageData: response.homePageData });
@@ -26,4 +26,5 @@ const useHomePageStore = create((set) => ({
     },
 }));
 
+export { useHomePageStore };
 export default useHomePageStore;

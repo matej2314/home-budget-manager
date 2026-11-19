@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react';
-import { AuthContext } from '../../store/authContext';
+import { useAuth } from '../../store/authContext';
+import { DataContext } from '../../store/dataContext';
 import Modal from 'react-modal';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
@@ -11,9 +12,10 @@ import { useTranslation } from 'react-i18next';
 
 export default function DeleteTransactionModal({ isOpen, onRequestClose, transaction }) {
     const { fetchTransactions } = useTransactionsStore();
+    const { refreshData } = useContext(DataContext);
     const handleApiResponse = useApiResponseHandler();
     const [isLoading, setIsLoading] = useState(false);
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     const { t } = useTranslation("modals");
 
     const handleDeleteAction = async (transaction) => {
@@ -26,12 +28,13 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
         try {
             setIsLoading(true);
             const actionData = { transactionId: transaction.transactionId };
-            const deleteAction = await sendRequest('DELETE', actionData, `${serverUrl}/action`);
+            const deleteAction = await sendRequest('DELETE', actionData, `${apiBaseUrl}/action`);
 
             handleApiResponse(deleteAction, {
-                onSuccess: () => {
+                onSuccess: async () => {
                     showInfoToast(t("deleteTransaction.successMessage"));
-                    fetchTransactions();
+                    await fetchTransactions();
+                    await refreshData();
                     onRequestClose();
                 },
                 onError: () => {

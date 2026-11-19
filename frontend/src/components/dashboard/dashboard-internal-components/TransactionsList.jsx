@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { AuthContext } from '../../../store/authContext';
+
+import { useAuth } from '../../../store/authContext';
 import useModal from '../../../hooks/useModal';
 import { Icon } from '@iconify/react';
 import { useMediaQuery } from 'react-responsive';
@@ -15,7 +15,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: 'delete', data: null });
     const { t: tInternal } = useTranslation("dashboardInternal");
     const { t: tUtils } = useTranslation("utils");
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
 
     const filteredTransactions = filterId ? filterArray(transactions, (transaction) => transaction.userId === filterId) : transactions;
     const sortedTransactions = Array.isArray(filteredTransactions)

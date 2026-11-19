@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useMessagesStore } from '../../store/messagesStore';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
@@ -14,6 +14,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [actionState, setActionState] = useState({ type: null });
 	const { fetchMessages } = useMessagesStore();
+	const handleApiResponse = useApiResponseHandler();
 	const { t } = useTranslation("forms");
 	const recipientRef = useRef();
 	const messageContentRef = useRef();
@@ -42,9 +43,9 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 
 		try {
 			setIsLoading(true);
-			const sendMessage = await sendRequest('POST', messageData, `${serverUrl}/message/send`);
+			const sendMessage = await sendRequest('POST', messageData, `${apiBaseUrl}/message/send`);
 
-			useApiResponseHandler(sendMessage, {
+			await handleApiResponse(sendMessage, {
 				onSuccess: async () => {
 					showInfoToast(t(sendMessage.message, { defaultValue: "sendMessage.successMessage" }));
 					await fetchMessages();
@@ -54,8 +55,8 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 				onError: () => {
 					showErrorToast(t(sendMessage.message, { defaultValue: "sendMessage.errorMessage" }));
 				}
-			})
-		} catch (error) {
+			});
+		} catch {
 			showErrorToast(t("sendMessage.errorMessage"));
 		} finally {
 			handleSetActionState('sended');

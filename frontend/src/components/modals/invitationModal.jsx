@@ -1,45 +1,55 @@
+import { useContext } from 'react';
 import Modal from 'react-modal';
-import { Icon } from '@iconify/react';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { useTranslation } from 'react-i18next';
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import sendRequest from '../../utils/asyncUtils/sendRequest'
 import { formatDbDate } from '../../utils/formattingUtils/formatDateToDisplay';
+import { useInvitationsStore } from '../../store/invitationsStore';
+import { DataContext } from '../../store/dataContext';
 
 export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => {
     const handleApiResponse = useApiResponseHandler();
+    const { refreshData } = useContext(DataContext);
     const { t } = useTranslation("modals");
-    invitationsData && console.log(invitationsData)
+
+    const refreshAfterInvitation = async () => {
+        await useInvitationsStore.getState().fetchInvitations();
+        await refreshData();
+    };
+
     const handleAcceptInvitation = async (id, invitedUser) => {
         const invitationData = { invitationId: id, invitedUserId: invitedUser };
 
         try {
-            const acceptResult = await sendRequest('POST', invitationData, `${serverUrl}/invitation/accept`);
+            const acceptResult = await sendRequest('POST', invitationData, `${apiBaseUrl}/invitation/accept`);
 
             handleApiResponse(acceptResult, {
-                onSuccess: () => {
-                    showInfoToast(t("invitationModal.acceptedMessage")),
-                        onRequestClose()
+                onSuccess: async () => {
+                    showInfoToast(t("invitationModal.acceptedMessage"));
+                    await refreshAfterInvitation();
+                    onRequestClose();
                 },
                 onError: () => showErrorToast(t("invitationModal.failedAccept")),
             });
-        } catch (error) {
+        } catch {
             showErrorToast(t("invitationModal.failedAccept"));
         }
     };
 
     const handleDeclineInvitation = async (id) => {
         try {
-            const declineResult = await sendRequest('POST', { invitationId: id }, `${serverUrl}/invitation/decline`);
+            const declineResult = await sendRequest('POST', { invitationId: id }, `${apiBaseUrl}/invitation/decline`);
             handleApiResponse(declineResult, {
-                onSuccess: () => {
-                    showInfoToast(t("invitationModal.rejectedMessage")),
-                        onRequestClose();
+                onSuccess: async () => {
+                    showInfoToast(t("invitationModal.rejectedMessage"));
+                    await refreshAfterInvitation();
+                    onRequestClose();
                 },
                 onError: () => showErrorToast(t("invitationModal.failedReject"))
             })
-        } catch (error) {
+        } catch {
             showErrorToast(t("invitationModal.failedReject"));
         };
     };

@@ -2,10 +2,6 @@ import moment from 'moment';
 import { momentLocalizer } from 'react-big-calendar';
 import 'moment/locale/pl';
 import 'moment/locale/en-gb';
-import i18next from './i18n';
-
-const pageLang = i18next.language;
-
 const userLanguage = navigator.language;
 const languageCode = userLanguage.split('-')[0];
 

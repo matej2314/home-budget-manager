@@ -5,7 +5,7 @@ import { getData } from '../../../utils/getData';
 import { Icon } from '@iconify/react';
 
 export default function MatesCounter() {
-    const { data, isLoading, error } = useContext(DataContext);
+    const { data, isLoading, dataError: error } = useContext(DataContext);
     const { t } = useTranslation("dashboardComponents");
 
     const matesData = getData(isLoading, error, true, data.houseMates);

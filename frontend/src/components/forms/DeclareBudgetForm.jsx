@@ -1,5 +1,5 @@
-import { useState, useRef } from "react"
-import { serverUrl } from '../../url';
+import { useState, useRef, useContext } from "react"
+import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { CountDeclaredBudgetPeriod } from '../../utils/countingUtils/CountDeclaredBudgetPeriod';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
@@ -9,12 +9,14 @@ import useApiResponseHandler from "../../hooks/useApiResponseHandler";
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import SubmitBtn from "./internal/SubmitBtn";
+import { DataContext } from '../../store/dataContext';
 
-export default function DeclareBudgetForm() {
+export default function DeclareBudgetForm({ onRequestClose }) {
     const [declarationStatus, setDeclarationStatus] = useState({
         sended: false,
         isLoading: false,
     });
+    const { refreshData } = useContext(DataContext);
     const handleApiResponse = useApiResponseHandler();
     const { t } = useTranslation("forms");
     const declaredBudgetRef = useRef();
@@ -37,12 +39,13 @@ export default function DeclareBudgetForm() {
         try {
             setDeclarationStatus({ sended: false, isLoading: true });
 
-            const addBudget = await sendRequest('POST', budgetData, `${serverUrl}/initmonthly/new`);
+            const addBudget = await sendRequest('POST', budgetData, `${apiBaseUrl}/initmonthly/new`);
 
             handleApiResponse(addBudget, {
-                onSuccess: () => {
+                onSuccess: async () => {
                     showInfoToast(t(addBudget.message, { defaultValue: "declareBudget.declaredCorrectlyMessage" }));
-                    setTimeout(onRequestClose, 600);
+                    await refreshData();
+                    if (onRequestClose) setTimeout(onRequestClose, 600);
                 },
                 onError: () => {
                     showErrorToast(t(addBudget.message, { defaultValue: "declareBudget.declareInternalError" }));

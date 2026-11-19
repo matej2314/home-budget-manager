@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { serverUrl } from '../url';
+import { apiBaseUrl } from '../url';
 import fetchData from '../utils/asyncUtils/fetchData';
 
 export const useTransactionsStore = create((set) => ({
@@ -14,7 +14,7 @@ export const useTransactionsStore = create((set) => ({
         set({ actionsLoading: true, actionsDataError: null, isTransactionsFetched: false });
 
         try {
-            const result = await fetchData(`${serverUrl}/board/data/transactions/${page}`);
+            const result = await fetchData(`${apiBaseUrl}/board/data/transactions/${page}`);
             set({
                 actionsData: result.dashboardData.actionsData || [0],
                 actionsTotalPages: result.dashboardData.totalPages || 1,

@@ -1,15 +1,17 @@
 import { useState, useRef } from "react"
 import { useNavigate } from 'react-router-dom';
-import { serverUrl } from "../../url";
+import { apiBaseUrl } from "../../url";
 import sendRequest from "../../utils/asyncUtils/sendRequest";
 import { useTranslation } from "react-i18next";
 import { showErrorToast, showInfoToast } from "../../configs/toastify";
+import { useAuth } from "../../store/authContext";
 
 export default function DashBoardForUser() {
     const [sended, setIsSended] = useState(false);
     const houseNameRef = useRef();
     const { t } = useTranslation("pages");
     const navigate = useNavigate();
+    const { checkSession } = useAuth();
 
     const handleAddHouse = async (e) => {
         e.preventDefault();
@@ -22,15 +24,15 @@ export default function DashBoardForUser() {
 
         try {
             setIsSended(false);
-            const addHouse = await sendRequest('POST', houseData, `${serverUrl}/house/new`);
+            const addHouse = await sendRequest('POST', houseData, `${apiBaseUrl}/house/new`);
             if (addHouse.status === 'success') {
                 showInfoToast(t(`${addHouse.message}`));
+                await checkSession();
                 setTimeout(() => {
-                    window.location.href = "/dashboard";
-                }, 1000)
-
+                    navigate('/dashboard');
+                }, 1000);
             }
-        } catch (error) {
+        } catch {
             showErrorToast("userDashboard.failedError");
         } finally {
             setIsSended(true);

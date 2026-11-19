@@ -1,9 +1,8 @@
-import { useContext } from 'react';
-import { AuthContext } from '../../../store/authContext';
+import { useAuth } from '../../../store/authContext';
 import { useMessagesStore } from '../../../store/messagesStore';
 import Modal from 'react-modal';
 import SendMessageForm from '../../forms/SendMessageForm';
-import { serverUrl } from '../../../url';
+import { apiBaseUrl } from '../../../url';
 import sendRequest from '../../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../../configs/toastify';
 import useApiResponseHandler from '../../../hooks/useApiResponseHandler';
@@ -33,16 +32,18 @@ export function SendMessageModal({ isOpen, onRequestClose, recipient }) {
 export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
 	const { t } = useTranslation("modals");
 	const handleApiResponse = useApiResponseHandler();
+	const { fetchMessages } = useMessagesStore();
 
 	const handleDeleteMessage = async (messageId) => {
 		const delData = {
 			messageId: messageId,
 		};
-		const result = await sendRequest('DELETE', delData, `${serverUrl}/message/delete`);
+		const result = await sendRequest('DELETE', delData, `${apiBaseUrl}/message/delete`);
 
 		handleApiResponse(result, {
-			onSuccess: () => {
+			onSuccess: async () => {
 				showInfoToast(t("deleteMessage.deletedCorrectlyMessage"));
+				await fetchMessages();
 				onRequestClose();
 			},
 			onError: () => {
@@ -68,7 +69,7 @@ export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
 	);
 }
 export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
-	const { user } = useContext(AuthContext);
+	const { user } = useAuth();
 	const { t } = useTranslation("modals");
 
 	return (

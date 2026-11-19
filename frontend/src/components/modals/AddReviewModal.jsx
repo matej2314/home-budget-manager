@@ -1,13 +1,12 @@
 import { useState, useRef } from 'react';
 import Modal from 'react-modal';
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import StarRating from '../StarRating';
 import LoadingModal from '../modals/LoadingModal';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
-import { isNoSQL, isNoXSS } from '../../utils/validation';
 import SubmitBtn from '../forms/internal/SubmitBtn';
 
 export default function AddReviewModal({ isOpen, onRequestClose }) {
@@ -36,7 +35,7 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
 
         try {
             setIsLoading(true);
-            const saveReview = await sendRequest('POST', reviewData, `${serverUrl}/reviews/new`)
+            const saveReview = await sendRequest('POST', reviewData, `${apiBaseUrl}/reviews/new`)
 
             handleApiResponse(saveReview, {
                 onSuccess: () => {

@@ -5,15 +5,17 @@ export const useSortedUniqueData = (data) => {
     const [uniqueDataMap, setUniqueDataMap] = useState(new Map());
 
     useEffect(() => {
-        const newMap = new Map(uniqueDataMap);
-
-        data.labels.forEach((label, index) => {
-            if (!newMap.has(label)) {
-                newMap.set(label, data.dataValues[index]);
-            }
+        // accumulate unique labels across data updates (chart series)
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- sync derived map from data prop
+        setUniqueDataMap((prev) => {
+            const newMap = new Map(prev);
+            data.labels.forEach((label, index) => {
+                if (!newMap.has(label)) {
+                    newMap.set(label, data.dataValues[index]);
+                }
+            });
+            return newMap;
         });
-
-        setUniqueDataMap(newMap);
     }, [data]);
 
     const sortedData = [...uniqueDataMap.entries()].sort((a, b) => new Date(a[0]) - new Date(b[0]));

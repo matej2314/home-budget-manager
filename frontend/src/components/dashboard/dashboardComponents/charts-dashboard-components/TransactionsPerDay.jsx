@@ -1,10 +1,8 @@
 import LineChart from '../../../charts/LineChart';
-import { useIsMobile } from '../../../../hooks/useIsMobile';
 import { useTranslation } from 'react-i18next';
 import { useSortedUniqueData } from '../../../../hooks/useSortedUniqueData';
 
 export default function TransactionsPerDay({ data }) {
-    const isMobile = useIsMobile();
     const { uniqueLabels, uniqueDataValues } = useSortedUniqueData(data);
     const { t } = useTranslation("dashboardComponents");
 

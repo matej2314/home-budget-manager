@@ -36,6 +36,7 @@ const routes = [
     },
     {
         // shell dashboard: rdzeń budżetu + świadomy wyjątek URL adminpanel pod tym samym layoutem
+        // Guard UI chroni UX dashboardu — nie zastępuje middleware API (SPEC-FRONTEND F-2 / F-15).
         path: 'dashboard',
         element: <DataProvider>
             <SocketProvider>

@@ -1,35 +1,26 @@
-import { useContext, useState, useEffect } from "react"
+import { useContext } from "react"
 import { useSocket } from "../../../store/socketContext";
 import { DataContext } from '../../../store/dataContext';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 
 export default function MonthlyBudget() {
-    const { data, isLoading, error } = useContext(DataContext);
+    const { data, isLoading, dataError: error } = useContext(DataContext);
     const { connected, messages, error: socketError } = useSocket();
-    const [currentInitBudget, setCurrentInitBudget] = useState('000');
-    const [currentBudgetPeriod, setCurrentBudgetPeriod] = useState('00-00');
     const { t } = useTranslation("dashboardComponents");
 
-    useEffect(() => {
-        if (!isLoading && !error && data?.houseData?.length > 0) {
-            const houseData = data.houseData[0];
-            const lastInitBudget = houseData?.lastInitialBudget;
-            const startPeriod = houseData?.initialDefinedAt;
-            const endPeriod = houseData?.initialValidUntil;
-            setCurrentInitBudget(() => lastInitBudget);
-            setCurrentBudgetPeriod(() => `${startPeriod} - ${endPeriod}`);
-        };
-    }, [data, isLoading, error]);
+    const houseData = (!isLoading && !error && data?.houseData?.length > 0) ? data.houseData[0] : null;
+    const boardBudget = houseData?.lastInitialBudget;
+    const boardPeriod = houseData
+        ? `${houseData.initialDefinedAt} - ${houseData.initialValidUntil}`
+        : null;
 
-    useEffect(() => {
-        if (!socketError && connected && messages?.initBudgets?.length > 0) {
+    const latestBudget = (!socketError && connected && messages?.initBudgets?.length > 0)
+        ? messages.initBudgets[0]
+        : null;
 
-            const latestBudget = messages.initBudgets[0];
-            setCurrentInitBudget(() => latestBudget?.initBudget);
-            setCurrentBudgetPeriod(() => latestBudget?.budgetPeriod);
-        }
-    }, [socketError, connected, messages]);
+    const currentInitBudget = latestBudget?.initBudget ?? boardBudget ?? '000';
+    const currentBudgetPeriod = latestBudget?.budgetPeriod ?? boardPeriod ?? '00-00';
 
     return (
         <div id="monthlyBudget"

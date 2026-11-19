@@ -1,6 +1,5 @@
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useHomePageStore from '../store/homePageStore';
-import { getData } from "../utils/getData";
 import { useIsMobile } from '../hooks/useIsMobile';
 import { useTranslation } from 'react-i18next';
 import AppGallery from "../components/home-page-components/internal/AppGallery";
@@ -11,7 +10,7 @@ import LoadingModal from '../components/modals/LoadingModal';
 
 export default function AboutUs() {
     useDocumentTitle('About us');
-    const { homePageData, homePageDataError, homePageDataLoading } = useHomePageStore();
+    const { homePageData, homePageDataLoading } = useHomePageStore();
     const { isMobile } = useIsMobile();
     const { t } = useTranslation('aboutUs');
 

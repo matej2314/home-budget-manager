@@ -11,6 +11,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-19 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza3-faza4-stan-http.md` oznaczono Fazę 3 (kroki 3.1–3.3) i Fazę 4 (kroki 4.1–4.3) jako `WYKONANY` oraz milestone’y „Stan zgodny z R5 / F-4–F-7” i „SPA woła API pod `/api/v1`” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego + bramka BE dual mount).
 - **2026-11-13 — sync statusów z feature planu:** po wycinku `feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza1-faza2-mapa-spa.md` oznaczono Fazę 1 (kroki 1.1–1.2) i Fazę 2 (kroki 2.1–2.3) jako `WYKONANY` oraz milestone’y „Frontend na zaktualizowanych zależnościach” i „Mapa SPA zgodna z normą katalogów” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”).
 
 ### Założenie as-is vs docs
@@ -137,7 +138,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 3 — Model stanu (Context + Zustand)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Domknięcie modelu stanu v1 bez zmiany paradygmatu: **Context** w `store/` na sesję / socket / data / theme; **Zustand** na kolekcje domenowe z jasnym właścicielem per obszar; lokalny stan UI zostaje lokalny, gdy nie jest współdzielony (SPEC-FRONTEND F-4–F-7, R5). Odświeżanie widoku po mutacji HTTP i po ustalonych eventach WS — bez React Query / SWR. Faza może biec równolegle do prac backendu.
 
@@ -149,7 +150,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 3.1 — Context: sesja / socket / data / theme
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Uporządkowanie Contextów cross-cutting (auth, socket, data, theme) w `store/` — stan sesji, połączenia i UI współdzielony, bez wrzucania list domenowych „przy okazji”.
 
@@ -160,7 +161,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 3.2 — Zustand: właściciele store per obszar
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Store’y domenowe (m.in. transakcje, wiadomości, zaproszenia, powiadomienia) z jasną granicą odpowiedzialności per obszar (F-5).
 
@@ -171,7 +172,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 3.3 — Stan lokalny UI i odświeżanie po mutacji
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Lokalny stan komponentu zostaje lokalny, gdy nie jest współdzielony (F-6). Po mutacji HTTP store/widok są aktualizowane; przygotowanie pod eventy WS bez własnego protokołu.
 
@@ -183,6 +184,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 ---
 
 ## MILESTONE — Stan zgodny z R5 / F-4–F-7
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 3. Model stanu SPA jest zgodny z normą v1; wolno przełączać klienta na kontrakt HTTP `/api/v1`.
 
@@ -196,7 +199,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 4 — Kontrakt klienta HTTP (`/api/v1`, credentials, envelope)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Przełączenie klienta SPA na prefiks **`/api/v1`**, żądania z credentials (cookie `SESSID`), obsługa 401/403 bez udawania uprawnień oraz mapowanie envelope `status` / `message` pod późniejsze i18n — zgodnie z `docs/dokumentacja_komunikacji.md`, SPEC-KOMUNIKACJA i SPEC-FRONTEND F-3, F-8, F-15. To **zewnętrzna bramka FE** względem dual mount legacy w majorze backendu: po tej fazie klient woła v1; usunięcie legacy po stronie API pozostaje poza tym planem.
 
@@ -211,7 +214,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 4.1 — Prefiks `/api/v1` w konfiguracji klienta
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Ujednolicenie bazowego URL API (i powiązanej konfiguracji deweloperskiej / proxy) tak, by wszystkie wywołania HTTP klienta trafiały pod `/api/v1` — zgodnie z docs komunikacji i SPEC-FRONTEND F-3.
 
@@ -223,7 +226,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 4.2 — Credentials oraz obsługa 401/403
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Egzekwowanie `credentials` przy HTTP oraz czytelna obsługa odmowy auth/authz w UI — bez traktowania ukrycia trasy jako autoryzacji (F-8, F-15, SPEC-BEZPIECZENSTWO po stronie klienta).
 
@@ -235,7 +238,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 4.3 — Envelope `status` / `message` pod i18n
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Spójna konsumpcja envelope z API; `message` traktowane jako kandydat na klucz i18n (gotowość pod Fazę 6), bez big-bang migracji wszystkich stringów w tej fazie.
 
@@ -248,6 +251,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 ---
 
 ## MILESTONE — SPA woła API pod `/api/v1`
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 4. Klient jest na kontrakcie v1; to domknięcie zewnętrznej bramki FE względem dual mount backendu. Usunięcie legacy mount po stronie API **nie** jest DoD tej bramki (poza major FE i poza major BE — osobna decyzja po potwierdzeniu cutoveru).
 

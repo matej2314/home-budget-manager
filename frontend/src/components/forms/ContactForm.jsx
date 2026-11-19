@@ -1,15 +1,13 @@
 import { useState, useRef } from 'react';
-import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import SendMessageBtn from './internal/SendMessageBtn';
-import { isNoXSS, isValidEmail } from '../../utils/validation';
 import LoadingModal from '../modals/LoadingModal';
 
 export default function ContactForm() {
     const [actionState, setActionState] = useState({ type: null });
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading] = useState(false);
     const { t } = useTranslation("forms");
     const userNameRef = useRef();
     const userEmailRef = useRef();

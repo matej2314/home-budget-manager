@@ -1,16 +1,16 @@
 import { useContext, useEffect, useMemo } from 'react';
 import { DataContext } from '../store/dataContext';
-import { AuthContext } from '../store/authContext';
+import { useAuth } from '../store/authContext';
 import { useTransactionsStore } from '../store/transactionsStore';
 import useProcessedData from './useProcessedData';
 import { getData } from '../utils/getData';
 
 /** Orkiestracja danych widoku house info — bez reguł uprawnień jako SoT. */
 export default function useHouseInfoDashboard() {
-  const { data, isLoading, error: contextError } = useContext(DataContext);
+  const { data, isLoading, dataError: contextError } = useContext(DataContext);
   const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } =
     useTransactionsStore();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const { houseData, houseMates, statsData, dailyData } = data;
 
   useEffect(() => {

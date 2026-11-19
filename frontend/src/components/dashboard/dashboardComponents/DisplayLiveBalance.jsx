@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { DataContext } from "../../../store/dataContext";
 import { useSocket } from "../../../store/socketContext";
 import { useTranslation } from 'react-i18next';
@@ -11,25 +11,16 @@ export default function DisplayLiveBalance() {
     const {
         data,
         isLoading: dataLoading,
-        error: dataError
+        dataError,
     } = useContext(DataContext);
 
-    const [currentBalance, setCurrentBalance] = useState(null);
-
-    useEffect(() => {
-        if (!dataLoading && data && !dataError && data?.houseData?.length) {
-            setCurrentBalance(data.houseData[0].liveBalance)
-        }
-    }, [dataLoading, data, dataError]);
-
-    useEffect(() => {
-        if (connected && messages && messages?.balanceUpdates?.length > 0) {
-            const { newBalance } = messages.balanceUpdates[0];
-            if (newBalance) {
-                setCurrentBalance(newBalance);
-            }
-        }
-    }, [messages, connected]);
+    const boardBalance = (!dataLoading && data && !dataError && data?.houseData?.length)
+        ? data.houseData[0].liveBalance
+        : null;
+    const socketBalance = (connected && messages?.balanceUpdates?.length > 0)
+        ? messages.balanceUpdates[0].newBalance
+        : null;
+    const currentBalance = socketBalance || boardBalance;
 
     return (
         <div id="liveBalance"

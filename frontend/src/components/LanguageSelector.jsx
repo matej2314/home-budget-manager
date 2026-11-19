@@ -6,8 +6,19 @@ import i18next from 'i18next';
 import { useIsMobile } from '../hooks/useIsMobile';
 import { setLocalStorage } from '../utils/storageUtils';
 
+function resolveInitialLang() {
+    const storedLang = localStorage.getItem('i18nextLng');
+    if (storedLang) {
+        i18next.changeLanguage(storedLang);
+        return storedLang;
+    }
+    const browserLang = navigator.language.split('-')[0];
+    i18next.changeLanguage(browserLang);
+    return browserLang;
+}
+
 export default function LanguageSwitch({ isHomepage }) {
-    const [selectedLang, setSelectedLang] = useState(i18next.language);
+    const [selectedLang, setSelectedLang] = useState(resolveInitialLang);
     const { isMobile } = useIsMobile();
 
 
@@ -66,18 +77,6 @@ export default function LanguageSwitch({ isHomepage }) {
             setLocalStorage("i18nextLng", newLang);
         }
     };
-
-    useEffect(() => {
-        const storedLang = localStorage.getItem('i18nextLng');
-        if (storedLang) {
-            setSelectedLang(storedLang);
-            i18next.changeLanguage(storedLang);
-        } else {
-            const browserLang = navigator.language.split('-')[0];
-            setSelectedLang(browserLang);
-            i18next.changeLanguage(browserLang);
-        }
-    }, []);
 
     useEffect(() => {
         const handleLanguageChange = (lng) => setSelectedLang(lng);

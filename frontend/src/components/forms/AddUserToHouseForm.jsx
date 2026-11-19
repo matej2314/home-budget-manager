@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { serverUrl } from '../../url';
+import { useRef, useState, useContext } from "react";
+import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from "../../configs/toastify";
 import { isValidUsername, isNoSQL } from "../../utils/validation";
@@ -8,12 +8,14 @@ import useApiResponseHandler from "../../hooks/useApiResponseHandler";
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from "./internal/SubmitBtn";
+import { DataContext } from '../../store/dataContext';
 
 export default function AddUserToHouseForm({ onClose }) {
     const [inviteStatus, setInviteStatus] = useState({
         sended: false,
         isLoading: false,
     })
+    const { refreshData } = useContext(DataContext);
     const handleApiResponse = useApiResponseHandler();
     const { t } = useTranslation("forms");
     const invitedUser = useRef();
@@ -31,12 +33,13 @@ export default function AddUserToHouseForm({ onClose }) {
 
         try {
             setInviteStatus({ sended: false, isLoading: true });
-            const inviteUser = await sendRequest('POST', data, `${serverUrl}/users/invite`)
+            const inviteUser = await sendRequest('POST', data, `${apiBaseUrl}/users/invite`)
 
             handleApiResponse(inviteUser, {
-                onSuccess: () => {
+                onSuccess: async () => {
                     showInfoToast(t(inviteUser.message));
                     invitedUser.current.value = '';
+                    await refreshData();
                     setTimeout(onClose, 500);
                 },
                 onError: () => {

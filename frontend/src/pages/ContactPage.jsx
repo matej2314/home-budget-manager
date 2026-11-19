@@ -1,6 +1,5 @@
 import ContactForm from '../components/forms/ContactForm';
 import useDocumentTitle from '../hooks/useDocumentTitle';
-import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function ContactPage() {
     useDocumentTitle('Contact');

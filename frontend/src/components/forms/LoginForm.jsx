@@ -1,15 +1,14 @@
-import { useRef, useContext, useEffect, useState, useMemo } from 'react';
-import { replace, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../store/authContext';
+import { useRef, useState } from 'react';
+import { useAuth } from '../../store/authContext';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-import { showInfoToast, showErrorToast } from '../../configs/toastify';
-import { isValidPassword, isNoSQL, isNoXSS, isValidEmail } from '../../utils/validation';
+import { showErrorToast } from '../../configs/toastify';
+import { isValidPassword, isValidEmail } from '../../utils/validation';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from './internal/SubmitBtn';
 
 export default function LoginForm() {
-    const { login, loginStatus } = useContext(AuthContext);
+    const { login, loginStatus } = useAuth();
     const [sended, setSended] = useState(false);
     const { t } = useTranslation("forms");
     const email = useRef();

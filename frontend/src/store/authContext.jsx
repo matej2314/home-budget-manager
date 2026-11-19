@@ -1,9 +1,19 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext, useRef } from "react";
 import sendRequest from '../utils/asyncUtils/sendRequest';
 import fetchData from "../utils/asyncUtils/fetchData";
-import { serverUrl } from '../url';
+import { registerAuthFailureHandlers } from '../utils/asyncUtils/authFailureBridge';
+import { showErrorToast } from '../configs/toastify';
+import { apiBaseUrl } from '../url';
 
 export const AuthContext = createContext();
+
+export const useAuth = () => {
+    const ctx = useContext(AuthContext);
+    if (!ctx) {
+        throw new Error('useAuth must be used within AuthProvider');
+    }
+    return ctx;
+};
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,12 +35,10 @@ export const AuthProvider = ({ children }) => {
         }));
     };
 
-    const emptyUser = { id: '', userName: '', role: '', avatar: '', cookiesConsent: false };
-
     const register = async (data) => {
         setSignUpStatus({ error: null, isLoading: true, message: null });
         try {
-            const response = await sendRequest('POST', data, `${serverUrl}/auth/signup`);
+            const response = await sendRequest('POST', data, `${apiBaseUrl}/auth/signup`);
 
             if (response.status === 'error') {
                 setSignUpStatus((prev) => ({ ...prev, error: response.message }));
@@ -49,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         setLoginStatus({ error: null, isLoading: true, message: null });
 
         try {
-            const response = await sendRequest('POST', data, `${serverUrl}/auth/login`);
+            const response = await sendRequest('POST', data, `${apiBaseUrl}/auth/login`);
 
             if (response.status === 'success') {
                 updateUser({
@@ -76,7 +84,7 @@ export const AuthProvider = ({ children }) => {
         setLoginStatus({ error: null, isLoading: true, message: null });
 
         try {
-            const response = await sendRequest('POST', {}, `${serverUrl}/auth/logout`);
+            const response = await sendRequest('POST', {}, `${apiBaseUrl}/auth/logout`);
 
             if (response.status === 'success') {
                 setIsAuthenticated(false);
@@ -91,16 +99,30 @@ export const AuthProvider = ({ children }) => {
             };
 
         } catch (error) {
+            // często 401 przy już martwej sesji — i tak czyść lokalny stan
+            setIsAuthenticated(false);
+            setUser({
+                id: '',
+                userName: '',
+                role: '',
+                avatar: '',
+                cookiesConsent: false,
+            });
             setLoginStatus((prev) => ({ ...prev, error: error.message }));
         } finally {
             setLoginStatus((prev) => ({ ...prev, isLoading: false }));
         };
     };
 
+    const logoutRef = useRef(logout);
+    logoutRef.current = logout;
+    const isAuthenticatedRef = useRef(isAuthenticated);
+    isAuthenticatedRef.current = isAuthenticated;
+
     const checkSession = async () => {
         setSessionStatus({ error: null, isLoading: true });
         try {
-            const response = await fetchData(`${serverUrl}/auth/verify`);
+            const response = await fetchData(`${apiBaseUrl}/auth/verify`);
 
             if (response && response.status === 'success') {
                 updateUser({
@@ -133,9 +155,24 @@ export const AuthProvider = ({ children }) => {
         checkSession();
     }, []);
 
+    useEffect(() => {
+        registerAuthFailureHandlers({
+            onUnauthorized: async (messageKey) => {
+                // checkSession /auth/verify bez cookie też jest 401 — bez toasta dla gościa
+                if (!isAuthenticatedRef.current) return;
+                showErrorToast(messageKey || 'Session expired');
+                await logoutRef.current();
+            },
+            onForbidden: (messageKey) => {
+                showErrorToast(messageKey || 'Forbidden');
+            },
+        });
+    }, []);
+
     return (
         <AuthContext.Provider value={{
-            user, isAuthenticated, loginStatus, signUpStatus, sessionStatus, register, login, logout
+            user, isAuthenticated, loginStatus, signUpStatus, sessionStatus,
+            register, login, logout, checkSession,
         }}>
             {children}
         </AuthContext.Provider>

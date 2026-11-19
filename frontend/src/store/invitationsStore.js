@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { serverUrl } from "../url";
+import { apiBaseUrl } from "../url";
 import fetchData from "../utils/asyncUtils/fetchData";
 
 
@@ -10,10 +10,10 @@ export const useInvitationsStore = create((set) => ({
     fetchedInvitations: false,
 
     fetchInvitations: async () => {
-        set({ invitationsLoading: true, invitationsLoadingError: null, fetchInvitations: false });
+        set({ invitationsLoading: true, invitationsLoadingError: null, fetchedInvitations: false });
 
         try {
-            const invitations = await fetchData(`${serverUrl}/invitation/collection`);
+            const invitations = await fetchData(`${apiBaseUrl}/invitation/collection`);
             set({ invitationsData: invitations.invitations });
         } catch (error) {
             set({ invitationsData: [], invitationsLoadingError: error, fetchedInvitations: false });

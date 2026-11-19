@@ -1,9 +1,7 @@
 import BarChart from "../../../charts/BarChart";
-import { useIsMobile } from '../../../../hooks/useIsMobile';
 import { useTranslation } from 'react-i18next';
 
 export default function CategoriesValuesChart({ labels, values }) {
-    const isMobile = useIsMobile();
     const { t } = useTranslation("dashboardComponents");
 
     return (

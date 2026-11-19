@@ -1,14 +1,12 @@
 import { useContext } from 'react';
 import { DataContext } from '../../../../store/dataContext';
 import useProcessedData from '../../../../hooks/useProcessedData';
-import { useIsMobile } from '../../../../hooks/useIsMobile';
 import { useTranslation } from 'react-i18next';
 import BarChart from '../../../charts/BarChart';
 import { getData } from '../../../../utils/getData';
 
 export default function LossOrGainChart() {
-    const { data, isLoading, error } = useContext(DataContext);
-    const { isMobile, isTablet } = useIsMobile();
+    const { data, isLoading, dataError: error } = useContext(DataContext);
     const { t } = useTranslation("dashboardComponents");
     const { statsData } = data;
 

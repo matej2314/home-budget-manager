@@ -1,6 +1,6 @@
-import { useRef, useContext, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../store/authContext';
+import { useAuth } from '../../store/authContext';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import { isValidUsername, isValidPassword, isValidEmail } from '../../utils/vali
 import SubmitBtn from './internal/SubmitBtn';
 
 export default function SignUpForm() {
-    const { register, signUpStatus } = useContext(AuthContext);
+    const { register, signUpStatus } = useAuth();
     const [sended, setSended] = useState(false);
     const [showCookiesSettings, setShowCookiesSettings] = useState(false);
     const [cookiesConsent, setCookiesConsent] = useState(null);

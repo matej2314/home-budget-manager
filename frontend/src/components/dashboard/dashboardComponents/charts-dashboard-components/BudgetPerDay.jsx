@@ -1,10 +1,8 @@
 import LineChart from "../../../charts/LineChart"
-import { useIsMobile } from "../../../../hooks/useIsMobile"
 import { useSortedUniqueData } from "../../../../hooks/useSortedUniqueData";
 import { useTranslation } from 'react-i18next';
 
 export default function BudgetPerDay({ data }) {
-    const isMobile = useIsMobile();
     const { uniqueLabels, uniqueDataValues } = useSortedUniqueData(data);
     const { t } = useTranslation("dashboardComponents");
 

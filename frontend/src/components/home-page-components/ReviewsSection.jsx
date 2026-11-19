@@ -1,5 +1,5 @@
 import StarRating from "../StarRating";
-import { serverUrl } from '../../url';
+import { apiBaseUrl } from '../../url';
 import { formatDbDate } from "../../utils/formattingUtils/formatDateToDisplay";
 import { useTranslation } from "react-i18next";
 
@@ -19,7 +19,7 @@ export default function ReviewsSection({ reviews }) {
                         <div
                             id="photo"
                             className="w-16 h-16 mt-3 md:mt-0 md:w-32 md:h-32 rounded-full bg-gray-600">
-                            <img className=" h-full rounded-full" src={`${serverUrl}/avatars/avatar/${review.userId}`} />
+                            <img className=" h-full rounded-full" src={`${apiBaseUrl}/avatars/avatar/${review.userId}`} />
                         </div>
                         <div className="h-full flex flex-col items-center md:gap-5">
                             <div id="reviewData" className=" h-fit flex flex-col justify-start">

@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { showInfoToast, showErrorToast } from "../../configs/toastify"
 import sendRequest from './sendRequest';
-import { serverUrl } from "../../url";
+import { apiBaseUrl } from "../../url";
 
 export const markMessage = async (message, user, refreshData, mode) => {
     const tCommon = (key, options = {}) => t(key, { ns: 'common', ...options });
@@ -10,7 +10,7 @@ export const markMessage = async (message, user, refreshData, mode) => {
         showErrorToast(tCommon("receiverErrorMsg"));
         return;
     } else if (user.userName === message.recipient) {
-        const markMessage = await sendRequest('PUT', { messageId: message.id }, `${serverUrl}/message/readed`);
+        const markMessage = await sendRequest('PUT', { messageId: message.id }, `${apiBaseUrl}/message/readed`);
 
         if (markMessage.status === 'error') {
             showErrorToast(tCommon("markErrorMsg"));

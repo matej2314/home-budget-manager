@@ -5,7 +5,6 @@ import { Server } from 'socket.io';
 import getMysqlExpireDate from '../utils/getMySqlExpireDate.js';
 import authMiddleware from '../middlewares/websocket/authMiddleware.js';
 import socketQueries from '../database/websocketQueries.js';
-import path from 'node:path';
 import { allowedOrigins } from './allowedOrigins.js';
 
 let ioInstance;
@@ -144,7 +143,7 @@ const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
 			}
 		});
 		logger.info(`Websocket message for housemates of house: ${houseId} was sent`);
-	} catch (error) {
+	} catch {
 		logger.error(`An error occurred during broadcasting websocket message for housemates of house: ${houseId}`);
 	} finally {
 		if (connection) connection.release();

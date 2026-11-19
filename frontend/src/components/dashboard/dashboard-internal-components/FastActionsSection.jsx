@@ -1,5 +1,4 @@
-import { useContext } from "react"
-import { AuthContext } from "../../../store/authContext";
+import { useAuth } from '../../../store/authContext';
 import useModal from "../../../hooks/useModal";
 import { useTranslation } from "react-i18next";
 import ModalComponent from "./ModalComponent";
@@ -19,7 +18,7 @@ export default function FastActions({ profilePage, action }) {
     const { modal, openModal, closeModal } = useModal({ isOpen: false, type: null });
     const { t: tInternal } = useTranslation("dashboardInternal");
     const { t: tCommon } = useTranslation("common");
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
 
     const handleButtonClick = (type) => {
         if (typeof action === 'function') {

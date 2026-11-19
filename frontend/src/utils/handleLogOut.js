@@ -10,7 +10,7 @@ export const loggingOut = async (logout, navigate) => {
             navigate('/');
         }, 600);
 
-    } catch (error) {
+    } catch {
         showErrorToast("Failed to log out.");
     }
 };

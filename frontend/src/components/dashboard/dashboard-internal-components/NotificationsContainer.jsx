@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { iconsMap } from '../../../utils/notificationsIconsMap';
 
 export default function NotificationsContainer({ notifications, clickAction }) {
-    const { data, isLoading, error } = useContext(DataContext);
+    const { data, isLoading, dataError: error } = useContext(DataContext);
     const { t: tInternal } = useTranslation("dashboardInternal");
     const { t: tCommon } = useTranslation("common")
 
