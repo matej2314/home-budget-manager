@@ -5,9 +5,9 @@ export default function BalanceBudgetComparison({ data }) {
     const { t } = useTranslation("dashboardComponents");
 
     return (
-        <div id="balanceBudgetcompare" className="w-screen-lg lg:w-1/2 h-fit flex flex-col justify-center items-start border-2 border-slate-300 pt-3 px-3 flex-grow flex-shrink">
+        <div id="balanceBudgetcompare" className="w-screen-lg lg:w-1/2 h-fit flex flex-col justify-center items-start border-2 border-slate-300 pt-3 px-3 grow shrink">
             <h2 className="w-full h-fit flex justify-center text-xl mb-3">{t("balanceBudgetCompare.heading")}</h2>
-            <div className="w-full h-[15rem] indirect:w-[88vw] md:h-[35rem] md:w-[40rem] flex justify-center">
+            <div className="w-full h-60 indirect:w-[88vw] md:h-140 md:w-160 flex justify-center">
                 <BarChart
                     labels={data.labels}
                     dataValues={data.dataValues}

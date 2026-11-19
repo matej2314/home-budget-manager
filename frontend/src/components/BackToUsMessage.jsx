@@ -27,7 +27,7 @@ const BackToUsMessage = () => {
             clearInterval(textInterval);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
-    }, []);
+    }, [t]);
 
     return null;
 };

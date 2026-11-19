@@ -14,7 +14,7 @@ export default function NotificationsContainer({ notifications, clickAction }) {
 
     return (
         <motion.div
-            className='absolute top-[3.5rem] indirect:top-[3.3rem] indirectxl:top-[3.5rem] md:top-[3.3rem] xl:top-[2.8rem] left-[1.5rem] indirect:left-[5.5rem] sm:left-[5.3rem] md:left-[14.5rem] lg:left-[16.6rem] bg-white shadow-lg border-2 border-slate-500/80 rounded-md xl:mt-2 p-2 xl:w-[23.5rem] z-10'
+            className='absolute top-14 indirect:top-[3.3rem] indirectxl:top-14 md:top-[3.3rem] xl:top-[2.8rem] left-6 indirect:left-22 sm:left-[5.3rem] md:left-58 lg:left-[16.6rem] bg-white shadow-lg border-2 border-slate-500/80 rounded-md xl:mt-2 p-2 xl:w-94 z-10'
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -26,7 +26,7 @@ export default function NotificationsContainer({ notifications, clickAction }) {
                         {Object.entries(notifications).map(([category, items]) => items.map((notification, index) => (
                             <li
                                 key={`${category}-${index}`}
-                                className={`w-full h-fit flex items-center gap-2 ${index === items.length - 1 ? 'border-0' : 'border-b-[1px] border-slate-300 pb-2'} `}
+                                className={`w-full h-fit flex items-center gap-2 ${index === items.length - 1 ? 'border-0' : 'border-b border-slate-300 pb-2'} `}
                             >
                                 <Icon icon={iconsMap[category]} width={25} height={25} />
                                 <p className='w-full h-fit flex items-center justify-center text-nowrap'>

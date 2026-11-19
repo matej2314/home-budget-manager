@@ -25,8 +25,8 @@ export default function OpenMenuButton({ isOpened, actionCallback, home }) {
             onDragStart={actionCallback}
             onClick={actionCallback}
             className={`absolute 
-            ${!home ? 'top-[4rem] left-0' : 'top-[0.5rem]'} 
-            ${isOpened && home ? 'bg-transparent border-0 p-0 mt-2 ml-[0.6rem] indirect:ml-[1rem] indirect:mt-2.5 indirectxl:mt-[0.45rem] md:mt-2 md:ml-2' : 'p-2 border-2 border-slate-300'} 
+            ${!home ? 'top-16 left-0' : 'top-2'} 
+            ${isOpened && home ? 'bg-transparent border-0 p-0 mt-2 ml-[0.6rem] indirect:ml-4 indirect:mt-2.5 indirectxl:mt-[0.45rem] md:mt-2 md:ml-2' : 'p-2 border-2 border-slate-300'} 
             text-slate-100 rounded-md z-10 
             ${isOpened && home ? '' : 'bg-slate-500'}`}
         >

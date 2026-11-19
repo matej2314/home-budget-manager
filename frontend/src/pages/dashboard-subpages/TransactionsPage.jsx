@@ -22,7 +22,7 @@ export default function TransactionsPage() {
         if (!isTransactionsFetched) {
             fetchTransactions();
         };
-    }, [isTransactionsFetched]);
+    }, [isTransactionsFetched, fetchTransactions]);
 
     const transactions = Array.isArray(actionsData) ? actionsData : [];
 

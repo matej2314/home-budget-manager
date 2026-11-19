@@ -5,10 +5,10 @@ export default function TransactionsOverTime({ data }) {
     const { t } = useTranslation("dashboardComponents");
 
     return (
-        <div id="transactionsOverTime" className="w-fit h-fit flex flex-col flex-wrap justify-center items-center lg:mr-5 border-2 border-slate-300 flex-grow flex-shrink">
+        <div id="transactionsOverTime" className="w-fit h-fit flex flex-col flex-wrap justify-center items-center lg:mr-5 border-2 border-slate-300 grow shrink">
             <h2 className="w-full h-fit flex justify-center text-xl mb-3">{t("actionsOverTime.heading")}</h2>
             <div className="w-full h-full">
-                <div className="w-full h-[25rem] indirect:w-[90vw] md:h-[35rem] md:w-[40rem] flex justify-center">
+                <div className="w-full h-100 indirect:w-[90vw] md:h-140 md:w-160 flex justify-center">
                     <LineChart
                         labels={data.labels}
                         dataValues={data.dataValues}

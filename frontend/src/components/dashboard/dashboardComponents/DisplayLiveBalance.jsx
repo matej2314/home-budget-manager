@@ -24,7 +24,7 @@ export default function DisplayLiveBalance() {
 
     return (
         <div id="liveBalance"
-            className="lg:w-1/4 h-[8.5rem] bg-gradient-to-br from-sky-400 via-blue-400 to-sky-600/95 text-xl text-white flex flex-col justify-start items-center rounded-md pt-4 relative"
+            className="lg:w-1/4 h-34 bg-linear-to-br from-sky-400 via-blue-400 to-sky-600/95 text-xl text-white flex flex-col justify-start items-center rounded-md pt-4 relative"
             style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
         >
             <div className="h-11/12 w-11/12 flex flex-col justify-center items-center gap-4">

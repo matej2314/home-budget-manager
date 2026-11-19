@@ -85,7 +85,7 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 				<label className="w-full h-fit flex justify-center" htmlFor="messageContent">
 					{t("sendMessage.messageLabel")}
 				</label>
-				<div className="relative w-[13rem] indirect:w-full indirectxl:w-10/12  sm:w-9/12 md:w-8/12 lg:w-6/12 xl:w-11/12 flex justify-center">
+				<div className="relative w-52 indirect:w-full indirectxl:w-10/12  sm:w-9/12 md:w-8/12 lg:w-6/12 xl:w-11/12 flex justify-center">
 					<textarea
 						className=" resize-none input-base"
 						name="messageContent"

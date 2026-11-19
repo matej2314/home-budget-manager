@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../store/authContext';
@@ -27,16 +27,24 @@ export default function useDashboardShell() {
   const { t } = useTranslation('common');
 
   const liveMessages = connected && messages?.newMessages;
-  const dbInvitations = (!invitationsLoading && !invitationsLoadingError && invitationsData) || [];
   const invitationsMessages = connected && messages?.invitations;
   const isMateOrHost = mateOrHostRole(user);
   const isUser = isUserRole(user);
   const isHost = isHostRole(user);
 
-  const allInvitations = [
-    ...(Array.isArray(dbInvitations) ? dbInvitations : []),
-    ...(Array.isArray(invitationsMessages) ? invitationsMessages : []),
-  ];
+  const allInvitations = useMemo(() => {
+    const dbInvitations =
+      (!invitationsLoading && !invitationsLoadingError && invitationsData) || [];
+    return [
+      ...(Array.isArray(dbInvitations) ? dbInvitations : []),
+      ...(Array.isArray(invitationsMessages) ? invitationsMessages : []),
+    ];
+  }, [
+    invitationsLoading,
+    invitationsLoadingError,
+    invitationsData,
+    invitationsMessages,
+  ]);
 
   useEffect(() => {
     if (connected && liveMessages?.length > 0) {
@@ -54,7 +62,21 @@ export default function useDashboardShell() {
     if (allInvitations.length > 0) {
       openModal('invitation', allInvitations);
     }
-  }, [liveMessages, connected, loginStatus, isAuthenticated, isUser, fetchedInvitations]);
+  }, [
+    liveMessages,
+    connected,
+    loginStatus,
+    isAuthenticated,
+    isUser,
+    fetchedInvitations,
+    invitationsLoading,
+    invitationsLoadingError,
+    allInvitations,
+    fetchInvitations,
+    navigate,
+    openModal,
+    t,
+  ]);
 
   return {
     loginStatus,

@@ -24,7 +24,7 @@ export default function MonthlyBudget() {
 
     return (
         <div id="monthlyBudget"
-            className="lg:w-1/4 h-[8.5rem] bg-gradient-to-br backdrop-blur-xl from-green-500/50 via-green-500/90 to-green-600/75 lg:text-xl text-white flex flex-col justify-start items-center rounded-md pt-4"
+            className="lg:w-1/4 h-34 bg-linear-to-br backdrop-blur-xl from-green-500/50 via-green-500/90 to-green-600/75 lg:text-xl text-white flex flex-col justify-start items-center rounded-md pt-4"
             style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
         >
             <div className="absolute bottom-0 right-0 flex justify-center items-center">

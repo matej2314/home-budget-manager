@@ -7,7 +7,7 @@ export default function CategoriesValuesChart({ labels, values }) {
     return (
         <div className="w-full flex flex-col items-center justify-center gap-7">
             <h2 className="text-xl">{t("categoriesValues.heading")}</h2>
-            <div className="w-full h-[15rem] lg:h-[35rem]">
+            <div className="w-full h-60 lg:h-140">
                 <BarChart
                     labels={labels}
                     dataValues={values}

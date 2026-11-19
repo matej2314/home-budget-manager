@@ -11,7 +11,7 @@ export default function LastTransactionsList({ limit }) {
         if (!isTransactionsFetched) {
             fetchTransactions();
         };
-    }, [isTransactionsFetched]);
+    }, [isTransactionsFetched, fetchTransactions]);
 
     return (
         <div id="lastActionsList" className="h-fit flex flex-col justify-start rounded-md shadow-sm shadow-slate-500 my-4 gap-3 pt-2 pb-4">

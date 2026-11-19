@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import { useSocket } from '../../../store/socketContext';
@@ -28,7 +28,10 @@ export default function MessagesList({ userMessages, messagesError: _messagesErr
     const navigate = useNavigate();
     const { isMobile } = useIsMobile();
 
-    const liveMessages = connected && socketMessages && socketMessages.newMessages || [];
+    const liveMessages = useMemo(
+        () => (connected && socketMessages && socketMessages.newMessages) || [],
+        [connected, socketMessages],
+    );
     const sortedMessages = Array.isArray(userMessages) ? userMessages.sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
     const filteredMessages = Array.isArray(userMessages) && filterArray(userMessages, (msg) => msg.recipient === user.userName);
 
@@ -101,7 +104,7 @@ export default function MessagesList({ userMessages, messagesError: _messagesErr
                                 {filterMap[messagesType]?.map((message, index) => (
                                     <tr
                                         key={message.id}
-                                        className={`border-b border-slate-400 ${index === filterMap[messagesType].length - 1 ? 'border-b-[1px]' : ''} indirect:text-sm`}>
+                                        className={`border-b border-slate-400 ${index === filterMap[messagesType].length - 1 ? 'border-b' : ''} indirect:text-sm`}>
                                         <td className="messages-list-table-data">{message.sender}</td>
                                         <td className="messages-list-table-data">{message.recipient}</td>
                                         <td className="messages-list-table-data">{message.message}</td>

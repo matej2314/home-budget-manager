@@ -9,7 +9,7 @@ export default function TransactionsPerDay({ data }) {
     return (
         <div id="transactions-per-day-chart" className="w-full h-fit border-2 border-slate-500/20 pt-2 mb-3 flex flex-col mx-auto lg:mx-0 gap-4">
             <h2 className="w-full h-fit flex justify-center text-xl">{t("actionsPerDay.heading")}</h2>
-            <div className="w-full h-96 md:h-[450px] md:w[35vw]">
+            <div className="w-full h-96 md:h-112.5 md:w[35vw]">
                 <LineChart
                     labels={uniqueLabels}
                     dataValues={uniqueDataValues}

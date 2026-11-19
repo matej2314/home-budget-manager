@@ -46,7 +46,7 @@ export const showCookiesInfo = (part1, part2) => {
     toast(
         <div className='w-full h-full flex justify-center items-center gap-3'>
             <Icon icon='fluent:cookies-32-regular' width={75} height={75} color='#cda43c' />
-            <div className='w-full lg:w-[600px] h-fit flex flex-col items-center gap-2'>
+            <div className='w-full lg:w-150 h-fit flex flex-col items-center gap-2'>
                 <p>{part1}</p>
                 <p>{part2}</p>
             </div>

@@ -84,7 +84,7 @@ export default function ContactForm() {
                 />
                 <Icon
                     icon='ic:outline-message'
-                    className="icon-base top-[0.25rem] text-slate-200 text-xl text-opacity-65"
+                    className="icon-base top-1 text-slate-200 text-xl text-opacity-65"
                 />
             </div>
             <SendMessageBtn form='contact' state={actionState} setState={handleSetActionState} resetState={handleResetActionState} />

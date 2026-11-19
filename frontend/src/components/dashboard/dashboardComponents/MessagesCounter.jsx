@@ -15,7 +15,7 @@ export default function MessagesCounter() {
     return (
         <Link to='messages/new'
             id='newMessages'
-            className={`relative lg:w-1/4 h-[8.5rem] bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600/95 flex flex-row text-white justify-center items-start rounded-md gap-3 pt-5 ${userMessages.length == 0 ? 'pointer-events-none' : ''}`}
+            className={`relative lg:w-1/4 h-34 bg-linear-to-br from-blue-400 via-blue-500 to-blue-600/95 flex flex-row text-white justify-center items-start rounded-md gap-3 pt-5 ${userMessages.length == 0 ? 'pointer-events-none' : ''}`}
             style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
         >
             <div className="w-full flex flex-col items-center justify-start -translate-y-1 translate-x-1 gap-5">

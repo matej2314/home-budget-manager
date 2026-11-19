@@ -12,7 +12,7 @@ export default function MatesCounter() {
 
     return (
         <div id='housemates'
-            className="relative w-full lg:w-1/4 h-[8.5rem] bg-gradient-to-br from-red-400 via-rose-600 to-red-700/85 text-xl text-white flex flex-col justify-start items-center rounded-md pt-6"
+            className="relative w-full lg:w-1/4 h-34 bg-linear-to-br from-red-400 via-rose-600 to-red-700/85 text-xl text-white flex flex-col justify-start items-center rounded-md pt-6"
             style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
         >
             <div className="absolute bottom-0 right-0 flex justify-center items-center">

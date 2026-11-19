@@ -75,7 +75,7 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
                     />
                     <label htmlFor="userOpinion" className='text-lg font-semibold'>{t("addReview.opinionLabel")}</label>
                     <textarea
-                        className='w-full h-[10rem] resize-none border-2 border-slate-300 rounded-md pl-2'
+                        className='w-full h-40 resize-none border-2 border-slate-300 rounded-md pl-2'
                         name="userOpinion"
                         id="userOpinion"
                         readOnly={isLoading}

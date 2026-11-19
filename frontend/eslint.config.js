@@ -45,4 +45,11 @@ export default [
       ],
     },
   },
+  // Context + Provider + hook w jednym pliku store — Fast Refresh i tak nie obejmuje non-components
+  {
+    files: ['src/store/**/*.{js,jsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ]

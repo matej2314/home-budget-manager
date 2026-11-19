@@ -19,7 +19,7 @@ export default function CalendarPage() {
         if (!isTransactionsFetched) {
             fetchTransactions();
         }
-    }, [isTransactionsFetched]);
+    }, [isTransactionsFetched, fetchTransactions]);
 
     const transactions = !actionsDataError && !actionsLoading && isTransactionsFetched && actionsData || [];
 
@@ -61,7 +61,7 @@ export default function CalendarPage() {
                     events={events}
                     startAccessor="start"
                     endAccessor="end"
-                    className="h-[550px] border-[2px] border-slate-300 rounded-md gap-2"
+                    className="h-137.5 border-2 border-slate-300 rounded-md gap-2"
                     onSelectEvent={handleEventClick}
                     onSelectSlot={handleDateClick}
                     onView={setView}

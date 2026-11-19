@@ -26,7 +26,7 @@ export default function UserProfilePage() {
         if (!isTransactionsFetched) {
             fetchTransactions();
         };
-    }, [isTransactionsFetched]);
+    }, [isTransactionsFetched, fetchTransactions]);
 
 
     const handleType = (type) => {

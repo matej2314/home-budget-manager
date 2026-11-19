@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext, useRef } from "react";
+import { createContext, useState, useEffect, useContext, useRef, useCallback } from "react";
 import sendRequest from '../utils/asyncUtils/sendRequest';
 import fetchData from "../utils/asyncUtils/fetchData";
 import { registerAuthFailureHandlers } from '../utils/asyncUtils/authFailureBridge';
@@ -119,18 +119,19 @@ export const AuthProvider = ({ children }) => {
     const isAuthenticatedRef = useRef(isAuthenticated);
     isAuthenticatedRef.current = isAuthenticated;
 
-    const checkSession = async () => {
+    const checkSession = useCallback(async () => {
         setSessionStatus({ error: null, isLoading: true });
         try {
             const response = await fetchData(`${apiBaseUrl}/auth/verify`);
 
             if (response && response.status === 'success') {
-                updateUser({
+                setUser((prevUser) => ({
+                    ...prevUser,
                     userName: response.userName,
                     role: response.role,
                     id: response.userId,
                     avatar: response.avatar,
-                });
+                }));
                 setIsAuthenticated(true);
                 setSessionStatus((prev) => ({ ...prev, error: null, isLoading: false }));
             } else {
@@ -148,12 +149,12 @@ export const AuthProvider = ({ children }) => {
         } finally {
             setSessionStatus((prev) => ({ ...prev, isLoading: false }));
         }
-    };
+    }, []);
 
 
     useEffect(() => {
         checkSession();
-    }, []);
+    }, [checkSession]);
 
     useEffect(() => {
         registerAuthFailureHandlers({

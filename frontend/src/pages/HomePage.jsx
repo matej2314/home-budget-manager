@@ -28,7 +28,7 @@ export default function HomePage() {
             showCookiesInfo(t("signUpCookiesSettings.cookiesInfoPar"), t("signUpCookiesSettings.cookiesInfoSpan"));
         }
 
-    }, [isCookiesInfo, isAuthenticated]);
+    }, [isCookiesInfo, isAuthenticated, t]);
 
     if (loginStatus.isLoading) {
         return <LoadingModal isOpen={loginStatus.isLoading} />

@@ -57,7 +57,7 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                             {!mainSite && <th className="px-4 py-2 text-center rounded-tr-xl">{tInternal("transactionsList.actionsHeaderValue")}</th>}
                         </tr>
                     </thead>
-                    <tbody className="border-x-[1px] border-slate-400 text-[0.6rem] indirect:text-sm md:text-sm text-center">
+                    <tbody className="border-x border-slate-400 text-[0.6rem] indirect:text-sm md:text-sm text-center">
                         {transactionsToDisplay.map((transaction) => (
                             <tr key={transaction.transactionId}
                                 className={`border-b ${transaction.transactionId === transactionsToDisplay.length - 1 ? 'border-b-2 border-slate-400' : 'border-none'}`}>
