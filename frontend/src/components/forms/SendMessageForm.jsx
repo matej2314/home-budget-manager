@@ -1,5 +1,7 @@
-import { useRef, useState } from 'react';
+import { useContext, useMemo, useRef, useState } from 'react';
 import { useMessagesStore } from '../../store/messagesStore';
+import { DataContext } from '../../store/dataContext';
+import { useAuth } from '../../store/authContext';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { apiBaseUrl } from '../../url';
 import { Icon } from '@iconify/react';
@@ -9,15 +11,25 @@ import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import SendMessageBtn from './internal/SendMessageBtn';
 import LoadingModal from '../modals/LoadingModal';
 import { isNoSQL, isNoXSS, isValidUsername } from '../../utils/validation';
+import { getData } from '../../utils/getData';
 
-export default function SendMessageForm({ reply, recipientName, onClose }) {
+export default function SendMessageForm({ reply, recipientName, onClose, embedded = false }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [actionState, setActionState] = useState({ type: null });
 	const { fetchMessages } = useMessagesStore();
+	const { data, isLoading: dataLoading, dataError } = useContext(DataContext);
+	const { user } = useAuth();
 	const handleApiResponse = useApiResponseHandler();
 	const { t } = useTranslation("forms");
 	const recipientRef = useRef();
 	const messageContentRef = useRef();
+
+	const housemateLogins = useMemo(() => {
+		const mates = getData(dataLoading, dataError, true, data?.houseMates, []);
+		return mates
+			.map((mate) => mate.userName)
+			.filter((name) => name && name !== user?.userName);
+	}, [data?.houseMates, dataLoading, dataError, user?.userName]);
 
 	const handleSetActionState = (action) => {
 		setActionState({ type: action });
@@ -65,37 +77,61 @@ export default function SendMessageForm({ reply, recipientName, onClose }) {
 	};
 
 	return (
-		<div className="w-8/12 xl:w-10/12 h-full flex flex-col justify-center items-center gap-4">
-			<h2 className="text-xl xl:text-2xl mb-2">{reply ? t("sendMessage.formHeaderReply") : t("sendMessage.formHeaderSend")}</h2>
-			<form onSubmit={handleSendMessage} className="w-full h-full flex flex-col items-center justify-center gap-3">
-				<label className="w-full h-fit flex justify-center" htmlFor="recipientName">
-					{t("sendMessage.recipientNameLabel")}
-				</label>
-				<div className="relative w-fit flex justify-center">
-					<input
-						type="text"
-						name="recipientName"
-						id="recipientName"
-						placeholder={t("sendMessage.recipientNamePlaceholder")}
-						ref={recipientRef} defaultValue={recipientName || ''}
-						required disabled={recipientName} onInput={(e) => (e.target.nextSibling.style.display = e.target.value ? 'none' : 'block')}
-						className={`${recipientName ? 'bg-gray-300 cursor-not-allowed' : ''} input-base`} />
-					<Icon icon="mage:user-fill" className="icon-base top-0.5 text-gray-500 text-xl text-opacity-40" />
-				</div>
-				<label className="w-full h-fit flex justify-center" htmlFor="messageContent">
+		<div className={`w-full flex flex-col ${embedded ? 'gap-4' : 'items-center gap-4 max-w-md mx-auto'}`}>
+			{!embedded && (
+				<h2 className="text-xl font-semibold text-ink mb-1">
+					{reply ? t("sendMessage.formHeaderReply") : t("sendMessage.formHeaderSend")}
+				</h2>
+			)}
+			<form onSubmit={handleSendMessage} className="w-full flex flex-col gap-4">
+				{recipientName ? (
+					<input type="hidden" name="recipientName" id="recipientName" ref={recipientRef} defaultValue={recipientName} />
+				) : (
+					<>
+						<label className="text-sm font-medium text-ink" htmlFor="recipientName">
+							{t("sendMessage.recipientNameLabel")}
+						</label>
+						<select
+							name="recipientName"
+							id="recipientName"
+							ref={recipientRef}
+							required
+							defaultValue=""
+							className="input-base appearance-none pr-9 bg-white"
+						>
+							<option value="" disabled>
+								{t("sendMessage.recipientNamePlaceholder")}
+							</option>
+							{housemateLogins.map((login) => (
+								<option key={login} value={login}>
+									{login}
+								</option>
+							))}
+						</select>
+						{!dataLoading && housemateLogins.length === 0 && (
+							<p className="text-xs text-muted -mt-2">{t("sendMessage.noRecipients")}</p>
+						)}
+					</>
+				)}
+
+				<label className="text-sm font-medium text-ink" htmlFor="messageContent">
 					{t("sendMessage.messageLabel")}
 				</label>
-				<div className="relative w-52 indirect:w-full indirectxl:w-10/12  sm:w-9/12 md:w-8/12 lg:w-6/12 xl:w-11/12 flex justify-center">
+				<div className="relative w-full">
 					<textarea
-						className=" resize-none input-base"
+						className="input-base min-h-[8rem] py-2.5 pr-9 resize-none"
 						name="messageContent"
 						id="messageContent"
+						rows={5}
 						placeholder={t("sendMessage.messagePlaceholder")}
 						ref={messageContentRef}
-						required />
-					<Icon icon="ic:outline-message" className="absolute right-1 pointer-events-none top-0.5 text-slate-600 text-xl text-opacity-45" />
+						required
+					/>
+					<Icon icon="ic:outline-message" className="absolute right-2.5 top-2.5 pointer-events-none text-muted text-lg" />
 				</div>
-				<SendMessageBtn form="sendMessage" state={actionState} setState={handleSetActionState} resetState={handleResetActionState} />
+				<div className={`w-full flex ${embedded ? 'justify-end' : 'justify-center'} pt-1`}>
+					<SendMessageBtn form="sendMessage" state={actionState} setState={handleSetActionState} resetState={handleResetActionState} />
+				</div>
 			</form>
 			{isLoading && <LoadingModal isOpen={isLoading} />}
 		</div>

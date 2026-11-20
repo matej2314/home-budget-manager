@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import SubmitBtn from "./internal/SubmitBtn";
 import { DataContext } from '../../store/dataContext';
 
-export default function DeclareBudgetForm({ onRequestClose }) {
+export default function DeclareBudgetForm({ onRequestClose, embedded = false }) {
     const [declarationStatus, setDeclarationStatus] = useState({
         sended: false,
         isLoading: false,
@@ -61,12 +61,14 @@ export default function DeclareBudgetForm({ onRequestClose }) {
 
     return (
         <>
-            <h2 className='w-full h-fit flex justify-center font-semibold'>{t("declareBudget.formHeader")}</h2>
+            {!embedded && (
+                <h2 className="text-lg font-semibold text-ink text-center mb-3">{t("declareBudget.formHeader")}</h2>
+            )}
             <form onSubmit={handleDeclareBudget}
-                className='w-full h-fit flex flex-col items-center gap-3 mt-3'
+                className="w-full flex flex-col gap-4"
             >
-                <label htmlFor="initBudget">{t("declareBudget.valueLabel")}</label>
-                <div className="relative w-fit">
+                <label htmlFor="initBudget" className="text-sm font-medium text-ink">{t("declareBudget.valueLabel")}</label>
+                <div className="relative w-full">
                     <input
                         type="text"
                         name="initBudget"
@@ -74,20 +76,22 @@ export default function DeclareBudgetForm({ onRequestClose }) {
                         ref={declaredBudgetRef}
                         placeholder={t("declareBudget.valuePlaceholder")}
                         onInput={(e) => e.target.nextSibling.style.display = e.target.value ? 'none' : 'block'}
-                        className="input-base"
+                        className="input-base pr-9"
                     />
                     <Icon
                         icon='tdesign:money'
-                        className="icon-base top-0.5 text-gray-500 text-xl text-opacity-40"
+                        className="icon-base top-2.5 text-muted text-lg"
                     />
                 </div>
-                <SubmitBtn
-                    className='form-submit-modal-btn'
-                    disabled={declarationStatus.sended}
-                >
-                    {t("declareBudget.declareSubmitBtn")}
-                </SubmitBtn>
-                <p>{t("declareBudget.periodParagraph")} {declaredPeriod.startPeriod} - {declaredPeriod.endPeriodString}</p>
+                <p className="text-sm text-muted">{t("declareBudget.periodParagraph")} {declaredPeriod.startPeriod} - {declaredPeriod.endPeriodString}</p>
+                <div className="flex justify-end">
+                    <SubmitBtn
+                        className='form-submit-modal-btn'
+                        disabled={declarationStatus.sended}
+                    >
+                        {t("declareBudget.declareSubmitBtn")}
+                    </SubmitBtn>
+                </div>
             </form>
             {declarationStatus.isLoading && <LoadingModal isOpen={declarationStatus.isLoading} />}
         </>

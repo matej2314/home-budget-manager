@@ -3,7 +3,10 @@ import fetchData from '../utils/asyncUtils/fetchData';
 import sendRequest from '../utils/asyncUtils/sendRequest';
 import { apiBaseUrl } from '../url';
 
-const useNotificationsStore = create((set) => ({
+const emptyNotifications = (notifications) =>
+  Object.fromEntries(Object.keys(notifications).map((key) => [key, []]));
+
+const useNotificationsStore = create((set, get) => ({
   notifications: {
     transactions: [],
     usersActions: [],
@@ -48,6 +51,32 @@ const useNotificationsStore = create((set) => ({
           ...state.notifications,
           [category]: (state.notifications[category] || []).filter((n) => n.id !== notificationId),
         },
+        loading: false,
+      }));
+    } catch (error) {
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+
+  clearAllNotifications: async () => {
+    const { notifications } = get();
+    const pendingIds = Object.values(notifications)
+      .flat()
+      .map((notice) => notice?.id)
+      .filter(Boolean);
+
+    if (pendingIds.length === 0) return;
+
+    set({ loading: true, error: null });
+    try {
+      await Promise.all(
+        pendingIds.map((id) =>
+          sendRequest('DELETE', { noticeId: id }, `${apiBaseUrl}/notice`),
+        ),
+      );
+      set((state) => ({
+        notifications: emptyNotifications(state.notifications),
         loading: false,
       }));
     } catch (error) {

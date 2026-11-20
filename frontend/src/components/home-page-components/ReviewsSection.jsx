@@ -14,7 +14,7 @@ export default function ReviewsSection({ reviews }) {
                     <div
                         key={index}
                         id='review'
-                        className="w-11/12 sm:w-1/2 md:w-[25rem] h-fit flex flex-row justify-start rounded-md bg-slate-300 border-4 border-slate-600 gap-2 p-3"
+                        className="w-11/12 sm:w-1/2 md:w-[25rem] h-fit flex flex-row justify-start rounded-xl bg-white/95 border border-white/20 gap-2 p-3 shadow-lg"
                     >
                         <div
                             id="photo"

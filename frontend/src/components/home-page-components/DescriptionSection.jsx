@@ -4,9 +4,9 @@ export default function DescriptionSection() {
     const { t } = useTranslation("aboutUs");
 
     return (
-        <div id='welcome-text' className="w-fit h-full flex flex-col justify-center items-center text-slate-100 gap-6 mb-4">
-            <h2 className="text-2xl font-semibold text-stone-400/80 text-center">{t("mainHeading")}</h2>
-            <p className="px-2 text-center lg:text-xl">
+        <div id='welcome-text' className="w-full max-w-3xl mx-auto h-full flex flex-col justify-center items-center text-slate-100 gap-4 mb-6 px-3">
+            <h2 className="text-xl sm:text-2xl font-semibold text-white text-center tracking-tight">{t("mainHeading")}</h2>
+            <p className="text-center text-sm sm:text-base lg:text-lg text-slate-300/95 leading-relaxed">
                 {t("appDescription")}
             </p>
         </div >

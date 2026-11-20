@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import StarRating from '../StarRating';
@@ -56,41 +57,46 @@ export default function AddReviewModal({ isOpen, onRequestClose }) {
     };
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            contentLabel="Add new opinion"
-            className="add-review-modal"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            contentLabel={t("addReview.opinionLabel")}
+            className="modal-panel max-w-md"
         >
-            <div className='w-full h-full flex flex-col justify-center items-center'>
-                <form
-                    onSubmit={handleSaveReview}
-                    className='w-full h-fit flex flex-col items-center gap-3'
-                >
-                    <label htmlFor="choose_rating" className='text-xl'>{t("addReview.ratingLabel")}</label>
+            <ModalHeader title={t("addReview.opinionLabel")} onClose={onRequestClose} />
+            <form
+                onSubmit={handleSaveReview}
+                className="w-full flex flex-col gap-4"
+            >
+                <label htmlFor="choose_rating" className="text-sm font-medium text-ink">{t("addReview.ratingLabel")}</label>
+                <div className="flex justify-center">
                     <StarRating
                         edit={true}
                         action={(newRating) => setRating(newRating)} size={40}
                     />
-                    <label htmlFor="userOpinion" className='text-lg font-semibold'>{t("addReview.opinionLabel")}</label>
-                    <textarea
-                        className='w-full h-40 resize-none border-2 border-slate-300 rounded-md pl-2'
-                        name="userOpinion"
-                        id="userOpinion"
-                        readOnly={isLoading}
-                        placeholder={t("addReview.opinionPlaceholder")}
-                        ref={userOpinionRef}
-                    />
+                </div>
+                <label htmlFor="userOpinion" className="text-sm font-medium text-ink">{t("addReview.opinionLabel")}</label>
+                <textarea
+                    className="input-base min-h-[8rem] py-2.5 resize-none"
+                    name="userOpinion"
+                    id="userOpinion"
+                    readOnly={isLoading}
+                    placeholder={t("addReview.opinionPlaceholder")}
+                    ref={userOpinionRef}
+                />
+                <div className="modal-actions">
+                    <button type="button" onClick={onRequestClose} className="modal-btn-secondary">
+                        {t("cancel")}
+                    </button>
                     <SubmitBtn
                         className='form-submit-modal-btn'
                         disabled={isLoading}
                     >
                         {t("addReview.submitOpinionBtn")}
                     </SubmitBtn>
-                </form>
-            </div>
+                </div>
+            </form>
             {isLoading && <LoadingModal isOpen={isLoading} />}
-        </Modal>
+        </AppModal>
     )
 }

@@ -1,6 +1,7 @@
 import { useAuth } from '../../../store/authContext';
 import { useMessagesStore } from '../../../store/messagesStore';
-import Modal from 'react-modal';
+import AppModal from '../AppModal';
+import ModalHeader from '../ModalHeader';
 import SendMessageForm from '../../forms/SendMessageForm';
 import { apiBaseUrl } from '../../../url';
 import sendRequest from '../../../utils/asyncUtils/sendRequest';
@@ -10,22 +11,29 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 
 export function SendMessageModal({ isOpen, onRequestClose, recipient }) {
+	const { t } = useTranslation("forms");
 
 	return (
-		<Modal
+		<AppModal
 			isOpen={isOpen}
 			onRequestClose={onRequestClose}
-			className="bg-slate-200 rounded-lg p-6 w-10/12 xl:w-1/3 mx-auto mt-20 shadow-lg border-4 border-slate-400"
-			overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-			<div className="w-full flex justify-end">
-				<button onClick={onRequestClose} className="relative left-3 bottom-6 text-black hover:text-gray-600">
-					X
-				</button>
-			</div>
-			<div className="w-full flex justify-center">
-				<SendMessageForm reply={false} recipientName={recipient} onClose={onRequestClose} />
-			</div>
-		</Modal>
+			contentLabel={t("sendMessage.formHeaderSend")}
+			className="modal-panel max-w-md"
+		>
+			<ModalHeader
+				title={t("sendMessage.formHeaderSend")}
+				subtitle={recipient ? (
+					<>→ <span className="font-medium text-ink">{recipient}</span></>
+				) : null}
+				onClose={onRequestClose}
+			/>
+			<SendMessageForm
+				reply={false}
+				recipientName={recipient}
+				onClose={onRequestClose}
+				embedded
+			/>
+		</AppModal>
 	);
 }
 
@@ -53,84 +61,101 @@ export function DeleteMessageModal({ isOpen, onRequestClose, message }) {
 	};
 
 	return (
-		<Modal isOpen={isOpen} onRequestClose={onRequestClose} className="del-msg-modal" overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-			<div className="w-full h-fit flex flex-col justify-center items-center gap-5">
-				<p>{`${t("deleteMessage.confirmQuestion")} '${message.message}' ?`}</p>
-				<div id="btnsDiv" className="w-full h-fit flex justify-around">
-					<button type="button" className="form-submit-modal-btn" onClick={() => handleDeleteMessage(message.id)}>
-						{t("btnYes")}
-					</button>
-					<button onClick={onRequestClose} type="button" className="form-submit-modal-btn">
-						{t("btnNo")}
-					</button>
-				</div>
+		<AppModal
+			isOpen={isOpen}
+			onRequestClose={onRequestClose}
+			contentLabel={t("deleteMessage.confirmQuestion")}
+			className="modal-panel"
+		>
+			<ModalHeader title={t("deleteMessage.confirmQuestion")} onClose={onRequestClose} />
+			<p className="text-sm text-ink wrap-break-word">
+				<span className="text-muted">„</span>{message.message}<span className="text-muted">”</span>
+			</p>
+			<div className="modal-actions-center">
+				<button type="button" className="form-submit-modal-btn" onClick={() => handleDeleteMessage(message.id)}>
+					{t("btnYes")}
+				</button>
+				<button onClick={onRequestClose} type="button" className="modal-btn-secondary">
+					{t("btnNo")}
+				</button>
 			</div>
-		</Modal>
+		</AppModal>
 	);
 }
+
 export function DisplayMessageDetails({ isOpen, onRequestClose, message }) {
 	const { user } = useAuth();
 	const { t } = useTranslation("modals");
 
 	return (
-		<Modal isOpen={isOpen} onRequestClose={onRequestClose} className="display-msg-modal" overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-			<div className="relative w-full flex justify-end">
-				<button onClick={onRequestClose} className="absolute -translate-y-6 translate-x-4 text-black hover:text-gray-600">
-					X
-				</button>
-			</div>
-			<div className="w-full h-fit flex flex-col items-center gap-3 border-b-2 border-slate-400/20 pb-2 xl:pb-3">
-				<h2 className="text-xl xl:text-2xl">{t("messageDetails.heading")}</h2>
-				<form className="w-full h-fit flex flex-col items-center gap-2 xl:gap-3 text-sm xl:text-base">
-					<label className="w-full h-fit flex justify-center" htmlFor="senderName">
+		<AppModal
+			isOpen={isOpen}
+			onRequestClose={onRequestClose}
+			contentLabel={t("messageDetails.heading")}
+			className="modal-panel max-w-lg"
+		>
+			<ModalHeader title={t("messageDetails.heading")} onClose={onRequestClose} />
+			<div className="flex flex-col gap-4 pb-4 border-b border-slate-200">
+				<div>
+					<label className="text-sm font-medium text-ink" htmlFor="senderName">
 						{t("messageDetails.senderLabel")}
 					</label>
-					<div className="relative w-fit">
-						<input className="bg-slate-200 input-display-msg" type="text" name="senderName" id="senderName" defaultValue={message.sender} disabled={true} />
-						<Icon icon="mage:user-fill" color="#0e63d6" className="icon-base top-[0.1rem] text-gray-500 text-xl text-opacity-40" />
+					<div className="relative mt-1.5">
+						<input className="input-base pr-9 bg-page" type="text" name="senderName" id="senderName" defaultValue={message.sender} disabled />
+						<Icon icon="mage:user-fill" className="icon-base top-2.5 text-accent text-lg" />
 					</div>
-
-					<label className="w-full h-fit flex justify-center" htmlFor="recipientName">
+				</div>
+				<div>
+					<label className="text-sm font-medium text-ink" htmlFor="recipientName">
 						{t("messageDetails.receiverLabel")}
 					</label>
-					<div className="relative w-fit">
-						<input className="bg-slate-200 input-display-msg" type="text" name="recipientName" id="recipientName" defaultValue={message.recipient} disabled={true} />
-						<Icon icon="mage:user-fill" color="#168709" className="icon-base top-[0.1rem] text-gray-500 text-xl" />
+					<div className="relative mt-1.5">
+						<input className="input-base pr-9 bg-page" type="text" name="recipientName" id="recipientName" defaultValue={message.recipient} disabled />
+						<Icon icon="mage:user-fill" className="icon-base top-2.5 text-emerald-600 text-lg" />
 					</div>
-
-					<label className="w-full h-fit flex justify-center" htmlFor="receivedMessage">
+				</div>
+				<div>
+					<label className="text-sm font-medium text-ink" htmlFor="receivedMessage">
 						{t("messageDetails.messageLabel")}
 					</label>
 					<textarea
-						className="bg-slate-200 w-8/12 h-fit resize-none input-display-msg"
+						className="input-base w-full mt-1.5 min-h-[6rem] py-2.5 resize-none bg-page"
 						name="receivedMessage"
 						rows={4}
 						id="receivedMessage"
 						defaultValue={message.message}
-						disabled={true}
+						disabled
 					/>
-				</form>
+				</div>
 			</div>
-			<div className="w-full flex justify-center mt-5 pb-5">{user.userName !== message.sender && <SendMessageForm reply={true} recipientName={message.sender} />}</div>
-		</Modal>
+			{user.userName !== message.sender && (
+				<div className="mt-5">
+					<SendMessageForm reply={true} recipientName={message.sender} onClose={onRequestClose} embedded />
+				</div>
+			)}
+		</AppModal>
 	);
 }
 
 export function ReplyMessageModal({ isOpen, onRequestClose, message }) {
+	const { t } = useTranslation("forms");
 	const recipientName = (isOpen && message && message.sender) || null;
 
 	return (
-		<Modal
+		<AppModal
 			isOpen={isOpen}
 			onRequestClose={onRequestClose}
-			className="bg-slate-200  rounded-lg p-6 w-1/3 mx-auto mt-20 shadow-lg border-4 border-slate-400"
-			overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-			<button onClick={onRequestClose} className="relative left-[28.7rem] bottom-6 text-black hover:text-gray-600">
-				X
-			</button>
-			<div className="w-full flex justify-center">
-				<SendMessageForm reply={true} recipientName={recipientName} />
-			</div>
-		</Modal>
+			contentLabel={t("sendMessage.formHeaderReply")}
+			className="modal-panel max-w-md"
+		>
+			<ModalHeader
+				title={t("sendMessage.formHeaderReply")}
+				subtitle={recipientName ? (
+					<>→ <span className="font-medium text-ink">{recipientName}</span></>
+				) : null}
+				onClose={onRequestClose}
+			/>
+			<SendMessageForm reply={true} recipientName={recipientName} onClose={onRequestClose} embedded />
+		</AppModal>
 	);
 }

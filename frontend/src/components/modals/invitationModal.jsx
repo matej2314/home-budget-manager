@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { useTranslation } from 'react-i18next';
 import { apiBaseUrl } from '../../url';
@@ -55,43 +56,37 @@ export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => 
     };
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
-            className='relative bg-slate-200 rounded-lg p-6 md:w-1/2 md:mb-40 lg:mt-100 xl:mb-68 xl:w-1/3 mx-auto mt-10 shadow-lg border-4 border-slate-400'
-            overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
+            onRequestClose={onRequestClose}
+            contentLabel="Invitations"
+            className="modal-panel max-w-lg"
         >
-            <button onClick={onRequestClose} className='absolute top-2 right-2 text-gray-400 hover:text-gray-600'>
-                X
-            </button>
-            <ul className=''>
+            <ModalHeader title={t("invitationModal.invite")} onClose={onRequestClose} />
+            <ul className="flex flex-col gap-4">
                 {invitationsData && invitationsData.map(invitation => (
-                    <li key={invitation.id}>
-                        <div className='w-full h-fit flex flex-col gap-2'>
-                            <p className='w-full flex justify-center gap-2'>
-                                <span>{t("invitationModal.housemate")}</span>
-                                <span className='font-semibold'>{invitation.invitingUserName}</span>
-                                <span>{t("invitationModal.invite")}</span>
-                                <span className='font-semibold'>{invitation.invitedUserName}</span>
+                    <li key={invitation.id} className="rounded-lg border border-slate-200 bg-page p-4">
+                        <div className="flex flex-col gap-3">
+                            <p className="text-sm text-ink leading-relaxed">
+                                <span>{t("invitationModal.housemate")} </span>
+                                <span className="font-semibold">{invitation.invitingUserName}</span>
+                                <span> {t("invitationModal.invite")} </span>
+                                <span className="font-semibold">{invitation.invitedUserName}</span>
                             </p>
-                            <p className='w-full flex justify-center gap-2'>
-                                <span>
-                                    Date:
-                                </span>
-                                <span>
-                                    {formatDbDate(invitation.date)}
-                                </span>
+                            <p className="text-xs text-muted">
+                                {formatDbDate(invitation.date)}
                             </p>
-                            <div className='w-full flex justify-center gap-7'>
+                            <div className="flex flex-wrap justify-end gap-3">
                                 <button
                                     type="button"
-                                    className='form-submit-modal-btn'
+                                    className="form-submit-modal-btn"
                                     onClick={() => handleAcceptInvitation(invitation.id, invitation.invitedUser)}
                                 >
                                     {t("btnAccept")}
                                 </button>
                                 <button
                                     type="button"
-                                    className='form-submit-modal-btn'
+                                    className="modal-btn-secondary"
                                     onClick={() => handleDeclineInvitation(invitation.id)}
                                 >
                                     {t("btnDecline")}
@@ -101,6 +96,6 @@ export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => 
                     </li>
                 ))}
             </ul>
-        </Modal>
+        </AppModal>
     )
 }

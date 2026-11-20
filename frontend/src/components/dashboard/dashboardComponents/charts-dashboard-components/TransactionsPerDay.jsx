@@ -7,15 +7,15 @@ export default function TransactionsPerDay({ data }) {
     const { t } = useTranslation("dashboardComponents");
 
     return (
-        <div id="transactions-per-day-chart" className="w-full h-fit border-2 border-slate-500/20 pt-2 mb-3 flex flex-col mx-auto lg:mx-0 gap-4">
-            <h2 className="w-full h-fit flex justify-center text-xl">{t("actionsPerDay.heading")}</h2>
-            <div className="w-full h-96 md:h-112.5 md:w[35vw]">
+        <div id="transactions-per-day-chart" className="section-card w-full min-w-0 flex flex-col gap-3">
+            <h2 className="text-base sm:text-lg font-semibold text-ink">{t("actionsPerDay.heading")}</h2>
+            <div className="w-full h-56 sm:h-72 md:h-80 min-w-0">
                 <LineChart
                     labels={uniqueLabels}
                     dataValues={uniqueDataValues}
                     title='Transactions per day'
-                    colors={["rgba(54, 162, 235, 0.5)"]}
-                    borderColors={["rgba(54, 162, 235, 1)"]}
+                    colors={["rgba(76, 111, 255, 0.45)"]}
+                    borderColors={["rgba(76, 111, 255, 1)"]}
                 />
             </div>
         </div>

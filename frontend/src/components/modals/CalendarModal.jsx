@@ -1,40 +1,53 @@
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import { useTranslation } from 'react-i18next'
 
 export default function CalendarModal({ selectedEvent, handleCloseModal }) {
     const { t } = useTranslation("modals");
 
     return (
-        <Modal
+        <AppModal
             isOpen={!!selectedEvent}
             onRequestClose={handleCloseModal}
-            contentLabel="Transaction details"
-            ariaHideApp={false}
-            className="relative bg-slate-200 border-2 border-slate-400 w-9/12 md:w-fit py-6 px-14 rounded-md shadow-lg z-999 bg-opacity-100"
-            overlayClassName="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center"
+            contentLabel={t("calendar.heading")}
+            className="modal-panel max-w-md"
         >
             {selectedEvent && (
                 <>
-                    <div className='z-999 flex flex-col gap-2'>
-                        <h2 className="md:text-xl font-semibold text-center">{t("calendar.heading")}</h2>
-                        <p><strong>{t("calendar.category")}</strong> {selectedEvent.details.categoryName}</p>
-                        <p><strong>{t("calendar.type")}</strong> {selectedEvent.details.type}</p>
-                        <p><strong>{t("calendar.value")}</strong> {selectedEvent.details.value}</p>
-                        <p><strong>{t("calendar.user")}</strong> {selectedEvent.details.userName}</p>
-                        <p><strong>{t("calendar.date")}</strong> {new Date(selectedEvent.details.addedAt).toLocaleString()}</p>
-                    </div>
-
-                    <div className='w-full flex justify-center'>
+                    <ModalHeader title={t("calendar.heading")} onClose={handleCloseModal} />
+                    <dl className="flex flex-col gap-3 text-sm text-ink">
+                        <div>
+                            <dt className="text-muted font-medium">{t("calendar.category")}</dt>
+                            <dd className="mt-0.5 font-semibold">{selectedEvent.details.categoryName}</dd>
+                        </div>
+                        <div>
+                            <dt className="text-muted font-medium">{t("calendar.type")}</dt>
+                            <dd className="mt-0.5 font-semibold">{selectedEvent.details.type}</dd>
+                        </div>
+                        <div>
+                            <dt className="text-muted font-medium">{t("calendar.value")}</dt>
+                            <dd className="mt-0.5 font-semibold">{selectedEvent.details.value}</dd>
+                        </div>
+                        <div>
+                            <dt className="text-muted font-medium">{t("calendar.user")}</dt>
+                            <dd className="mt-0.5 font-semibold">{selectedEvent.details.userName}</dd>
+                        </div>
+                        <div>
+                            <dt className="text-muted font-medium">{t("calendar.date")}</dt>
+                            <dd className="mt-0.5 font-semibold">{new Date(selectedEvent.details.addedAt).toLocaleString()}</dd>
+                        </div>
+                    </dl>
+                    <div className="modal-actions">
                         <button
                             onClick={handleCloseModal}
-                            className="form-submit-modal-btn"
+                            className="modal-btn-secondary"
+                            type="button"
                         >
                             {t("cancel")}
                         </button>
                     </div>
-
                 </>
             )}
-        </Modal>
+        </AppModal>
     )
 }

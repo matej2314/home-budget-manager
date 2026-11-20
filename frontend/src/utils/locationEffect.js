@@ -7,6 +7,6 @@ export const locationEffect = (link, location) => {
         location.pathname === `/dashboard/${link.path}` ||
         messagesStates.some(param => location.pathname === `/dashboard/${link.path}/${param}`)
     ) {
-        return "text-slate-400";
+        return "nav-link-active text-white";
     };
 };

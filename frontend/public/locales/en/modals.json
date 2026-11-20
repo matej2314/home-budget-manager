@@ -7,7 +7,7 @@
     "deleteMessage": {
         "errorMessage": "Failed to deleting message.",
         "deletedCorrectlyMessage": "Message deleted correctly.",
-        "confirmQuestion": "Are you sure you want to delete the message"
+        "confirmQuestion": "Are you sure you want to delete the message?"
     },
     "messageDetails": {
         "heading": "Details:",

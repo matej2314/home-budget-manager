@@ -9,18 +9,17 @@ export default function BudgetPerDay({ data }) {
     const splittedLabels = uniqueLabels.map((label) => label.slice(5));
 
     return (
-        <div id="budget-per-day-chart" className="w-fit h-fit flex flex-col gap-4 border-2 border-slate-500/20 pt-2">
-            <h2 className="w-full h-fit flex justify-center text-xl">{t("budgetPerDay.heading")}</h2>
-            <div className="w-full h-96 indirect:w-[88vw] md:h-117.5 md:w-[45vw] text-base">
+        <div id="budget-per-day-chart" className="section-card w-full min-w-0 flex flex-col gap-3">
+            <h2 className="text-base sm:text-lg font-semibold text-ink">{t("budgetPerDay.heading")}</h2>
+            <div className="w-full h-56 sm:h-72 md:h-80 min-w-0">
                 <LineChart
                     labels={splittedLabels}
                     dataValues={uniqueDataValues}
                     title='Budget per day'
-                    colors={["rgba(54, 162, 235, 0.5)"]}
-                    borderColors={["rgba(54, 162, 235, 1)"]}
+                    colors={["rgba(16, 185, 129, 0.45)"]}
+                    borderColors={["rgba(16, 185, 129, 1)"]}
                 />
             </div>
-
         </div>
     )
 }

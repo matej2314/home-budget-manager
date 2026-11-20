@@ -5,19 +5,16 @@ export default function TransactionsOverTime({ data }) {
     const { t } = useTranslation("dashboardComponents");
 
     return (
-        <div id="transactionsOverTime" className="w-fit h-fit flex flex-col flex-wrap justify-center items-center lg:mr-5 border-2 border-slate-300 grow shrink">
-            <h2 className="w-full h-fit flex justify-center text-xl mb-3">{t("actionsOverTime.heading")}</h2>
-            <div className="w-full h-full">
-                <div className="w-full h-100 indirect:w-[90vw] md:h-140 md:w-160 flex justify-center">
-                    <LineChart
-                        labels={data.labels}
-                        dataValues={data.dataValues}
-                        title='Transactions count'
-                        colors={["rgba(54, 162, 235, 0.5)"]}
-                        borderColors={["rgba(54, 162, 235, 1)"]}
-                    />
-                </div>
-
+        <div id="transactionsOverTime" className="section-card w-full min-w-0 flex flex-col gap-3">
+            <h2 className="text-base sm:text-lg font-semibold text-ink">{t("actionsOverTime.heading")}</h2>
+            <div className="w-full h-56 sm:h-60 md:h-80 flex justify-center min-w-0">
+                <LineChart
+                    labels={data.labels}
+                    dataValues={data.dataValues}
+                    title='Transactions count'
+                    colors={["rgba(76, 111, 255, 0.45)"]}
+                    borderColors={["rgba(76, 111, 255, 1)"]}
+                />
             </div>
         </div>
     )

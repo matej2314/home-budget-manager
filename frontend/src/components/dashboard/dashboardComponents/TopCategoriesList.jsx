@@ -35,30 +35,33 @@ export default function TopCategoriesList({ main }) {
     }, {});
 
     return (
-        <div className={`w-full h-fit flex flex-col xl:flex-row justify-around shadow-md shadow-slate-500 ${main ? 'mt-4' : 'mt-0'} pb-8 gap-4 pt-5`}>
-            <div>
-                <h2 className="w-full h-fit flex justify-center text-xl mb-4">{t("topCategoriesList.heading")}</h2>
-                <ul className="mb-4 flex justify-center">
+        <div className={`section-card flex flex-col xl:flex-row justify-around gap-6 ${main ? '' : ''}`}>
+            <div className="min-w-0 flex-1">
+                <h2 className="text-base sm:text-lg font-semibold text-ink mb-3">{t("topCategoriesList.heading")}</h2>
+                <ul className="mb-4 flex flex-wrap justify-center gap-2">
                     {categoryData.labels.map((label, index) => (
-                        <li key={label}>
+                        <li
+                            key={label}
+                            className="text-xs sm:text-sm px-2.5 py-1 rounded-full bg-accent-soft text-accent"
+                        >
                             {label} : {getCategoryPercentages(transactions).dataValues[index]} %
                         </li>
                     ))}
                 </ul>
-                <div className="w-full h-[15rem] lg:h-[35rem]">
+                <div className="w-full h-[15rem] lg:h-[28rem]">
                     <BarChart
                         labels={categoryData.labels}
                         dataValues={categoryData.dataValues}
                         title="Transaction Categories"
-                        colors={['rgba(255, 99, 132, 0.2)']}
-                        borderColors={['rgba(255, 99, 132, 1)']}
+                        colors={['rgba(76, 111, 255, 0.25)']}
+                        borderColors={['rgba(76, 111, 255, 1)']}
                         width={500}
                         height={isMobile ? 250 : 450}
                     />
                 </div>
 
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
                 <CategoriesValuesChart labels={Object.keys(groupedTransactions)} values={Object.values(groupedTransactions)} />
             </div>
         </div>

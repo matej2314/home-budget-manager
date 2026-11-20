@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
@@ -9,7 +10,6 @@ import { isValidEmail, isNoXSS } from '../../utils/validation';
 import { Icon } from '@iconify/react';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from '../forms/internal/SubmitBtn';
-
 
 export default function ChangeEmailModal({ isOpen, onRequestClose }) {
     const [requestState, setRequestState] = useState({
@@ -57,48 +57,45 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
     };
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            contentLabel="Add New Transaction"
-            className='w-11/12 md:w-1/3 mt-[19rem] md:mt-[17rem] bg-slate-200 rounded-lg p-6 mx-auto shadow-lg border-4 border-slate-400'
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            contentLabel={t("changeEmail.formHeading")}
+            className="modal-panel max-w-md"
         >
-            <div className='w-full flex justify-end'>
-                <button onClick={onRequestClose}
-                    className='relative left-3 bottom-6 text-black hover:text-gray-600'
-                >X</button>
-            </div>
-            <h2 className='w-full h-fit flex justify-center text-xl font-semibold'>{t("changeEmail.formHeading")}</h2>
-            <div className='w-full flex justify-center'>
-                <form
-                    onSubmit={handleSaveNewEmail}
-                    className='w-3/4 h-fit flex flex-col justify-start items-center gap-4 mt-5'
-                >
-                    <label htmlFor="newEmailAddr">{t("changeEmail.emailLabel")}</label>
-                    <div className='relative w-full flex justify-center items-center'>
-                        <input
-                            type="email"
-                            name="newEmailAddr"
-                            id="newEmailAddr"
-                            placeholder={t("changeEmail.emailPlaceholder")}
-                            className='input-base'
-                            ref={newEmailAddr}
-                        />
-                        <Icon
-                            icon='entypo:email'
-                            className="icon-base text-gray-500 text-xl text-opacity-30"
-                        />
-                    </div>
+            <ModalHeader title={t("changeEmail.formHeading")} onClose={onRequestClose} />
+            <form
+                onSubmit={handleSaveNewEmail}
+                className="w-full flex flex-col gap-4"
+            >
+                <label htmlFor="newEmailAddr" className="text-sm font-medium text-ink">{t("changeEmail.emailLabel")}</label>
+                <div className="relative w-full">
+                    <input
+                        type="email"
+                        name="newEmailAddr"
+                        id="newEmailAddr"
+                        placeholder={t("changeEmail.emailPlaceholder")}
+                        className="input-base pr-9"
+                        ref={newEmailAddr}
+                    />
+                    <Icon
+                        icon='entypo:email'
+                        className="icon-base top-2.5 text-muted text-lg"
+                    />
+                </div>
+                <div className="modal-actions">
+                    <button type="button" onClick={onRequestClose} className="modal-btn-secondary">
+                        {t("cancel")}
+                    </button>
                     <SubmitBtn
                         className='form-submit-modal-btn'
                         disabled={requestState.sended}
                     >
                         {t("changeEmail.newEmailSubmitBtn")}
                     </SubmitBtn>
-                </form>
-                {requestState.isLoading && <LoadingModal isOpen={requestState.isLoading} />}
-            </div>
-        </Modal>
+                </div>
+            </form>
+            {requestState.isLoading && <LoadingModal isOpen={requestState.isLoading} />}
+        </AppModal>
     )
 }

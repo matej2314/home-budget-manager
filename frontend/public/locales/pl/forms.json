@@ -37,12 +37,15 @@
         "label": "Wyślij wiadomość"
     },
     "addTransaction": {
-        "typeActionLabel": "Wybierz typ transakcji.",
-        "incomeType": "przychód",
-        "expenseType": "wydatek",
-        "actionValueImageLabel": "Wybierz zdjęcie paragonu:",
-        "actionValueNumberLabel": "Wpisz wartość transakcji:",
-        "textInputPlaceholder": "wartość",
+        "typeActionLabel": "Typ transakcji",
+        "incomeType": "Przychód",
+        "expenseType": "Wydatek",
+        "actionValueImageLabel": "Wgraj zdjęcie paragonu",
+        "actionValueNumberLabel": "Kwota",
+        "scanToggle": "Skanuj",
+        "categoryLabel": "Kategoria",
+        "categoryEmpty": "Brak kategorii",
+        "textInputPlaceholder": "0.00",
         "submitTransaction": "Dodaj transakcję",
         "invalidRecognizeInput": "Nieprawidłowe dane wejściowe.",
         "recognizeInternalError": "Błąd odczytu danych z obrazu.",
@@ -78,8 +81,9 @@
         "successMessage" : "Wiadomość została wysłana.",
         "errorMessage": "Wystąpił błąd podczas wysyłania wiadomości.",
         "formHeaderSend": "Wyślij wiadomość",
-        "recipientNameLabel": "Wpisz nazwę odbiorcy:",
-        "recipientNamePlaceholder": "nazwa odbiorcy",
+        "recipientNameLabel": "Wybierz odbiorcę:",
+        "recipientNamePlaceholder": "wybierz domownika",
+        "noRecipients": "Brak innych domowników w gospodarstwie.",
         "messageLabel": "Wpisz wiadomość:",
         "messagePlaceholder": "wiadomość"
     }

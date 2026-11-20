@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../store/authContext';
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import Authorization from '../home-page-components/Authorization';
 import { showErrorToast } from '../../configs/toastify';
 import { useTranslation } from 'react-i18next';
@@ -22,42 +23,44 @@ export default function AuthModal({ isOpen, onRequestClose }) {
         setMode(selectedMode);
     }
 
+    const title = mode === 'login'
+        ? t("authElements.modalLoginBtn")
+        : mode === 'register'
+            ? t("authElements.modalSignUpBtn")
+            : t("authElements.modalLoginBtn") + ' / ' + t("authElements.modalSignUpBtn");
+
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='bg-white rounded-lg p-6 w-11/12 md:w-5/12 mx-auto mt-4 shadow-lg border-4 border-slate-400'
-            overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
+            contentLabel="Authentication"
+            className="modal-panel max-w-lg"
         >
-            <div className='w-full h-fit flex flex-col md:flex-row justify-center gap-2 mb-4'>
-                <p className='w-full h-fit flex justify-center font-semibold text-md md:text-lg'>TEST LOGIN DATA: </p>
-                <span className='w-full h-fit flex justify-center'>testuser@email.pl / Testuser123!!</span>
+            <ModalHeader title={title} onClose={onRequestClose} />
+            <div className="mb-5 rounded-lg bg-page border border-slate-200 px-3 py-2 text-sm text-muted">
+                <span className="font-medium text-ink">TEST LOGIN DATA: </span>
+                testuser@email.pl / Testuser123!!
             </div>
             {mode ? (
-                <>
-                    <button onClick={onRequestClose} className='absolute top-2 right-2 text-gray-400 hover:text-gray-600'>
-                        X
-                    </button>
-                    <Authorization mode={mode} />
-                </>
+                <Authorization mode={mode} />
             ) : (
-                <div className='text-center'>
-                    <div className='flex justify-around'>
-                        <button
-                            onClick={() => handleLoginBtn('login')}
-                            className='auth-modal-mode-btn'
-                        >
-                            {t("authElements.modalLoginBtn")}
-                        </button>
-                        <button
-                            onClick={() => handleModeChange('register')}
-                            className='auth-modal-mode-btn'
-                        >
-                            {t("authElements.modalSignUpBtn")}
-                        </button>
-                    </div>
+                <div className="flex justify-center gap-3">
+                    <button
+                        onClick={() => handleLoginBtn('login')}
+                        className="auth-modal-mode-btn"
+                        type="button"
+                    >
+                        {t("authElements.modalLoginBtn")}
+                    </button>
+                    <button
+                        onClick={() => handleModeChange('register')}
+                        className="auth-modal-mode-btn"
+                        type="button"
+                    >
+                        {t("authElements.modalSignUpBtn")}
+                    </button>
                 </div>
             )}
-        </Modal>
+        </AppModal>
     )
 }

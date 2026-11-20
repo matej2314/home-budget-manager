@@ -1,4 +1,5 @@
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import AddUserToHouseForm from '../forms/AddUserToHouseForm';
 import { useTranslation } from 'react-i18next';
 
@@ -6,34 +7,23 @@ export default function AddUserToHouseModal({ isOpen, onRequestClose }) {
     const { t } = useTranslation("modals");
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            contentLabel="Add New Transaction"
-            className='add-user-to-house-modal'
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            contentLabel={t("addUserToHouse.heading")}
+            className="modal-panel max-w-lg"
         >
-            <div className='relative w-full flex justify-end ml-4'>
-                <button onClick={onRequestClose}
-                    className='relative bottom-6 text-black hover:text-gray-600'
-                >
-                    X
-                </button>
-            </div>
-            <h2 className="w-full h-fit flex justify-center text-lg font-semibold indirectxl:text-2xl mb-7"
-            >
-                {t("addUserToHouse.heading")}
-            </h2>
+            <ModalHeader title={t("addUserToHouse.heading")} onClose={onRequestClose} />
             <AddUserToHouseForm onClose={onRequestClose} />
-            <div className="flex justify-end mt-4">
+            <div className="modal-actions">
                 <button
                     onClick={onRequestClose}
-                    className="form-submit-modal-btn"
+                    className="modal-btn-secondary"
+                    type="button"
                 >
                     {t("cancel")}
                 </button>
             </div>
-        </Modal>
+        </AppModal>
     )
-
 }
