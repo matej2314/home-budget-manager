@@ -612,21 +612,21 @@
     "semantic_hash": ""
   },
   "backend/tasks/balanceHouseTransactions.js": {
-    "mtime": 1795168621.234654,
-    "seen": 1795171136.2154722,
-    "ast_hash": "98f6eeebbcdd8d1b1d5451a1e99176f8",
+    "mtime": 1795194209.3527489,
+    "seen": 1795194226.571485,
+    "ast_hash": "d7e9f7d3d4844ffaa65d3a05daff6e7a",
     "semantic_hash": ""
   },
   "backend/tasks/saveDailyBudget.js": {
-    "mtime": 1795168621.2346997,
-    "seen": 1795171136.2154727,
-    "ast_hash": "5ab74949a30e638fb2cd62a86e338c95",
+    "mtime": 1795194210.2783396,
+    "seen": 1795194226.5714865,
+    "ast_hash": "016c9c71949ac9431c42b7213024d4b2",
     "semantic_hash": ""
   },
   "backend/tasks/saveDailyTransactions.js": {
-    "mtime": 1795168621.2347317,
-    "seen": 1795171136.2154732,
-    "ast_hash": "cab3a4fa70421b1d57f904e088fbe38b",
+    "mtime": 1795194211.066531,
+    "seen": 1795194226.5714877,
+    "ast_hash": "770de3f7802566bdee0e99fa112983ed",
     "semantic_hash": ""
   },
   "backend/tests/foundation/esm-smoke.test.js": {
@@ -1518,9 +1518,9 @@
     "semantic_hash": ""
   },
   "frontend/src/url.js": {
-    "mtime": 1795170568.534389,
-    "seen": 1795171136.2155707,
-    "ast_hash": "c2e6d47c43ac171ea850046180d47b2c",
+    "mtime": 1795180093.765984,
+    "seen": 1795194226.5752957,
+    "ast_hash": "a874946a4bc94d25a77096e9e593fab4",
     "semantic_hash": ""
   },
   "frontend/src/utils/animationVariants.js": {
@@ -1812,9 +1812,9 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
-    "mtime": 1795168621.24569,
-    "seen": 1795171136.2156057,
-    "ast_hash": "12daa2b4b65c496ab58636ae14edd732",
+    "mtime": 1795180144.2314765,
+    "seen": 1795194226.576331,
+    "ast_hash": "4b85103fea617b2a97acf94ec6f99fae",
     "semantic_hash": ""
   },
   "spec/SPEC-BACKEND.md": {
@@ -2117,16 +2117,46 @@
     "ast_hash": "2ba3e3e3c7bbc31e16b2d4897772a27e",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_backend-faza5-role-inmate.md": {
+  "backend/services/budget/balanceHouseholdsMonthly.js": {
+    "mtime": 1795194200.0498185,
+    "seen": 1795194226.5698016,
+    "ast_hash": "013ca9915d1d92ff1b77c1b7b5895da3",
+    "semantic_hash": ""
+  },
+  "backend/services/budget/saveDailyBudgetSnapshot.js": {
+    "mtime": 1795194202.427143,
+    "seen": 1795194226.569804,
+    "ast_hash": "72b4805839f07ae7ae749eb6e1c64018",
+    "semantic_hash": ""
+  },
+  "backend/services/transactions/saveDailyTransactionsSnapshot.js": {
+    "mtime": 1795194206.5657697,
+    "seen": 1795194226.5710351,
+    "ast_hash": "0942e1af64e6a0b286505d0d41e22c1a",
+    "semantic_hash": ""
+  },
+  "backend/tests/unit/adapters-cron-ws.test.js": {
+    "mtime": 1795194218.5735493,
+    "seen": 1795194226.5716574,
+    "ast_hash": "8af7e912ad5ba6b9ba3d7aa26c876720",
+    "semantic_hash": ""
+  },
+  "feature-plans/home-budget-manager_feature_plan_backend-faza6-adaptery-cron-ws.md": {
+    "mtime": 1795194221.490658,
+    "seen": 1795194226.5762033,
+    "ast_hash": "d43e2698ce382d64f49a401f4290ffaa",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza5-role-inmate.md": {
     "mtime": 1795179342.728612,
-    "seen": 1795179705.951484,
+    "seen": 1795194226.5762439,
     "ast_hash": "ead1806246d37ba7045d04189a86f067",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_frontend-faza5-role-inmate.md": {
-    "mtime": 1795178697.2858837,
-    "seen": 1795179006.3666577,
-    "ast_hash": "1446e298d43e04fde6587d5d56eaa513",
+  "feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza5-role-inmate.md": {
+    "mtime": 1795179736.478592,
+    "seen": 1795194226.5762815,
+    "ast_hash": "e397c4505e00175f25b61e8d4cb846bc",
     "semantic_hash": ""
   }
 }

@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza6-adaptery-cron-ws.md` (FAZA 1, KROK 1–3, review zaakceptowany) oznaczono Fazę 6 (kroki 6.1–6.2) jako `WYKONANY` oraz milestone „Adaptery bez omijania warstwy aplikacji” jako `OSIĄGNIĘTY`. Start Fazy 7 poza tym syncem.
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza5-role-inmate.md` (FAZA 1, KROK 1–3, review zaakceptowany) oznaczono Fazę 5 (kroki 5.1–5.3) jako `WYKONANY` oraz milestone „Role zgodne z normą po stronie backendu” jako `OSIĄGNIĘTY`.
 - **2026-11-19 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza3-faza4-ops-kontrakt.md` (FAZA 1 + FAZA 2, review zaakceptowany) oznaczono Fazę 3 (kroki 3.1–3.3) i Fazę 4 (kroki 4.1–4.3) jako `WYKONANY` oraz milestone’y „Fundament observability i bezpieczeństwa HTTP” i „Kontrakt API v1 (z dual mount legacy)” jako `OSIĄGNIĘTY`.
 - **2026-11-13 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza1-faza2-blok-b-r2.md` oznaczono Fazę 1 (kroki 1.1–1.3) i Fazę 2 (kroki 2.1–2.4) jako `WYKONANY` oraz milestone’y „Backend na zaktualizowanych zależnościach” i „Struktura Blok B + pipeline R2” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”).
@@ -370,7 +371,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 6 — Adaptery cron i WebSocket (R4)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Utrzymanie cron i Socket.io jako adapterów w procesie API: `tasks/` wołają te same services co HTTP; push WS jest skutkiem ubocznym przepływu aplikacji, z katalogiem eventów z docs — bez workerów i bez omijania services (`docs/architektura.md` R4, SPEC-BACKEND B-5, SPEC-KOMUNIKACJA K-9–K-12).
 
@@ -385,7 +386,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 6.1 — Cron przez services
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Harmonogramy (bilans, snapshoty itd.) wołają services — nie warstwę danych / raw SQL bezpośrednio.
 
@@ -396,7 +397,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 6.2 — Push WS jako skutek uboczny
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Emisja ustalonych eventów (`notification`, `newMessage`, `balance_update`, …) po mutacjach HTTP/service; adresowanie przez `broadcastMessage` / `broadcastToHousehold` (nazwa po Kroku 5.3) bez osobnego „room API”.
 
@@ -409,6 +410,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 ---
 
 ## MILESTONE — Adaptery bez omijania warstwy aplikacji
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 6. Cron i WS są adapterami nad services; można wchodzić w persistencję Prisma.
 
