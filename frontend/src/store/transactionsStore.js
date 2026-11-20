@@ -11,7 +11,7 @@ export const useTransactionsStore = create((set) => ({
     isTransactionsFetched: false,
 
     fetchTransactions: async (page = 1) => {
-        set({ actionsLoading: true, actionsDataError: null, isTransactionsFetched: false });
+        set({ actionsLoading: true, actionsDataError: null });
 
         try {
             const result = await fetchData(`${apiBaseUrl}/board/data/transactions/${page}`);

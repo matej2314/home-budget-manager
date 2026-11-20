@@ -1,30 +1,30 @@
-# Graph Report - home-budget-manager  (2026-11-19)
+# Graph Report - home-budget-manager  (2026-11-20)
 
 ## Corpus Check
-- 328 files · ~140,905 words
+- 330 files · ~141,621 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 10 file(s) not represented in the graph (top: (none) 6, .traineddata 2, .conf 1)
 
 ## Summary
-- 1374 nodes · 3377 edges · 77 communities (69 shown, 4 thin omitted)
+- 1381 nodes · 3449 edges · 75 communities (67 shown, 4 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 35 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f19e816e`
+- Built from commit: `1289bcb0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - Home Budget Manager — feature plan: backend Faza 3 + Faza 4 (ops + kontrakt)
-- routerConfig.jsx
+- AppError.js
 - index.js
 - runController
 - Home Budget Manager — major plan (backend)
 - Home Budget Manager — feature plan: frontend Faza 3 + Faza 4 (stan + HTTP `/api/v1`)
 - Home Budget Manager — major plan (frontend)
 - Grupy zasobów — operacje
-- checkUserHouse
+- AppError
 - Home Budget Manager — feature plan: frontend Faza 1 + Faza 2 (mapa SPA)
 - Model danych — Home Budget Manager
 - frontend/package.json
@@ -32,42 +32,39 @@
 - dependencies
 - backend/package.json
 - Architektura — Home Budget Manager
-- websocketConfig.js
+- addNewMonthlyBudget.js
 - householdController.js
 - SPEC — Backend
 - SPEC — Bezpieczeństwo
-- authController.js
+- websocketConfig.js
 - SPEC — Testy (backend)
 - SPEC — Dane (persistencja)
 - SPEC — Frontend (SPA)
 - devDependencies
 - SPEC — Komunikacja (I/O)
-- react-i18next
 - Anty-patterny — Home Budget Manager
 - Bezpieczeństwo — Home Budget Manager
-- authContext.jsx
 - Przepływy danych — Home Budget Manager
 - Wdrożenie i operacje — Home Budget Manager
 - Dokumentacja koncepcyjna — Home Budget Manager
 - Observability — Home Budget Manager
-- AddTransactionForm.jsx
+- actionCatController.js
 - MessagesList.jsx
+- routerConfig.jsx
 - Architektura katalogów i plików — Home Budget Manager
 - Strategia testów — Home Budget Manager
 - App.jsx
 - swaggerConfig.js
 - Słownik — Home Budget Manager
 - i18n i kontrakt UI — Home Budget Manager
-- FastActionsSection.jsx
 - Katalog zmiennych środowiskowych — Home Budget Manager
-- i18n.js
 - KROK 3 — Domknięcie sierot + cienkie controllery (pełny pipeline; bez Prisma)
-- showErrorToast
+- react-i18next
 - Project: Web Home Budget Manager
 - app.js
 - 3.E — Notifications (`services/notifications/`) + naprawa `handleNotification`
 - FAZA 1 — Aktualizacja zależności + ESM + scoped fundament
-- logger.js
+- logger
 - Home Budget Manager — feature plan: backend Faza 1 + Faza 2 (Blok B + R2)
 - KROK 4 — Audyt granic warstw + scoped testy mapy / B-10 / pipeline
 - FAZA 2 — Blok B + pipeline R2 (cienkie controllery, B-10; bez Prisma)
@@ -86,54 +83,55 @@
 - avatarController.js
 - 3.C — Board (`services/board/`)
 - extractReceiptTotal.js
+- homePageDataController.js
 - DashBoardMenu.jsx
-- AppError
-- acceptInvitation.js
+- backend/utils/validation.js
+- logger.js
 
 ## God Nodes (most connected - your core abstractions)
 1. `AppError` - 104 edges
-2. `react-i18next` - 65 edges
+2. `react-i18next` - 67 edges
 3. `runController()` - 59 edges
 4. `logger` - 57 edges
-5. `react` - 49 edges
+5. `react` - 50 edges
 6. `pool` - 44 edges
-7. `useAuth()` - 41 edges
+7. `useAuth()` - 43 edges
 8. `showErrorToast()` - 39 edges
 9. `showInfoToast()` - 39 edges
 10. `sendRequest()` - 31 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `FastActions()` --indirect_call--> `ChangeEmailModal()`  [INFERRED]
-  frontend/src/components/dashboard/dashboard-internal-components/FastActionsSection.jsx → frontend/src/components/modals/ChangeEmailModal.jsx
-- `FastActions()` --indirect_call--> `CookiesModal()`  [INFERRED]
-  frontend/src/components/dashboard/dashboard-internal-components/FastActionsSection.jsx → frontend/src/components/modals/CookiesModal.jsx
-- `FastActions()` --indirect_call--> `showInfoToast()`  [INFERRED]
-  frontend/src/components/dashboard/dashboard-internal-components/FastActionsSection.jsx → frontend/src/configs/toastify.jsx
+- `MessagesList()` --indirect_call--> `DeleteMessageModal()`  [INFERRED]
+  frontend/src/components/dashboard/dashboard-internal-components/MessagesList.jsx → frontend/src/components/modals/messagesModals/messagesModals.jsx
 - `initializeWebSocket()` --indirect_call--> `authMiddleware()`  [INFERRED]
   backend/configs/websocketConfig.js → backend/middlewares/websocket/authMiddleware.js
 - `sendNewMessage()` --calls--> `broadcastMessage()`  [EXTRACTED]
   backend/services/messages/sendNewMessage.js → backend/configs/websocketConfig.js
+- `addUserByMate()` --calls--> `broadcastMessage()`  [EXTRACTED]
+  backend/utils/householdUtils/addUserByMate.js → backend/configs/websocketConfig.js
+- `emitNotification()` --calls--> `broadcastToHouseMates()`  [EXTRACTED]
+  backend/services/notifications/emitNotification.js → backend/configs/websocketConfig.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (77 total, 4 thin omitted)
+## Communities (75 total, 4 thin omitted)
 
 ### Community 0 - "Home Budget Manager — feature plan: backend Faza 3 + Faza 4 (ops + kontrakt)"
 Cohesion: 0.06
 Nodes (33): Audyt uploadów, `authRoutes.js` — `GET /verify`, CORS — refaktor względem as-is `server.js`, FAZA 1 — Fundament operacyjny (major Faza 3), FAZA 2 — Kontrakt komunikacji (major Faza 4), Helmet (Context7 `/helmetjs/helmet` v8), Home Budget Manager — feature plan: backend Faza 3 + Faza 4 (ops + kontrakt), KROK 1 — Logger stdout: audyt B-14/B-15 (+25 more)
 
-### Community 1 - "routerConfig.jsx"
-Cohesion: 0.08
-Nodes (30): BarChart(), LineChart(), BasicHouseInfo(), BalanceBudgetComparison(), BudgetPerDay(), CategoriesValuesChart(), TransactionsOverTime(), TransactionsPerDay() (+22 more)
+### Community 1 - "AppError.js"
+Cohesion: 0.18
+Nodes (9): getBoardDataHandler(), setCookieValue(), setTourValue(), pool, getBoardData(), setAcceptCookies(), setCompleteTour(), checkUserEmail() (+1 more)
 
 ### Community 2 - "index.js"
 Cohesion: 0.07
 Nodes (40): createUserDirectory(), __dirname, __filename, deleteFiles(), __dirname, __filename, sessionRequired, verifyJWT() (+32 more)
 
 ### Community 3 - "runController"
-Cohesion: 0.09
-Nodes (25): actionCatCollection(), addNewActionCat(), deleteActionCat(), getBoardDataHandler(), setCookieValue(), setTourValue(), saveImagesHandler(), addTechnology() (+17 more)
+Cohesion: 0.17
+Nodes (13): saveImagesHandler(), addReviewHandler(), getReviewsCollectionHandler(), addNewAction(), deleteAction(), getAllActions(), getHouseActions(), saveImages() (+5 more)
 
 ### Community 4 - "Home Budget Manager — major plan (backend)"
 Cohesion: 0.04
@@ -151,9 +149,9 @@ Nodes (40): Faza 1 — Aktualizacja zależności frontendu, Faza 2 — Układ SP
 Cohesion: 0.05
 Nodes (38): As-is, Auth, Auth — `/api/v1/auth`, Awatary — `/api/v1/avatars`, Budżet miesięczny — `/api/v1/initmonthly`, Cel i zakres, Dashboard — `/api/v1/board`, Dokumentacja komunikacji — Home Budget Manager (+30 more)
 
-### Community 8 - "checkUserHouse"
-Cohesion: 0.16
-Nodes (17): broadcastMessage(), deleteNotification(), GetNoticesCollection(), addNewAction(), deleteAction(), getAllActions(), getHouseActions(), deleteNotification() (+9 more)
+### Community 8 - "AppError"
+Cohesion: 0.15
+Nodes (19): deleteMessage(), markMessage(), sendMessage(), addUserToHouse(), changeEmail(), deleteInhabitant(), deleteUser(), getAllUsers() (+11 more)
 
 ### Community 10 - "Home Budget Manager — feature plan: frontend Faza 1 + Faza 2 (mapa SPA)"
 Cohesion: 0.08
@@ -164,8 +162,8 @@ Cohesion: 0.08
 Nodes (25): `actionCategories`, Cel, Diagram relacji (rdzeń), Galeria screenshotów, `households`, `householdUsers`, `initialMonthlyBudgets`, `invitations` (+17 more)
 
 ### Community 12 - "frontend/package.json"
-Cohesion: 0.12
-Nodes (17): eslint, @eslint/js, globals, name, private, type, version, eslint-plugin-react (+9 more)
+Cohesion: 0.11
+Nodes (19): eslint, @eslint/js, globals, name, private, type, version, eslint-plugin-react (+11 more)
 
 ### Community 13 - "dependencies"
 Cohesion: 0.09
@@ -183,13 +181,13 @@ Nodes (21): author, description, engines, node, eslint, @eslint/js, globals, lic
 Cohesion: 0.10
 Nodes (20): Architektura — Home Budget Manager, Bezpieczeństwo i granice zaufania, Cel dokumentu, Decyzje świadomie odroczone, Dostęp do danych: Prisma ORM, Dziedziczenie stylu, Frontend (as-is), Jak czytać dalej (+12 more)
 
-### Community 19 - "websocketConfig.js"
-Cohesion: 0.17
-Nodes (10): broadcastToHouseMates(), initializeWebSocket(), addNewMonthlyBudgetHandler(), authMiddleware(), addNewMonthlyBudget(), getMysqlExpireDate(), handleBroadcastInitBudget(), addNewBudget() (+2 more)
+### Community 19 - "addNewMonthlyBudget.js"
+Cohesion: 0.35
+Nodes (6): broadcastToHouseMates(), addNewMonthlyBudgetHandler(), addNewMonthlyBudget(), handleBroadcastInitBudget(), addNewBudget(), clearExtraValues()
 
 ### Community 20 - "householdController.js"
-Cohesion: 0.23
-Nodes (13): addNewHouse(), deleteHouse(), getAllHouses(), getHouseInfo(), addNewHouse(), signRoleToken(), deleteHouse(), getHouseInfo() (+5 more)
+Cohesion: 0.20
+Nodes (14): jwtCookieOptions, addNewHouse(), deleteHouse(), getAllHouses(), getHouseInfo(), addNewHouse(), signRoleToken(), deleteHouse() (+6 more)
 
 ### Community 21 - "SPEC — Backend"
 Cohesion: 0.12
@@ -199,9 +197,9 @@ Nodes (17): Błędy, Cel / zakres względem dokumentacji, Dane (Prisma), Helpery
 Cohesion: 0.12
 Nodes (17): Autoryzacja, Cel / zakres względem dokumentacji, Health, Helmet i CORS, Kryteria akceptacji (obserwowalne), Nie wolno, Poza zakresem tego SPEC, Sekrety i logi (+9 more)
 
-### Community 23 - "authController.js"
-Cohesion: 0.13
-Nodes (15): jwtCookieOptions, loginUserHandler(), logoutUserHandler(), registerUserHandler(), loginUser(), logoutUser(), registerUser(), allowedRoles (+7 more)
+### Community 23 - "websocketConfig.js"
+Cohesion: 0.15
+Nodes (12): initializeWebSocket(), loginUserHandler(), logoutUserHandler(), registerUserHandler(), authMiddleware(), loginUser(), logoutUser(), registerUser() (+4 more)
 
 ### Community 24 - "SPEC — Testy (backend)"
 Cohesion: 0.12
@@ -223,10 +221,6 @@ Nodes (13): devDependencies, eslint, @eslint/js, eslint-plugin-react, eslint-plu
 Cohesion: 0.14
 Nodes (14): Cel / zakres względem dokumentacji, E-mail outbound, HTTP — kontrakt wspólny, HTTP — multipart, Kryteria akceptacji (obserwowalne), Nie wolno, Poza zakresem tego SPEC, SPEC — Komunikacja (I/O) (+6 more)
 
-### Community 29 - "react-i18next"
-Cohesion: 0.13
-Nodes (27): DashBoard(), CustomAvatarInput, MatesList(), TransactionsList(), LossOrGainChart(), DisplayLiveBalance(), DisplayMatesList(), MonthlyBudget() (+19 more)
-
 ### Community 30 - "Anty-patterny — Home Budget Manager"
 Cohesion: 0.15
 Nodes (13): 10. Traktowanie otoczki jak rdzenia uprawnień budżetu, 11. (Bonus kontraktu) Nowe ścieżki bez prefiksu `/api/v1`, 1. Gruby controller / Prisma lub SQL poza warstwą `database`, 2. Reguły uprawnień tylko na froncie, 3. Drift ról (`mate` vs `inmate`, grupa `mates`), 4. Publiczny OCR / endpoint bez JWT „bo tak wyszło”, 5. Mieszane PL/EN w `message` jako kontrakt dla UI, 6. Logika biznesowa w komponencie React + dubel w API (+5 more)
@@ -234,10 +228,6 @@ Nodes (13): 10. Traktowanie otoczki jak rdzenia uprawnień budżetu, 11. (Bonus 
 ### Community 31 - "Bezpieczeństwo — Home Budget Manager"
 Cohesion: 0.15
 Nodes (13): Autoryzacja (role), Bezpieczeństwo — Home Budget Manager, Cel, CORS, Granica zaufania, Health, Nagłówki HTTP (Helmet), Sekrety i logi (+5 more)
-
-### Community 32 - "authContext.jsx"
-Cohesion: 0.17
-Nodes (18): LogOutModal(), showCookiesInfo(), DashBoardForUser(), AuthContext, AuthProvider(), useHomePageStore, useMessagesStore, SocketContext (+10 more)
 
 ### Community 33 - "Przepływy danych — Home Budget Manager"
 Cohesion: 0.17
@@ -255,13 +245,17 @@ Nodes (12): Cel produktu, Dla kogo jest dokumentacja, Dokumentacja koncepcyjna �
 Cohesion: 0.18
 Nodes (11): Alerting i SLI/SLO, Cel, Filary v1, Gdzie powstają sygnały, Granice względem innych docs, Healthcheck (norma docs), Instrumentacja, Konwencje (+3 more)
 
-### Community 37 - "AddTransactionForm.jsx"
-Cohesion: 0.21
-Nodes (11): AddTransactionForm(), ReviewsSection(), CookiesModal(), InvitationModal(), StarRating(), useApiResponseHandler(), useOcrRecognition(), parseApiEnvelope() (+3 more)
+### Community 37 - "actionCatController.js"
+Cohesion: 0.33
+Nodes (6): actionCatCollection(), addNewActionCat(), deleteActionCat(), getActionCatColl(), addActionCat(), deleteActionCat()
 
 ### Community 38 - "MessagesList.jsx"
-Cohesion: 0.18
-Nodes (15): MessagesFilterBtns(), MessagesList(), MessagesCounter(), DeleteMessageModal(), DisplayMessageDetails(), ReplyMessageModal(), filterArray(), mapArray() (+7 more)
+Cohesion: 0.13
+Nodes (19): MessagesFilterBtns(), MessagesList(), MessagesCounter(), ReviewsSection(), DisplayMessageDetails(), ReplyMessageModal(), StarRating(), filterArray() (+11 more)
+
+### Community 39 - "routerConfig.jsx"
+Cohesion: 0.08
+Nodes (32): BarChart(), LineChart(), BasicHouseInfo(), BalanceBudgetComparison(), BudgetPerDay(), CategoriesValuesChart(), TransactionsOverTime(), TransactionsPerDay() (+24 more)
 
 ### Community 40 - "Architektura katalogów i plików — Home Budget Manager"
 Cohesion: 0.20
@@ -287,25 +281,17 @@ Nodes (9): Finanse, Gospodarstwo i członkostwo, Komunikacja w produkcie, Kontra
 Cohesion: 0.22
 Nodes (9): As-is vs kierunek, Cel, Fallback do czasu pełnej migracji, i18n i kontrakt UI — Home Budget Manager, Języki v1, Kontrakt API ↔ UI (norma docelowa), Namespace’y UI (as-is + rozszerzenie), Obowiązki przy zmianie (+1 more)
 
-### Community 46 - "FastActionsSection.jsx"
-Cohesion: 0.15
-Nodes (20): FastActions(), ModalComponent(), AddReviewModal(), AddTransactionModal(), AddUserToHouseModal(), DeclareBudgetModal(), SendMessageModal(), TransactionsCategoriesModal() (+12 more)
-
 ### Community 47 - "Katalog zmiennych środowiskowych — Home Budget Manager"
 Cohesion: 0.25
 Nodes (8): Backend (wymagane / używane w kodzie), Cel, Checklist przy nowym środowisku, Compose / origin (production), Czego ten katalog nie obejmuje, E-mail outbound (kierunek — jeszcze nieużywane w kodzie), Frontend, Katalog zmiennych środowiskowych — Home Budget Manager
-
-### Community 48 - "i18n.js"
-Cohesion: 0.33
-Nodes (5): savedLanguage, getLocalStorage(), i18next, i18next-browser-languagedetector, i18next-http-backend
 
 ### Community 49 - "KROK 3 — Domknięcie sierot + cienkie controllery (pełny pipeline; bez Prisma)"
 Cohesion: 0.20
 Nodes (10): 3.A — Wspólna konwencja service → controller, 3.F — Budget (`services/budget/`), 3.G — Receipt (`services/receipt/` + cienki controller), 3.H — Shell (reviews, gallery) + rename’owane obszary już mające services, KROK 3 — Domknięcie sierot + cienkie controllery (pełny pipeline; bez Prisma), Nowy plik — `backend/controllers/receiptController.js`, Nowy plik — `backend/services/budget/addNewMonthlyBudget.js`, Nowy plik — `backend/services/receipt/extractReceiptTotal.js` (+2 more)
 
-### Community 50 - "showErrorToast"
-Cohesion: 0.16
-Nodes (26): AddUserToHouseForm(), ContactForm(), DeclareBudgetForm(), SubmitBtn(), LoginForm(), SendMessageForm(), SignUpForm(), Authorization() (+18 more)
+### Community 50 - "react-i18next"
+Cohesion: 0.06
+Nodes (100): DashBoard(), CustomAvatarInput, FastActions(), MatesList(), ModalComponent(), TransactionsList(), LossOrGainChart(), DisplayLiveBalance() (+92 more)
 
 ### Community 51 - "Project: Web Home Budget Manager"
 Cohesion: 0.29
@@ -323,9 +309,9 @@ Nodes (7): 3.E — Notifications (`services/notifications/`) + naprawa `handleNo
 Cohesion: 0.29
 Nodes (7): FAZA 1 — Aktualizacja zależności + ESM + scoped fundament, KROK 1 — Inwentaryzacja zależności vs stack docs/SPEC, KROK 3 — Setup Jest (ESM) + smoke fundamentu, Lista wyjściowa (`backend/package.json` as-is), Nowy plik — `backend/jest.config.js`, Nowy plik — `backend/tests/foundation/esm-smoke.test.js`, Propozycja commit message
 
-### Community 55 - "logger.js"
-Cohesion: 0.15
-Nodes (13): logFormat, logger, pool, app, server, saveDailyBudget(), saveDailyTransactions(), checkUserEmail() (+5 more)
+### Community 55 - "logger"
+Cohesion: 0.14
+Nodes (20): logger, acceptInvitationHandler(), getInvitationsCollectionHandler(), rejectInvitationHandler(), app, server, acceptInvitation(), getInvitationsCollection() (+12 more)
 
 ### Community 56 - "Home Budget Manager — feature plan: backend Faza 1 + Faza 2 (Blok B + R2)"
 Cohesion: 0.33
@@ -383,37 +369,41 @@ Nodes (4): 3.C — Board (`services/board/`), Nowy plik — `backend/services/bo
 Cohesion: 0.39
 Nodes (5): extractPhotoData(), extractReceipt(), extractReceiptTotal(), sharp, tesseract.js
 
-### Community 75 - "DashBoardMenu.jsx"
+### Community 76 - "homePageDataController.js"
+Cohesion: 0.29
+Nodes (7): addTechnology(), getDataCollection(), addTechnologyContent(), getHomePageCollection(), __dirname, __filename, getFilesList()
+
+### Community 81 - "DashBoardMenu.jsx"
 Cohesion: 0.07
-Nodes (37): HeaderIconsContainer(), MostActiveMates(), NotificationDot(), NotificationsContainer(), OpenMenuButton(), DashBoardMenu(), SendMessageBtn(), Home() (+29 more)
+Nodes (41): HeaderIconsContainer(), MostActiveMates(), NotificationDot(), NotificationsContainer(), OpenMenuButton(), DashBoardMenu(), SendMessageBtn(), Home() (+33 more)
 
-### Community 76 - "AppError"
-Cohesion: 0.18
-Nodes (19): deleteMessage(), markMessage(), sendMessage(), addUserToHouse(), changeEmail(), deleteInhabitant(), deleteUser(), getAllUsers() (+11 more)
+### Community 84 - "backend/utils/validation.js"
+Cohesion: 0.27
+Nodes (6): allowedRoles, isValidEmail(), isValidPassword(), isValidUsername(), registerValidations(), validTransactionTypes
 
-### Community 79 - "acceptInvitation.js"
-Cohesion: 0.18
-Nodes (13): acceptInvitationHandler(), getInvitationsCollectionHandler(), rejectInvitationHandler(), acceptInvitation(), getInvitationsCollection(), rejectInvitation(), emitNotification(), saveNotification() (+5 more)
+### Community 86 - "logger.js"
+Cohesion: 0.19
+Nodes (13): logFormat, broadcastMessage(), deleteNotification(), GetNoticesCollection(), deleteNotification(), getNoticesCollection(), addNewAction(), deleteAction() (+5 more)
 
 ## Knowledge Gaps
-- **576 isolated node(s):** `__filename`, `__dirname`, `logFormat`, `__filename`, `__dirname` (+571 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 604 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **578 isolated node(s):** `__filename`, `__dirname`, `logFormat`, `__filename`, `__dirname` (+573 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 606 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react-i18next` connect `react-i18next` to `authContext.jsx`, `routerConfig.jsx`, `AddTransactionForm.jsx`, `MessagesList.jsx`, `App.jsx`, `DashBoardMenu.jsx`, `frontend/package.json`, `FastActionsSection.jsx`, `i18n.js`, `showErrorToast`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
-- **Why does `react` connect `react-i18next` to `authContext.jsx`, `routerConfig.jsx`, `AddTransactionForm.jsx`, `MessagesList.jsx`, `App.jsx`, `DashBoardMenu.jsx`, `frontend/package.json`, `FastActionsSection.jsx`, `showErrorToast`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+- **Why does `react-i18next` connect `react-i18next` to `MessagesList.jsx`, `routerConfig.jsx`, `App.jsx`, `frontend/package.json`, `DashBoardMenu.jsx`?**
+  _High betweenness centrality (0.027) - this node is a cross-community bridge._
+- **Why does `react` connect `react-i18next` to `MessagesList.jsx`, `routerConfig.jsx`, `App.jsx`, `frontend/package.json`, `DashBoardMenu.jsx`?**
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `Dokumentacja komunikacji — Home Budget Manager` connect `Grupy zasobów — operacje` to `dokumentacja_komunikacji.md`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **What connects `__filename`, `__dirname`, `logFormat` to the rest of the system?**
-  _576 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _578 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Home Budget Manager — feature plan: backend Faza 3 + Faza 4 (ops + kontrakt)` be split into smaller, more focused modules?**
   _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._
-- **Should `routerConfig.jsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.07957393483709273 - nodes in this community are weakly interconnected._
 - **Should `index.js` be split into smaller, more focused modules?**
   _Cohesion score 0.07319347319347319 - nodes in this community are weakly interconnected._
+- **Should `Home Budget Manager — major plan (backend)` be split into smaller, more focused modules?**
+  _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._

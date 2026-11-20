@@ -1,32 +1,32 @@
-import Modal from 'react-modal';
-
+import AppModal from './AppModal';
+import { Icon } from '@iconify/react';
 
 export default function ScreenShotModal({ isOpen, onRequestClose, imageData }) {
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='w-11/12 h-[25rem] px-2 relative top-20 indirect:top-10 indirectxl:w-8/12 sm:w-8/12 md:w-11/12 md:top-32 lg:w-8/12 lg:top-32 xl:w-[1100px] xl:top-14 xl:h-fit xl:px-6 xl:py-2 bg-black/65 rounded-lg shadow-lg mx-auto xl:translate-y-[2vh] flex flex-col justify-center items-start gap-3'
-            overlayClassName='fixed inset-0 bg-black bg-opacity-50'
+            contentLabel="Screenshot"
+            className="relative w-[92%] max-w-5xl max-h-[90vh] overflow-auto bg-ink rounded-xl shadow-xl p-3 sm:p-4 outline-none"
         >
-            <div className='w-full h-full'>
+            <div className="relative w-full">
                 <button
                     onClick={onRequestClose}
                     type="button"
-                    className='absolute top-2 right-2 text-white text-xl font-bold'
+                    aria-label="Close"
+                    className="absolute top-1 right-1 z-10 p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors"
                 >
-                    X
+                    <Icon icon="mdi:close" width={22} height={22} />
                 </button>
-                <div className='w-full h-full flex justify-center items-center'>
+                <div className="w-full flex justify-center items-center pt-6">
                     <img
                         src={imageData?.src}
-                        className='w-full h-full xl:h-[30rem] object-contain rounded-md shadow-lg flex flex-col items-stretch'
-                    >
-                    </img>
+                        alt=""
+                        className="w-full max-h-[75vh] object-contain rounded-md"
+                    />
                 </div>
-
             </div>
-        </Modal>
+        </AppModal>
     )
 }

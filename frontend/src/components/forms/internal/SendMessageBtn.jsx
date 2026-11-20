@@ -3,7 +3,8 @@ import { Icon } from '@iconify/react';
 import { useTranslation } from "react-i18next";
 import { messageFormVariants, contactFormVariants } from "../../../utils/animationVariants";
 
-const messageFormClasses = "relative w-[15rem] bg-transparent p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 btn-border border-slate-500/45 overflow-hidden";
+const messageFormClasses =
+    "relative inline-flex items-center justify-center gap-2 min-w-[11rem] px-4 py-2.5 rounded-lg bg-accent text-white font-medium shadow-sm hover:bg-accent/90 active:scale-[0.98] transition-all overflow-hidden disabled:opacity-60 disabled:pointer-events-none";
 
 export default function SendMessageBtn({ form, state, setState, resetState }) {
     const { t } = useTranslation("forms");
@@ -20,9 +21,7 @@ export default function SendMessageBtn({ form, state, setState, resetState }) {
             className={form === 'sendMessage' ? messageFormClasses : 'contact-form-submit-btn'}
             disabled={state.type === 'sended'}
         >
-            <span
-                className="w-full h-full justify-center"
-            >
+            <span className="relative z-[1]">
                 {t("sendMessageBtn.label")}
             </span>
             <motion.div
@@ -33,7 +32,7 @@ export default function SendMessageBtn({ form, state, setState, resetState }) {
                 animate='animate'
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
-                <Icon icon="fa-solid:paper-plane" width={22} height={22} className="text-slate-200" />
+                <Icon icon="fa-solid:paper-plane" width={18} height={18} className="text-white/90" />
             </motion.div>
 
         </motion.button>

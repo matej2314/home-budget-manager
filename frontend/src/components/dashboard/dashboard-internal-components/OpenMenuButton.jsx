@@ -18,17 +18,22 @@ export default function OpenMenuButton({ isOpened, actionCallback, home }) {
     return (
         <motion.button
             id='openMenuBtn'
+            type="button"
+            aria-label={isOpened ? 'Close menu' : 'Open menu'}
             custom={openValue}
             variants={home ? pageVariants : boardVariants}
             initial='initial'
             animate='animate'
             onDragStart={actionCallback}
             onClick={actionCallback}
-            className={`absolute 
-            ${!home ? 'top-16 left-0' : 'top-2'} 
-            ${isOpened && home ? 'bg-transparent border-0 p-0 mt-2 ml-[0.6rem] indirect:ml-4 indirect:mt-2.5 indirectxl:mt-[0.45rem] md:mt-2 md:ml-2' : 'p-2 border-2 border-slate-300'} 
-            text-slate-100 rounded-md z-10 
-            ${isOpened && home ? '' : 'bg-slate-500'}`}
+            className={`fixed z-40 flex items-center justify-center rounded-lg transition-colors
+            ${!home ? 'top-3 left-3' : 'top-3 left-3'}
+            ${isOpened && home
+                    ? 'bg-transparent border-0 p-2 text-slate-100'
+                    : home
+                        ? 'p-2 border border-white/25 bg-white/10 text-slate-100 backdrop-blur-sm'
+                        : 'p-2 border border-slate-200 bg-surface text-ink shadow-sm'
+                }`}
         >
             {!isOpened || !home ? (
                 <div className='flex flex-col gap-1'>
@@ -37,9 +42,9 @@ export default function OpenMenuButton({ isOpened, actionCallback, home }) {
                     <span className='open-menu-btn-span'></span>
                 </div>
             ) : (
-                <div className='flex flex-col gap-1.5 md:gap-1.5'>
-                    <span className='md:w-3 w-3 h-[0.12rem] md:h-0.5 bg-slate-100 -rotate-45'></span>
-                    <span className='md:w-3 w-3 h-[0.12rem] md:h-0.5 bg-slate-100 rotate-45'></span>
+                <div className='relative w-4 h-4'>
+                    <span className='absolute inset-x-0 top-1/2 h-[0.12rem] bg-current -rotate-45'></span>
+                    <span className='absolute inset-x-0 top-1/2 h-[0.12rem] bg-current rotate-45'></span>
                 </div>
             )}
         </motion.button>

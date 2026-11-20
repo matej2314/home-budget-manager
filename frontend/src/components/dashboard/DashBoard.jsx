@@ -19,24 +19,26 @@ export default function DashBoard() {
 
     return (
         <>
-            {actionsData && data && <div id="pagecontent" className="w-full h-full min-w-screen bg-slate-200 overflow-y-auto no-scrollbar pb-4">
+            {actionsData && data && <div id="pagecontent" className="min-h-full min-w-0 bg-page overflow-y-auto no-scrollbar pb-8">
                 <DashboardHeader />
-                <div id="house-info-blocks" className="grid grid-cols-2 lg:flex lg:flex-row gap-5 border-2 border-b-slate-800/5 py-4 px-5 md:pl-5 md:pr-9">
-                    <MatesCounter />
-                    <MonthlyBudget />
-                    <DisplayLiveBalance />
-                    <MessagesCounter />
-                </div>
-                <div className='mt-1'>
-                    <FastActions profilePage={false} />
-                </div>
-                <div id='chartsPart' className="max-w-screen h-fit mb-4 mx-5 flex flex-col gap-3">
-                    <LossOrGainChart />
-                </div>
-                <div id="middlePart" className="max-w-screen pl-5 w-full flex flex-col items-center h-fit gap-3 pr-8">
-                    <DisplayMatesList />
-                    <LastTransactionsList limit={5} />
-                    <TopCategoriesList main={true} />
+                <div className="px-3 sm:px-5 lg:px-8 pt-4 sm:pt-5 space-y-4 sm:space-y-5">
+                    <div id="house-info-blocks" className="grid grid-cols-1 indirect:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+                        <MatesCounter />
+                        <MonthlyBudget />
+                        <DisplayLiveBalance />
+                        <MessagesCounter />
+                    </div>
+                    <div className='surface-card px-2 sm:px-3 py-2'>
+                        <FastActions profilePage={false} />
+                    </div>
+                    <div id='chartsPart' className="w-full min-w-0">
+                        <LossOrGainChart />
+                    </div>
+                    <div id="middlePart" className="w-full min-w-0 flex flex-col gap-4 sm:gap-5">
+                        <DisplayMatesList />
+                        <LastTransactionsList limit={5} />
+                        <TopCategoriesList main={true} />
+                    </div>
                 </div>
             </div>}
         </>

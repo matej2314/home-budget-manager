@@ -13,7 +13,8 @@
     "headerIcons": {
         "noticeTitle": "Notifications",
         "messagesTitle": "Messages",
-        "houseTitle": "My house"
+        "houseTitle": "My house",
+        "logoutTitle": "Log out"
     },
     "matesList": {
         "thLabels": {
@@ -41,7 +42,8 @@
         "host": "host"
     },
     "notificationsContainer": {
-        "noNoticesError": "No new notifications."
+        "noNoticesError": "No new notifications.",
+        "clearAll": "Clear all"
     },
     "transactionsList": {
         "noActionsError": "No transactions.",

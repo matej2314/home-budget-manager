@@ -23,17 +23,18 @@ export default function MonthlyBudget() {
     const currentBudgetPeriod = latestBudget?.budgetPeriod ?? boardPeriod ?? '00-00';
 
     return (
-        <div id="monthlyBudget"
-            className="lg:w-1/4 h-34 bg-linear-to-br backdrop-blur-xl from-green-500/50 via-green-500/90 to-green-600/75 lg:text-xl text-white flex flex-col justify-start items-center rounded-md pt-4"
-            style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
-        >
-            <div className="absolute bottom-0 right-0 flex justify-center items-center">
-                <Icon icon='emojione-monotone:money-bag' width={100} style={{ opacity: 0.2, position: 'relative', top: '0.5rem', left: '0.3rem' }} />
+        <div id="monthlyBudget" className="metric-card">
+            <div className="flex items-start justify-between gap-3">
+                <h2 className="text-sm font-medium text-muted">{t("declaredBudget.heading")}</h2>
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-600">
+                    <Icon icon='emojione-monotone:money-bag' width={22} height={22} />
+                </span>
             </div>
-            <div className="h-11/12 w-11/12 flex flex-col justify-center items-center gap-2 lg:gap-4">
-                <h2 className="lg:text-xl">{t("declaredBudget.heading")}</h2>
-                <span className="lg:text-xl text-white">{currentInitBudget} zł</span>
-                <span className=" text-xs md:text-sm">{currentBudgetPeriod}</span>
+            <div className="flex flex-col gap-1">
+                <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink break-all">
+                    {currentInitBudget} zł
+                </span>
+                <span className="text-xs text-muted">{currentBudgetPeriod}</span>
             </div>
         </div>
     )

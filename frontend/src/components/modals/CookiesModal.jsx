@@ -1,11 +1,10 @@
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { useTranslation } from 'react-i18next';
-
-Modal.setAppElement('#root');
 
 export default function CookiesModal({ isOpen, onRequestClose }) {
     const { t } = useTranslation("modals");
@@ -41,31 +40,30 @@ export default function CookiesModal({ isOpen, onRequestClose }) {
     }
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className="w-11/12 xl:w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-y-1/2 mx-auto"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            contentLabel="Cookies"
+            className="modal-panel max-w-md"
         >
-            <div className='w-full h-fit flex flex-col items-center gap-4'>
-                <p>{t("cookies.cookieTxt")}</p>
-                <div className='w-full h-fit flex justify-center gap-3'>
-                    <button
-                        className="form-submit-modal-btn"
-                        type="button"
-                        onClick={() => handleSaveCookieValue(1)}
-                    >
-                        {t("cookies.allBtn")}
-                    </button>
-                    <button
-                        className="form-submit-modal-btn"
-                        type="button"
-                        onClick={() => handleSaveCookieValue(0)}
-                    >
-                        {t("cookies.mandatoryBtn")}
-                    </button>
-                </div>
+            <ModalHeader title="Cookies" onClose={onRequestClose} />
+            <p className="text-sm text-ink leading-relaxed">{t("cookies.cookieTxt")}</p>
+            <div className="modal-actions-center">
+                <button
+                    className="form-submit-modal-btn"
+                    type="button"
+                    onClick={() => handleSaveCookieValue(1)}
+                >
+                    {t("cookies.allBtn")}
+                </button>
+                <button
+                    className="modal-btn-secondary"
+                    type="button"
+                    onClick={() => handleSaveCookieValue(0)}
+                >
+                    {t("cookies.mandatoryBtn")}
+                </button>
             </div>
-        </Modal>
+        </AppModal>
     )
 }

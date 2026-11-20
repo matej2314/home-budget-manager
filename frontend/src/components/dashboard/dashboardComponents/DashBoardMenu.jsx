@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../store/authContext';
 import { useSocket } from '../../../store/socketContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import NotificationDot from "../dashboard-internal-components/NotificationDot";
 import OpenMenuButton from '../dashboard-internal-components/OpenMenuButton';
 import { linksElements, adminLinksElements } from '../../../utils/arraysUtils/dashBoardMenuArrays';
@@ -28,58 +28,77 @@ export default function DashBoardMenu() {
     return (
         <>
             {isMobile && <OpenMenuButton isOpened={isOpened} actionCallback={handleToggleMenu} />}
-            <motion.div
+            <AnimatePresence>
+                {isMobile && isOpened && (
+                    <motion.button
+                        type="button"
+                        aria-label="Close menu overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-20 bg-black/40"
+                        onClick={handleToggleMenu}
+                    />
+                )}
+            </AnimatePresence>
+            <motion.aside
                 id='dashboardMenu'
                 initial={{ opacity: 0, x: isMobile ? '-100%' : 0 }}
                 animate={{ opacity: 1, x: isMobile && !isOpened ? '-100%' : 0 }}
-                transition={{ type: 'tween', duration: 0.3 }}
-                className={`bg-custom-gray opacity-0 flex flex-col justify-start items-center text-slate-300 gap-12 pl-3 pr-3 lg:px-7 border-r-2 border-slate-900 ${isMobile ? 'fixed top-0 left-0 h-full w-[10rem] md:w-64 pt-4 shadow-lg z-10' : 'pt-9'}`}
+                transition={{ type: 'tween', duration: 0.28 }}
+                className={`bg-sidebar text-sidebar-muted flex flex-col justify-start items-stretch gap-8 border-r border-black/20 ${isMobile
+                    ? 'fixed top-0 left-0 h-full w-[15.5rem] max-w-[85vw] pt-14 px-3 shadow-2xl z-30'
+                    : 'sticky top-0 h-screen w-56 lg:w-60 shrink-0 pt-8 px-3 lg:px-4'
+                    }`}
             >
-                <div className='h-full flex flex-col items-center justify-start gap-6'>
-                    <ul className='w-full flex flex-col items-center justify-start gap-6'>
+                <div className="px-2 pb-2 border-b border-white/10">
+                    <p className="text-white font-semibold text-sm tracking-wide">budgetApp</p>
+                    <p className="text-[0.7rem] text-sidebar-muted mt-0.5">Household manager</p>
+                </div>
+                <nav className='h-full flex flex-col items-stretch justify-start gap-1 overflow-y-auto no-scrollbar pb-8'>
+                    <ul className='w-full flex flex-col items-stretch justify-start gap-1'>
                         {linksElements.map((link, index) => (
-                            <li
-                                key={index}
-                                className={`w-full h-fit flex flex-row justify-center text-nowrap items-center ${!isMobile ? 'text-base' : 'text-sm'} border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3 ${locationEffect(link, location)}`}
-                            >
-                                <Icon
-                                    icon={link.icon}
-                                    width={23}
-                                    height={23}
-                                />
+                            <li key={index}>
                                 <Link
                                     to={link.path}
                                     onClick={() => setIsOpened(false)}
+                                    className={`w-full flex flex-row items-center gap-3 px-3 py-2.5 text-sm lg:text-[0.95rem] rounded-lg transition-colors duration-150 hover:bg-white/5 hover:text-white ${locationEffect(link, location) || 'text-sidebar-muted'}`}
                                 >
-                                    {t(`dashboardMenu.${link.label}`)}
+                                    <Icon
+                                        icon={link.icon}
+                                        width={20}
+                                        height={20}
+                                        className="shrink-0 opacity-90"
+                                    />
+                                    <span className="flex-1 text-left">{t(`dashboardMenu.${link.label}`)}</span>
+                                    {link.dot && newMessages?.length > 0 ? <NotificationDot color={'bg-emerald-500'} data={newMessages.length} /> : null}
                                 </Link>
-                                {link.dot && newMessages?.length > 0 ? <NotificationDot color={'bg-green-700'} data={newMessages.length} /> : null}
                             </li>
                         ))}
                         {isAuthenticated && user.role === 'superadmin' && (
                             <>
                                 {adminLinksElements.map((link, index) => (
-                                    <li
-                                        key={index}
-                                        className={`w-full h-fit flex flex-row justify-center items-center border-b-2 border-slate-300/15 pb-5 hover:text-slate-400 gap-3 ${locationEffect(link, location)}`}
-                                    >
-                                        <Icon
-                                            icon={link.icon}
-                                            width={23}
-                                            height={23}
-                                        />
+                                    <li key={index}>
                                         <Link
                                             to={link.path}
+                                            onClick={() => setIsOpened(false)}
+                                            className={`w-full flex flex-row items-center gap-3 px-3 py-2.5 text-sm rounded-lg transition-colors duration-150 hover:bg-white/5 hover:text-white ${locationEffect(link, location) || 'text-sidebar-muted'}`}
                                         >
-                                            {t(`dashboardMenu.${link.label}`)}
+                                            <Icon
+                                                icon={link.icon}
+                                                width={20}
+                                                height={20}
+                                                className="shrink-0"
+                                            />
+                                            <span>{t(`dashboardMenu.${link.label}`)}</span>
                                         </Link>
                                     </li>
                                 ))}
                             </>
                         )}
                     </ul>
-                </div>
-            </motion.div>
+                </nav>
+            </motion.aside>
         </>
     );
 }

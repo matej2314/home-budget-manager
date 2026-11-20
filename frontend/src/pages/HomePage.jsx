@@ -35,18 +35,13 @@ export default function HomePage() {
     }
 
     return (
-        <>
-            <main className="w-screen lg:w-full h-screen flex flex-row justify-between lg:justify-center items-center bg-slate-300 overflow-auto no-scrollbar">
-                <div
-                    className="home-page-content-div md:gap-[1.5rem] lg:gap-[1rem] xl:gap-[5rem]">
-                    <div className="w-full flex justify-start">
-                        <HomePageMenu />
-                    </div>
-                    <div className="w-full h-full flex flex-col text-slate-800">
-                        <Outlet />
-                    </div>
+        <main className="w-full min-h-screen min-w-[320px] flex flex-col lg:flex-row justify-center items-stretch lg:items-center bg-[linear-gradient(145deg,#0f1320_0%,#1a2236_45%,#121826_100%)] overflow-auto no-scrollbar px-0 sm:px-3 lg:px-6 py-0 lg:py-6">
+            <div className="home-page-content-div">
+                <HomePageMenu />
+                <div className="relative z-[1] w-full flex-1 flex flex-col text-slate-100 pt-16 sm:pt-20">
+                    <Outlet />
                 </div>
-            </main >
-        </>
+            </div>
+        </main>
     );
 }

@@ -11,17 +11,16 @@ export default function MatesCounter() {
     const matesData = getData(isLoading, error, true, data.houseMates);
 
     return (
-        <div id='housemates'
-            className="relative w-full lg:w-1/4 h-34 bg-linear-to-br from-red-400 via-rose-600 to-red-700/85 text-xl text-white flex flex-col justify-start items-center rounded-md pt-6"
-            style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
-        >
-            <div className="absolute bottom-0 right-0 flex justify-center items-center">
-                <Icon icon='lucide:users-round' width={105} style={{ opacity: 0.2, position: 'relative', top: '0.5rem', left: '0.4rem' }} />
+        <div id='housemates' className="metric-card">
+            <div className="flex items-start justify-between gap-3">
+                <h2 className="text-sm font-medium text-muted">{t("matesCounter.heading")}</h2>
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-rose-500/10 text-rose-500">
+                    <Icon icon='lucide:users-round' width={22} height={22} />
+                </span>
             </div>
-            <div className="h-1/2 w-1/2 flex flex-col justify-center items-center gap-4">
-                <h2 className="text-2xl">{t("matesCounter.heading")}</h2>
-                {!isLoading && !error && <span className="text-2xl">{matesData.length}</span>}
-            </div>
+            {!isLoading && !error && (
+                <span className="text-3xl font-semibold tracking-tight text-ink">{matesData.length}</span>
+            )}
         </div>
     );
 }

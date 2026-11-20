@@ -1,23 +1,29 @@
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import TransactionsList from '../dashboard/dashboard-internal-components/TransactionsList';
 import { useTransactionsStore } from '../../store/transactionsStore';
+import { useTranslation } from 'react-i18next';
 
 export default function UserTransactionsModal({ isOpen, onRequestClose, id }) {
     const { actionsData } = useTransactionsStore();
+    const { t } = useTranslation("modals");
 
     const transactions = Array.isArray(actionsData) ? actionsData : null;
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className='bg-slate-200 rounded-lg p-6 mx-auto mt-10 shadow-lg border-4 border-slate-400'
-            overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
+            contentLabel="User transactions"
+            className="modal-panel max-w-3xl"
         >
-            <button onClick={onRequestClose} className='absolute top-2 right-2 text-gray-400 hover:text-gray-600'>
-                X
-            </button>
-            <TransactionsList filterId={id} transactions={transactions} />
-        </Modal>
+            <ModalHeader
+                title={t("userTransactions.heading", { defaultValue: "Transactions" })}
+                onClose={onRequestClose}
+            />
+            <div className="min-w-0 overflow-x-auto">
+                <TransactionsList filterId={id} transactions={transactions} />
+            </div>
+        </AppModal>
     )
 }

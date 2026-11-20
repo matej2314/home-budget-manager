@@ -21,27 +21,26 @@ export default function DisplayLiveBalance() {
         ? messages.balanceUpdates[0].newBalance
         : null;
     const currentBalance = socketBalance || boardBalance;
+    const isPositive = currentBalance !== null && Number(currentBalance) > 0;
 
     return (
-        <div id="liveBalance"
-            className="lg:w-1/4 h-34 bg-linear-to-br from-sky-400 via-blue-400 to-sky-600/95 text-xl text-white flex flex-col justify-start items-center rounded-md pt-4 relative"
-            style={{ boxShadow: 'inset 0 0 6px 6px rgba(0, 0, 0, 0.15)' }}
-        >
-            <div className="h-11/12 w-11/12 flex flex-col justify-center items-center gap-4">
-                <h2 className="text-xl">{t("displayLiveBalance.heading")}</h2>
-                <span
-                    className={currentBalance && currentBalance > 0 ? 'text-xl text-lime-900/75' : "text-xl text-red-500"}
-                >
-                    {currentBalance !== null ? `${currentBalance} zł` : t("displayLiveBalance.noData")}
+        <div id="liveBalance" className="metric-card">
+            <div className="flex items-start justify-between gap-3">
+                <h2 className="text-sm font-medium text-muted">{t("displayLiveBalance.heading")}</h2>
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-sky-500/10 text-sky-600">
+                    <Icon icon='vaadin:scale-unbalance' width={22} height={22} />
                 </span>
             </div>
-            <div className="absolute bottom-2 right-2">
-                <Icon
-                    icon='vaadin:scale-unbalance'
-                    width={95}
-                    style={{ opacity: 0.11, position: 'relative', top: '0.4rem', left: '0.6rem' }}
-                />
-            </div>
+            <span
+                className={`text-2xl sm:text-3xl font-semibold tracking-tight break-all ${currentBalance === null
+                    ? 'text-muted'
+                    : isPositive
+                        ? 'text-emerald-600'
+                        : 'text-rose-600'
+                    }`}
+            >
+                {currentBalance !== null ? `${currentBalance} zł` : t("displayLiveBalance.noData")}
+            </span>
         </div>
     );
 }

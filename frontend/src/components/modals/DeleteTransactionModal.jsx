@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react';
 import { useAuth } from '../../store/authContext';
 import { DataContext } from '../../store/dataContext';
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { apiBaseUrl } from '../../url';
 import { useTransactionsStore } from '../../store/transactionsStore';
@@ -50,32 +51,30 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
     };
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            className="w-11/12 xl:w-100 p-6 bg-slate-200 rounded-lg shadow-lg translate-y-1/2 mx-auto"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            contentLabel={t("deleteTransaction.heading")}
+            className="modal-panel"
         >
-            <div className='w-full h-fit flex flex-col justify-center items-center gap-5'>
-                <h2 className='w-full h-fit fle justify-center font-semibold'>{t("deleteTransaction.heading")}</h2>
-                <div id='btnsDiv' className='w-full h-fit flex justify-around'>
-                    <button
-                        type="button"
-                        className="form-submit-modal-btn"
-                        onClick={() => handleDeleteAction(transaction)}
-                    >
-                        {t("btnYes")}
-                    </button>
-                    <button
-                        onClick={onRequestClose}
-                        type="button"
-                        className="form-submit-modal-btn"
-                    >
-                        {t("btnNo")}
-                    </button>
-                </div>
-                {isLoading && <LoadingModal isOpen={isLoading} />}
+            <ModalHeader title={t("deleteTransaction.heading")} onClose={onRequestClose} />
+            <div className="modal-actions-center">
+                <button
+                    type="button"
+                    className="form-submit-modal-btn"
+                    onClick={() => handleDeleteAction(transaction)}
+                >
+                    {t("btnYes")}
+                </button>
+                <button
+                    onClick={onRequestClose}
+                    type="button"
+                    className="modal-btn-secondary"
+                >
+                    {t("btnNo")}
+                </button>
             </div>
-        </Modal>
+            {isLoading && <LoadingModal isOpen={isLoading} />}
+        </AppModal>
     )
 }

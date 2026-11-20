@@ -32,13 +32,13 @@ export default function MatesList({ mode }) {
             ) : houseMates.length > 0 ? (
                 <table className={`${mode === 'subpage' ? 'w-11/12 mx-auto' : 'w-full mx-auto'} h-full table-auto text-sm`}>
                     <thead>
-                        <tr className={`w-full ${mode === 'subpage' ? 'bg-slate-400/80' : 'bg-slate-400/50'}`}>
+                        <tr className="w-full bg-page text-muted">
                             {thLabels.map((label, index) => (
                                 <th
                                     key={index}
-                                    className={`px-4 py-2 text-center 
-                    ${index === 0 ? 'rounded-tl-xl' : ''} 
-                    ${index === thLabels.length - 1 ? 'rounded-tr-xl' : ''}`}
+                                    className={`px-3 sm:px-4 py-2.5 text-center font-medium text-xs sm:text-sm
+                    ${index === 0 ? 'rounded-tl-lg' : ''} 
+                    ${index === thLabels.length - 1 ? 'rounded-tr-lg' : ''}`}
                                 >
                                     {t(`matesList.thLabels.${label}`)}
                                 </th>
@@ -47,13 +47,13 @@ export default function MatesList({ mode }) {
                     </thead>
                     <tbody className="w-full">
                         {houseMates.map((mate) => (
-                            <tr key={mate.userId} className="w-11/12 border border-slate-400">
+                            <tr key={mate.userId} className="border-b border-slate-100 hover:bg-page/80 transition-colors">
                                 <td className="mates-list-table-data-base text-center">{mate.userName}</td>
                                 <td className="mates-list-table-data-base text-center">{t(`matesList.${mate.role}`)}</td>
                                 <td className="mates-list-table-data-base flex justify-center gap-3">
                                     <button type="button"
                                         onClick={() => handleOpenMsgModal(mate.userName)}
-                                        className="w-fit h-fit" title={t("matesList.messageBtnTitle")}>
+                                        className="w-fit h-fit p-1.5 rounded-md text-muted hover:text-accent hover:bg-accent-soft transition-colors" title={t("matesList.messageBtnTitle")}>
                                         <Icon icon='mdi-light:message' width={20} height={20} />
                                     </button>
                                     {mode === 'subpage' && (

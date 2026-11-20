@@ -35,53 +35,53 @@ export default function HouseInfoPage() {
     return (
         <>
             {user.role === 'host' || user.role === 'mate' ? (
-                <div id="pagecontent" className="h-full min-w-screen bg-slate-200 overflow-y-auto no-scrollbar">
+                <div id="pagecontent" className="w-full min-h-full min-w-0 bg-page overflow-y-auto no-scrollbar pb-8">
                     <DashboardHeader />
-                    <div id="middle-content" className="w-full h-full border-2 border-b-slate-800/5 flex flex-col flex-wrap items-center gap-5 mt-2">
-                        <div id="content-header" className="w-full flex flex-col items-start justify-start gap-2">
-                            <div className="w-10/12 h-full lg:w-7/12 lg:h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto">
-                                <div className="w-full flex justify-center items-center px-3 py-3 gap-4">
-                                    <BasicHouseInfo basicHouseInfo={basicHouseInfo} />
-                                </div>
+                    <div id="middle-content" className="w-full px-3 sm:px-5 lg:px-8 pt-4 sm:pt-5 flex flex-col gap-4 sm:gap-5">
+                        <div id="content-header" className="w-full grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
+                            <div className="section-card lg:col-span-2">
+                                <BasicHouseInfo basicHouseInfo={basicHouseInfo} />
                             </div>
                             <div
                                 id="dailyData-container"
-                                className="lg:w-7/12 h-fit flex justify-center items-center border-2 border-slate-400 rounded-xl shadow shadow-slate-500 mx-auto text-xs lg:text-md px-3 py-3">
-                                <div id="dailyShortInfo" className="w-full h-full flex flex-row justify-center items-center gap-3">
-                                    <p className="flex flex-col lg:flex-row text-md lg:gap-1">
-                                        <span className="w-fit h-fit flex items-center justify-center lg:text-base font-bold">{t("houseInfo.transactionsLabel")}</span>
-                                        <span className="flex justify-center text-xs lg:text-base ml-2">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyActionCount : '00'}</span>
+                                className="section-card flex flex-col justify-center gap-3"
+                            >
+                                <div id="dailyShortInfo" className="flex flex-row flex-wrap justify-between sm:justify-start items-center gap-3 sm:gap-6">
+                                    <p className="flex flex-col gap-0.5">
+                                        <span className="text-xs text-muted font-medium">{t("houseInfo.transactionsLabel")}</span>
+                                        <span className="text-lg font-semibold text-ink">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyActionCount : '00'}</span>
                                     </p>
-                                    <span className="text-xl lg:text-md flex items-center -translate-y-1 lg:-translate-y-0.5">&#124;</span>
-                                    <p className="flex flex-col lg:flex-row lg:items-center text-md gap-1">
-                                        <span className="font-bold text-xs lg:text-base">{t("houseInfo.budgetLabel")}</span>
-                                        <span className="flex justify-center ml-2 text-xs lg:text-base">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyBudgetValue : '0000'}</span>
+                                    <p className="flex flex-col gap-0.5">
+                                        <span className="text-xs text-muted font-medium">{t("houseInfo.budgetLabel")}</span>
+                                        <span className="text-lg font-semibold text-ink break-all">{dailyInfo.length ? dailyInfo[dailyInfo.length - 1].dailyBudgetValue : '0000'}</span>
                                     </p>
                                 </div>
                             </div>
-                            <div id="housemates-container" className="w-fit h-fit flex items-center border-2 border-slate-400 rounded-xl mx-auto gap-2 p-3">
-                                <p className="font-bold text-sm lg:text-base">{t("houseInfo.housematesLabel")}</p>
-                                <p className="flex items-center">{houseMates.length || '1'}</p>
-                                <Link to='/dashboard/housemates' className="flex items-center font-semibold text-slate-500 hover:text-slate-800"> - {t("houseInfo.housematesOpenBtn")}</Link>
+                            <div id="housemates-container" className="section-card lg:col-span-3 flex flex-wrap items-center gap-2 sm:gap-3">
+                                <p className="text-sm font-medium text-muted">{t("houseInfo.housematesLabel")}</p>
+                                <p className="text-lg font-semibold text-ink">{houseMates.length || '1'}</p>
+                                <Link to='/dashboard/housemates' className="text-sm font-medium text-accent hover:underline ml-auto">
+                                    {t("houseInfo.housematesOpenBtn")}
+                                </Link>
                             </div>
-                            <MostActiveMates isLoading={isLoading} matesData={matesData} />
+                            <div className="lg:col-span-3">
+                                <MostActiveMates isLoading={isLoading} matesData={matesData} />
+                            </div>
                         </div>
-                        <div id="content-section" className="w-full flex flex-row justify-center items-start gap-5 flex-wrap">
-                            <div id="last-five-transactions" className="flex flex-col items-center gap-3  px-4 mx-5 rounded-md">
-                                <h2 className="text-xl flex justify-center">{t("houseInfo.fiveActionsTitle")}</h2>
+                        <div id="content-section" className="w-full flex flex-col gap-4 sm:gap-5">
+                            <div id="last-five-transactions" className="section-card flex flex-col gap-3 min-w-0">
+                                <h2 className="text-base sm:text-lg font-semibold text-ink">{t("houseInfo.fiveActionsTitle")}</h2>
                                 <TransactionsList limit={5} mainSite={true} transactions={actionsData && transactions} />
                             </div>
-                            <div id="charts1" className="w-full h-full flex flex-col flex-wrap justify-around items-center mb-5 flex-grow px-5 gap-y-4 gap-x-4">
-                                <div className="w-full indirect:w-full md:w-full h-fit flex flex-col lg:flex-col xl:flex-row justicy-center items-center gap-5">
+                            <div id="charts1" className="w-full min-w-0 flex flex-col gap-4 sm:gap-5">
+                                <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-4">
                                     <BalanceBudgetComparison data={{ labels: labels, dataValues: monthlyBalances, definedBudgets: definedBudgets }} />
                                     <TransactionsOverTime data={{ labels: actionCountLabels, dataValues: monthlyTransactionCounts }} />
                                 </div>
-
-                                <div className="w-full h-fit flex flex-col md:flex-row justify-center gap-3 px-5">
+                                <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-4">
                                     <TransactionsPerDay data={{ labels: actionLabels, dataValues: dailyTransactions }} />
                                     <BudgetPerDay data={{ labels: dailyBudgetLabels, dataValues: dailyBudgetValues }} />
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@ export default function HouseInfoPage() {
             ) : user.role === 'user' ? (
                 <DashBoardForUser />
             ) : (
-                <p>Create an account!</p>
+                <p className="p-6 text-muted">Create an account!</p>
             )
             }
         </>

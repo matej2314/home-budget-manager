@@ -28,8 +28,7 @@ export default function MessagesPage() {
                 <DashboardHeader />
                 <div
                     id="middle-content"
-                    className=" min-h-full flex flex-col items-center border-2 border-b-slate-800/5 pb-4 overflow-auto">
-                    <h2 className="min-w-full h-fit flex justify-center text-2xl">{t("messagesPage.title")}</h2>
+                    className=" min-h-full flex flex-col items-center border-2 border-b-slate-800/5 py-4 overflow-auto">
                     {messagesData && <MessagesList
                         userMessages={messagesData}
                         messagesError={messagesError}

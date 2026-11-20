@@ -1,36 +1,34 @@
-import Modal from 'react-modal';
+import AppModal from './AppModal';
+import ModalHeader from './ModalHeader';
 import { useTranslation } from 'react-i18next';
 
 export default function LogOutModal({ isOpen, onRequestClose, handleLogOut }) {
     const { t } = useTranslation("modals");
 
     return (
-        <Modal
+        <AppModal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            contentLabel="Add New Transaction"
-            className="w-9/12 xl:w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-y-1/2 mx-auto border-2 border-slate-400"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            contentLabel={t("logOut.heading")}
+            className="modal-panel max-w-sm"
         >
-            <div className="w-full h-full flex flex-col justify-center items-center gap-5">
-                <h2 className="w-full h-fit flex justify-center text-xl font-bold">{t("logOut.heading")}</h2>
-                <div className="w-full h-fit flex flex-row justify-center gap-14 md:gap-[6rem]">
-                    <button
-                        className="form-submit-modal-btn"
-                        onClick={handleLogOut}
-                        type="button"
-                    >
-                        {t("btnYes")}
-                    </button>
-                    <button
-                        onClick={onRequestClose}
-                        className="form-submit-modal-btn"
-                        type="button"
-                    >
-                        {t("btnNo")}
-                    </button>
-                </div>
+            <ModalHeader title={t("logOut.heading")} onClose={onRequestClose} />
+            <div className="modal-actions-center">
+                <button
+                    className="form-submit-modal-btn"
+                    onClick={handleLogOut}
+                    type="button"
+                >
+                    {t("btnYes")}
+                </button>
+                <button
+                    onClick={onRequestClose}
+                    className="modal-btn-secondary"
+                    type="button"
+                >
+                    {t("btnNo")}
+                </button>
             </div>
-        </Modal>
+        </AppModal>
     )
 }

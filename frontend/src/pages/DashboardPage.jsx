@@ -12,9 +12,11 @@ export default function DashboardPage() {
   if (loginStatus.isLoading) return <LoadingModal isOpen={loginStatus.isLoading} />;
 
   return isMateOrHost ? (
-    <main className="w-full h-full flex flex-row justify-around items-stretch overflow-y-hidden bg-slate-200">
+    <main className="w-full min-h-screen min-w-[320px] flex flex-row items-stretch overflow-hidden bg-page">
       <DashBoardMenu />
-      <Outlet />
+      <div className="flex-1 min-w-0 h-screen overflow-y-auto no-scrollbar">
+        <Outlet />
+      </div>
       {isHost && modal && modal.type === 'invitation' ? (
         <InvitationModal isOpen={modal.isOpen} onRequestClose={closeModal} invitationsData={modal.data} />
       ) : null}

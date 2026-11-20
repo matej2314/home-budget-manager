@@ -5,19 +5,19 @@ export default function BalanceBudgetComparison({ data }) {
     const { t } = useTranslation("dashboardComponents");
 
     return (
-        <div id="balanceBudgetcompare" className="w-screen-lg lg:w-1/2 h-fit flex flex-col justify-center items-start border-2 border-slate-300 pt-3 px-3 grow shrink">
-            <h2 className="w-full h-fit flex justify-center text-xl mb-3">{t("balanceBudgetCompare.heading")}</h2>
-            <div className="w-full h-60 indirect:w-[88vw] md:h-140 md:w-160 flex justify-center">
+        <div id="balanceBudgetcompare" className="section-card w-full min-w-0 flex flex-col gap-3">
+            <h2 className="text-base sm:text-lg font-semibold text-ink">{t("balanceBudgetCompare.heading")}</h2>
+            <div className="w-full h-56 sm:h-60 md:h-80 flex justify-center min-w-0">
                 <BarChart
                     labels={data.labels}
                     dataValues={data.dataValues}
                     secondDataValues={data.definedBudgets}
                     title="Monthly balance"
                     secondTitle="Defined budget"
-                    colors={["rgba(54, 162, 235, 0.5)"]}
-                    borderColors={["rgba(54, 162, 235, 1)"]}
-                    secondColors={["rgba(255, 99, 132, 0.5)"]}
-                    secondBorderColors={["rgba(255, 99, 132, 1)"]}
+                    colors={["rgba(76, 111, 255, 0.45)"]}
+                    borderColors={["rgba(76, 111, 255, 1)"]}
+                    secondColors={["rgba(244, 63, 94, 0.4)"]}
+                    secondBorderColors={["rgba(244, 63, 94, 1)"]}
                 />
             </div>
         </div>

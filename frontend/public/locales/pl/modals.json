@@ -7,7 +7,7 @@
     "deleteMessage": {
         "errorMessage": "Nie udało się usunąć wiadomości.",
         "deletedCorrectlyMessage": "Wiadomość usunięta poprawnie.",
-        "confirmQuestion": "Jesteś pewny, że chcesz usunąć wiadomość"
+        "confirmQuestion": "Jesteś pewny, że chcesz usunąć wiadomość?"
     },
     "messageDetails": {
         "heading": "Szczegóły:",

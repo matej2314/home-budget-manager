@@ -24,7 +24,7 @@ export default function LossOrGainChart() {
             } else if (value > 0) {
                 return `rgba(5, 169, 10, 0.5)`;
             }
-            return `rgba(40, 70, 193, 0.5)`;
+            return `rgba(76, 111, 255, 0.5)`;
         });
     };
 
@@ -32,9 +32,9 @@ export default function LossOrGainChart() {
 
     return (
         <>
-            {data && <div id="lossOrGain" className="w-full shadow shadow-slate-500 pt-2 mb-3 flex flex-col justify-start items-center gap-4 mt-3">
-                <h2 className="w-full flex justify-center text-[1.22rem]">{t("lossOrGain.heading")}</h2>
-                <div className="w-full h-60 lg:h-140 lg:w-175 flex justify-center">
+            {data && <div id="lossOrGain" className="section-card flex flex-col gap-4">
+                <h2 className="text-base sm:text-lg font-semibold text-ink">{t("lossOrGain.heading")}</h2>
+                <div className="w-full h-56 sm:h-60 lg:h-[28rem] max-w-full flex justify-center">
                     <BarChart
                         labels={monthlyBalancesLabels}
                         dataValues={monthlyBalances}

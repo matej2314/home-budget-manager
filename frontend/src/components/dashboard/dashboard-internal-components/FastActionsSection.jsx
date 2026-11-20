@@ -47,7 +47,6 @@ export default function FastActions({ profilePage, action }) {
                             key={actionType}
                             onClick={getClickHandler(actionType, handleButtonClick, openModal, showInfoToast, user, tInternal)}
                             className='fast-actions-btn'
-                            style={{ boxShadow: 'inset 0 0 1px 2px rgba(0, 0, 0, 0.15)' }}
                         >
                             {tCommon(`fastActionsBtns.${label}`)}
                         </button>

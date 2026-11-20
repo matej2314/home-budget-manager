@@ -3,9 +3,34 @@
 
 @theme {
   --font-urbanist: Urbanist, sans-serif;
-  --color-custom-gray: #303641;
+  --color-custom-gray: #1f2637;
+  --color-sidebar: #1f2637;
+  --color-sidebar-muted: #8b95a8;
+  --color-page: #eef1f6;
+  --color-surface: #ffffff;
+  --color-accent: #4c6fff;
+  --color-accent-soft: #e8ecff;
+  --color-ink: #2c3548;
+  --color-muted: #6b778c;
+  --color-home-deep: #141a28;
+  --color-home-mid: #1e2740;
   --breakpoint-indirect: 450px;
   --breakpoint-indirectxl: 550px;
+}
+
+@layer base {
+  html {
+    @apply font-urbanist antialiased;
+  }
+
+  body {
+    @apply bg-page text-ink min-w-[320px];
+  }
+
+  /* react-modal: blokuj scroll body, nie ruszaj layoutu aplikacji */
+  .ReactModal__Body--open {
+    overflow: hidden;
+  }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -17,108 +42,140 @@
   }
 }
 
+@utility surface-card {
+  @apply bg-surface rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(28,40,72,0.06),0_8px_24px_rgba(28,40,72,0.04)];
+}
+
+@utility metric-card {
+  @apply relative w-full min-h-[8.5rem] bg-surface rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(28,40,72,0.06),0_8px_24px_rgba(28,40,72,0.04)] flex flex-col justify-between p-4 sm:p-5 overflow-hidden transition-shadow duration-200 hover:shadow-[0_4px_16px_rgba(28,40,72,0.1)];
+}
+
+@utility section-card {
+  @apply w-full bg-surface rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(28,40,72,0.06),0_8px_24px_rgba(28,40,72,0.04)] p-4 sm:p-5;
+}
+
 @utility input-base {
-  @apply w-full pl-2 rounded-md border-b-[1px] border-t-[1px] border-slate-300 shadow-sm shadow-slate-500;
+  @apply w-full pl-3 py-2 rounded-lg border border-slate-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent;
 }
 
 @utility btn-border {
-  @apply border-b-2 border-t-[1px] hover:border-x-[1px];
+  @apply border border-transparent;
 }
 
 @utility auth-modal-mode-btn {
-  @apply px-4 py-3 bg-slate-100 text-slate-900 border-slate-400/55 rounded-lg hover:bg-slate-400/35 btn-border hover:text-slate-800;
+  @apply px-5 py-2.5 bg-accent-soft text-accent font-medium rounded-lg border border-accent/20 hover:bg-accent hover:text-white transition-colors duration-200;
 }
 
 @utility auth-input {
-  @apply border-b-[1px] border-slate-400/80 pl-2 shadow-sm shadow-slate-500 text-slate-900 placeholder-slate-800/45 rounded-md;
+  @apply border border-slate-200 pl-3 py-2 shadow-sm text-ink placeholder-muted/70 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent;
 }
 
 @utility auth-submit-btn {
-  @apply bg-transparent text-black p-2 rounded-md border-slate-600 hover:bg-gray-500 hover:text-slate-300 btn-border shadow-sm shadow-slate-700 active:shadow;
+  @apply bg-accent text-white px-4 py-2.5 rounded-lg font-medium hover:bg-accent/90 shadow-sm active:scale-[0.98] transition-all duration-150;
 }
 
 @utility msgs-filter-btn {
-  @apply border-2 border-slate-300 text-slate-700 bg-slate-300/40 py-1 px-2 rounded-xl hover:bg-inherit hover:text-slate-800 shadow-lg hover:shadow-sm;
+  @apply border border-slate-200 text-ink bg-white py-1.5 px-3 rounded-lg hover:bg-accent-soft hover:text-accent hover:border-accent/30 shadow-sm transition-colors;
+}
+
+@utility modal-overlay {
+  @apply fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-3 sm:p-4;
+}
+
+@utility modal-panel {
+  @apply relative max-h-[90vh] overflow-y-auto no-scrollbar bg-surface text-ink rounded-xl p-5 sm:p-6 w-[92%] max-w-lg mx-auto shadow-xl border border-slate-200 outline-none;
 }
 
 @utility display-msg-modal {
-  @apply bg-slate-300 rounded-lg p-6 w-11/12 indirectxl:w-11/12 sm:w-1/2 xl:w-1/3 h-fit mx-auto my-10 shadow-lg border-4 border-slate-400;
+  @apply relative max-h-[90vh] overflow-y-auto no-scrollbar bg-surface text-ink rounded-xl p-5 sm:p-6 w-[92%] max-w-xl xl:max-w-lg mx-auto shadow-xl border border-slate-200 outline-none;
 }
 
 @utility del-msg-modal {
-  @apply bg-slate-200 rounded-lg p-6 w-11/12 indirectxl:w-1/3 mx-auto mt-20 shadow-lg border-4 border-slate-400;
+  @apply relative max-h-[90vh] overflow-y-auto no-scrollbar bg-surface text-ink rounded-xl p-5 sm:p-6 w-[92%] max-w-md mx-auto shadow-xl border border-slate-200 outline-none;
 }
 
 @utility input-display-msg {
-  @apply pl-2 border-b-[1px] border-t-[1px] border-slate-400 rounded-md;
+  @apply pl-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/30;
 }
 
 @utility del-msg-btn {
-  @apply w-fit h-fit bg-slate-400/45 p-2 rounded-xl shadow-sm shadow-black active:shadow;
+  @apply w-fit h-fit bg-accent-soft text-accent p-2 rounded-lg shadow-sm active:scale-[0.98] hover:bg-accent hover:text-white transition-colors;
 }
 
 @utility fast-actions {
-  @apply grid grid-cols-3 gap-y-2 gap-x-2 px-5 md:flex md:flex-row justify-start items-center md:gap-3 md:ml-10 py-2;
+  @apply grid grid-cols-2 indirect:grid-cols-3 sm:grid-cols-4 gap-2 px-4 sm:px-5 md:flex md:flex-row md:flex-wrap justify-start items-center md:gap-3 py-2;
 }
 
 @utility fast-actions-btn {
-  @apply w-fit h-fit bg-slate-300/40 p-2 text-[0.8rem] md:text-base rounded-xl border-[1px] border-slate-400 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60;
+  @apply w-full md:w-auto h-fit bg-white text-ink text-[0.75rem] sm:text-sm md:text-sm px-3 py-2 rounded-lg border border-slate-200 shadow-sm hover:border-accent/40 hover:bg-accent-soft hover:text-accent active:scale-[0.98] transition-all duration-150;
 }
 
 @utility icon-base {
-  @apply absolute right-1 pointer-events-none;
+  @apply absolute right-2 pointer-events-none text-muted;
 }
 
 @utility form-submit-modal-btn {
-  @apply bg-transparent p-2 rounded-xl hover:bg-slate-400 hover:text-slate-50 btn-border border-slate-500/45;
+  @apply bg-accent text-white px-4 py-2.5 rounded-lg font-medium hover:bg-accent/90 shadow-sm active:scale-[0.98] transition-all disabled:opacity-60;
+}
+
+@utility modal-btn-secondary {
+  @apply px-4 py-2.5 rounded-lg border border-slate-200 text-ink bg-white font-medium hover:bg-page hover:border-slate-300 transition-colors active:scale-[0.98];
+}
+
+@utility modal-actions {
+  @apply w-full flex flex-row flex-wrap justify-end gap-3 mt-5;
+}
+
+@utility modal-actions-center {
+  @apply w-full flex flex-row flex-wrap justify-center gap-3 mt-5;
 }
 
 @utility contact-form {
-  @apply w-9/12 text-sm indirect:w-9/12 indirect:text-base indirectxl:w-8/12 md:w-1/3 mt-[2rem] indirect:mt-[2rem] xl:mb-[6rem] h-fit flex flex-col justify-start items-center bg-slate-300/15 gap-2 border-2 border-slate-300 text-slate-200 shadow-md shadow-custom-gray/55 rounded-md py-3;
+  @apply w-[92%] max-w-md text-sm indirect:text-base mt-8 xl:mb-24 h-fit flex flex-col justify-start items-center bg-white/8 gap-3 border border-white/15 text-slate-100 shadow-lg shadow-black/20 rounded-xl py-5 px-4 backdrop-blur-sm;
 }
 
 @utility contact-form-input {
-  @apply w-full h-fit flex justify-center items-center pl-2 rounded-md bg-transparent border-b-2 border-t-2 border-slate-200 text-slate-100 placeholder-slate-200 focus:outline-none focus:border-x-2;
+  @apply w-full h-fit flex justify-center items-center pl-3 py-2 rounded-lg bg-white/5 border border-white/20 text-slate-100 placeholder-slate-300/60 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/60;
 }
 
 @utility contact-form-textarea {
-  @apply w-full h-fit flex justify-center items-center pl-2 resize-none rounded-md bg-transparent border-b-2 border-t-[1px] border-slate-200 text-slate-200 placeholder-slate-200 focus:outline-none focus:border-x-2;
+  @apply w-full h-fit flex justify-center items-center pl-3 py-2 resize-none rounded-lg bg-white/5 border border-white/20 text-slate-200 placeholder-slate-300/60 focus:outline-none focus:ring-2 focus:ring-accent/50;
 }
 
 @utility contact-form-submit-btn {
-  @apply relative w-[15rem] overflow-hidden bg-transparent flex justify-center text-slate-200 p-2 rounded-md border-t-[1px] border-b-2 border-slate-200 hover:bg-gray-500 hover:text-slate-300 shadow-md shadow-neutral-500 active:shadow-sm;
+  @apply relative w-full max-w-[15rem] overflow-hidden bg-accent flex justify-center text-white p-2.5 rounded-lg font-medium hover:bg-accent/90 shadow-md active:scale-[0.98] transition-all;
 }
 
 @utility avatar-form {
-  @apply w-11/12 indirectxl:w-1/2 h-fit flex flex-col items-center gap-3 mx-auto mt-5 border-2 border-slate-300 py-3 rounded-md shadow-lg shadow-slate-400;
+  @apply w-11/12 max-w-lg h-fit flex flex-col items-center gap-3 mx-auto mt-5 surface-card py-4;
 }
 
 @utility add-review-modal {
-  @apply w-11/12 indirectxl:w-8/12 sm:w-8/12 md:w-7/12 lg:w-8/12 xl:w-[400px] p-6 bg-slate-200 rounded-lg shadow-lg translate-y-1/3 mx-auto xl:translate-y-[10vh];
+  @apply relative max-h-[90vh] overflow-y-auto no-scrollbar bg-surface text-ink rounded-xl p-5 sm:p-6 w-[92%] max-w-md mx-auto shadow-xl border border-slate-200 outline-none;
 }
 
 @utility add-user-to-house-modal {
-  @apply bg-slate-200 rounded-lg p-6 w-10/12 mt-[10rem] sm:w-7/12 md:w-1/2 md:mb-[25rem] lg:mb-[40rem] xl:mb-[13rem] xl:w-1/3 mx-auto shadow-lg border-4 border-slate-400;
+  @apply relative max-h-[90vh] overflow-y-auto no-scrollbar bg-surface text-ink rounded-xl p-5 sm:p-6 w-[92%] max-w-lg mx-auto shadow-xl border border-slate-200 outline-none;
 }
 
 @utility open-menu-btn-span {
-  @apply md:w-5 w-3 h-[0.12rem] md:h-0.5 bg-slate-100;
+  @apply w-4 md:w-5 h-[0.12rem] md:h-0.5 bg-current rounded-full;
 }
 
 @utility transactions-list-table {
-  @apply h-full table-fixed border-collapse text-xs lg:text-sm border-b-[1px] border-slate-400 pb-6;
+  @apply h-full table-fixed border-collapse text-xs lg:text-sm border-b border-slate-200 pb-6;
 }
 
 @utility transactions-list-table-data {
-  @apply lg:px-4 py-2;
+  @apply lg:px-4 py-2.5;
 }
 
 @utility home-page-content-div {
-  @apply w-full h-full justify-center lg:w-11/12 lg:h-[90%] overflow-hidden lg:rounded-md flex items-start border-t-2 bg-gradient-to-br from-[rgba(71,85,105,0.85)] via-[rgba(51,65,85,0.9)] to-[rgba(30,41,59,0.95)] backdrop-blur-[2px] shadow-[inset_0_0_12px_rgba(255,255,255,0.03),0_0_8px_rgba(255,255,255,0.02)] bg-slate-700/90 border-slate-400/30 mx-auto md:mx-0 flex-wrap;
+  @apply relative w-full min-h-screen lg:min-h-[90vh] lg:h-[90%] overflow-hidden lg:rounded-2xl flex flex-col items-stretch border border-white/10 bg-[radial-gradient(120%_80%_at_10%_0%,rgba(76,111,255,0.28),transparent_50%),radial-gradient(90%_70%_at_90%_20%,rgba(56,189,248,0.12),transparent_45%),linear-gradient(160deg,#1a2236_0%,#141a28_55%,#101522_100%)] shadow-[0_20px_60px_rgba(0,0,0,0.35)] mx-auto;
 }
 
 @utility transactions-page-select-modal-btn {
-  @apply w-fit h-fit border-2 border-slate-400 text-sm lg:text-base rounded-2xl p-4 shadow-sm shadow-slate-500 active:shadow hover:bg-slate-300/60;
+  @apply w-fit h-fit border border-slate-200 bg-white text-sm lg:text-base rounded-xl px-4 py-3 shadow-sm hover:bg-accent-soft hover:border-accent/30 hover:text-accent transition-colors;
 }
 
 @utility messages-list-table {
@@ -126,7 +183,7 @@
 }
 
 @utility messages-list-table-body {
-  @apply w-full border-x-[1px] border-slate-400 md:text-base;
+  @apply w-full border-x border-slate-200 md:text-base;
 }
 
 @utility messages-list-table-data {
@@ -134,5 +191,17 @@
 }
 
 @utility mates-list-table-data-base {
-  @apply mx-auto py-2;
+  @apply mx-auto py-2.5;
+}
+
+@utility nav-link-active {
+  @apply text-accent bg-accent/15 rounded-lg;
+}
+
+@utility home-cta-primary {
+  @apply inline-flex items-center justify-center min-w-[8.5rem] px-4 py-2.5 text-sm sm:text-base rounded-xl font-medium transition-all duration-200 active:scale-[0.98] bg-accent text-white shadow-[0_8px_24px_rgba(76,111,255,0.35)] hover:bg-accent/90 hover:shadow-[0_10px_28px_rgba(76,111,255,0.45)];
+}
+
+@utility home-cta-ghost {
+  @apply inline-flex items-center justify-center min-w-[8.5rem] px-4 py-2.5 text-sm sm:text-base rounded-xl font-medium transition-all duration-200 active:scale-[0.98] border border-white/35 text-slate-100 hover:bg-white/10 hover:border-white/55;
 }

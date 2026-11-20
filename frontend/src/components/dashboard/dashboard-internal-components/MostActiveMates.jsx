@@ -9,7 +9,8 @@ export default function MostActiveMates({ isLoading, matesData }) {
     return (
         <div
             id="most-active-mates"
-            className="w-1/2 flex flex-col justify-start items-center border-2 border-slate-400 mx-auto overflow-hidden">
+            className="section-card w-full overflow-hidden"
+        >
             <motion.div
                 initial={{ x: !isMobile ? 670 : 240, opacity: 1 }}
                 animate={{ x: -270, opacity: 1 }}
@@ -20,10 +21,11 @@ export default function MostActiveMates({ isLoading, matesData }) {
                     repeatType: 'loop', ease: 'linear',
                     delay: 0.2,
                 }}
-                className="w-full h-full flex flex-row gap-3">
-                <h2 className="lg:w-fit h-fit flex lg:justify-center text-nowrap">{t("mostActiveMates.heading")}</h2>
+                className="w-full flex flex-row items-center gap-4 text-sm text-ink"
+            >
+                <h2 className="shrink-0 font-semibold text-muted text-nowrap">{t("mostActiveMates.heading")}</h2>
                 {!isLoading && matesData && matesData.map((mate, index) => {
-                    return <p key={index} className="text-nowrap">{mate.userName} - {t(`mostActiveMates.${mate.role}`)}</p>
+                    return <p key={index} className="text-nowrap">{mate.userName} — {t(`mostActiveMates.${mate.role}`)}</p>
                 })}
             </motion.div>
         </div>

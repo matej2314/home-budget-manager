@@ -13,7 +13,8 @@
     "headerIcons": {
         "noticeTitle": "Powiadomienia",
         "messagesTitle": "Wiadomości",
-        "houseTitle": "Mój dom"
+        "houseTitle": "Mój dom",
+        "logoutTitle": "Wyloguj"
     },
     "matesList": {
         "thLabels": {
@@ -41,7 +42,8 @@
         "inmate": "domownik"
     },
     "notificationsContainer": {
-        "noNoticesError": "Brak nowych powiadomień."
+        "noNoticesError": "Brak nowych powiadomień.",
+        "clearAll": "Wyczyść wszystkie"
     },
     "transactionsList": {
         "noActionsError": "Brak transakcji.",
