@@ -1,0 +1,45 @@
+import pool from '../../database/db.js';
+import logger from '../../configs/logger.js';
+import { v4 as uuidv4 } from 'uuid';
+
+/** Dzienny snapshot salda per dom (`dailyBudget`). Cron → service (B-5). */
+export async function saveDailyBudgetSnapshot() {
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [households] = await connection.query(
+      'SELECT houseId, currentBalance FROM households'
+    );
+
+    logger.info(`Finded ${households.length} households.`);
+
+    if (households.length === 0) {
+      await connection.commit();
+      return;
+    }
+
+    for (const house of households) {
+      const id = uuidv4();
+      const balanceToDb = house.currentBalance;
+
+      const [addDailyBudget] = await connection.query(
+        'INSERT INTO dailyBudget (id, houseId, value) VALUES (?, ?, ?);',
+        [id, house.houseId, balanceToDb]
+      );
+      if (addDailyBudget.affectedRows === 0) {
+        logger.error('Failed to save daily budget.');
+      } else {
+        logger.info('The daily budget of all households has been saved.');
+      }
+    }
+
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    logger.error(error);
+  } finally {
+    connection.release();
+  }
+}
