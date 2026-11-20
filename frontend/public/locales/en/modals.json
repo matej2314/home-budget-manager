@@ -35,7 +35,7 @@
         "category": "Category:",
         "type": "Type:",
         "value": "Value:",
-        "user": "Housemate:",
+        "user": "Inmate:",
         "date": "Addition date:"
     },
     "changeEmail": {
@@ -67,7 +67,7 @@
         "heading": "Are you sure you want to log out?"
     },
     "invitationModal": {
-        "housemate" : "Housemate",
+        "inmate" : "Inmate",
         "invite": "invite",
         "acceptedMessage": "Invitation successfully accepted",
         "failedAccept": "Failed to accept invitation",

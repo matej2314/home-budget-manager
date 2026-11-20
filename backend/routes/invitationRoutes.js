@@ -35,7 +35,7 @@ const router = express.Router();
  *                 example: 123e4567-e89b-12d3-a456-426614174001
  *     responses:
  *       200:
- *         description: Invitation successfully accepted and new housemate added
+ *         description: Invitation successfully accepted and new inmate added
  *         content:
  *           application/json:
  *             schema:

@@ -1,4 +1,4 @@
-import { broadcastToHouseMates } from '../configs/websocketConfig.js';
+import { broadcastToHousehold } from '../configs/websocketConfig.js';
 
 export const handleBroadcastInitBudget = async (id, value, addedAt, validUntil, houseId) => {
 
@@ -10,7 +10,7 @@ export const handleBroadcastInitBudget = async (id, value, addedAt, validUntil, 
         message: 'notifications.newInitBudget',
     };
 
-    await broadcastToHouseMates(houseId, {
+    await broadcastToHousehold(houseId, {
         type: 'initial_budget',
         data
     });

@@ -150,7 +150,7 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  * @swagger
  * /users/delete/{inhabitant}:
  *   delete:
- *     summary: Delete a housemate (only for host users)
+ *     summary: Delete an inmate (only for host users)
  *     tags:
  *       - Users
  *     security:
@@ -162,7 +162,7 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *         schema:
  *           type: string
  *           format: uuid
- *         description: ID of the inhabitant (housemate) to be deleted
+ *         description: ID of the inhabitant (inmate) to be deleted
  *     requestBody:
  *       content:
  *         application/json:
@@ -176,11 +176,11 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *             required:
  *               - inhabitantId
  *     description: |
- *       Deletes a housemate from the household, removes their transactions, and changes their role to "user". 
+ *       Deletes an inmate from the household, removes their transactions, and changes their role to "user". 
  *       The request must be made by a host user. 
  *     responses:
  *       200:
- *         description: Housemate deleted successfully
+ *         description: Inmate deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -191,7 +191,7 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: Housemate deleted correctly.
+ *                   example: Inmate deleted correctly.
  *       400:
  *         description: Invalid input data (missing inhabitant ID)
  *         content:
@@ -206,7 +206,7 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *                   type: string
  *                   example: Enter correctly data!
  *       500:
- *         description: Internal server error while deleting housemate
+ *         description: Internal server error while deleting inmate
  *         content:
  *           application/json:
  *             schema:
@@ -217,7 +217,7 @@ router.post('/delete/:userId', verifyJWT, verifyRole('superadmin'), usersControl
  *                   example: error
  *                 message:
  *                   type: string
- *                   example: Failed to delete housemate.
+ *                   example: Failed to delete inmate.
  */
 
 router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersController.deleteInhabitant);
@@ -226,7 +226,7 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  * @swagger
  * /users/invite:
  *   post:
- *     summary: Invite a user to a house (only for users with 'mates' or 'host' role)
+ *     summary: "Invite a user to a house (only for users with household role: host or inmate)"
  *     tags:
  *       - Users
  *     security:
@@ -256,7 +256,7 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: User successfully invited by a mate. (or Host)
+ *                   example: User successfully invited by an inmate. (or Host)
  *       400:
  *         description: Invalid input data or invalid request (e.g., user not found, user already in house)
  *         content:
@@ -323,7 +323,7 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *                   type: string
  *                   example: House not found or invited user does not exist.
  *       409:
- *         description: Conflict (the invited user is already a housemate or host)
+ *         description: Conflict (the invited user is already an inmate or host)
  *         content:
  *           application/json:
  *             schema:
@@ -334,9 +334,9 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *                   example: error
  *                 message:
  *                   type: string
- *                   example: User is already a housemate or host.
+ *                   example: User is already an inmate or host.
  *       422:
- *         description: User is being invited by someone who is not a host or a mate
+ *         description: User is being invited by someone who is not a host or an inmate
  *         content:
  *           application/json:
  *             schema:
@@ -347,10 +347,10 @@ router.delete('/delete/:inhabitant', verifyJWT, verifyRole('host'), usersControl
  *                   example: error
  *                 message:
  *                   type: string
- *                   example: Only hosts or mates can invite users.
+ *                   example: Only hosts or inmates can invite users.
  */
 
-router.post('/invite', verifyJWT, verifyRole('mates'), usersController.addUserToHouse);
+router.post('/invite', verifyJWT, verifyRole('household'), usersController.addUserToHouse);
 
 /**
  * @swagger

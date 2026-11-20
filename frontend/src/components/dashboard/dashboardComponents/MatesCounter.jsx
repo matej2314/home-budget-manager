@@ -8,7 +8,7 @@ export default function MatesCounter() {
     const { data, isLoading, dataError: error } = useContext(DataContext);
     const { t } = useTranslation("dashboardComponents");
 
-    const matesData = getData(isLoading, error, true, data.houseMates);
+    const matesData = getData(isLoading, error, true, data.inmates);
 
     return (
         <div id='housemates' className="metric-card">

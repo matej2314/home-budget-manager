@@ -4,7 +4,7 @@ export const linksElements = [
     { path: 'myprofile', label: 'My profile', icon: 'healthicons:ui-user-profile' },
     { path: 'myhouse', label: 'My house', icon: 'uil:house-user' },
     { path: 'messages', label: 'Messages', icon: 'flowbite:messages-solid', dot: true, },
-    { path: 'housemates', label: 'Housemates', icon: 'la:user-friends' },
+    { path: 'inmates', label: 'Inmates', icon: 'la:user-friends' },
     { path: 'transactions', label: 'Transactions', icon: 'tdesign:undertake-transaction' },
     { path: 'calendar', label: 'Calendar', icon: 'famicons:calendar-outline' },
 ];

@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza5-role-inmate.md` (FAZA 1, KROK 1–3, review zaakceptowany) oznaczono Fazę 5 (kroki 5.1–5.3) jako `WYKONANY` oraz milestone „Role zgodne z normą po stronie backendu” jako `OSIĄGNIĘTY`.
 - **2026-11-19 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza3-faza4-ops-kontrakt.md` (FAZA 1 + FAZA 2, review zaakceptowany) oznaczono Fazę 3 (kroki 3.1–3.3) i Fazę 4 (kroki 4.1–4.3) jako `WYKONANY` oraz milestone’y „Fundament observability i bezpieczeństwa HTTP” i „Kontrakt API v1 (z dual mount legacy)” jako `OSIĄGNIĘTY`.
 - **2026-11-13 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza1-faza2-blok-b-r2.md` oznaczono Fazę 1 (kroki 1.1–1.3) i Fazę 2 (kroki 2.1–2.4) jako `WYKONANY` oraz milestone’y „Backend na zaktualizowanych zależnościach” i „Struktura Blok B + pipeline R2” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”).
 - **Scalenie Fazy 2 + dawnej Fazy 6 (opcja B):** mapa katalogów Blok B i pipeline R2 (cienkie controllery, B-10) w **jednej** fazie — bez etapu „gruba logika pod właściwym folderem”. Prisma (dawna Faza 8) pozostaje późniejszą fazą globalną.
@@ -304,7 +305,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 5 — Role `inmate` (R1, zakres backend)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Ujednolicenie nazwy roli domownika na `inmate` w tokenie, middleware, komunikatach i grupach uprawnień backendu oraz spójność reguł `user` / `host` / `inmate` / `superadmin` po stronie API — zgodnie z `docs/dokumentacja_koncepcyjna.md`, `docs/bezpieczenstwo.md`, SPEC-BACKEND B-12 i SPEC-BEZPIECZENSTWO (R1 bez zmiany modelu uprawnień host/inmate). Cut aliasów historycznych — bez utrzymywania `mate` / `mates` jako trwałej kompatybilności w refaktorowanym kodzie. W tym samym oknie R1: rename helpera WS `broadcastToHouseMates` → **`broadcastToHousehold`** (bez zmiany kontraktu eventów `type` / payload).
 
@@ -317,7 +318,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 5.1 — Rename w tokenie, middleware i komunikatach
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Zamiana historycznej nazwy `mate` na `inmate` we wszystkich miejscach backendu objętych R1 (token, middleware, komunikaty, grupy).
 
@@ -328,7 +329,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 5.2 — Reguły ról po stronie API
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Potwierdzenie reguł produktowych na serwerze: host zarządza składem; inmate korzysta z rdzenia bez uprawnień hosta; user bez domu; superadmin ≠ host gospodarstwa (SPEC-BEZPIECZENSTWO S-7–S-9).
 
@@ -340,7 +341,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 5.3 — Rename `broadcastToHouseMates` → `broadcastToHousehold`
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Refaktor względem: helper `broadcastToHouseMates` w `configs/websocketConfig.js` oraz call site’y (`handleNotification`, `liveUpdateBalance`, `handleBroadcastInitBudget`, …). Cel: jedna funkcja **`broadcastToHousehold(houseId, { type, data })`** — bez drugiego API roomów, bez trwałego aliasu eksportu pod starą nazwą. Kontrakt WS (`type`, payload) bez zmian. Zaktualizować docs komunikacji i SPEC-KOMUNIKACJA (K-11) w tym samym przejściu.
 
@@ -354,6 +355,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 ---
 
 ## MILESTONE — Role zgodne z normą po stronie backendu
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 5. Backend egzekwuje normę ról `inmate` oraz nazwę helpera `broadcastToHousehold`; pełne domknięcie produktowe z UI pozostaje poza tym major.
 

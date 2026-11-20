@@ -11,8 +11,8 @@
     "houseInfo": {
         "transactionsLabel": "Transakcje w poprzednim dniu:",
         "budgetLabel": "Budżet w poprzednim dniu:",
-        "housematesLabel": "Domowników:",
-        "housematesOpenBtn": "Wyświetl domowników",
+        "inmatesLabel": "Domowników:",
+        "inmatesOpenBtn": "Wyświetl domowników",
         "fiveActionsTitle": "5 ostatnich transakcji:"
     },
     "messagesPage": {
@@ -22,7 +22,7 @@
         "addNewBtn": "Dodaj nową transakcję",
         "categoriesBtn": "Wyświetl kategorie"
     },
-    "housematesPage": {
+    "inmatesPage": {
         "title": "Twoi domownicy:"
     },
     "userDashboard": {

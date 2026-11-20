@@ -11,6 +11,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza5-role-inmate.md` oznaczono Fazę 5 (kroki 5.1–5.2) jako `WYKONANY` oraz milestone „Role w UI zgodne z normą” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego + bramka BE R1 już `OSIĄGNIĘTY`).
 - **2026-11-19 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza3-faza4-stan-http.md` oznaczono Fazę 3 (kroki 3.1–3.3) i Fazę 4 (kroki 4.1–4.3) jako `WYKONANY` oraz milestone’y „Stan zgodny z R5 / F-4–F-7” i „SPA woła API pod `/api/v1`” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego + bramka BE dual mount).
 - **2026-11-13 — sync statusów z feature planu:** po wycinku `feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza1-faza2-mapa-spa.md` oznaczono Fazę 1 (kroki 1.1–1.2) i Fazę 2 (kroki 2.1–2.3) jako `WYKONANY` oraz milestone’y „Frontend na zaktualizowanych zależnościach” i „Mapa SPA zgodna z normą katalogów” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”).
 
@@ -267,7 +268,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 5 — Role `inmate` w UI (R1, zakres frontend)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Ujednolicenie nazwy roli domownika na **`inmate`** w guardach tras, etykietach, komunikatach i porównaniach roli po stronie klienta — zgodnie z `docs/dokumentacja_koncepcyjna.md`, R1, SPEC-FRONTEND F-10. UI odzwierciedla role; źródło prawdy pozostaje API (F-15). Bez zmiany modelu uprawnień host/inmate.
 
@@ -281,7 +282,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 5.1 — Rename `mate` → `inmate` w kliencie
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Zamiana historycznej nazwy w objętych miejscach SPA: porównania roli, etykiety, komunikaty, nazwy prezentacyjne powiązane z rolą domownika.
 
@@ -292,7 +293,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 5.2 — UI odzwierciedla role; prawda = API
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Dopasowanie chronionego UX (host vs inmate vs user vs superadmin) do normy produktowej: ukrycie przycisku/trasy nie zastępuje odmowy API; po 403 UI nie udaje sukcesu operacji.
 
@@ -304,6 +305,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 ---
 
 ## MILESTONE — Role w UI zgodne z normą
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 5. R1 po stronie klienta jest domknięte; pełne domknięcie produktowe ról = ten milestone + wcześniejszy milestone backendu „Role zgodne z normą po stronie backendu”.
 

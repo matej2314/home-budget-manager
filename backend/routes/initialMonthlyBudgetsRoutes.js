@@ -57,7 +57,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized (JWT cookie missing or invalid)
  *       403:
- *         description: Forbidden - requires mates role
+ *         description: Forbidden - requires household role
  *       500:
  *         description: Internal server error during budget declaration
  *         content:
@@ -74,6 +74,6 @@ const router = express.Router();
  */
 
 
-router.post('/new', verifyJWT, verifyRole('mates'), initMonthlyController.addNewMonthlyBudget);
+router.post('/new', verifyJWT, verifyRole('household'), initMonthlyController.addNewMonthlyBudget);
 
 export default router;

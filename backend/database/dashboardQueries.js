@@ -40,7 +40,7 @@ ib.value AS definedMonthlyBudgets,
  ON ib.houseId = tc.houseId
  WHERE ib.houseId=?
  ORDER BY mb.monthlyBalanceDate ASC; `,
-    matesData: 'SELECT userId, userName, role FROM householdUsers WHERE houseId = ? ORDER BY id',
+    inmatesData: 'SELECT userId, userName, role FROM householdUsers WHERE houseId = ? ORDER BY id',
     transactionsData: `SELECT 
 t.transactionId AS transactionId,
 t.value,

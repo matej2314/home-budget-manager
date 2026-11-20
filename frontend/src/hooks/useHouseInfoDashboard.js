@@ -11,7 +11,7 @@ export default function useHouseInfoDashboard() {
   const { actionsLoading, actionsDataError, actionsData, isTransactionsFetched, fetchTransactions } =
     useTransactionsStore();
   const { user } = useAuth();
-  const { houseData, houseMates, statsData, dailyData } = data;
+  const { houseData, inmates, statsData, dailyData } = data;
 
   useEffect(() => {
     if (!isTransactionsFetched) {
@@ -22,7 +22,7 @@ export default function useHouseInfoDashboard() {
   const basicHouseInfo = (!isLoading && !contextError && houseData[0]) || [];
   const dailyInfo = getData(isLoading, contextError, true, dailyData, []);
   const stats = getData(isLoading, contextError, true, statsData, []);
-  const matesData = getData(isLoading, contextError, true, houseMates, []);
+  const matesData = getData(isLoading, contextError, true, inmates, []);
   const transactions = (!actionsDataError && !actionsLoading && isTransactionsFetched && actionsData) || [];
 
   const { actionCountLabels } = useMemo(() => {
@@ -56,7 +56,7 @@ export default function useHouseInfoDashboard() {
   return {
     user,
     isLoading,
-    houseMates,
+    inmates,
     basicHouseInfo,
     dailyInfo,
     matesData,

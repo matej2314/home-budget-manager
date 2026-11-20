@@ -38,7 +38,7 @@ const deleteInhabitant = async (inhabitantId) => {
 
 
         await connection.query(
-            usersQueries.mateQuery,
+            usersQueries.inmateQuery,
             [0, 'user', inhabitantId]
         );
 
@@ -49,16 +49,16 @@ const deleteInhabitant = async (inhabitantId) => {
             id,
             category: 'usersActions',
             houseId: inhabitantHouseId,
-            message: 'notifications.deletedHouseMate',
+            message: 'notifications.deletedInmate',
         })
         return {
-            messageKey: 'Housemate deleted correctly.',
+            messageKey: 'Inmate deleted correctly.',
         };
     } catch (error) {
         if (error instanceof AppError) throw error;
         await connection.rollback();
-        logger.error(`Failed to deleting housemate: ${error.message}`);
-        throw new AppError({ code: 'USER_1', messageKey: 'Failed to delete housemate.', httpStatus: 500 });
+        logger.error(`Failed to deleting inmate: ${error.message}`);
+        throw new AppError({ code: 'USER_1', messageKey: 'Failed to delete inmate.', httpStatus: 500 });
     } finally {
         if (connection) connection.release();
     }

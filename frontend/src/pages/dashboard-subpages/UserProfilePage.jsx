@@ -20,7 +20,7 @@ export default function UserProfilePage() {
     const [sended, setSended] = useState(false);
     const { t } = useTranslation("pages");
     const avatarFile = useRef();
-    useDocumentTitle('Housemate profile');
+    useDocumentTitle('Inmate profile');
 
     useEffect(() => {
         if (!isTransactionsFetched) {
@@ -106,7 +106,7 @@ export default function UserProfilePage() {
                             </button>
                         </form>
                     </>
-                ) : type === 'mates' ? (
+                ) : type === 'inmates' ? (
                     <div className='w-8/12 h-fit flex justify-center shadow-md shadow-slate-400 mx-auto py-3'>
                         <MatesList mode='subpage' />
                     </div>

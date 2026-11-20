@@ -4,7 +4,7 @@ export default {
     checkQuery: 'SELECT inmate FROM users WHERE id = ?',
     selectUserByName: 'SELECT * FROM householdUsers WHERE userName=?',
     updatehouseIdHu: 'UPDATE householdUsers SET houseId = ? WHERE userId = ?',
-    mateQuery: 'UPDATE users SET inmate = ?, role = ? WHERE id = ?',
+    inmateQuery: 'UPDATE users SET inmate = ?, role = ? WHERE id = ?',
     hostQuery: 'UPDATE users SET host = ?, role = ? WHERE id = ?',
     updateroleHu: 'UPDATE householdUsers SET role = ? WHERE userId = ?',
     allUsersQuery: 'SELECT * FROM householdUsers ORDER BY id;',

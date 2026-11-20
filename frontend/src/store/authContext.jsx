@@ -4,6 +4,8 @@ import fetchData from "../utils/asyncUtils/fetchData";
 import { registerAuthFailureHandlers } from '../utils/asyncUtils/authFailureBridge';
 import { showErrorToast } from '../configs/toastify';
 import { apiBaseUrl } from '../url';
+import i18n from '../configs/i18n';
+import { resolveApiMessage } from '../utils/asyncUtils/parseApiEnvelope';
 
 export const AuthContext = createContext();
 
@@ -165,7 +167,14 @@ export const AuthProvider = ({ children }) => {
                 await logoutRef.current();
             },
             onForbidden: (messageKey) => {
-                showErrorToast(messageKey || 'Forbidden');
+                // 403 z API (np. authz.*) — widoczny toast i18n; SoT nadal middleware
+                showErrorToast(
+                    resolveApiMessage(
+                        (key, opts) => i18n.t(key, { ns: 'common', ...opts }),
+                        messageKey,
+                        messageKey || 'Forbidden',
+                    ),
+                );
             },
         });
     }, []);

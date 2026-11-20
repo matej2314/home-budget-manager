@@ -26,10 +26,10 @@
         "messageBtnTitle": "Wyślij wiadomość",
         "actionsBtnTitle": "Pokaż transakcje użytkownika",
         "deleteBtnTitle": "Usuń domownika",
-        "noHousematesError": "Brak domowników",
+        "noInmatesError": "Brak domowników",
         "selfSendError": "Nie możesz wysłać wiadomości do siebie...",
         "host": "gospodarz",
-        "mate": "domownik"
+        "inmate": "domownik"
     },
     "messagesList": {
         "readed": "Przeczytana",

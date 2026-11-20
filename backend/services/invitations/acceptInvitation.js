@@ -3,7 +3,7 @@ import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import usersQueries from '../../database/usersQueries.js';
 import invitationQueries from '../../database/invitationsQueries.js';
-import { saveNewHousemate } from '../../utils/householdUtils/saveNewHousemate.js';
+import { saveNewInmate } from '../../utils/householdUtils/saveNewInmate.js';
 import { emitNotification } from '../notifications/emitNotification.js';
 import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
 import { invitationStatus } from '../../utils/invitationStatus.js';
@@ -22,7 +22,7 @@ export async function acceptInvitation({ invitationId, invitedUserId, hostId }) 
     }
 
     const houseId = hostHouseId.houseId;
-    await saveNewHousemate(usersQueries, invitedUserId, houseId, connection);
+    await saveNewInmate(usersQueries, invitedUserId, houseId, connection);
 
     const [confirmInvitation] = await connection.query(invitationQueries.acceptQuery, [
       invitationStatus.accepted,
@@ -41,7 +41,7 @@ export async function acceptInvitation({ invitationId, invitedUserId, hostId }) 
       id: uuidv4(),
       category: 'usersActions',
       houseId,
-      message: 'notifications.addedHouseMate',
+      message: 'notifications.addedInmate',
     });
 
     return {

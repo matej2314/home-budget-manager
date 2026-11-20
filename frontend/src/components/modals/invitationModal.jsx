@@ -68,7 +68,7 @@ export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => 
                     <li key={invitation.id} className="rounded-lg border border-slate-200 bg-page p-4">
                         <div className="flex flex-col gap-3">
                             <p className="text-sm text-ink leading-relaxed">
-                                <span>{t("invitationModal.housemate")} </span>
+                                <span>{t("invitationModal.inmate")} </span>
                                 <span className="font-semibold">{invitation.invitingUserName}</span>
                                 <span> {t("invitationModal.invite")} </span>
                                 <span className="font-semibold">{invitation.invitedUserName}</span>

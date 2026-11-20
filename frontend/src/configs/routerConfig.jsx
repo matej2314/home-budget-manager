@@ -48,7 +48,7 @@ const routes = [
             { path: 'myhouse', element: <HouseInfoPage /> },
             { path: 'myprofile', element: <UserProfilePage /> },
             { path: 'transactions', element: <TransactionsPage /> },
-            { path: 'housemates', element: <HouseMatesPage /> },
+            { path: 'inmates', element: <HouseMatesPage /> },
             { path: 'calendar', element: <CalendarPage /> },
             { path: 'messages/:filter?', element: <MessagesPage /> },
             {

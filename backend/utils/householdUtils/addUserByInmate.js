@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { invitationStatus } from '../../utils/invitationStatus.js';
 import { AppError } from '../errors/AppError.js';
 
-export const addUserByMate = async (
+export const addUserByInmate = async (
   connection,
   invitingUserId,
   invitedUser,
@@ -15,7 +15,7 @@ export const addUserByMate = async (
   try {
     if (!invitedUser) {
       throw new AppError({
-        code: 'USERS_MATE_BADREQ',
+        code: 'USERS_INMATE_BADREQ',
         messageKey: 'addUserToHouse.invalidInputError',
         httpStatus: 400,
       });
@@ -23,7 +23,7 @@ export const addUserByMate = async (
 
     if (invitedUser.houseId != 0) {
       throw new AppError({
-        code: 'USERS_MATE_INMATE',
+        code: 'USERS_INMATE_ALREADY_IN_HOUSE',
         messageKey: 'addUserToHouse.inmateOrHostError',
         httpStatus: 400,
       });
@@ -51,12 +51,12 @@ export const addUserByMate = async (
       },
     });
 
-    return { messageKey: 'addUserToHouse.correctlyAddedByMate' };
+    return { messageKey: 'addUserToHouse.correctlyAddedByInmate' };
   } catch (error) {
     if (error instanceof AppError) throw error;
-    logger.error(`addUserByMate error: ${error}`);
+    logger.error(`addUserByInmate error: ${error}`);
     throw new AppError({
-      code: 'USERS_MATE_ERROR',
+      code: 'USERS_INMATE_ERROR',
       messageKey: 'addUserToHouse.inviteUserInternalError',
       httpStatus: 500,
     });

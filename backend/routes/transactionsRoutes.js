@@ -102,7 +102,7 @@ const router = express.Router();
  *                   example: Wystąpił błąd podczas dodawania transakcji. Spróbuj ponownie.
  */
 
-router.post('/new', verifyJWT, verifyRole('mates'), actionsController.addNewAction);
+router.post('/new', verifyJWT, verifyRole('household'), actionsController.addNewAction);
 
 /**
  * @swagger
@@ -293,7 +293,7 @@ router.get('/collection', verifyRole('superadmin'), actionsController.getAllActi
  */
 
 
-router.get('/my', verifyJWT, verifyRole('mates'), actionsController.getHouseActions);
+router.get('/my', verifyJWT, verifyRole('household'), actionsController.getHouseActions);
 
 /**
  * @swagger
@@ -379,6 +379,6 @@ router.get('/my', verifyJWT, verifyRole('mates'), actionsController.getHouseActi
  *                   example: 'Nie udało się usunąć transakcji.'
  */
 
-router.delete('/', verifyJWT, verifyRole('mates'), actionsController.deleteAction);
+router.delete('/', verifyJWT, verifyRole('household'), actionsController.deleteAction);
 
 export default router;

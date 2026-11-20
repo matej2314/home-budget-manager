@@ -8,45 +8,46 @@ const verifyRole = (reqRole) => {
 
         if (!userRole) return res.status(statusCode.FORBIDDEN).json({
             status: 'error',
-            message: 'Użytkownik nie ma przypisanej roli.'
+            message: 'authz.roleMissing'
         });
 
         const permissions = {
-            mates: ['host', 'mate'],
+            household: ['host', 'inmate'],
             host: ['host'],
-            inmate: ['mate'],
+            inmate: ['inmate'],
             superadmin: ['superadmin'],
             user: ['user'],
         };
 
+        // message = klucz i18n (K-2 / B-10); FE mapuje w R1
         const customMessages = {
-            mates: {
-                user: 'Nie masz uprawnień. Czynność tylko dla domowników lub gospodarzy.',
-                superadmin: 'Nie masz uprawnień. Tylko gospodarze i domownicy mogą wykonać akcję',
+            household: {
+                user: 'authz.household.denied.user',
+                superadmin: 'authz.household.denied.superadmin',
             },
             host: {
-                inmate: 'Czynność zarezerwowana dla gospodarzy. Skontaktuj się ze swoim gospodarzem.',
-                user: 'Załóż gospodarstwo, aby wykonać tę akcję.',
-                superadmin: 'Załóż gospodarstwo, aby wykonać tę akcję',
+                inmate: 'authz.host.denied.inmate',
+                user: 'authz.host.denied.user',
+                superadmin: 'authz.host.denied.superadmin',
             },
             inmate: {
-                host: 'Akcja tylko dla domowników. Nie masz uprawnień.',
-                user: 'Nie masz wystarczających uprawnień. Załóż gospodarstwo lub zapisz się do wybranego.',
+                host: 'authz.inmate.denied.host',
+                user: 'authz.inmate.denied.user',
             },
             user: {
-                host: 'Akcja tylko dla nowych użytkowników.',
-                inmate: 'Akcja tylko dla nowych użytkowników.',
+                host: 'authz.user.denied.host',
+                inmate: 'authz.user.denied.inmate',
             },
             superadmin: {
-                host: 'Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.',
-                inmate: 'Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.',
-                user: 'Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.',
+                host: 'authz.superadmin.denied.host',
+                inmate: 'authz.superadmin.denied.inmate',
+                user: 'authz.superadmin.denied.user',
             },
         };
 
         if (permissions[reqRole] && permissions[reqRole].includes(userRole)) return next();
 
-        const message = customMessages[reqRole]?.[userRole] || 'Brak uprawnień do wykonania akcji';
+        const message = customMessages[reqRole]?.[userRole] || 'authz.denied';
 
         return res.status(statusCode.FORBIDDEN).json({
             status: 'error',

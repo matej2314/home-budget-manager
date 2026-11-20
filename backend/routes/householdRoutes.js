@@ -257,7 +257,7 @@ router.get('/collection', verifyJWT, verifyRole('superadmin'), householdControll
  *                   example: Wystąpił błąd przy przetwarzaniu żądania.
  */
 
-router.get('/info', verifyJWT, verifyRole('mates'), householdController.getHouseInfo);
+router.get('/info', verifyJWT, verifyRole('household'), householdController.getHouseInfo);
 
 /**
  * @swagger

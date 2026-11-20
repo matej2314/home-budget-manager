@@ -25,10 +25,10 @@
         "loadingError": "An error occured during loading data.",
         "messageBtnTitle": "Send message",
         "actionsBtnTitle": "Show user's transactions",
-        "deleteBtnTitle": "Delete housemate",
-        "noHousematesError": "No housemates",
+        "deleteBtnTitle": "Delete inmate",
+        "noInmatesError": "No inmates",
         "selfSendError": "You can't send a message to yourself...",
-        "mate": "housemate",
+        "inmate": "inmate",
         "host": "host"
     },
     "messagesList": {
@@ -37,8 +37,8 @@
         "failedFetchError": "Failed to fetch messages."
     },
     "mostActiveMates": {
-        "heading": "Most active mates:",
-        "inmate": "housemate",
+        "heading": "Most active household members:",
+        "inmate": "inmate",
         "host": "host"
     },
     "notificationsContainer": {

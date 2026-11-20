@@ -109,7 +109,7 @@ const broadcastMessage = async (userId, { type, data } = {}) => {
 	}
 };
 
-const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
+const broadcastToHousehold = async (houseId, { type, data } = {}) => {
 	if (!ioInstance) {
 		logger.error('Failed to initialize Websocket server.');
 		return;
@@ -118,36 +118,40 @@ const broadcastToHouseMates = async (houseId, { type, data } = {}) => {
 	const connection = await pool.getConnection();
 
 	try {
-		const [houseMates] = await connection.query('SELECT userId FROM householdUsers WHERE houseId = ?', [houseId]);
+		const [members] = await connection.query(
+			'SELECT userId FROM householdUsers WHERE houseId = ?',
+			[houseId]
+		);
 
-		if (houseMates.length === 0) {
-			logger.error(`Not found housemates for household: ${houseId}`);
+		if (members.length === 0) {
+			logger.error(`Not found members for household: ${houseId}`);
 			return;
 		}
 
 		const [usersConnections] = await connection.query(
 			`SELECT connectionId FROM socketConnections WHERE userId IN (?)`,
-			[houseMates.map(mate => mate.userId)]
+			[members.map((row) => row.userId)]
 		);
 
 		if (!usersConnections || usersConnections.length === 0) {
-			logger.error(`Connections not found for housemates of household: ${houseId}`);
+			logger.error(`Connections not found for members of household: ${houseId}`);
 			return;
 		}
 
-		usersConnections.forEach((connection) => {
-			const socket = ioInstance.sockets.sockets.get(connection.connectionId);
-
+		usersConnections.forEach((row) => {
+			const socket = ioInstance.sockets.sockets.get(row.connectionId);
 			if (socket) {
 				socket.emit(type, data);
 			}
 		});
-		logger.info(`Websocket message for housemates of house: ${houseId} was sent`);
+		logger.info(`Websocket message for household: ${houseId} was sent`);
 	} catch {
-		logger.error(`An error occurred during broadcasting websocket message for housemates of house: ${houseId}`);
+		logger.error(
+			`An error occurred during broadcasting websocket message for household: ${houseId}`
+		);
 	} finally {
 		if (connection) connection.release();
 	}
 };
 
-export { initializeWebSocket, broadcastMessage, broadcastToHouseMates };
+export { initializeWebSocket, broadcastMessage, broadcastToHousehold };

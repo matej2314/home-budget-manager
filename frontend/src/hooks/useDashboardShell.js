@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../store/authContext';
 import { useSocket } from '../store/socketContext';
 import { useInvitationsStore } from '../store/invitationsStore';
-import { mateOrHostRole, isHostRole, isUserRole } from '../utils/checkUserRole';
+import { inmateOrHostRole, isHostRole, isUserRole } from '../utils/checkUserRole';
 import useModal from './useModal';
 import { showMessageToast } from '../configs/toastify';
 
@@ -28,7 +28,7 @@ export default function useDashboardShell() {
 
   const liveMessages = connected && messages?.newMessages;
   const invitationsMessages = connected && messages?.invitations;
-  const isMateOrHost = mateOrHostRole(user);
+  const isInmateOrHost = inmateOrHostRole(user);
   const isUser = isUserRole(user);
   const isHost = isHostRole(user);
 
@@ -80,7 +80,7 @@ export default function useDashboardShell() {
 
   return {
     loginStatus,
-    isMateOrHost,
+    isInmateOrHost,
     isHost,
     modal,
     closeModal,

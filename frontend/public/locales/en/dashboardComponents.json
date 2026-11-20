@@ -4,7 +4,7 @@
         "noData": "No data."
     },
     "displayMatesList": {
-        "heading": "Your housemates:"
+        "heading": "Your inmates:"
     },
     "declaredBudget": {
         "heading": "Declared monthly budget:"
@@ -13,7 +13,7 @@
         "heading": "Last transactions:"
     },
     "matesCounter": {
-        "heading": "Housemates:"
+        "heading": "Inmates:"
     },
     "messagesCounter": {
         "heading": "New messages:"

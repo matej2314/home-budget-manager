@@ -67,7 +67,7 @@
         "heading": "Czy na pewno chcesz się wylogować?"
     },
     "invitationModal": {
-        "housemate": "Domownik",
+        "inmate": "Domownik",
         "invite": "zaprosił",
         "acceptedMessage": "Zaproszenie zaakceptowane.",
         "failedAccept": "Nie udało się zaakceptować zaproszenia.",

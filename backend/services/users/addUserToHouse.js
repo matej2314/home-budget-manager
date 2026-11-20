@@ -2,7 +2,7 @@ import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import { addUserByHost } from '../../utils/householdUtils/addUserByHost.js';
 import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
-import { addUserByMate } from '../../utils/householdUtils/addUserByMate.js';
+import { addUserByInmate } from '../../utils/householdUtils/addUserByInmate.js';
 import { invitedUserData } from '../../utils/householdUtils/getInvitedUserData.js';
 import { AppError } from '../../utils/errors/AppError.js';
 
@@ -29,8 +29,8 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
       return { messageKey: addByHost.messageKey };
     }
 
-    if (role === 'mate') {
-      const addByMate = await addUserByMate(
+    if (role === 'inmate') {
+      const addByInmate = await addUserByInmate(
         connection,
         userId,
         invitedUser,
@@ -39,7 +39,7 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
         invitingUserName,
       );
       await connection.commit();
-      return { messageKey: addByMate.messageKey };
+      return { messageKey: addByInmate.messageKey };
     }
 
     await connection.commit();

@@ -12,8 +12,8 @@
     "houseInfo": {
         "transactionsLabel": "Previous day's transactions:",
         "budgetLabel": "Previous day's budget:",
-        "housematesLabel": "Housemates:",
-        "housematesOpenBtn": "View housemates list",
+        "inmatesLabel": "Inmates:",
+        "inmatesOpenBtn": "View inmates list",
         "fiveActionsTitle": "Last 5 transactions:"
     },
     "messagesPage": {
@@ -23,8 +23,8 @@
         "addNewBtn": "Add new transaction",
         "categoriesBtn": "Vew all categories"
     },
-    "housematesPage" : {
-        "title": "Your housemates:"
+    "inmatesPage" : {
+        "title": "Your inmates:"
     },
     "userDashboard": {
         "heading": "To use website functions, add your household",

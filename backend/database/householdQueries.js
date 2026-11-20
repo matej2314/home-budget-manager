@@ -1,7 +1,7 @@
 export default {
     checkQuery: 'SELECT * FROM households WHERE houseName = ? LIMIT 1',
     addQuery: 'INSERT INTO households (houseId, userId, userName, houseName, initBudget) VALUES (?, ?, ?, ?, ?)',
-    mateQuery: 'UPDATE users SET inmate = ?, role = ? WHERE id = ?',
+    inmateQuery: 'UPDATE users SET inmate = ?, role = ? WHERE id = ?',
     hostQuery: 'UPDATE users SET host = ?, role = ? WHERE id = ?',
     dataQuery: `SELECT houseId, houseName, initBudget, DATE_FORMAT(createdAt, '%Y-%m-%d') AS createdAt FROM households WHERE houseId = ?;`,
     ownershipQuery: 'SELECT houseId FROM households WHERE houseName=?',

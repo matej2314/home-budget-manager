@@ -39,9 +39,9 @@ export async function getBoardData(userId, filter = 'all', page = 1, limit = 10)
       boardData.houseData = householdData;
     }
 
-    if (filter === 'all' || filter === 'mates') {
-      const [matesData] = await connection.query(dashboardQueries.matesData, [userHouseId]);
-      boardData.houseMates = matesData;
+    if (filter === 'all' || filter === 'inmates') {
+      const [inmatesData] = await connection.query(dashboardQueries.inmatesData, [userHouseId]);
+      boardData.inmates = inmatesData;
     }
 
     if (filter === 'transactions') {

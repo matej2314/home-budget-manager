@@ -26,8 +26,8 @@
         "Declare budget" : "zadeklaruj budżet",
         "Add transaction": "dodaj transakcję",
         "Send message": "wyślij wiadomość",
-        "Add housemate": "dodaj domownika",
-        "Your housemates": "Twoi domownicy",
+        "Add inmate": "dodaj domownika",
+        "Your inmates": "Twoi domownicy",
         "Change avatar": "zmień avatar",
         "Change e-mail": "zmień adres e-mail",
         "Cookies settings": "ustawienia Cookies",
@@ -42,7 +42,7 @@
         "My profile": "Mój profil",
         "My house": "Mój dom",
         "Messages": "Wiadomości",
-        "Housemates": "Domownicy",
+        "Inmates": "Domownicy",
         "Transactions": "Transakcje",
         "Calendar": "Kalendarz",
         "AdminPanel": "Admin Panel",
@@ -52,10 +52,46 @@
         "newInitBudget": "Zadeklarowano nowy budżet!",
         "addedAction": "Dodano nową transakcję!",
         "deletedAction": "Usunięto transakcję!",
-        "addedHouseMate": "Dodano domownika :)",
-        "deletedHouseMate": "Usunięto domownika :(",
+        "addedInmate": "Dodano domownika :)",
+        "deletedInmate": "Usunięto domownika :(",
         "newMonthlyBalance": "Nowe podsumowanie miesięczne dostępne.",
         "newMessageNotice": "Otrzymałeś nową wiadomość!"
+    },
+    "authz": {
+        "roleMissing": "Użytkownik nie ma przypisanej roli.",
+        "denied": "Brak uprawnień do wykonania akcji.",
+        "household": {
+            "denied": {
+                "user": "Nie masz uprawnień. Czynność tylko dla domowników lub gospodarzy.",
+                "superadmin": "Nie masz uprawnień. Tylko gospodarze i domownicy mogą wykonać akcję."
+            }
+        },
+        "host": {
+            "denied": {
+                "inmate": "Czynność zarezerwowana dla gospodarzy. Skontaktuj się ze swoim gospodarzem.",
+                "user": "Załóż gospodarstwo, aby wykonać tę akcję.",
+                "superadmin": "Załóż gospodarstwo, aby wykonać tę akcję."
+            }
+        },
+        "inmate": {
+            "denied": {
+                "host": "Akcja tylko dla domowników. Nie masz uprawnień.",
+                "user": "Nie masz wystarczających uprawnień. Załóż gospodarstwo lub zapisz się do wybranego."
+            }
+        },
+        "user": {
+            "denied": {
+                "host": "Akcja tylko dla nowych użytkowników.",
+                "inmate": "Akcja tylko dla nowych użytkowników."
+            }
+        },
+        "superadmin": {
+            "denied": {
+                "host": "Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.",
+                "inmate": "Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.",
+                "user": "Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny."
+            }
+        }
     },
     "actionCats": {
         "education": "edukacja",

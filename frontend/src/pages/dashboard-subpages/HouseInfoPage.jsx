@@ -11,6 +11,7 @@ import TransactionsOverTime from "../../components/dashboard/dashboardComponents
 import MostActiveMates from "../../components/dashboard/dashboard-internal-components/MostActiveMates";
 import BasicHouseInfo from "../../components/dashboard/dashboard-internal-components/BasicHouseInfo";
 import DashBoardForUser from "./DashboardForUser";
+import { inmateOrHostRole } from '../../utils/checkUserRole';
 
 export default function HouseInfoPage() {
     const { t } = useTranslation("pages");
@@ -19,7 +20,7 @@ export default function HouseInfoPage() {
     const {
         user,
         isLoading,
-        houseMates,
+        inmates,
         basicHouseInfo,
         dailyInfo,
         matesData,
@@ -34,7 +35,7 @@ export default function HouseInfoPage() {
 
     return (
         <>
-            {user.role === 'host' || user.role === 'mate' ? (
+            {inmateOrHostRole(user) ? (
                 <div id="pagecontent" className="w-full min-h-full min-w-0 bg-page overflow-y-auto no-scrollbar pb-8">
                     <DashboardHeader />
                     <div id="middle-content" className="w-full px-3 sm:px-5 lg:px-8 pt-4 sm:pt-5 flex flex-col gap-4 sm:gap-5">
@@ -58,10 +59,10 @@ export default function HouseInfoPage() {
                                 </div>
                             </div>
                             <div id="housemates-container" className="section-card lg:col-span-3 flex flex-wrap items-center gap-2 sm:gap-3">
-                                <p className="text-sm font-medium text-muted">{t("houseInfo.housematesLabel")}</p>
-                                <p className="text-lg font-semibold text-ink">{houseMates.length || '1'}</p>
-                                <Link to='/dashboard/housemates' className="text-sm font-medium text-accent hover:underline ml-auto">
-                                    {t("houseInfo.housematesOpenBtn")}
+                                <p className="text-sm font-medium text-muted">{t("houseInfo.inmatesLabel")}</p>
+                                <p className="text-lg font-semibold text-ink">{inmates.length || '1'}</p>
+                                <Link to='/dashboard/inmates' className="text-sm font-medium text-accent hover:underline ml-auto">
+                                    {t("houseInfo.inmatesOpenBtn")}
                                 </Link>
                             </div>
                             <div className="lg:col-span-3">

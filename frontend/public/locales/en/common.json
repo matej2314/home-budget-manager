@@ -23,8 +23,8 @@
       "Declare budget" : "declare budget",
       "Add transaction": "add transaction",
       "Send message": "send message",
-      "Add housemate": "add housemate",
-      "Your housemates": "your housemates",
+      "Add inmate": "add inmate",
+      "Your inmates": "your inmates",
       "Change avatar": "change avatar",
       "Change e-mail": "change e-mail",
       "Cookies settings": "cookies settings",
@@ -39,7 +39,7 @@
       "My profile": "My profile",
       "My house": "My house",
       "Messages": "Messages",
-      "Housemates": "Housemates",
+      "Inmates": "Inmates",
       "Transactions": "Transactions",
       "Calendar": "Calendar",
       "AdminPanel": "Admin Panel",
@@ -49,10 +49,46 @@
       "newInitBudget": "New monthly budget declared!",
       "addedAction": "Added new transaction!.",
       "deletedAction": "Deleted transaction!",
-      "addedHouseMate": "Added new housemate :)",
-      "deletedHouseMate": "Deleted housemate :(",
+      "addedInmate": "Added new inmate :)",
+      "deletedInmate": "Deleted inmate :(",
       "newMonthlyBalance": "New monthly balance calculated.",
       "newMessageNotice": "You have received new message!"
+   },
+   "authz": {
+      "roleMissing": "User has no assigned role.",
+      "denied": "You do not have permission to perform this action.",
+      "household": {
+         "denied": {
+            "user": "You don't have permission. This action is only for inmates or hosts.",
+            "superadmin": "You don't have permission. Only hosts and inmates can perform this action."
+         }
+      },
+      "host": {
+         "denied": {
+            "inmate": "This action is reserved for hosts. Contact your host.",
+            "user": "Create a household to perform this action.",
+            "superadmin": "Create a household to perform this action."
+         }
+      },
+      "inmate": {
+         "denied": {
+            "host": "This action is only for inmates. You don't have permission.",
+            "user": "You don't have enough permission. Create a household or join an existing one."
+         }
+      },
+      "user": {
+         "denied": {
+            "host": "This action is only for new users.",
+            "inmate": "This action is only for new users."
+         }
+      },
+      "superadmin": {
+         "denied": {
+            "host": "You don't have enough permission. Contact the site administrator.",
+            "inmate": "You don't have enough permission. Contact the site administrator.",
+            "user": "You don't have enough permission. Contact the site administrator."
+         }
+      }
    },
    "actionCats": {
       "education": "education",

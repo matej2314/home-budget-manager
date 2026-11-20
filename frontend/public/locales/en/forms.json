@@ -61,8 +61,8 @@
         "inviteSuccessMessage": "User correctly added to household.",
         "userNotFoundError": "User not found.",
         "inviteUserInternalError": "Internal server error.",
-        "inmateOrHostError": "User already is housemate or host.",
-        "correctlyAddedByMate": "Invitation sent to host for approval."
+        "inmateOrHostError": "User already is an inmate or host.",
+        "correctlyAddedByInmate": "Invitation sent to host for approval."
     },
     "declareBudget" : {
         "inputError": "Enter new monthly budget!",
@@ -82,8 +82,8 @@
         "errorMessage": "An error occured during sending message.",
         "formHeaderSend": "Send message",
         "recipientNameLabel": "Select recipient:",
-        "recipientNamePlaceholder": "choose a housemate",
-        "noRecipients": "No other housemates in this household.",
+        "recipientNamePlaceholder": "choose an inmate",
+        "noRecipients": "No other inmates in this household.",
         "messageLabel": "Type your message:",
         "messagePlaceholder": "message"
     }

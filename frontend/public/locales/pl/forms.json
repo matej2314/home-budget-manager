@@ -62,7 +62,7 @@
         "userNotFoundError": "Nie znaleziono użytkownika.",
         "inviteUserInternalError": "Błąd przetwarzania żądania.",
         "inmateOrHostError": "Użytkownik jest już gospodarzem lub domownikiem.",
-        "correctlyAddedByMate": "Zaproszenie wysłane. Oczekuje na zatwierdzenie przez gospodarza."
+        "correctlyAddedByInmate": "Zaproszenie wysłane. Oczekuje na zatwierdzenie przez gospodarza."
     },
     "declareBudget": {
         "inputError": "Podaj nowy budżet miesięczny!",

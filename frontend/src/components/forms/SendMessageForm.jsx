@@ -24,12 +24,12 @@ export default function SendMessageForm({ reply, recipientName, onClose, embedde
 	const recipientRef = useRef();
 	const messageContentRef = useRef();
 
-	const housemateLogins = useMemo(() => {
-		const mates = getData(dataLoading, dataError, true, data?.houseMates, []);
-		return mates
-			.map((mate) => mate.userName)
+	const inmateLogins = useMemo(() => {
+		const inmates = getData(dataLoading, dataError, true, data?.inmates, []);
+		return inmates
+			.map((inmate) => inmate.userName)
 			.filter((name) => name && name !== user?.userName);
-	}, [data?.houseMates, dataLoading, dataError, user?.userName]);
+	}, [data?.inmates, dataLoading, dataError, user?.userName]);
 
 	const handleSetActionState = (action) => {
 		setActionState({ type: action });
@@ -102,13 +102,13 @@ export default function SendMessageForm({ reply, recipientName, onClose, embedde
 							<option value="" disabled>
 								{t("sendMessage.recipientNamePlaceholder")}
 							</option>
-							{housemateLogins.map((login) => (
+							{inmateLogins.map((login) => (
 								<option key={login} value={login}>
 									{login}
 								</option>
 							))}
 						</select>
-						{!dataLoading && housemateLogins.length === 0 && (
+						{!dataLoading && inmateLogins.length === 0 && (
 							<p className="text-xs text-muted -mt-2">{t("sendMessage.noRecipients")}</p>
 						)}
 					</>

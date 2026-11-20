@@ -24,13 +24,13 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
     if (existingHouse.length > 0) {
       const existingId = existingHouse[0].houseId;
 
-      const [addmate] = await connection.query(houseQueries.mateQuery, [1, 'mate', userId]);
+      const [addInmate] = await connection.query(houseQueries.inmateQuery, [1, 'inmate', userId]);
 
-      if (addmate.affectedRows === 1) {
+      if (addInmate.affectedRows === 1) {
         setInmateProps(userId, existingId, connection);
       }
 
-      logger.info(`Household ${houseName} already exists. User attributed as housemate.`);
+      logger.info(`Household ${houseName} already exists. User attributed as inmate.`);
 
       await connection.commit();
       const newRole = 'inmate';

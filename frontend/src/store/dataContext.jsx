@@ -16,7 +16,7 @@ export const DataProvider = ({ children }) => {
 
     const [data, setData] = useState({
         houseData: [],
-        houseMates: [],
+        inmates: [],
         actionsCatData: [],
         statsData: [],
         dailyData: [],
@@ -32,7 +32,7 @@ export const DataProvider = ({ children }) => {
             setData((prevData) => ({
                 ...prevData,
                 ...(result.dashboardData.houseData && { houseData: result.dashboardData.houseData }),
-                ...(result.dashboardData.houseMates && { houseMates: result.dashboardData.houseMates }),
+                ...(result.dashboardData.inmates && { inmates: result.dashboardData.inmates }),
                 ...(result.dashboardData.actionCatData && { actionsCatData: result.dashboardData.actionCatData }),
                 ...(result.dashboardData.statsData && { statsData: result.dashboardData.statsData }),
                 ...(result.dashboardData.dailyData && { dailyData: result.dashboardData.dailyData }),

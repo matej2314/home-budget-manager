@@ -16,6 +16,6 @@ const router = express.Router();
  *       - cookieAuth: []
  */
 
-router.get('/data/:filter?/:page?', verifyJWT, verifyRole('mates'), getBoardDataHandler);
+router.get('/data/:filter?/:page?', verifyJWT, verifyRole('household'), getBoardDataHandler);
 
 export default router;

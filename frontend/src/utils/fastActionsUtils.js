@@ -3,7 +3,7 @@ import { isHostRole } from "./checkUserRole";
 
 export const getClickHandler = (actionType, handleButtonClick, openModal, showInfoToast, user, tInternal) => {
     switch (actionType) {
-        case 'mates':
+        case 'inmates':
         case 'avatar':
             return () => handleButtonClick(actionType);
         case 'declare':
