@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
 import {
@@ -7,7 +6,8 @@ import {
   clearExtraValues,
 } from '../../utils/householdUtils/initMonthlyBudgetFunctions.js';
 import { handleBroadcastInitBudget } from '../../utils/handleBroadcastInitBudget.js';
-import initialBudgetQueries from '../../database/initialMonthlyBudgetQueries.js';
+import { listAddedAtByHouse } from '../../database/budget.js';
+import { updateInitBudget } from '../../database/households.js';
 import { AppError } from '../../utils/errors/AppError.js';
 
 export async function addNewMonthlyBudget({ userId, value }) {
@@ -20,10 +20,8 @@ export async function addNewMonthlyBudget({ userId, value }) {
     });
   }
 
-  const connection = await pool.getConnection();
   try {
-    await connection.beginTransaction();
-    const checkHouse = await checkUserHouse(connection, userId);
+    const checkHouse = await checkUserHouse(userId);
     if (!checkHouse) {
       logger.error(`User ${userId} does not belong to any household.`);
       throw new AppError({
@@ -34,9 +32,7 @@ export async function addNewMonthlyBudget({ userId, value }) {
     }
 
     const userHouse = checkHouse.houseId;
-    const [checkBudgetDate] = await connection.query(initialBudgetQueries.getAddedAt, [
-      userHouse,
-    ]);
+    const checkBudgetDate = await listAddedAtByHouse(userHouse);
 
     if (checkBudgetDate.length && checkBudgetDate[0].addedAt) {
       const lastAddedAt = new Date(checkBudgetDate[0].addedAt);
@@ -45,22 +41,17 @@ export async function addNewMonthlyBudget({ userId, value }) {
 
       if (diffDays <= 7 || diffDays >= 30) {
         const { addedAtFormatted, validUntilFormatted, valueToDb } = await addNewBudget(
-          connection,
           value,
           userHouse,
         );
-        await connection.query('UPDATE households SET initBudget = ? WHERE houseId =?', [
-          valueToDb,
-          userHouse,
-        ]);
+        await updateInitBudget(userHouse, valueToDb);
         if (diffDays <= 7) {
-          await clearExtraValues(connection, userHouse, lastAddedAt);
+          await clearExtraValues(userHouse, lastAddedAt);
           logger.info(`Deleted extra values for household: ${userHouse}`);
         }
         logger.info(
           `Monthly budget of household ${userHouse} added on ${new Date().toLocaleString()}`,
         );
-        await connection.commit();
         await handleBroadcastInitBudget(
           id,
           valueToDb,
@@ -83,18 +74,13 @@ export async function addNewMonthlyBudget({ userId, value }) {
 
     if (checkBudgetDate.length && !checkBudgetDate[0].addedAt) {
       const { addedAtFormatted, validUntilFormatted, valueToDb } = await addNewBudget(
-        connection,
         value,
         userHouse,
       );
-      await connection.query('UPDATE households SET initBudget = ? WHERE houseId =?', [
-        valueToDb,
-        userHouse,
-      ]);
+      await updateInitBudget(userHouse, valueToDb);
       logger.info(
         `Monthly budget of household ${userHouse} added on ${new Date().toLocaleString()}`,
       );
-      await connection.commit();
       await handleBroadcastInitBudget(
         id,
         valueToDb,
@@ -114,7 +100,6 @@ export async function addNewMonthlyBudget({ userId, value }) {
       httpStatus: 500,
     });
   } catch (error) {
-    await connection.rollback();
     if (error instanceof AppError) throw error;
     logger.error(`An error occured during declaring new monthly budget: ${error.message}`);
     throw new AppError({
@@ -122,7 +107,5 @@ export async function addNewMonthlyBudget({ userId, value }) {
       messageKey: 'declareBudget.declareInternalError',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 }

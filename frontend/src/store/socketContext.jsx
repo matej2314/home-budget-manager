@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useRef } from "react";
 import { useAuth } from './authContext';
 import { io } from "socket.io-client";
 import { socketPath } from "../url";
@@ -6,13 +6,16 @@ import useNotificationsStore from './notificationsStore';
 import { useMessagesStore } from './messagesStore';
 import { useInvitationsStore } from './invitationsStore';
 import { notifyBoardRefresh } from '../utils/asyncUtils/boardRefreshBridge';
+import { isHostRole } from '../utils/checkUserRole';
 
 export const SocketContext = createContext();
 
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
+    const userRef = useRef(user);
+    userRef.current = user;
     const [socket, setSocket] = useState(null);
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState(null);
@@ -95,7 +98,10 @@ export const SocketProvider = ({ children }) => {
                     ...prevMessages,
                     invitations: [...prevMessages.invitations, data],
                 }));
-                useInvitationsStore.getState().fetchInvitations();
+                const currentUser = userRef.current;
+                if (isHostRole(currentUser)) {
+                    useInvitationsStore.getState().fetchInvitations(currentUser);
+                }
             });
 
             newSocket.on('notification', (data) => {

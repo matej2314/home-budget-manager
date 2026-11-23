@@ -1,7 +1,7 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-23
 ---
 
 # Architektura katalogów i plików — Home Budget Manager
@@ -128,8 +128,9 @@ home-budget-manager/
 │   │   └── migrations/          # obowiązkowa historia Prisma Migrate
 │   ├── database/
 │   │   ├── prismaClient.js      # singleton Prisma Client
-│   │   └── …                    # moduły dostępu per obszar (auth, household, board, …)
-│   │                            # bez raw SQL; bez historycznych *Queries
+│   │   └── …                    # moduły dostępu per obszar (auth, households, board, …)
+│   │                            # bez raw SQL; bez historycznych *Queries;
+│   │                            # join po relacjach Prisma (include), nie Map w JS
 │   ├── tasks/                   # adaptery cron (zostają w procesie API; wołają services)
 │   ├── store/                   # multer storages
 │   ├── utils/
@@ -166,7 +167,7 @@ home-budget-manager/
 | Jawne `invitations/`, `budget/`, `board/`, `notifications/`, `receipt/` | Domknięcie luk as-is (w tym dashboard `/board`) |
 | `shell/` dla homepage / reviews / gallery / cookiesTour | Oddzielenie otoczki od rdzenia bez nowego stylu architektury |
 | ESM w `backend/` | Jednolity model importów; norma z `architektura.md` |
-| `prisma/` + `database/` na Prisma | ORM zamiast pool/`*Queries`; migracje w repo |
+| `prisma/` + `database/` na Prisma | ORM zamiast pool/`*Queries`; migracje w repo; relacje FK → `include` w modułach |
 | Front: bez `contexts/` | Zgodne z decyzją: Context zostaje w `store/` |
 | Brak `workers/` | Workery cron/WS — tylko „do rozważenia później” w architekturze |
 
@@ -187,7 +188,7 @@ home-budget-manager/
 | R3 (obszary) | Grupowanie jak w Bloku B (`shell/` vs rdzeń, w tym `board/`) |
 | R4 (WS/cron) | Bez nowych katalogów workerów w v1 |
 | R5 (frontend) | Porządek nazw/komponentów w istniejącym układzie `pages` / `components` / `store` |
-| R6 (Prisma) | Dodanie `prisma/`; przebudowa `database/` na Prisma; usunięcie `*Queries` / pool |
+| R6 (Prisma) | `prisma/` + API w `database/` (m.in. membership `houseId` NULL + FK); usunięcie `*Queries` / pool ze ścieżek runtime |
 
 ## Jak czytać dalej
 

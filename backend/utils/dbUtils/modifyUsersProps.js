@@ -1,32 +1,33 @@
-import houseQueries from '../../database/householdQueries.js';
 import logger from '../../configs/logger.js';
+import {
+  setUserHostFlags,
+  setUserInmateFlags,
+  updateHouseholdUserHouseId,
+  updateHouseholdUserRole,
+} from '../../database/users.js';
 
-export const resetHostProps = async (userId, connection) => {
-    await connection.execute(houseQueries.hostQuery, [0, 'user', userId]);
-    await connection.execute(houseQueries.updateroleHu, ['user', userId]);
-    await connection.execute(houseQueries.updatehouseIdHu, [0, userId]);
-
-    logger.info(`Parameters of user ${userId} reseted.`);
+export const resetHostProps = async (userId) => {
+  await setUserHostFlags(userId, { host: false, role: 'user' });
+  await updateHouseholdUserRole(userId, 'user');
+  await updateHouseholdUserHouseId(userId, null);
+  logger.info(`Parameters of user ${userId} reseted.`);
 };
 
-export const resetInmatesProps = async (userId, connection) => {
-    await connection.execute(houseQueries.inmateQuery, [0, 'user', userId]);
-    await connection.execute(houseQueries.updateroleHu, ['user', userId]);
-    await connection.execute(houseQueries.updatehouseIdHu, [0, userId]);
-
-    logger.info(`Parameters of inmates deleted.`);
+export const resetInmatesProps = async (userId) => {
+  await setUserInmateFlags(userId, { inmate: false, role: 'user' });
+  await updateHouseholdUserRole(userId, 'user');
+  await updateHouseholdUserHouseId(userId, null);
+  logger.info(`Parameters of inmates deleted.`);
 };
 
-export const setHostProps = async (userId, houseId, connection) => {
-    await connection.query(houseQueries.updateroleHu, ['host', userId]);
-    await connection.query(houseQueries.updatehouseIdHu, [houseId, userId]);
-
-    logger.info(`Parameters of host ${userId} set.`);
+export const setHostProps = async (userId, houseId) => {
+  await updateHouseholdUserRole(userId, 'host');
+  await updateHouseholdUserHouseId(userId, houseId);
+  logger.info(`Parameters of host ${userId} set.`);
 };
 
-export const setInmateProps = async (userId, existingId, connection) => {
-    await connection.query(houseQueries.updateroleHu, ['inmate', userId]);
-    await connection.query(houseQueries.updatehouseIdHu, [existingId, userId]);
-
-    logger.info(`Parameters of inmates of household ${existingId} set.`);
+export const setInmateProps = async (userId, existingId) => {
+  await updateHouseholdUserRole(userId, 'inmate');
+  await updateHouseholdUserHouseId(userId, existingId);
+  logger.info(`Parameters of inmates of household ${existingId} set.`);
 };

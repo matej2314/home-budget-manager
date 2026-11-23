@@ -1,7 +1,8 @@
-const checkNotice = async (noticeId, connection) => {
-    const [result] = await connection.query('SELECT id from notifications WHERE id=?', [noticeId]);
+import { findNotificationById } from '../../database/notifications.js';
 
-    return result.length > 0 ? result[0] : null;
+const checkNotice = async (noticeId) => {
+  const result = await findNotificationById(noticeId);
+  return result ? { id: result.id } : null;
 };
 
 export { checkNotice };

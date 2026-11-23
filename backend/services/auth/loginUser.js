@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
-import queries from '../../database/authQueries.js';
+import { findUserByEmail } from '../../database/auth.js';
 import { loginValidations } from '../../utils/validation.js';
 import { AppError } from '../../utils/errors/AppError.js';
 
@@ -21,10 +20,9 @@ export async function loginUser({ email, password }) {
     }
   }
 
-  const connection = await pool.getConnection();
   try {
-    const [rows] = await connection.query(queries.login, [email]);
-    if (rows.length === 0) {
+    const user = await findUserByEmail(email);
+    if (!user) {
       logger.error('Incorrect e-mail address.');
       throw new AppError({
         code: 'AUTH_LOGIN_BAD_EMAIL',
@@ -33,7 +31,6 @@ export async function loginUser({ email, password }) {
       });
     }
 
-    const user = rows[0];
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       logger.error('incorrect password.');
@@ -70,7 +67,5 @@ export async function loginUser({ email, password }) {
       messageKey: 'Internal server error.',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 }

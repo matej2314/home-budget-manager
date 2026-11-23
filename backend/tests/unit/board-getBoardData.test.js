@@ -4,17 +4,6 @@ jest.unstable_mockModule('../../utils/checkUtils/checkUserHouse.js', () => ({
   default: async () => null,
 }));
 
-jest.unstable_mockModule('../../database/db.js', () => ({
-  default: {
-    getConnection: async () => ({
-      beginTransaction: async () => {},
-      rollback: async () => {},
-      release: () => {},
-      query: async () => [[]],
-    }),
-  },
-}));
-
 const { getBoardData } = await import('../../services/board/getBoardData.js');
 const { AppError } = await import('../../utils/errors/AppError.js');
 

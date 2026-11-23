@@ -1,13 +1,16 @@
 import logger from '../../configs/logger.js';
 import { AppError } from '../errors/AppError.js';
+import {
+  setUserInmateFlags,
+  updateHouseholdUserHouseId,
+  updateHouseholdUserRole,
+} from '../../database/users.js';
 
-export const saveNewInmate = async (usersQueries, invitedUserId, hostHouseId, connection) => {
+export const saveNewInmate = async (invitedUserId, hostHouseId) => {
   try {
-    const [addInmate] = await connection.query(usersQueries.inmateQuery, [1, 'inmate', invitedUserId]);
-    if (addInmate.affectedRows == 1) {
-      await connection.query(usersQueries.updatehouseIdHu, [hostHouseId, invitedUserId]);
-      await connection.query(usersQueries.updateroleHu, ['inmate', invitedUserId]);
-    }
+    await setUserInmateFlags(invitedUserId, { inmate: true, role: 'inmate' });
+    await updateHouseholdUserHouseId(invitedUserId, hostHouseId);
+    await updateHouseholdUserRole(invitedUserId, 'inmate');
     return { invitedUserId };
   } catch (error) {
     if (error instanceof AppError) throw error;

@@ -1,8 +1,7 @@
-import actionQueries from '../../database/transactionsQueries.js';
+import { findHouseholdUserRow } from '../../database/households.js';
 
-const checkUserHouse = async (connection, userId) => {
-    const [result] = await connection.query(actionQueries.checkQuery, [userId]);
-    return result.length > 0 ? result[0] : null;
+const checkUserHouse = async (userId) => {
+  return findHouseholdUserRow(userId);
 };
 
 export default checkUserHouse;

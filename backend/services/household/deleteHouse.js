@@ -1,36 +1,34 @@
 import jwt from 'jsonwebtoken';
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
-import houseQueries from '../../database/householdQueries.js';
+import {
+  deleteHousehold,
+  findHouseholdByName,
+  listInmates,
+} from '../../database/households.js';
+import { deleteTransactionsByHouseId } from '../../database/transactions.js';
 import { resetHostProps, resetInmatesProps } from '../../utils/dbUtils/modifyUsersProps.js';
 import { AppError } from '../../utils/errors/AppError.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export const deleteHouse = async (userId, userName, houseName) => {
-  const connection = await pool.getConnection();
-
   try {
-    await connection.beginTransaction();
+    const ownership = await findHouseholdByName(houseName);
 
-    const [ownership] = await connection.query(houseQueries.ownershipQuery, [houseName]);
-
-    if (ownership.length === 0) {
+    if (!ownership) {
       logger.error('No permissions.');
-      await connection.rollback();
       throw new AppError({
         code: 'HOUSE_1',
         messageKey: 'No permissions to delete household.',
         httpStatus: 403,
       });
     }
-    const houseId = ownership[0].houseId;
+    const houseId = ownership.houseId;
 
-    const [result] = await connection.query(houseQueries.deleteQuery, [houseId, userId]);
+    const result = await deleteHousehold(houseId, userId);
 
-    if (result.affectedRows == 0) {
+    if (result.count === 0) {
       logger.info('Household not found.');
-      await connection.rollback();
       throw new AppError({
         code: 'HOUSE_2',
         messageKey: 'Household not found.',
@@ -38,20 +36,18 @@ export const deleteHouse = async (userId, userName, houseName) => {
       });
     }
 
-    if (result.affectedRows == 1) {
-      await resetHostProps(userId, connection);
+    if (result.count === 1) {
+      await resetHostProps(userId);
 
-      const [inmates] = await connection.query(houseQueries.selectInmates, [houseId]);
+      const inmates = await listInmates(houseId);
 
       for (const inmate of inmates) {
-        await resetInmatesProps(inmate.userId, connection);
+        await resetInmatesProps(inmate.userId);
       }
 
-      await connection.query(houseQueries.deleteHouseActions, [houseId]);
+      await deleteTransactionsByHouseId(houseId);
       logger.info(`Household ${houseName} successfully deleted.`);
     }
-
-    await connection.commit();
 
     const newRole = 'user';
     return {
@@ -62,13 +58,10 @@ export const deleteHouse = async (userId, userName, houseName) => {
   } catch (error) {
     if (error instanceof AppError) throw error;
     logger.error(`Deleting household error: ${error.message}`);
-    await connection.rollback();
     throw new AppError({
       code: 'HOUSE_3',
       messageKey: 'Failed to deleting household.',
       httpStatus: 400,
     });
-  } finally {
-    if (connection) connection.release();
   }
 };

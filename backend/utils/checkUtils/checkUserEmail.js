@@ -1,6 +1,7 @@
-const checkUserEmail = async (connection, reg_email) => {
-    const [result] = await connection.query('SELECT * FROM users WHERE email = ?', [reg_email]);
-    return result.length > 0 ? result[0] : null;
+import { findUserByEmail } from '../../database/auth.js';
+
+const checkUserEmail = async (reg_email) => {
+  return findUserByEmail(reg_email);
 };
 
 export { checkUserEmail };

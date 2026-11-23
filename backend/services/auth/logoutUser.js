@@ -1,7 +1,6 @@
-import pool from '../../database/db.js';
-import socketQueries from '../../database/websocketQueries.js';
+import { deleteConnectionByUserId } from '../../database/sockets.js';
 
 export async function logoutUser(userId) {
-  await pool.query(socketQueries.deleteConnection, [userId]);
+  await deleteConnectionByUserId(userId);
   return { messageKey: 'Logged out correctly.' };
 }

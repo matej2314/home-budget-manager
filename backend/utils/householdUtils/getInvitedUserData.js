@@ -1,9 +1,5 @@
-import usersQueries from '../../database/usersQueries.js';
+import { findHouseholdUserByUserName } from '../../database/users.js';
 
-export const invitedUserData = async (connection, userName) => {
-
-    const [getInvitedUser] = await connection.query(usersQueries.selectUserByName, [userName]);
-
-    return getInvitedUser.length > 0 ? getInvitedUser[0] : null;
-
+export const invitedUserData = async (userName) => {
+  return findHouseholdUserByUserName(userName);
 };

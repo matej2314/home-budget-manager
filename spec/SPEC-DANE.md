@@ -1,7 +1,7 @@
 ---
-wersja: 2
+wersja: 3
 data_utworzenia: 2026-11-09
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-23
 ---
 
 # SPEC — Dane (persistencja)
@@ -48,9 +48,13 @@ D-8. phpMyAdmin / klient SQL: diagnostyka i odczyty; **nie** pipeline zmian sche
 
 ### Reguły spójności modelu (egzekwowane w services + database)
 
-D-9. Użytkownik należy do **co najwyżej jednego** gospodarstwa naraz; rola `user` = brak aktywnego membershipu budżetowego.
+D-9. Użytkownik należy do **co najwyżej jednego** gospodarstwa naraz; brak aktywnego membershipu budżetowego = `householdUsers.houseId` jest **`NULL`** (rola globalna często `user` / `superadmin` bez domu).
 
-D-10. Transakcja finansowa zawsze w kontekście `houseId` członka domu. Wspólny budżet domu — bez osobnych „kont prywatnych” w produkcie v1.
+D-9a. `householdUsers.houseId` ma FK do `households.houseId` (nullable). Zapis wartości `"0"`, pustego stringa ani innego sentinela zamiast `NULL` jest **zabroniony**.
+
+D-9b. Odczyty łączące dom i członków (oraz inne zapytania po istniejących relacjach Prisma) realizuje warstwa `database/` przez **`include` / filtry relacji** — bez ręcznego sklejania kolekcji w JS, gdy schema ma `@relation`.
+
+D-10. Transakcja finansowa zawsze w kontekście `houseId` członka domu (membership z `houseId` niebędącym `NULL`). Wspólny budżet domu — bez osobnych „kont prywatnych” w produkcie v1.
 
 D-11. Mutacja transakcji utrzymuje spójność z saldem domu (`households.currentBalance` lub równoważne w schema): zapis w **jednej** orkiestracji service (transakcja Prisma / równoważna atomowość) — nie połowiczne zapisy rozjechane po controllerach.
 
@@ -58,7 +62,7 @@ D-12. Role w modelu i danych: globalnie i w membership używać **`inmate`** (ni
 
 D-13. Snapshoty / projekcje cron (`dailyTransactions`, `dailyBudget`, `monthly_balances`, …) zasilane przez **services** wołane z `tasks/` — nie raw SQL z tasków.
 
-D-14. Usunięcie domu / użytkownika czyści powiązane membership i transakcje zgodnie z logiką w services (norma docs).
+D-14. Usunięcie domu / użytkownika czyści powiązane membership i transakcje zgodnie z logiką w services (norma docs); odpięcie membershipu od domu ustawia `houseId` na **`NULL`**.
 
 ### Seed
 
@@ -78,6 +82,7 @@ D-18. **Prisma Studio** dozwolone do podglądu/inspekcji na bazach **non-prod** 
 |----------------------|------|
 | Repository-like moduły w `database/` | Enkapsulacja Prisma per obszar |
 | Transakcja Prisma dla multi-write | Atomowość saldo + transakcja itd. |
+| Relacje Prisma (`include` / `where` po FK) | Join po modelu zamiast sklejania w aplikacji |
 | Schema-first + Migrate | Historia schematu w git |
 | Seed skryptowy | Powtarzalny dev/test |
 
@@ -86,12 +91,15 @@ D-18. **Prisma Studio** dozwolone do podglądu/inspekcji na bazach **non-prod** 
 - Mapować nazwy modeli Prisma na istniejące tabele przy migracji R6 (introspection → schema → migracje jako proces domknięcia).
 - Rozszerzać seed o dane potrzebne do lokalnych ścieżek krytycznych.
 - Używać Prisma Studio lokalnie / na bazie testowej.
+- Używać `NULL` jako jedynej semantyki „brak domu” w `householdUsers.houseId`.
 
 ## Nie wolno
 
 - Raw SQL / `$queryRaw` w normie docelowej.
 - Ręcznego DDL jako standardu zmian schematu.
 - Importu Prisma poza `database/`.
+- Sentinela `houseId = "0"` (ani innego pseudo-FK) zamiast `NULL`.
+- Ręcznego joinu w JS dla relacji już opisanych w `schema.prisma`, gdy wystarczy `include`.
 - Osobnych kont prywatnych w modelu produktu v1.
 - Drugiego ORM.
 - Seeda na produkcji jako kroku deployu.
@@ -111,6 +119,8 @@ D-18. **Prisma Studio** dozwolone do podglądu/inspekcji na bazach **non-prod** 
 
 - [ ] Po R6: brak `*Queries`/pool raw SQL w ścieżkach runtime; odczyty/zapisy przez Prisma w `database/`.
 - [ ] Zmiana pola w modelu ma migrację w `prisma/migrations/`.
+- [ ] `householdUsers.houseId` jest nullable + FK do `households`; brak domu = `NULL` (brak `"0"` w kodzie i danych).
+- [ ] Listy „dom + członkowie” idą przez relację Prisma w `database/`, nie przez ręczny Map/join w JS.
 - [ ] Dodanie transakcji aktualizuje saldo domu atomowo (brak trwałego rozjazdu po sukcesie API).
 - [ ] `npm`/`npx` seed (lub równoważne) wypełnia bazę dev/test minimalnym zestawem.
 - [ ] W danych/refaktorze rola domownika to `inmate`.

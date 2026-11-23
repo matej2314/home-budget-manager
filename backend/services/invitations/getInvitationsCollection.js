@@ -1,16 +1,11 @@
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
-import invitationQueries from '../../database/invitationsQueries.js';
+import { listInvitationsCollection } from '../../database/invitations.js';
 import { invitationStatus } from '../../utils/invitationStatus.js';
 import { AppError } from '../../utils/errors/AppError.js';
 
 export async function getInvitationsCollection() {
-  const connection = await pool.getConnection();
   try {
-    const [invitations] = await connection.query(
-      invitationQueries.invitationsCollectionQuery,
-      [invitationStatus.new],
-    );
+    const invitations = await listInvitationsCollection(invitationStatus.new);
     return { messageKey: 'Invitations fetched correctly.', invitations };
   } catch (error) {
     logger.error(`getInvitationsCollection error: ${error}`);
@@ -19,7 +14,5 @@ export async function getInvitationsCollection() {
       messageKey: 'Internal server error',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 }

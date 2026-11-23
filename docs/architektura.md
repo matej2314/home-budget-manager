@@ -1,7 +1,7 @@
 ---
-wersja: 5
+wersja: 6
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-23
 ---
 
 # Architektura — Home Budget Manager
@@ -118,8 +118,9 @@ Szczegóły drzewa: [architektura_katalogi_pliki.md](./architektura_katalogi_pli
 |-------|------|
 | ORM | **Prisma** jest jedynym zatwierdzonym dostępem do MySQL w stanie docelowym |
 | Raw SQL | **Zabroniony** w nowym kodzie i w stanie docelowym (w tym `$queryRaw` / ad-hoc SQL „na skróty”) |
-| Granica importu | Prisma Client żyje w warstwie `database/`; `services` wołają wyłącznie API tej warstwy; controllers / routes / tasks **nie** importują Prisma |
-| As-is → docelowo | Repo może jeszcze mieć pool + `*Queries` (raw SQL) — **obowiązkowy refaktor** do Prisma egzekwuje tę normę; docs są źródłem prawdy dla kierunku |
+| Granica importu | Prisma Client żyje w warstwie `database/`; `services` / `utils` / configs wołają wyłącznie API tej warstwy; controllers / routes / tasks **nie** importują Prisma |
+| Relacje w `database/` | Przy FK w `schema.prisma` zapytania złożone używają `include` / filtrów relacji (bez ręcznego joinu w JS) |
+| As-is → docelowo | W repo są już `backend/prisma/` i moduły Prisma w `database/`; historyczny pool + `*Queries` usuwa domknięcie **R6** — docs są źródłem prawdy dla kierunku |
 
 ### Migracje schematu (stan docelowy)
 
@@ -134,7 +135,7 @@ Szczegóły drzewa: [architektura_katalogi_pliki.md](./architektura_katalogi_pli
 
 Szczegóły logicznego modelu encji: [model_danych.md](./model_danych.md). Drzewo katalogów (w tym `prisma/`): [architektura_katalogi_pliki.md](./architektura_katalogi_pliki.md).
 
-Stan obecny w repo jest **bliski** modelowi warstw, ale niespójny przy dostępie do danych (raw SQL) i nie wszędzie konsekwentny w pipeline — lekki refaktor (niżej) + migracja na Prisma domykają normę, zamiast wprowadzać nowy styl architektury.
+Stan obecny w repo jest **bliski** modelowi warstw i ma już Prisma (`schema` + warstwa `database/`); domknięcie **R6** usuwa pozostały pool / `*Queries` ze ścieżek runtime — bez wprowadzania nowego stylu architektury.
 
 ## Obszary (moduły) w API
 

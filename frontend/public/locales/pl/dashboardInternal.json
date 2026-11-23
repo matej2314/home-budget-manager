@@ -1,6 +1,6 @@
 {
     "basicHouseInfo": {
-        "noData": "brak danych :(",
+        "noData": "brak danych",
         "keysArray": {
             "houseName": "Nazwa domu",
             "host": "Gospodarz",

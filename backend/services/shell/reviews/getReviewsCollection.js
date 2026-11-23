@@ -1,13 +1,21 @@
-import pool from '../../../database/db.js';
 import logger from '../../../configs/logger.js';
 import { AppError } from '../../../utils/errors/AppError.js';
+import { listReviews } from '../../../database/shell.js';
+
+function mapReviewRow(row) {
+  return {
+    id: row.id,
+    rating: row.rating,
+    userName: row.userName,
+    content: row.content,
+    userId: row.userId,
+    date: row.date,
+  };
+}
 
 export async function getReviewsCollection() {
-  const connection = await pool.getConnection();
   try {
-    const [reviews] = await connection.query(
-      'SELECT id, rating,userName, content, userId, date FROM usersReviews',
-    );
+    const reviews = await listReviews();
     if (reviews.length === 0) {
       throw new AppError({
         code: 'REVIEW_NOT_FOUND',
@@ -17,7 +25,7 @@ export async function getReviewsCollection() {
     }
     return {
       messageKey: 'Opinions fetched correctly.',
-      reviews,
+      reviews: reviews.map(mapReviewRow),
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -27,7 +35,5 @@ export async function getReviewsCollection() {
       messageKey: 'Internal server error.',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 }

@@ -1,7 +1,7 @@
 ---
-wersja: 2
+wersja: 3
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-07
+data_modyfikacji: 2026-11-23
 ---
 
 # Słownik — Home Budget Manager
@@ -29,6 +29,7 @@ Nie obejmuje osobnego glossariusza bibliotek (Express, Zustand, …) — to poza
 | **Zaproszenie** (*invitation*) | Prośba o dołączenie użytkownika do gospodarstwa; akceptacja/odrzucenie po stronie hosta (as-is flow API). |
 | **Domownik (skład)** (*inhabitant*) | Osoba w składzie domu (parametry usuwania itd.); semantycznie zbieżne z rolą *inmate*. |
 | **Jedno gospodarstwo na użytkownika** | Reguła produktowa: w danym momencie użytkownik należy do co najwyżej jednego gospodarstwa. |
+| **Membership** (*householdUsers*) | Wiersz składu użytkownika w domu; `houseId` = FK do gospodarstwa albo **`NULL`** = brak aktywnego domu (zabroniony sentinel `"0"`). |
 
 ## Finanse
 

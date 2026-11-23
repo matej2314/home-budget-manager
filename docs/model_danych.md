@@ -1,7 +1,7 @@
 ---
-wersja: 5
+wersja: 6
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-23
 ---
 
 # Model danych — Home Budget Manager
@@ -43,7 +43,7 @@ erDiagram
 | `users.host` / `users.inmate` | flagi / odniesienia pomocnicze | Wskazanie kontekstu gospodarstwa przy awansie do `host` / `inmate` |
 | `householdUsers.role` | `host` \| `inmate` | Rola **w składzie** danego domu |
 
-Reguła produktowa: użytkownik w co najwyżej jednym gospodarstwie naraz; `user` = brak aktywnego membershipu budżetowego.
+Reguła produktowa: użytkownik w co najwyżej jednym gospodarstwie naraz; `user` / brak aktywnego membershipu budżetowego = wiersz `householdUsers` z **`houseId = NULL`** (nie sentinel `"0"`).
 
 ---
 
@@ -80,14 +80,16 @@ Gospodarstwo.
 
 ### `householdUsers`
 
-Membership użytkownika w domu.
+Membership użytkownika w domu (1:1 z `users` po `userId`).
 
 | Pole (kluczowe) | Opis |
 |-----------------|------|
-| `userId` | FK → users |
-| `houseId` | FK → households (nullable w edge case’ach usuwania) |
+| `userId` | FK → users (unikalny) |
+| `houseId` | FK → `households.houseId` (**nullable**); `NULL` = brak aktywnego domu; wartość niebędąca `NULL` musi istnieć w `households` |
 | `userName` | Nazwa w kontekście domu |
-| `role` | `host` \| `inmate` |
+| `role` | `host` \| `inmate` (przy braku domu zwykle rola globalna / `user` w polu membership) |
+
+Relacja w schemacie Prisma: `householdUsers.households` ↔ `households.householdUsers` (constraint FK w MySQL). Odczyty „dom + członkowie” w warstwie `database/` przez `include` relacji — bez ręcznego sklejania w JS.
 
 ### `invitations`
 
@@ -204,21 +206,23 @@ Pliki w storage backendu (`app-images` / multer) — **bez** osobnej tabeli jako
 
 ## Zasady spójności (skrót)
 
-1. Transakcja zawsze w kontekście `houseId` członka domu.  
+1. Transakcja zawsze w kontekście `houseId` członka domu (membership z niepustym `houseId`).  
 2. Zmiana salda domu towarzyszy mutacji transakcji (przepływ D).  
-3. Usunięcie domu / użytkownika pociąga czyszczenie powiązanych transakcji i membershipu (logika w services).  
-4. Powiadomienia i WS opierają się na `houseId` / `userId` z tych tabel — nie na zaufaniu do klienta.
+3. Usunięcie domu / użytkownika pociąga czyszczenie powiązanych transakcji i membershipu (logika w services): odpięcie od domu = **`houseId = NULL`**, nie `"0"`.  
+4. Powiadomienia i WS opierają się na `houseId` / `userId` z tych tabel — nie na zaufaniu do klienta.  
+5. Sentinel historyczny `houseId = "0"` jest **zabroniony** (łamie FK i semantykę „brak domu”).
 
 ## Schemat i migracje (Prisma)
 
 | Norma | Opis |
 |-------|------|
-| Źródło prawdy schematu | `backend/prisma/schema.prisma` — modele odpowiadają encjom poniżej (mapowanie nazw tabel/pól w schema) |
+| Źródło prawdy schematu | `backend/prisma/schema.prisma` — modele odpowiadają encjom powyżej (mapowanie nazw tabel/pól w schema) |
 | Zmiana modelu | Najpierw aktualizacja `schema.prisma`, potem **obowiązkowa** migracja Prisma Migrate w `prisma/migrations/` |
 | Dostęp runtime | Wyłącznie Prisma Client przez warstwę `database/` — bez raw SQL |
+| Relacje | Gdzie w MySQL jest FK, schema Prisma ma `@relation`; zapytania złożone w `database/` używają `include` / filtrów relacji zamiast ręcznego joinu w aplikacji |
 | Ręczne DDL | Zabronione jako proces utrzymania schematu (phpMyAdmin tylko diagnostyka / awaryjne odczyty — nie jako pipeline zmian) |
 
-Stan as-is może jeszcze nie mieć katalogu `prisma/` — wprowadzenie ORM + migracji to refaktor **R6**.
+Katalog `backend/prisma/` (schema + migracje) oraz moduły Prisma w `backend/database/` są częścią refaktoru **R6**; domknięcie R6 obejmuje też usunięcie historycznego pool / `*Queries` ze ścieżek runtime.
 
 ## Seed (dev / test)
 

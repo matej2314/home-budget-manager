@@ -1,45 +1,36 @@
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import { v4 as uuidv4 } from 'uuid';
+import { listHouseholdsForMonthlyBalance, getBalanceFields } from '../../database/households.js';
+import { createDailyBudget } from '../../database/snapshots.js';
 
 /** Dzienny snapshot salda per dom (`dailyBudget`). Cron → service (B-5). */
 export async function saveDailyBudgetSnapshot() {
-  const connection = await pool.getConnection();
-
   try {
-    await connection.beginTransaction();
-
-    const [households] = await connection.query(
-      'SELECT houseId, currentBalance FROM households'
-    );
+    const households = await listHouseholdsForMonthlyBalance();
 
     logger.info(`Finded ${households.length} households.`);
 
     if (households.length === 0) {
-      await connection.commit();
       return;
     }
 
     for (const house of households) {
       const id = uuidv4();
-      const balanceToDb = house.currentBalance;
+      const { currentBalance } = await getBalanceFields(house.houseId);
+      const balanceToDb = currentBalance;
 
-      const [addDailyBudget] = await connection.query(
-        'INSERT INTO dailyBudget (id, houseId, value) VALUES (?, ?, ?);',
-        [id, house.houseId, balanceToDb]
-      );
-      if (addDailyBudget.affectedRows === 0) {
+      const addDailyBudget = await createDailyBudget({
+        id,
+        houseId: house.houseId,
+        value: balanceToDb,
+      });
+      if (!addDailyBudget) {
         logger.error('Failed to save daily budget.');
       } else {
         logger.info('The daily budget of all households has been saved.');
       }
     }
-
-    await connection.commit();
   } catch (error) {
-    await connection.rollback();
     logger.error(error);
-  } finally {
-    connection.release();
   }
 }

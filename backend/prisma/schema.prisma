@@ -1,0 +1,219 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model actionCategories {
+  id           String         @id @db.VarChar(350)
+  name         String         @unique(map: "catName", length: 50) @db.Text
+  type         String         @db.Text
+  transactions transactions[]
+}
+
+model dailyBudget {
+  id         String     @id @db.VarChar(350)
+  houseId    String     @db.VarChar(350)
+  value      Decimal?   @db.Decimal(10, 2)
+  date       DateTime   @default(now()) @db.DateTime(0)
+  households households @relation(fields: [houseId], references: [houseId], map: "dailyBudget_ibfk_1")
+
+  @@index([houseId], map: "houseId-dailyBudget")
+}
+
+model dailyTransactions {
+  id               String     @id @db.VarChar(350)
+  dailyActionCount Int
+  houseId          String     @db.VarChar(350)
+  date             DateTime   @default(now()) @db.DateTime(0)
+  households       households @relation(fields: [houseId], references: [houseId], map: "dailyTransactions_ibfk_1")
+
+  @@index([dailyActionCount], map: "dailyActionCount")
+  @@index([houseId], map: "houseId-dailyActions")
+}
+
+model householdUsers {
+  id                                                     String        @id @db.VarChar(350)
+  userId                                                 String        @unique(map: "householdUsers_ibfk_1") @db.VarChar(350)
+  userName                                               String        @db.VarChar(50)
+  houseId                                                String?       @db.VarChar(350)
+  role                                                   String        @db.Text
+  households                                             households?   @relation(fields: [houseId], references: [houseId], onDelete: Restrict, onUpdate: Restrict, map: "houseId_key")
+  users                                                  users         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "householdUsers_ibfk_1")
+  invitations_invitations_hostIdTohouseholdUsers         invitations[] @relation("invitations_hostIdTohouseholdUsers")
+  invitations_invitations_invitedUserIdTohouseholdUsers  invitations?  @relation("invitations_invitedUserIdTohouseholdUsers")
+  invitations_invitations_invitingUserIdTohouseholdUsers invitations?  @relation("invitations_invitingUserIdTohouseholdUsers")
+
+  @@index([id], map: "houseId_householdUsers")
+  @@index([houseId], map: "houseId_key")
+}
+
+model households {
+  houseId                  String                     @id @db.VarChar(450)
+  userId                   String                     @db.VarChar(450)
+  userName                 String                     @db.VarChar(50)
+  houseName                String                     @db.VarChar(250)
+  initBudget               Decimal?                   @db.Decimal(10, 2)
+  currentBalance           Decimal?                   @db.Decimal(10, 2)
+  monthlyBalanceDate       DateTime?                  @db.Date
+  createdAt                DateTime                   @default(now()) @db.DateTime(0)
+  dailyBudget              dailyBudget[]
+  dailyTransactions        dailyTransactions[]
+  householdUsers           householdUsers[]
+  users                    users                      @relation(fields: [userId], references: [id], map: "households_ibfk_1")
+  initialMonthlyBudgets    initialMonthlyBudgets[]
+  monthlyTransactionCounts monthlyTransactionCounts[]
+  monthly_balances         monthly_balances[]
+  transactions             transactions[]
+
+  @@index([createdAt], map: "createdAt")
+  @@index([houseId], map: "houseId_households")
+  @@index([monthlyBalanceDate], map: "monthlyBalanceDate")
+  @@index([userId], map: "userId")
+}
+
+model initialMonthlyBudgets {
+  id         String     @id @unique(map: "validUntil-initialMonthlyBudgets") @db.VarChar(350)
+  houseId    String     @db.VarChar(350)
+  value      Decimal?   @db.Decimal(10, 2)
+  addedAt    DateTime   @default(now()) @db.DateTime(0)
+  validUntil DateTime   @db.Date
+  households households @relation(fields: [houseId], references: [houseId], map: "initialMonthlyBudgets_ibfk_1")
+
+  @@index([id], map: "addedAt-initialMonthlyBudgets")
+  @@index([houseId], map: "houseId_initialMonthlyBudgets")
+}
+
+model invitations {
+  id                                                        String         @id @db.VarChar(350)
+  status                                                    String         @db.VarChar(20)
+  invitingUserId                                            String         @unique(map: "invitingUserId") @db.VarChar(350)
+  invitedUserId                                             String         @unique(map: "invitedUserId") @db.VarChar(350)
+  houseId                                                   String         @db.VarChar(350)
+  hostId                                                    String         @db.VarChar(350)
+  date                                                      DateTime       @default(now()) @db.DateTime(0)
+  householdUsers_invitations_hostIdTohouseholdUsers         householdUsers @relation("invitations_hostIdTohouseholdUsers", fields: [hostId], references: [userId], map: "invitations_ibfk_1")
+  householdUsers_invitations_invitedUserIdTohouseholdUsers  householdUsers @relation("invitations_invitedUserIdTohouseholdUsers", fields: [invitedUserId], references: [userId], map: "invitations_ibfk_2")
+  householdUsers_invitations_invitingUserIdTohouseholdUsers householdUsers @relation("invitations_invitingUserIdTohouseholdUsers", fields: [invitingUserId], references: [userId], onUpdate: Restrict, map: "invitations_ibfk_3")
+
+  @@index([hostId], map: "hostId")
+  @@index([houseId], map: "houseId")
+}
+
+model messages {
+  id                                String   @id @db.VarChar(350)
+  senderId                          String   @db.VarChar(350)
+  recipientId                       String   @db.VarChar(350)
+  content                           String   @db.Text
+  datetime                          DateTime @unique(map: "datetime_messages") @default(now()) @db.DateTime(0)
+  is_read                           Boolean  @default(false)
+  users_messages_senderIdTousers    users    @relation("messages_senderIdTousers", fields: [senderId], references: [id], onDelete: Cascade, map: "messages_ibfk_1")
+  users_messages_recipientIdTousers users    @relation("messages_recipientIdTousers", fields: [recipientId], references: [id], onDelete: Cascade, map: "messages_ibfk_2")
+
+  @@index([id], map: "id_messages")
+  @@index([recipientId], map: "recipientId")
+  @@index([senderId], map: "senderId")
+}
+
+model monthlyTransactionCounts {
+  id               String     @id @db.VarChar(350)
+  houseId          String     @db.VarChar(350)
+  transactionCount Int
+  startDate        DateTime   @db.Date
+  balanceDate      DateTime   @db.Date
+  households       households @relation(fields: [houseId], references: [houseId], map: "monthlyTransactionCounts_ibfk_1")
+
+  @@index([houseId], map: "houseId-transactionCounts")
+  @@index([startDate], map: "startDate")
+  @@index([transactionCount], map: "transactionCount")
+}
+
+model monthly_balances {
+  id                 String     @id @db.VarChar(350)
+  monthly_balance    Decimal?   @db.Decimal(10, 2)
+  houseId            String     @db.VarChar(350)
+  monthlyBalanceDate DateTime   @db.Date
+  households         households @relation(fields: [houseId], references: [houseId], onDelete: Cascade, map: "monthly_balances_ibfk_1")
+
+  @@index([id], map: "balanceDate-monthly_balances")
+  @@index([houseId], map: "houseId-monthly_balances")
+}
+
+model notifications {
+  id         String @id @db.VarChar(400)
+  category   String @db.Text
+  noticeData Json
+  houseId    String @db.VarChar(400)
+}
+
+model socketConnections {
+  id           String   @id @db.VarChar(350)
+  userId       String   @db.VarChar(350)
+  connectionId String   @db.VarChar(500)
+  expireDate   DateTime @db.DateTime(0)
+}
+
+model technologies {
+  id   String @id @db.VarChar(400)
+  name String @db.Text
+  icon String @db.VarChar(50)
+}
+
+model transactions {
+  id               String           @unique(map: "id") @db.VarChar(350)
+  transactionId    String           @db.VarChar(350)
+  userId           String           @db.VarChar(350)
+  houseId          String           @db.VarChar(350)
+  catId            String           @db.VarChar(350)
+  type             String           @db.VarChar(50)
+  value            Decimal?         @db.Decimal(10, 2)
+  addedAt          DateTime         @default(now()) @db.DateTime(0)
+  users            users            @relation(fields: [userId], references: [id], onDelete: Cascade, map: "transactions_ibfk_1")
+  households       households       @relation(fields: [houseId], references: [houseId], onDelete: Cascade, map: "transactions_ibfk_2")
+  actionCategories actionCategories @relation(fields: [catId], references: [id], onDelete: Cascade, map: "transactions_ibfk_3")
+
+  @@index([addedAt], map: "addedAt")
+  @@index([catId], map: "catId")
+  @@index([houseId], map: "houseId-transactions")
+  @@index([userId], map: "userId")
+}
+
+model users {
+  id                                   String          @id @db.VarChar(350)
+  role                                 String          @db.Text
+  name                                 String          @db.VarChar(15)
+  password                             String          @db.VarChar(255)
+  email                                String          @db.VarChar(150)
+  acceptCookies                        Boolean         @default(false)
+  avatarName                           String?         @unique(map: "avatarName") @db.VarChar(100)
+  host                                 Boolean         @default(false)
+  inmate                               Boolean         @default(false)
+  regDate                              DateTime        @default(now()) @db.DateTime(0)
+  completeTour                         Boolean         @default(false)
+  householdUsers                       householdUsers?
+  households                           households[]
+  messages_messages_senderIdTousers    messages[]      @relation("messages_senderIdTousers")
+  messages_messages_recipientIdTousers messages[]      @relation("messages_recipientIdTousers")
+  transactions                         transactions[]
+  usersReviews                         usersReviews[]
+
+  @@index([acceptCookies], map: "acceptCookies")
+  @@index([host], map: "household_id")
+  @@index([id], map: "id-users")
+}
+
+model usersReviews {
+  id       String   @unique(map: "id") @db.VarChar(350)
+  rating   Int
+  content  String   @db.Text
+  userName String   @db.VarChar(20)
+  userId   String   @db.VarChar(350)
+  date     DateTime @default(now()) @db.DateTime(0)
+  users    users    @relation(fields: [userId], references: [id], map: "usersReviews_ibfk_1")
+
+  @@index([rating], map: "rating")
+  @@index([userId], map: "userId")
+}

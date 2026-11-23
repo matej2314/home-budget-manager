@@ -1,0 +1,9 @@
+[
+  { "id": "154e64e3-425e-4179-bf08-a5d099bf8a40", "name": "React.js", "icon": "logos:react" },
+  { "id": "27f1a83e-c668-4103-9845-aa4c59d72cc0", "name": "i18next", "icon": "simple-icons:i18next" },
+  { "id": "2eaf59c5-ec4e-496b-b1ce-acbda6007f61", "name": "socket.io", "icon": "devicon:socketio" },
+  { "id": "415b5518-4c6a-40cb-989a-3ccd09771508", "name": "Express.js", "icon": "devicon:express" },
+  { "id": "4cc52b42-d409-48c3-b70f-c232fdaa7f3b", "name": "Framer-Motion", "icon": "devicon:framermotion" },
+  { "id": "881af42c-6d23-43fa-8c64-13a622e45ca9", "name": "tesseract.js", "icon": "mdi:optical-character-recognition" },
+  { "id": "ffa45598-25ec-47e2-adb0-60a1a6c8e0ed", "name": "TailwindCSS", "icon": "skill-icons:tailwindcss-dark" }
+]

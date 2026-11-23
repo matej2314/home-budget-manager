@@ -8,10 +8,6 @@ import { inmateOrHostRole, isHostRole, isUserRole } from '../utils/checkUserRole
 import useModal from './useModal';
 import { showMessageToast } from '../configs/toastify';
 
-/**
- * Orkiestracja shelledu dashboardu: sesja, zaproszenia, toast nowych wiadomości.
- * Reguły uprawnień egzekwuje API — tu tylko odzwierciedlenie roli w UX.
- */
 export default function useDashboardShell() {
   const navigate = useNavigate();
   const { loginStatus, isAuthenticated, user } = useAuth();
@@ -55,8 +51,14 @@ export default function useDashboardShell() {
       navigate('/userDashboard');
     }
 
-    if (!invitationsLoading && !invitationsLoadingError && !fetchedInvitations && allInvitations.length === 0) {
-      fetchInvitations();
+    if (
+      isHost &&
+      !invitationsLoading &&
+      !invitationsLoadingError &&
+      !fetchedInvitations &&
+      allInvitations.length === 0
+    ) {
+      fetchInvitations(user);
     }
 
     if (allInvitations.length > 0) {
@@ -68,6 +70,8 @@ export default function useDashboardShell() {
     loginStatus,
     isAuthenticated,
     isUser,
+    isHost,
+    user,
     fetchedInvitations,
     invitationsLoading,
     invitationsLoadingError,

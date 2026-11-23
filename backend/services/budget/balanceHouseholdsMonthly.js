@@ -1,26 +1,28 @@
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import { handleNotification } from '../../utils/handleNotification.js';
 import { v4 as uuidv4 } from 'uuid';
+import { listHouseholdsForMonthlyBalance } from '../../database/households.js';
+import { listTransactionsInDateRange } from '../../database/transactions.js';
+import { latestInitialBudgetValue } from '../../database/budget.js';
+import {
+  createMonthlyBalance,
+  createMonthlyTransactionCount,
+  updateHouseholdMonthlyBalanceDate,
+} from '../../database/snapshots.js';
 
 /**
  * Miesięczne bilansowanie gospodarstw + notice/WS notification (ten sam mechanizm co HTTP).
  * Wołane z tasks/ (cron) — bez omijania services (B-5).
  */
 export async function balanceHouseholdsMonthly() {
-  const connection = await pool.getConnection();
   try {
-    await connection.beginTransaction();
     logger.info('Bilansowanie rozpoczęte.');
 
-    const [households] = await connection.query(
-      `SELECT houseId, initBudget, monthlyBalanceDate, createdAt FROM households`
-    );
+    const households = await listHouseholdsForMonthlyBalance();
 
     logger.info(`Finded ${households.length} households in database.`);
 
     if (households.length === 0) {
-      await connection.commit();
       return;
     }
 
@@ -52,31 +54,30 @@ export async function balanceHouseholdsMonthly() {
 
       logger.info(`Check transactions for household ${houseId} from ${dateLimit}.`);
 
-      const [transactions] = await connection.query(
-        `SELECT value, type FROM transactions WHERE houseId = ? AND DATE(addedAt) BETWEEN ? AND ?`,
-        [houseId, dateLimit, nextBalanceDateStr]
-      );
+      const from = new Date(`${dateLimit}T00:00:00.000Z`);
+      const to = new Date(`${nextBalanceDateStr}T23:59:59.999Z`);
+      const transactions = await listTransactionsInDateRange(houseId, from, to);
 
       logger.info(`Finded ${transactions.length} transactions for household ${houseId}.`);
       const transactionCountId = uuidv4();
 
-      await connection.query(
-        `INSERT INTO monthlyTransactionCounts (id, houseId, transactionCount, startDate, balanceDate) VALUES (?,?,?,?,?)`,
-        [transactionCountId, houseId, transactions.length, dateLimit, today]
-      );
+      await createMonthlyTransactionCount({
+        id: transactionCountId,
+        houseId,
+        transactionCount: transactions.length,
+        startDate: new Date(dateLimit),
+        balanceDate: new Date(today),
+      });
 
       let newBalance = 0;
 
       if (!formattedBalanceDate) {
         newBalance = parseFloat(initBudget);
       } else {
-        const [initialBudgetRows] = await connection.query(
-          `SELECT value FROM initialMonthlyBudgets WHERE houseId = ? ORDER BY addedAt DESC LIMIT 1`,
-          [houseId]
-        );
+        const latestValue = await latestInitialBudgetValue(houseId);
 
-        if (initialBudgetRows.length > 0) {
-          newBalance = parseFloat(initialBudgetRows[0].value);
+        if (latestValue != null) {
+          newBalance = parseFloat(latestValue);
         } else {
           newBalance = parseFloat(initBudget);
         }
@@ -92,16 +93,15 @@ export async function balanceHouseholdsMonthly() {
 
       const id = uuidv4();
       const newBalanceToDb = parseFloat(newBalance);
-      const [insertBalance] = await connection.query(
-        `INSERT INTO monthly_balances (id, monthly_balance, houseId, monthlyBalanceDate) VALUES(?, ?, ?, NOW());`,
-        [id, newBalanceToDb, houseId]
-      );
+      const insertBalance = await createMonthlyBalance({
+        id,
+        monthly_balance: newBalanceToDb,
+        houseId,
+        monthlyBalanceDate: new Date(),
+      });
 
-      if (insertBalance.affectedRows === 1) {
-        await connection.query(
-          'UPDATE households SET monthlyBalanceDate = NOW() WHERE houseId=?',
-          [houseId]
-        );
+      if (insertBalance) {
+        await updateHouseholdMonthlyBalanceDate(houseId, new Date());
       }
 
       const noticeId = uuidv4();
@@ -114,12 +114,7 @@ export async function balanceHouseholdsMonthly() {
 
       logger.info(`Balance for household ${houseId} updated.`);
     }
-
-    await connection.commit();
   } catch (error) {
-    await connection.rollback();
     logger.error(`An error occured during households finance balancing: ${error}`);
-  } finally {
-    connection.release();
   }
 }

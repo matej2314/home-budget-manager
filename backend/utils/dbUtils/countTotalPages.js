@@ -1,32 +1,22 @@
-import pool from '../../database/db.js';
 import { AppError } from '../errors/AppError.js';
+import { countTransactionsByHouse } from '../../database/transactions.js';
+import { countMessagesForUser } from '../../database/board.js';
 
 const countTotalPages = async (dataType, houseId, userId) => {
-  const connection = await pool.getConnection();
-  let query = ``;
-  let params = [];
-
-  if (dataType === 'transactions' && houseId) {
-    query = `SELECT COUNT(*) AS total FROM transactions WHERE houseId = ?`;
-    params = [houseId];
-  } else if (dataType === 'messages' && userId) {
-    query = `SELECT COUNT(*) AS total FROM messages WHERE senderId =? OR recipientId =?`;
-    params = [userId, userId];
-  } else {
-    return { type: dataType, pages: 0 };
-  }
-
   try {
-    const [getPagesCounter] = await connection.query(query, params);
+    let totalRecords = 0;
 
-    if (getPagesCounter.length > 0) {
-      const totalRecords = getPagesCounter[0].total;
-      const limit = 10;
-      const totalPages = Math.ceil(totalRecords / limit);
-      return { type: dataType, pages: totalPages };
+    if (dataType === 'transactions' && houseId) {
+      totalRecords = await countTransactionsByHouse(houseId);
+    } else if (dataType === 'messages' && userId) {
+      totalRecords = await countMessagesForUser(userId);
+    } else {
+      return { type: dataType, pages: 0 };
     }
 
-    return { type: dataType, pages: 0 };
+    const limit = 10;
+    const totalPages = Math.ceil(totalRecords / limit);
+    return { type: dataType, pages: totalPages };
   } catch (error) {
     if (error instanceof AppError) throw error;
     throw new AppError({
@@ -34,8 +24,6 @@ const countTotalPages = async (dataType, houseId, userId) => {
       messageKey: 'The number of pages could not be calculated.',
       httpStatus: 500,
     });
-  } finally {
-    if (connection) connection.release();
   }
 };
 

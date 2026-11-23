@@ -1,7 +1,7 @@
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
 import { AppError } from '../../utils/errors/AppError.js';
+import { listNotificationsByHouse } from '../../database/notifications.js';
 
 export async function getNoticesCollection(userId) {
   if (!userId) {
@@ -12,13 +12,10 @@ export async function getNoticesCollection(userId) {
     });
   }
 
-  const connection = await pool.getConnection();
   try {
-    await connection.beginTransaction();
-    const checkHouse = await checkUserHouse(connection, userId);
+    const checkHouse = await checkUserHouse(userId);
     if (!checkHouse) {
       logger.error(`User ${userId} does not belong to any household.`);
-      await connection.rollback();
       throw new AppError({
         code: 'NOTICE_NO_HOUSE',
         messageKey: 'User does not belong to any household.',
@@ -26,14 +23,9 @@ export async function getNoticesCollection(userId) {
       });
     }
 
-    const houseId = checkHouse.houseId;
-    const [notifications] = await connection.query(
-      `SELECT id, category, noticeData FROM notifications WHERE houseId=?`,
-      [houseId],
-    );
+    const notifications = await listNotificationsByHouse(checkHouse.houseId);
 
     if (notifications.length === 0) {
-      await connection.commit();
       throw new AppError({
         code: 'NOTICE_NOT_FOUND',
         messageKey: 'Notifications not found.',
@@ -41,13 +33,11 @@ export async function getNoticesCollection(userId) {
       });
     }
 
-    await connection.commit();
     return {
       messageKey: 'Notifications fetched correctly.',
       notifications,
     };
   } catch (error) {
-    await connection.rollback();
     if (error instanceof AppError) throw error;
     logger.error(`ERROR in getNoticesCollection: ${error}`);
     throw new AppError({
@@ -55,7 +45,5 @@ export async function getNoticesCollection(userId) {
       messageKey: 'Failed to fetch notifications.',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 }

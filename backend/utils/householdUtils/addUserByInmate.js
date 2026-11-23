@@ -3,9 +3,10 @@ import { broadcastMessage } from '../../configs/websocketConfig.js';
 import { v4 as uuidv4 } from 'uuid';
 import { invitationStatus } from '../../utils/invitationStatus.js';
 import { AppError } from '../errors/AppError.js';
+import { findHostUserId } from '../../database/households.js';
+import { createInvitation } from '../../database/invitations.js';
 
 export const addUserByInmate = async (
-  connection,
   invitingUserId,
   invitedUser,
   houseId,
@@ -21,7 +22,7 @@ export const addUserByInmate = async (
       });
     }
 
-    if (invitedUser.houseId != 0) {
+    if (invitedUser.houseId != null) {
       throw new AppError({
         code: 'USERS_INMATE_ALREADY_IN_HOUSE',
         messageKey: 'addUserToHouse.inmateOrHostError',
@@ -30,17 +31,17 @@ export const addUserByInmate = async (
     }
 
     const invitedUserId = invitedUser.userId;
-    const [getHost] = await connection.query(
-      'SELECT userId FROM householdUsers WHERE houseid=? AND role=?',
-      [houseId, 'host'],
-    );
-    const hostId = getHost[0].userId;
+    const hostId = await findHostUserId(houseId);
     const invitationId = uuidv4();
 
-    await connection.query(
-      'INSERT INTO invitations (id, status, invitingUserId, invitedUserId, houseId, hostId) VALUES (?,?,?,?,?,?)',
-      [invitationId, invitationStatus.new, invitingUserId, invitedUserId, houseId, hostId],
-    );
+    await createInvitation({
+      id: invitationId,
+      status: invitationStatus.new,
+      invitingUserId,
+      invitedUserId,
+      houseId,
+      hostId,
+    });
 
     broadcastMessage(hostId, {
       type: 'invitation',

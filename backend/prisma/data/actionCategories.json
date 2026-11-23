@@ -1,0 +1,16 @@
+[
+  { "id": "1f2dace5-930b-4f8f-a1ab-7d257c47869e", "name": "education", "type": "expense" },
+  { "id": "20e01870-a95e-4145-94de-0355567cfa1d", "name": "unforeseen expenses", "type": "expense" },
+  { "id": "20e4dbf9-db42-43e7-b229-19fe3c6ad14e", "name": "other expenses", "type": "expense" },
+  { "id": "4666a5d9-ea4d-4608-b329-9487adb092ef", "name": "transport", "type": "expense" },
+  { "id": "772872ac-e4d6-4155-b045-605ce6c8bf5d", "name": "freelancing", "type": "income" },
+  { "id": "82ec5ca0-a79d-4538-bb6f-306d4d77bd79", "name": "salary", "type": "income" },
+  { "id": "9ae341b1-5020-4da3-b6dc-aefe206aff3a", "name": "salary (own business)", "type": "income" },
+  { "id": "a54c1c20-bc3d-4879-98d0-fdad128729aa", "name": "health", "type": "expense" },
+  { "id": "b47e9fcc-fa8d-433e-a63c-f22409a7a456", "name": "other income", "type": "income" },
+  { "id": "bce7b5d2-3ecb-48a4-94a5-59483f284e5d", "name": "pensions, annuities, benefits", "type": "income" },
+  { "id": "be4657ae-a55c-42a4-a780-c487f0592306", "name": "commissions and additional fees", "type": "expense" },
+  { "id": "caef99e6-4792-4441-b019-e6c436deb7a2", "name": "bills and subscriptions", "type": "expense" },
+  { "id": "df7011f8-d9eb-4a95-9a2e-1f177ffa0007", "name": "grocery shopping", "type": "expense" },
+  { "id": "fb862bab-6757-4396-9038-2ceaeddf90c9", "name": "eating out", "type": "expense" }
+]

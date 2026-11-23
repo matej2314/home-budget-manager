@@ -1,4 +1,3 @@
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import { addUserByHost } from '../../utils/householdUtils/addUserByHost.js';
 import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
@@ -7,12 +6,9 @@ import { invitedUserData } from '../../utils/householdUtils/getInvitedUserData.j
 import { AppError } from '../../utils/errors/AppError.js';
 
 const addUserToHouse = async (userId, userName, invitingUserName, role) => {
-  const connection = await pool.getConnection();
-
   try {
-    await connection.beginTransaction();
-    const invitedUser = await invitedUserData(connection, userName);
-    const getHouseId = await checkUserHouse(connection, userId);
+    const invitedUser = await invitedUserData(userName);
+    const getHouseId = await checkUserHouse(userId);
     const houseId = getHouseId.houseId;
 
     if (!invitedUser || !houseId) {
@@ -24,27 +20,21 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
     }
 
     if (role === 'host') {
-      const addByHost = await addUserByHost(connection, userName, houseId, invitedUser);
-      await connection.commit();
+      const addByHost = await addUserByHost(userName, houseId, invitedUser);
       return { messageKey: addByHost.messageKey };
     }
 
     if (role === 'inmate') {
       const addByInmate = await addUserByInmate(
-        connection,
         userId,
         invitedUser,
         houseId,
         userName,
         invitingUserName,
       );
-      await connection.commit();
       return { messageKey: addByInmate.messageKey };
     }
-
-    await connection.commit();
   } catch (error) {
-    await connection.rollback();
     if (error instanceof AppError) throw error;
     logger.error(`Error in addUserToHouse: ${error}`);
     throw new AppError({
@@ -52,8 +42,6 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
       messageKey: 'addUserToHouse.inviteUserInternalError',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 };
 

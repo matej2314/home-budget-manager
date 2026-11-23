@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import pool from '../../../database/db.js';
 import logger from '../../../configs/logger.js';
 import { AppError } from '../../../utils/errors/AppError.js';
+import { createReview } from '../../../database/shell.js';
 
 export async function addReview({ userId, userName, content, rating }) {
   if (!content || content.trim().length === 0 || !rating) {
@@ -12,20 +12,9 @@ export async function addReview({ userId, userName, content, rating }) {
     });
   }
 
-  const connection = await pool.getConnection();
   const id = uuidv4();
   try {
-    const [addReviewResult] = await connection.query(
-      'INSERT INTO usersReviews (id, rating, content, userName, userId) VALUES (?,?,?,?,?)',
-      [id, rating, content, userName, userId],
-    );
-    if (addReviewResult.affectedRows === 0) {
-      throw new AppError({
-        code: 'REVIEW_ADD_FAILED',
-        messageKey: 'Failed to add opinion.',
-        httpStatus: 400,
-      });
-    }
+    await createReview({ id, rating, content, userName, userId });
     return { httpStatus: 201, messageKey: 'Opinion added correctly.', id };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -35,7 +24,5 @@ export async function addReview({ userId, userName, content, rating }) {
       messageKey: 'Internal server error.',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 }

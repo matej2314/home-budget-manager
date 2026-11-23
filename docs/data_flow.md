@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 4
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-08
+data_modyfikacji: 2026-11-23
 ---
 
 # Przepływy danych — Home Budget Manager
@@ -19,7 +19,7 @@ Nazewnictwo zgodne ze słownikiem i kontraktem (`/api/v1`, role `user` / `host` 
 ### Rejestracja
 
 1. Gość wysyła `POST /api/v1/auth/signup` (m.in. nazwa, e-mail, hasło, rola startowa zwykle `user`).
-2. API waliduje wejście, sprawdza unikalność e-mail, haszuje hasło, zapisuje użytkownika w DB.
+2. API waliduje wejście, sprawdza unikalność e-mail, haszuje hasło, zapisuje użytkownika oraz wiersz `householdUsers` z **`houseId = NULL`** (brak domu) przez warstwę `database/` → Prisma.
 3. Odpowiedź sukcesu / błędu w envelope `status` + `message`.
 
 ### Logowanie
@@ -206,7 +206,7 @@ Uruchamiane w procesie API (`node-cron`), bez kontraktu zewnętrznego dla klient
 Przepływ wspólny (lista):
 
 1. Scheduler odpala task w procesie backendu.
-2. Task czyta / aktualizuje dane w MySQL.
+2. Task woła **service**, a service warstwę `database/` (Prisma) — bez raw SQL z taska.
 3. W razie potrzeby wywołuje ten sam mechanizm powiadomień co HTTP (zapis notice + WS do domu).
 4. Brak odpowiedzi do SPA — efekt widoczny przy kolejnym odczycie HTTP lub na pushu.
 

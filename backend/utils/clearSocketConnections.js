@@ -1,18 +1,16 @@
-import pool from '../database/db.js';
 import logger from '../configs/logger.js';
+import { clearAllConnections } from '../database/sockets.js';
 
 const clearSocketConnections = async () => {
-  const connection = await pool.getConnection();
   try {
-    const [clearConnections] = await connection.query('DELETE FROM socketConnections');
+    const result = await clearAllConnections();
 
-    if (clearConnections.affectedRows === 1) {
+    if (result.count >= 1) {
       logger.info('All websocket connections were deleted correctly.');
       return true;
-    } else if (clearConnections.affectedRows === 0) {
-      logger.info('Failed to delete websocket connections.');
-      return null;
     }
+    logger.info('Failed to delete websocket connections.');
+    return null;
   } catch (error) {
     logger.error(`clearSocketConnections error: ${error}`);
   }

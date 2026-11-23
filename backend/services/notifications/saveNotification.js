@@ -1,6 +1,6 @@
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import { AppError } from '../../utils/errors/AppError.js';
+import { createNotification } from '../../database/notifications.js';
 
 export async function saveNotification(id, category, noticeData, houseId) {
   if (!category || !noticeData || !houseId) {
@@ -11,19 +11,8 @@ export async function saveNotification(id, category, noticeData, houseId) {
     });
   }
 
-  const connection = await pool.getConnection();
   try {
-    const [addNotice] = await connection.query(
-      `INSERT INTO notifications (id, category, noticeData, houseId) VALUES (?, ?, ?, ?)`,
-      [id, category, noticeData, houseId],
-    );
-    if (addNotice.affectedRows === 0) {
-      throw new AppError({
-        code: 'NOTICE_SAVE_FAILED',
-        messageKey: 'Failed to add notification.',
-        httpStatus: 500,
-      });
-    }
+    await createNotification({ id, category, noticeData, houseId });
     return { messageKey: 'Notification saved correctly.' };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -33,7 +22,5 @@ export async function saveNotification(id, category, noticeData, houseId) {
       messageKey: 'Failed to save notification.',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 }

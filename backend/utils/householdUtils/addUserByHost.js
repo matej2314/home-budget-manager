@@ -1,13 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import logger from '../../configs/logger.js';
-import usersQueries from '../../database/usersQueries.js';
 import { handleNotification } from '../../utils/handleNotification.js';
 import { AppError } from '../errors/AppError.js';
 import { saveNewInmate } from './saveNewInmate.js';
 
-export const addUserByHost = async (connection, userName, houseId, invitedUserData) => {
+export const addUserByHost = async (userName, houseId, invitedUser) => {
   try {
-    if (!invitedUserData) {
+    if (!invitedUser) {
       logger.error(`User ${userName} not found.`);
       throw new AppError({
         code: 'USERS_HOST_BADREQ',
@@ -16,7 +15,7 @@ export const addUserByHost = async (connection, userName, houseId, invitedUserDa
       });
     }
 
-    if (invitedUserData.houseId != 0) {
+    if (invitedUser.houseId != null) {
       logger.info(`User ${userName} already is inmate or host.`);
       throw new AppError({
         code: 'USERS_HOST_INMATE',
@@ -25,7 +24,7 @@ export const addUserByHost = async (connection, userName, houseId, invitedUserDa
       });
     }
 
-    await saveNewInmate(usersQueries, invitedUserData.userId, houseId, connection);
+    await saveNewInmate(invitedUser.userId, houseId);
 
     await handleNotification({
       id: uuidv4(),

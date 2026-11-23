@@ -9,14 +9,16 @@ import sendRequest from '../../utils/asyncUtils/sendRequest'
 import { formatDbDate } from '../../utils/formattingUtils/formatDateToDisplay';
 import { useInvitationsStore } from '../../store/invitationsStore';
 import { DataContext } from '../../store/dataContext';
+import { useAuth } from '../../store/authContext';
 
 export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => {
     const handleApiResponse = useApiResponseHandler();
     const { refreshData } = useContext(DataContext);
+    const { user } = useAuth();
     const { t } = useTranslation("modals");
 
     const refreshAfterInvitation = async () => {
-        await useInvitationsStore.getState().fetchInvitations();
+        await useInvitationsStore.getState().fetchInvitations(user);
         await refreshData();
     };
 

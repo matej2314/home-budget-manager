@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken';
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
 import { v4 as uuidv4 } from 'uuid';
-import houseQueries from '../../database/householdQueries.js';
+import {
+  createHousehold,
+  findHouseholdByName,
+} from '../../database/households.js';
+import { setUserInmateFlags, setUserHostFlags } from '../../database/users.js';
 import { setHostProps, setInmateProps } from '../../utils/dbUtils/modifyUsersProps.js';
 import { AppError } from '../../utils/errors/AppError.js';
 
@@ -14,25 +17,18 @@ function signRoleToken(userId, userName, newRole) {
 
 const addNewHouse = async (userId, userName, houseName, initBudget) => {
   const houseId = uuidv4();
-  const connection = await pool.getConnection();
 
   try {
-    await connection.beginTransaction();
+    const existingHouse = await findHouseholdByName(houseName);
 
-    const [existingHouse] = await connection.query(houseQueries.checkQuery, [houseName]);
+    if (existingHouse) {
+      const existingId = existingHouse.houseId;
 
-    if (existingHouse.length > 0) {
-      const existingId = existingHouse[0].houseId;
-
-      const [addInmate] = await connection.query(houseQueries.inmateQuery, [1, 'inmate', userId]);
-
-      if (addInmate.affectedRows === 1) {
-        setInmateProps(userId, existingId, connection);
-      }
+      await setUserInmateFlags(userId, { inmate: true, role: 'inmate' });
+      await setInmateProps(userId, existingId);
 
       logger.info(`Household ${houseName} already exists. User attributed as inmate.`);
 
-      await connection.commit();
       const newRole = 'inmate';
       return {
         messageKey: 'userDashboard.assignedCorrectlyMessage',
@@ -41,23 +37,17 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
       };
     }
 
-    const [addHouse] = await connection.query(houseQueries.addQuery, [
+    await createHousehold({
       houseId,
       userId,
       userName,
       houseName,
       initBudget,
-    ]);
+    });
 
-    if (addHouse.affectedRows === 1) {
-      const [addHost] = await connection.query(houseQueries.hostQuery, [1, 'host', userId]);
+    await setUserHostFlags(userId, { host: true, role: 'host' });
+    await setHostProps(userId, houseId);
 
-      if (addHost.affectedRows === 1) {
-        await setHostProps(userId, houseId, connection);
-      }
-    }
-
-    await connection.commit();
     logger.info(`New household ${houseName} created.`);
     const newRole = 'host';
     return {
@@ -67,11 +57,8 @@ const addNewHouse = async (userId, userName, houseName, initBudget) => {
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
-    await connection.rollback();
     logger.error(`Error adding new household: ${error.message}`);
     throw new AppError({ code: 'HOUSE_1', messageKey: 'Internal server error.', httpStatus: 500 });
-  } finally {
-    if (connection) connection.release();
   }
 };
 

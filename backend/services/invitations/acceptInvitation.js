@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import pool from '../../database/db.js';
 import logger from '../../configs/logger.js';
-import usersQueries from '../../database/usersQueries.js';
-import invitationQueries from '../../database/invitationsQueries.js';
+import { updateInvitationStatus } from '../../database/invitations.js';
 import { saveNewInmate } from '../../utils/householdUtils/saveNewInmate.js';
 import { emitNotification } from '../notifications/emitNotification.js';
 import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
@@ -10,9 +8,8 @@ import { invitationStatus } from '../../utils/invitationStatus.js';
 import { AppError } from '../../utils/errors/AppError.js';
 
 export async function acceptInvitation({ invitationId, invitedUserId, hostId }) {
-  const connection = await pool.getConnection();
   try {
-    const hostHouseId = await checkUserHouse(connection, hostId);
+    const hostHouseId = await checkUserHouse(hostId);
     if (!hostHouseId || !hostHouseId.houseId) {
       throw new AppError({
         code: 'INVITE_HOST_NO_HOUSE',
@@ -22,14 +19,14 @@ export async function acceptInvitation({ invitationId, invitedUserId, hostId }) 
     }
 
     const houseId = hostHouseId.houseId;
-    await saveNewInmate(usersQueries, invitedUserId, houseId, connection);
+    await saveNewInmate(invitedUserId, houseId);
 
-    const [confirmInvitation] = await connection.query(invitationQueries.acceptQuery, [
-      invitationStatus.accepted,
+    const confirmInvitation = await updateInvitationStatus(
       invitationId,
+      invitationStatus.accepted,
       hostId,
-    ]);
-    if (confirmInvitation.affectedRows === 0) {
+    );
+    if (confirmInvitation.count === 0) {
       throw new AppError({
         code: 'INVITE_ACCEPT_FAILED',
         messageKey: 'Failed to accept invitation.',
@@ -55,7 +52,5 @@ export async function acceptInvitation({ invitationId, invitedUserId, hostId }) 
       messageKey: 'Internal server error.',
       httpStatus: 500,
     });
-  } finally {
-    connection.release();
   }
 }

@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 4
 data_utworzenia: 2026-11-08
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-23
 ---
 
 # SPEC — Backend
@@ -48,11 +48,13 @@ B-5. `tasks/` (cron) wołają **te same** services co HTTP. Nie wolno im omijać
 
 B-6. Jedyny zatwierdzony dostęp do MySQL w stanie docelowym: **Prisma ORM**. Raw SQL (w tym `$queryRaw` / ad-hoc SQL) jest zabroniony.
 
-B-7. Prisma Client i operacje na modelu — wyłącznie w warstwie `database/` (singleton klienta + moduły dostępu). Controllers, routes, middlewares, tasks i `utils/` **nie** importują `@prisma/client` / klienta Prisma.
+B-7. Prisma Client i operacje na modelu — wyłącznie w warstwie `database/` (singleton klienta + moduły dostępu). Controllers, routes, middlewares, tasks, `utils/`, `configs/` i `store/` **nie** importują `@prisma/client` / klienta Prisma; wołają wyłącznie API `database/*`.
+
+B-7a. Przy istniejących relacjach w `schema.prisma` moduły `database/` używają `include` / filtrów relacji zamiast ręcznego joinu kolekcji w JS (szczegóły membership → [SPEC-DANE.md](./SPEC-DANE.md) D-9a/D-9b).
 
 B-8. Schemat: `backend/prisma/schema.prisma`. Każda zmiana schematu = **obowiązkowa** migracja w `prisma/migrations/` (Prisma Migrate). Dev: workflow tworzenia migracji; prod/deploy: stosowanie zatwierdzonych migracji (`migrate deploy` lub równoważne) — bez ręcznego DDL jako procesu.
 
-B-9. Stan as-is (pool + `*Queries`) jest do usunięcia w ramach refaktoru **R6**; nowy kod pisze się już pod B-6–B-8.
+B-9. Historyczny pool + `*Queries` usuwa refaktor **R6** (w repo są już `prisma/` i API Prisma w `database/`); nowy kod pisze się pod B-6–B-8.
 
 ### Błędy
 
