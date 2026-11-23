@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-23 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza7-prisma-r6.md` (FAZA 1, KROK 1–5 → `WYKONANY`) oznaczono Fazę 7 (kroki 7.1–7.3) jako `WYKONANY` oraz milestone „Dane wyłącznie przez Prisma” jako `OSIĄGNIĘTY`. Start Fazy 8 poza tym syncem.
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza6-adaptery-cron-ws.md` (FAZA 1, KROK 1–3, review zaakceptowany) oznaczono Fazę 6 (kroki 6.1–6.2) jako `WYKONANY` oraz milestone „Adaptery bez omijania warstwy aplikacji” jako `OSIĄGNIĘTY`. Start Fazy 7 poza tym syncem.
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza5-role-inmate.md` (FAZA 1, KROK 1–3, review zaakceptowany) oznaczono Fazę 5 (kroki 5.1–5.3) jako `WYKONANY` oraz milestone „Role zgodne z normą po stronie backendu” jako `OSIĄGNIĘTY`.
 - **2026-11-19 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza3-faza4-ops-kontrakt.md` (FAZA 1 + FAZA 2, review zaakceptowany) oznaczono Fazę 3 (kroki 3.1–3.3) i Fazę 4 (kroki 4.1–4.3) jako `WYKONANY` oraz milestone’y „Fundament observability i bezpieczeństwa HTTP” i „Kontrakt API v1 (z dual mount legacy)” jako `OSIĄGNIĘTY`.
@@ -425,7 +426,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 7 — Persistencja Prisma (R6)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Wprowadzenie Prisma ORM + Migrate jako jedynego dostępu do MySQL: schemat i migracje w repo (`backend/prisma/`), warstwa `database/` na kliencie Prisma, usunięcie pool / `*Queries` / raw SQL ze stanu docelowego, seed dev/test oraz atomowość saldo + transakcja — zgodnie z `docs/model_danych.md`, `docs/architektura.md` (R6), SPEC-DANE i SPEC-BACKEND B-6–B-9. Reguły salda z Fazy 2 (services) pozostają w services — tu dokładana jest atomowość Prisma, bez drugiego modelu spójności.
 
@@ -440,7 +441,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 7.1 — Schemat, migracje i warstwa `database/`
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** `backend/prisma/schema.prisma` jako źródło prawdy schematu; obowiązkowe migracje; singleton klienta i moduły dostępu wyłącznie w `database/`.
 
@@ -451,7 +452,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 7.2 — Migracja z pool / `*Queries` i zakaz raw SQL
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Przejście ścieżek runtime z historycznego pool + `*Queries` na Prisma; usunięcie raw SQL (w tym ad-hoc / `$queryRaw`) ze stanu docelowego.
 
@@ -462,7 +463,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 7.3 — Seed oraz spójność saldo + transakcja
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Seed Prisma dla dev i test (bez seeda na prod deploy); orkiestracja mutacji transakcji z aktualizacją salda domu w jednej atomowej operacji aplikacji (SPEC-DANE D-11, D-15–D-17) — ta sama reguła salda z services (Faza 2), wzmocniona transakcją Prisma.
 
@@ -475,6 +476,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 ---
 
 ## MILESTONE — Dane wyłącznie przez Prisma
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 7. Persistencja jest na Prisma; wolno dodać outbound e-mail. Testy scoped już towarzyszyły fazom — seed wzmacnia kolejne asercje.
 

@@ -10,3 +10,4 @@ backend-ts/src/.env
 graphify-out/cache/
 graphify-out/2026-*
 budget_manager.sql
+docker-compose.*

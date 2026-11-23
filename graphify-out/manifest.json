@@ -1626,9 +1626,9 @@
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1795168621.235335,
-    "seen": 1795171136.2155917,
-    "ast_hash": "321a937d178c58a68355fe95582c1a00",
+    "mtime": 1795443341.41407,
+    "seen": 1795443345.11995,
+    "ast_hash": "98f22ee1ede1e8c1cbe9977e388fe812",
     "semantic_hash": ""
   },
   "docs/README.md": {
@@ -1734,9 +1734,9 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-backend.md": {
-    "mtime": 1795194908.540591,
-    "seen": 1795195819.2837827,
-    "ast_hash": "3f95f5a44fb9af1a9425f48838c2a816",
+    "mtime": 1795442395.383884,
+    "seen": 1795443345.1203675,
+    "ast_hash": "c0d55964d6c4cc50f74e3c3dbfa1d099",
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
@@ -2118,9 +2118,9 @@
     "semantic_hash": ""
   },
   "feature-plans/home-budget-manager_feature_plan_backend-faza7-prisma-r6.md": {
-    "mtime": 1795437759.6431992,
-    "seen": 1795438538.6239698,
-    "ast_hash": "55947bf4cafb65b3c461e7e55458d77f",
+    "mtime": 1795440741.8755372,
+    "seen": 1795443345.1201885,
+    "ast_hash": "899658d4ef4c6b2580f6ee41178656c2",
     "semantic_hash": ""
   },
   "feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza6-faza8-i18n-ws-security.md": {

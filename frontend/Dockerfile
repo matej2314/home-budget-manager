@@ -1,19 +1,25 @@
-FROM node:20.19.0-slim AS builder
+# --- builder: Vite / React ---
+FROM node:24.19.0-alpine AS builder
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
-FROM nginx:alpine
+# --- runner: statyczny SPA (bez nginx) ---
+FROM node:24.19.0-alpine AS runner
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-COPY nginx.conf /etc/nginx/nginx.conf
+RUN npm install -g serve@14
 
-EXPOSE 80
+COPY --from=builder /app/dist ./dist
 
-CMD ["nginx", "-g", "daemon off;"]
+USER node
+
+EXPOSE 3000
+
+CMD ["serve", "-s", "dist", "-l", "3000"]

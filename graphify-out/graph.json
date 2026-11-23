@@ -12877,7 +12877,7 @@
       "node_kind": "heading",
       "norm_label": "faza 1 \u2014 aktualizacja zaleznosci backendu",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L30"
+      "source_location": "L31"
     },
     {
       "id": "home_budget_manager_major_plan_backend_faza_2_struktura_katalog\u00f3w_blok_b_pipeline_warstw_r2",
@@ -12889,7 +12889,7 @@
       "node_kind": "heading",
       "norm_label": "faza 2 \u2014 struktura katalogow (blok b) + pipeline warstw (r2)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L94"
+      "source_location": "L95"
     },
     {
       "id": "home_budget_manager_major_plan_backend_faza_3_fundament_operacyjny_backendu",
@@ -12901,7 +12901,7 @@
       "node_kind": "heading",
       "norm_label": "faza 3 \u2014 fundament operacyjny backendu",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L177"
+      "source_location": "L178"
     },
     {
       "id": "home_budget_manager_major_plan_backend_faza_4_kontrakt_komunikacji_po_stronie_backendu",
@@ -12913,7 +12913,7 @@
       "node_kind": "heading",
       "norm_label": "faza 4 \u2014 kontrakt komunikacji po stronie backendu",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L240"
+      "source_location": "L241"
     },
     {
       "id": "home_budget_manager_major_plan_backend_faza_5_role_inmate_r1_zakres_backend",
@@ -12925,7 +12925,7 @@
       "node_kind": "heading",
       "norm_label": "faza 5 \u2014 role `inmate` (r1, zakres backend)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L307"
+      "source_location": "L308"
     },
     {
       "id": "home_budget_manager_major_plan_backend_faza_6_adaptery_cron_i_websocket_r4",
@@ -12937,7 +12937,7 @@
       "node_kind": "heading",
       "norm_label": "faza 6 \u2014 adaptery cron i websocket (r4)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L372"
+      "source_location": "L373"
     },
     {
       "id": "home_budget_manager_major_plan_backend_faza_7_persistencja_prisma_r6",
@@ -12949,7 +12949,7 @@
       "node_kind": "heading",
       "norm_label": "faza 7 \u2014 persistencja prisma (r6)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L426"
+      "source_location": "L427"
     },
     {
       "id": "home_budget_manager_major_plan_backend_faza_8_e_mail_outbound_k_14",
@@ -12961,7 +12961,7 @@
       "node_kind": "heading",
       "norm_label": "faza 8 \u2014 e-mail outbound (k-14)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L489"
+      "source_location": "L492"
     },
     {
       "id": "home_budget_manager_major_plan_backend_faza_9_weryfikacja_strategii_test\u00f3w_backendu_jest",
@@ -12973,7 +12973,7 @@
       "node_kind": "heading",
       "norm_label": "faza 9 \u2014 weryfikacja strategii testow backendu (jest)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L552"
+      "source_location": "L555"
     },
     {
       "id": "home_budget_manager_major_plan_backend_historia_zmian_planu_operacyjne",
@@ -13009,7 +13009,7 @@
       "node_kind": "heading",
       "norm_label": "krok 1.1 \u2014 inwentaryzacja zaleznosci",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L43"
+      "source_location": "L44"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_1_2_aktualizacja_wersji_i_przej\u015bcie_na_es_modules",
@@ -13021,7 +13021,7 @@
       "node_kind": "heading",
       "norm_label": "krok 1.2 \u2014 aktualizacja wersji i przejscie na es modules",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L54"
+      "source_location": "L55"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_1_3_weryfikacja_uruchamialno\u015bci_i_scoped_testy_fundamentu",
@@ -13033,7 +13033,7 @@
       "node_kind": "heading",
       "norm_label": "krok 1.3 \u2014 weryfikacja uruchamialnosci i scoped testy fundamentu",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L66"
+      "source_location": "L67"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_2_1_podfoldery_services_rdzenia_i_shell",
@@ -13045,7 +13045,7 @@
       "node_kind": "heading",
       "norm_label": "krok 2.1 \u2014 podfoldery services rdzenia i shell",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L113"
+      "source_location": "L114"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_2_2_domkni\u0119cie_luk_as_is_mapa_cienkie_controllery",
@@ -13057,7 +13057,7 @@
       "node_kind": "heading",
       "norm_label": "krok 2.2 \u2014 domkniecie luk as-is: mapa + cienkie controllery",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L125"
+      "source_location": "L126"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_2_3_uk\u0142ad_warstw_i_granice_blok_b_bez_prisma",
@@ -13069,7 +13069,7 @@
       "node_kind": "heading",
       "norm_label": "krok 2.3 \u2014 uk\u0142ad warstw i granice (blok b, bez prisma)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L137"
+      "source_location": "L138"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_2_4_jednolity_kszta\u0142t_b\u0142\u0119du_aplikacji_b_10",
@@ -13081,7 +13081,7 @@
       "node_kind": "heading",
       "norm_label": "krok 2.4 \u2014 jednolity kszta\u0142t b\u0142edu aplikacji (b-10)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L149"
+      "source_location": "L150"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_3_1_logger_na_stdout",
@@ -13093,7 +13093,7 @@
       "node_kind": "heading",
       "norm_label": "krok 3.1 \u2014 logger na stdout",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L190"
+      "source_location": "L191"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_3_2_health_liveness",
@@ -13105,7 +13105,7 @@
       "node_kind": "heading",
       "norm_label": "krok 3.2 \u2014 health liveness",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L201"
+      "source_location": "L202"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_3_3_helmet_i_cors",
@@ -13117,7 +13117,7 @@
       "node_kind": "heading",
       "norm_label": "krok 3.3 \u2014 helmet i cors",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L213"
+      "source_location": "L214"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_4_1_prefiks_api_v1_dual_mount_legacy",
@@ -13129,7 +13129,7 @@
       "node_kind": "heading",
       "norm_label": "krok 4.1 \u2014 prefiks `/api/v1` + dual mount legacy",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L254"
+      "source_location": "L255"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_4_2_envelope_i_klucze_i18n",
@@ -13141,7 +13141,7 @@
       "node_kind": "heading",
       "norm_label": "krok 4.2 \u2014 envelope i klucze i18n",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L267"
+      "source_location": "L268"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_4_3_ocr_uploady_i_handshake_ws",
@@ -13153,7 +13153,7 @@
       "node_kind": "heading",
       "norm_label": "krok 4.3 \u2014 ocr, uploady i handshake ws",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L278"
+      "source_location": "L279"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_5_1_rename_w_tokenie_middleware_i_komunikatach",
@@ -13165,7 +13165,7 @@
       "node_kind": "heading",
       "norm_label": "krok 5.1 \u2014 rename w tokenie, middleware i komunikatach",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L320"
+      "source_location": "L321"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_5_2_regu\u0142y_r\u00f3l_po_stronie_api",
@@ -13177,7 +13177,7 @@
       "node_kind": "heading",
       "norm_label": "krok 5.2 \u2014 regu\u0142y rol po stronie api",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L331"
+      "source_location": "L332"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_5_3_rename_broadcasttohousemates_broadcasttohousehold",
@@ -13189,7 +13189,7 @@
       "node_kind": "heading",
       "norm_label": "krok 5.3 \u2014 rename `broadcasttohousemates` \u2192 `broadcasttohousehold`",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L343"
+      "source_location": "L344"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_6_1_cron_przez_services",
@@ -13201,7 +13201,7 @@
       "node_kind": "heading",
       "norm_label": "krok 6.1 \u2014 cron przez services",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L387"
+      "source_location": "L388"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_6_2_push_ws_jako_skutek_uboczny",
@@ -13213,7 +13213,7 @@
       "node_kind": "heading",
       "norm_label": "krok 6.2 \u2014 push ws jako skutek uboczny",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L398"
+      "source_location": "L399"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_7_1_schemat_migracje_i_warstwa_database",
@@ -13225,7 +13225,7 @@
       "node_kind": "heading",
       "norm_label": "krok 7.1 \u2014 schemat, migracje i warstwa `database/`",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L441"
+      "source_location": "L442"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_7_2_migracja_z_pool_queries_i_zakaz_raw_sql",
@@ -13237,7 +13237,7 @@
       "node_kind": "heading",
       "norm_label": "krok 7.2 \u2014 migracja z pool / `*queries` i zakaz raw sql",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L452"
+      "source_location": "L453"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_7_3_seed_oraz_sp\u00f3jno\u015b\u0107_saldo_transakcja",
@@ -13249,7 +13249,7 @@
       "node_kind": "heading",
       "norm_label": "krok 7.3 \u2014 seed oraz spojnosc saldo + transakcja",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L463"
+      "source_location": "L464"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_8_1_trigger_z_service_po_walidacji_http",
@@ -13261,7 +13261,7 @@
       "node_kind": "heading",
       "norm_label": "krok 8.1 \u2014 trigger z service po walidacji http",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L504"
+      "source_location": "L507"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_8_2_tre\u015b\u0107_i_sekrety_smtp",
@@ -13273,7 +13273,7 @@
       "node_kind": "heading",
       "norm_label": "krok 8.2 \u2014 tresc i sekrety smtp",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L515"
+      "source_location": "L518"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_8_3_mail_nie_jest_jedynym_kana\u0142em",
@@ -13285,7 +13285,7 @@
       "node_kind": "heading",
       "norm_label": "krok 8.3 \u2014 mail nie jest jedynym kana\u0142em",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L526"
+      "source_location": "L529"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_9_1_audyt_piramidy_i_domkni\u0119cie_t_5",
@@ -13297,7 +13297,7 @@
       "node_kind": "heading",
       "norm_label": "krok 9.1 \u2014 audyt piramidy i domkniecie t-5",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L566"
+      "source_location": "L569"
     },
     {
       "id": "home_budget_manager_major_plan_backend_krok_9_2_izolacja_seed_i_trwa\u0142o\u015b\u0107_dod",
@@ -13309,7 +13309,7 @@
       "node_kind": "heading",
       "norm_label": "krok 9.2 \u2014 izolacja, seed i trwa\u0142osc dod",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L579"
+      "source_location": "L582"
     },
     {
       "id": "home_budget_manager_major_plan_backend_milestone_adaptery_bez_omijania_warstwy_aplikacji",
@@ -13321,7 +13321,7 @@
       "node_kind": "heading",
       "norm_label": "milestone \u2014 adaptery bez omijania warstwy aplikacji",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L412"
+      "source_location": "L413"
     },
     {
       "id": "home_budget_manager_major_plan_backend_milestone_backend_na_zaktualizowanych_zale\u017cno\u015bciach",
@@ -13333,7 +13333,7 @@
       "node_kind": "heading",
       "norm_label": "milestone \u2014 backend na zaktualizowanych zaleznosciach",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L80"
+      "source_location": "L81"
     },
     {
       "id": "home_budget_manager_major_plan_backend_milestone_dane_wy\u0142\u0105cznie_przez_prisma",
@@ -13345,7 +13345,7 @@
       "node_kind": "heading",
       "norm_label": "milestone \u2014 dane wy\u0142acznie przez prisma",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L477"
+      "source_location": "L478"
     },
     {
       "id": "home_budget_manager_major_plan_backend_milestone_fundament_observability_i_bezpiecze\u0144stwa_http",
@@ -13357,7 +13357,7 @@
       "node_kind": "heading",
       "norm_label": "milestone \u2014 fundament observability i bezpieczenstwa http",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L226"
+      "source_location": "L227"
     },
     {
       "id": "home_budget_manager_major_plan_backend_milestone_kontrakt_api_v1_z_dual_mount_legacy",
@@ -13369,7 +13369,7 @@
       "node_kind": "heading",
       "norm_label": "milestone \u2014 kontrakt api v1 (z dual mount legacy)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L292"
+      "source_location": "L293"
     },
     {
       "id": "home_budget_manager_major_plan_backend_milestone_outbound_e_mail_przy_zaproszeniach",
@@ -13381,7 +13381,7 @@
       "node_kind": "heading",
       "norm_label": "milestone \u2014 outbound e-mail przy zaproszeniach",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L540"
+      "source_location": "L543"
     },
     {
       "id": "home_budget_manager_major_plan_backend_milestone_role_zgodne_z_norm\u0105_po_stronie_backendu",
@@ -13393,7 +13393,7 @@
       "node_kind": "heading",
       "norm_label": "milestone \u2014 role zgodne z norma po stronie backendu",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L358"
+      "source_location": "L359"
     },
     {
       "id": "home_budget_manager_major_plan_backend_milestone_struktura_blok_b_pipeline_r2",
@@ -13405,7 +13405,7 @@
       "node_kind": "heading",
       "norm_label": "milestone \u2014 struktura blok b + pipeline r2",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L163"
+      "source_location": "L164"
     },
     {
       "id": "home_budget_manager_major_plan_backend_testy_r\u00f3wnolegle_norma_planu",
@@ -13417,7 +13417,7 @@
       "node_kind": "heading",
       "norm_label": "testy rownolegle (norma planu)",
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L22"
+      "source_location": "L23"
     },
     {
       "id": "docs_architektura_katalogi_pliki_architektura_katalog\u00f3w_i_plik\u00f3w_home_budget_manager",
@@ -62864,7 +62864,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -62875,7 +62875,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L54",
+      "source_location": "L55",
       "weight": 1.0
     },
     {
@@ -62886,7 +62886,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L66",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -62897,7 +62897,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L113",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -62908,7 +62908,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L125",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -62919,7 +62919,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L137",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -62930,7 +62930,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L149",
+      "source_location": "L150",
       "weight": 1.0
     },
     {
@@ -62941,7 +62941,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L190",
+      "source_location": "L191",
       "weight": 1.0
     },
     {
@@ -62952,7 +62952,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L201",
+      "source_location": "L202",
       "weight": 1.0
     },
     {
@@ -62963,7 +62963,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L213",
+      "source_location": "L214",
       "weight": 1.0
     },
     {
@@ -62974,7 +62974,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L254",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
@@ -62985,7 +62985,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L267",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -62996,7 +62996,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L278",
+      "source_location": "L279",
       "weight": 1.0
     },
     {
@@ -63007,7 +63007,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L320",
+      "source_location": "L321",
       "weight": 1.0
     },
     {
@@ -63018,7 +63018,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L331",
+      "source_location": "L332",
       "weight": 1.0
     },
     {
@@ -63029,7 +63029,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L343",
+      "source_location": "L344",
       "weight": 1.0
     },
     {
@@ -63040,7 +63040,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L387",
+      "source_location": "L388",
       "weight": 1.0
     },
     {
@@ -63051,7 +63051,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L398",
+      "source_location": "L399",
       "weight": 1.0
     },
     {
@@ -63062,7 +63062,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L441",
+      "source_location": "L442",
       "weight": 1.0
     },
     {
@@ -63073,7 +63073,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L452",
+      "source_location": "L453",
       "weight": 1.0
     },
     {
@@ -63084,7 +63084,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L463",
+      "source_location": "L464",
       "weight": 1.0
     },
     {
@@ -63095,7 +63095,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L504",
+      "source_location": "L507",
       "weight": 1.0
     },
     {
@@ -63106,7 +63106,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L515",
+      "source_location": "L518",
       "weight": 1.0
     },
     {
@@ -63117,7 +63117,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L526",
+      "source_location": "L529",
       "weight": 1.0
     },
     {
@@ -63128,7 +63128,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L566",
+      "source_location": "L569",
       "weight": 1.0
     },
     {
@@ -63139,7 +63139,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L579",
+      "source_location": "L582",
       "weight": 1.0
     },
     {
@@ -63161,7 +63161,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L163",
+      "source_location": "L164",
       "weight": 1.0
     },
     {
@@ -63172,18 +63172,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L177",
-      "weight": 1.0
-    },
-    {
-      "source": "home_budget_manager_major_plan_backend_home_budget_manager_major_plan_backend",
-      "target": "home_budget_manager_major_plan_backend_testy_r\u00f3wnolegle_norma_planu",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L22",
+      "source_location": "L178",
       "weight": 1.0
     },
     {
@@ -63194,7 +63183,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L226",
+      "source_location": "L227",
+      "weight": 1.0
+    },
+    {
+      "source": "home_budget_manager_major_plan_backend_home_budget_manager_major_plan_backend",
+      "target": "home_budget_manager_major_plan_backend_testy_r\u00f3wnolegle_norma_planu",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "home-budget-manager_major_plan-backend.md",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -63205,7 +63205,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L240",
+      "source_location": "L241",
       "weight": 1.0
     },
     {
@@ -63216,18 +63216,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L292",
-      "weight": 1.0
-    },
-    {
-      "source": "home_budget_manager_major_plan_backend_home_budget_manager_major_plan_backend",
-      "target": "home_budget_manager_major_plan_backend_faza_1_aktualizacja_zale\u017cno\u015bci_backendu",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L30",
+      "source_location": "L293",
       "weight": 1.0
     },
     {
@@ -63238,7 +63227,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L307",
+      "source_location": "L308",
+      "weight": 1.0
+    },
+    {
+      "source": "home_budget_manager_major_plan_backend_home_budget_manager_major_plan_backend",
+      "target": "home_budget_manager_major_plan_backend_faza_1_aktualizacja_zale\u017cno\u015bci_backendu",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "home-budget-manager_major_plan-backend.md",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -63249,7 +63249,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L358",
+      "source_location": "L359",
       "weight": 1.0
     },
     {
@@ -63260,7 +63260,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L372",
+      "source_location": "L373",
       "weight": 1.0
     },
     {
@@ -63271,7 +63271,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L412",
+      "source_location": "L413",
       "weight": 1.0
     },
     {
@@ -63282,7 +63282,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L426",
+      "source_location": "L427",
       "weight": 1.0
     },
     {
@@ -63293,7 +63293,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L477",
+      "source_location": "L478",
       "weight": 1.0
     },
     {
@@ -63304,7 +63304,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L489",
+      "source_location": "L492",
       "weight": 1.0
     },
     {
@@ -63315,7 +63315,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L540",
+      "source_location": "L543",
       "weight": 1.0
     },
     {
@@ -63326,7 +63326,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L552",
+      "source_location": "L555",
       "weight": 1.0
     },
     {
@@ -63337,7 +63337,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L80",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -63348,7 +63348,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "home-budget-manager_major_plan-backend.md",
-      "source_location": "L94",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -66572,5 +66572,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "372f99a1990a49bce6308715868d69f6d658e1ff"
+  "built_at_commit": "7000c4ffae65f22e7bafe4bc138a16bd6e998064"
 }

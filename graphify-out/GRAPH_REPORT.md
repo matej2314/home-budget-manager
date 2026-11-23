@@ -1,9 +1,9 @@
 # Graph Report - home-budget-manager  (2026-11-23)
 
 ## Corpus Check
-- 353 files · ~160,859 words
+- 353 files · ~160,899 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 13 file(s) not represented in the graph (top: (none) 6, .traineddata 2, .example 1)
+- Unclassified: 15 file(s) not represented in the graph (top: (none) 9, .traineddata 2, .example 1)
 
 ## Summary
 - 1692 nodes · 4011 edges · 92 communities (84 shown, 5 thin omitted)
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `372f99a1`
+- Built from commit: `7000c4ff`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

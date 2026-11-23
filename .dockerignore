@@ -6,6 +6,5 @@ home-budget-manager_major_plan-backend.md
 home-budget-manager_major_plan-frontend.md
 README.md
 frontend/README.md
-frontend/nginx.conf
 backend/.env.example
 backend/.gitignore

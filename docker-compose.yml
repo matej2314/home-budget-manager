@@ -22,7 +22,7 @@ services:
     networks:
       - main_network
     ports:
-      - "127.0.0.1:5052:80"
+      - "127.0.0.1:5052:3000"
     environment:
       - FRONTEND_ORIGIN=https://budgetapp.msliwowski.net
     
