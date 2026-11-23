@@ -17,10 +17,17 @@ export const parseApiEnvelope = (body) => {
   };
 };
 
+import i18n from '../../configs/i18n';
+
 /**
- * Resolver UI do czasu ns `api`: spróbuj t(key); jeśli brak — surowy message (docs i18n fallback).
+ * Konwencja v1 (zatwierdzona): zawsze ns `api`.
+ * Prefiks `api:` w kluczu z BE jest obcinany. Brak klucza → surowy string (docs i18n fallback).
  */
-export const resolveApiMessage = (t, messageKey, defaultValue) => {
+export const resolveApiMessage = (messageKey, defaultValue) => {
   if (!messageKey) return defaultValue ?? '';
-  return t(messageKey, { defaultValue: defaultValue ?? messageKey });
+  const key = messageKey.startsWith('api:') ? messageKey.slice(4) : messageKey;
+  if (i18n.exists(key, { ns: 'api' })) {
+    return i18n.t(key, { ns: 'api' });
+  }
+  return defaultValue ?? messageKey;
 };

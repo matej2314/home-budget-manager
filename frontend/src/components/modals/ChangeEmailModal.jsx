@@ -4,6 +4,7 @@ import ModalHeader from './ModalHeader';
 import { apiBaseUrl } from '../../url';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
 import { showErrorToast, showInfoToast } from '../../configs/toastify';
+import { resolveApiMessage } from '../../utils/asyncUtils/parseApiEnvelope';
 import { useTranslation } from 'react-i18next';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import { isValidEmail, isNoXSS } from '../../utils/validation';
@@ -40,12 +41,22 @@ export default function ChangeEmailModal({ isOpen, onRequestClose }) {
             const saveEmail = await sendRequest('POST', emailData, `${apiBaseUrl}/users/changemail`);
 
             handleApiResponse(saveEmail, {
-                onSuccess: () => {
-                    showInfoToast(t(saveEmail.message, { defaultValue: "changeEmail.changedCorrectlyMessage" }));
+                onSuccess: (envelope) => {
+                    showInfoToast(
+                        resolveApiMessage(
+                            envelope.messageKey,
+                            t('changeEmail.changedCorrectlyMessage'),
+                        ),
+                    );
                     setTimeout(onRequestClose, 500);
                 },
-                onError: () => {
-                    showErrorToast(t(saveEmail.message, { defaultValue: "changeEmail.failedError" }));
+                onError: (envelope) => {
+                    showErrorToast(
+                        resolveApiMessage(
+                            envelope.messageKey,
+                            t('changeEmail.failedError'),
+                        ),
+                    );
                 }
             })
 

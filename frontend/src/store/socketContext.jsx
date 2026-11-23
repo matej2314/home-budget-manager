@@ -3,6 +3,9 @@ import { useAuth } from './authContext';
 import { io } from "socket.io-client";
 import { socketPath } from "../url";
 import useNotificationsStore from './notificationsStore';
+import { useMessagesStore } from './messagesStore';
+import { useInvitationsStore } from './invitationsStore';
+import { notifyBoardRefresh } from '../utils/asyncUtils/boardRefreshBridge';
 
 export const SocketContext = createContext();
 
@@ -35,6 +38,7 @@ export const SocketProvider = ({ children }) => {
                 pingtTimeout: 5000,
             });
 
+            // Lifecycle Socket.io (nie są biznesowymi type z katalogu K-10)
             newSocket.on("connect", () => {
                 setConnected(true);
                 console.log("Socket.IO connected");
@@ -45,22 +49,28 @@ export const SocketProvider = ({ children }) => {
                 console.log("Socket.IO disconnected");
             });
 
-            newSocket.on("connect_error", (error) => {
-                setError(error.message);
-                console.error("Socket.IO Error:", error);
+            newSocket.on("connect_error", (err) => {
+                setError(err.message);
+                console.error("Socket.IO Error:", err);
             });
 
-            newSocket.on('error', (error) => {
-                setError(error);
-                console.error('Connection error:', error);
+            // Katalog SERVER_SOCKET_EVENTS (K-10) — jawne on(...), bez dynamicznego on(any)
+            newSocket.on('connect_success', () => {
+                setConnected(true);
+                setError(null);
             });
 
-            // shortcut: balance_update tylko bufor ephemeral; pełna synchronizacja board/transactions = major Faza 7, gdy BE emituje spójnie
+            newSocket.on('error', (payload) => {
+                setError(payload?.message ?? payload);
+                console.error('Connection error:', payload);
+            });
+
             newSocket.on("balance_update", (data) => {
                 setMessages((prevMessages) => ({
                     ...prevMessages,
                     balanceUpdates: [data],
                 }));
+                notifyBoardRefresh('all');
             });
 
             newSocket.on("initial_budget", (data) => {
@@ -68,6 +78,7 @@ export const SocketProvider = ({ children }) => {
                     ...prevMessages,
                     initBudgets: [data],
                 }));
+                notifyBoardRefresh('all');
             });
 
             newSocket.on("newMessage", (data) => {
@@ -75,6 +86,8 @@ export const SocketProvider = ({ children }) => {
                     ...prevMessages,
                     newMessages: [...prevMessages.newMessages, data],
                 }));
+                const page = useMessagesStore.getState().currentPage || 1;
+                useMessagesStore.getState().fetchMessages(page);
             });
 
             newSocket.on("invitation", (data) => {
@@ -82,6 +95,7 @@ export const SocketProvider = ({ children }) => {
                     ...prevMessages,
                     invitations: [...prevMessages.invitations, data],
                 }));
+                useInvitationsStore.getState().fetchInvitations();
             });
 
             newSocket.on('notification', (data) => {
@@ -117,16 +131,9 @@ export const SocketProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reconnect only on auth change
     }, [isAuthenticated]);
 
-    const sendMessage = (type, message) => {
-        if (socket && connected) {
-            socket.emit(type, message);
-        } else {
-            setError("Socket.IO is not connected");
-        }
-    };
-
+    // Brak katalogu emitów biznesowych z SPA (K-12 / F-9). Cykl życia = connect/disconnect biblioteki.
     return (
-        <SocketContext.Provider value={{ socket, connected, messages, sendMessage, error }}>
+        <SocketContext.Provider value={{ socket, connected, messages, error }}>
             {children}
         </SocketContext.Provider>
     );

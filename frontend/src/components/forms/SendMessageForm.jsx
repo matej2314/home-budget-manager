@@ -7,6 +7,7 @@ import { apiBaseUrl } from '../../url';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import { resolveApiMessage } from '../../utils/asyncUtils/parseApiEnvelope';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import SendMessageBtn from './internal/SendMessageBtn';
 import LoadingModal from '../modals/LoadingModal';
@@ -58,14 +59,24 @@ export default function SendMessageForm({ reply, recipientName, onClose, embedde
 			const sendMessage = await sendRequest('POST', messageData, `${apiBaseUrl}/message/send`);
 
 			await handleApiResponse(sendMessage, {
-				onSuccess: async () => {
-					showInfoToast(t(sendMessage.message, { defaultValue: "sendMessage.successMessage" }));
+				onSuccess: async (envelope) => {
+					showInfoToast(
+						resolveApiMessage(
+							envelope.messageKey,
+							t('sendMessage.successMessage'),
+						),
+					);
 					await fetchMessages();
 					messageContentRef.current.value = '';
 					setTimeout(onClose, 600);
 				},
-				onError: () => {
-					showErrorToast(t(sendMessage.message, { defaultValue: "sendMessage.errorMessage" }));
+				onError: (envelope) => {
+					showErrorToast(
+						resolveApiMessage(
+							envelope.messageKey,
+							t('sendMessage.errorMessage'),
+						),
+					);
 				}
 			});
 		} catch {

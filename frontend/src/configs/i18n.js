@@ -17,7 +17,7 @@ i18n
         debug: false,
         interpolation: { escapeValue: false },
 
-        ns: ['common', 'aboutUs', 'dashboardComponents', 'dashboardInternal', 'errorPage', 'forms', 'homePage', 'pages', 'modals', 'utils'],
+        ns: ['common', 'aboutUs', 'dashboardComponents', 'dashboardInternal', 'errorPage', 'forms', 'homePage', 'pages', 'modals', 'utils', 'api'],
         defaultNS: 'common',
 
         detection: {

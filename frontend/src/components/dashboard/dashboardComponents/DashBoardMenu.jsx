@@ -75,6 +75,7 @@ export default function DashBoardMenu() {
                                 </Link>
                             </li>
                         ))}
+                        {/* UX only — authz = API; superadmin links are menu visibility, not ACL */}
                         {isAuthenticated && user.role === 'superadmin' && (
                             <>
                                 {adminLinksElements.map((link, index) => (

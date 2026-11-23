@@ -1032,9 +1032,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/dashboard/dashboardComponents/DashBoardMenu.jsx": {
-    "mtime": 1795177740.384831,
-    "seen": 1795179006.3649185,
-    "ast_hash": "a2a3afda4dfda1dab405289122e994bf",
+    "mtime": 1795195808.7374024,
+    "seen": 1795195819.2811046,
+    "ast_hash": "ba62905400f2a95cebf5f91b197f4e83",
     "semantic_hash": ""
   },
   "frontend/src/components/dashboard/dashboardComponents/DisplayLiveBalance.jsx": {
@@ -1116,9 +1116,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/forms/AddTransactionForm.jsx": {
-    "mtime": 1795177740.3853004,
-    "seen": 1795179006.364955,
-    "ast_hash": "5d05f36de5bcb58dee6d55b94dc042d0",
+    "mtime": 1795195765.3227317,
+    "seen": 1795195819.2814271,
+    "ast_hash": "f3e70755ebd361516da5aa6859c96d94",
     "semantic_hash": ""
   },
   "frontend/src/components/forms/AddUserToHouseForm.jsx": {
@@ -1140,21 +1140,21 @@
     "semantic_hash": ""
   },
   "frontend/src/components/forms/LoginForm.jsx": {
-    "mtime": 1795168621.238803,
-    "seen": 1795171136.2155313,
-    "ast_hash": "980b926223a2158380be5748327bd8a8",
+    "mtime": 1795195770.5776918,
+    "seen": 1795195819.2814958,
+    "ast_hash": "c315fe3e6eb94ed6fcbcc1038ace7e96",
     "semantic_hash": ""
   },
   "frontend/src/components/forms/SendMessageForm.jsx": {
-    "mtime": 1795179646.6703198,
-    "seen": 1795179705.9495153,
-    "ast_hash": "d568e1945e088cd60ee844f365e2203e",
+    "mtime": 1795195779.8586214,
+    "seen": 1795195819.2814968,
+    "ast_hash": "fe26917de7b38466eeaeb700253ac79d",
     "semantic_hash": ""
   },
   "frontend/src/components/forms/SignUpForm.jsx": {
-    "mtime": 1795168621.2388613,
-    "seen": 1795171136.2155323,
-    "ast_hash": "85d3eb9b546bca3dc3fdd3c8707e0716",
+    "mtime": 1795195774.2256641,
+    "seen": 1795195819.2814972,
+    "ast_hash": "59c339ed358f618814841de9fd5f14ca",
     "semantic_hash": ""
   },
   "frontend/src/components/forms/internal/SendMessageBtn.jsx": {
@@ -1242,9 +1242,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/modals/ChangeEmailModal.jsx": {
-    "mtime": 1795177740.385756,
-    "seen": 1795179006.3651488,
-    "ast_hash": "8148264120063e0f927abc89087eb553",
+    "mtime": 1795195782.7262125,
+    "seen": 1795195819.28183,
+    "ast_hash": "e5e83703da5e7cdb7897dca3952eb15e",
     "semantic_hash": ""
   },
   "frontend/src/components/modals/CookiesModal.jsx": {
@@ -1314,9 +1314,9 @@
     "semantic_hash": ""
   },
   "frontend/src/configs/i18n.js": {
-    "mtime": 1795168621.2394676,
-    "seen": 1795171136.2155485,
-    "ast_hash": "21e734fa502ed4d0b07318334ae91620",
+    "mtime": 1795195752.3648298,
+    "seen": 1795195819.2820933,
+    "ast_hash": "9404846ca766f07f0136142343218979",
     "semantic_hash": ""
   },
   "frontend/src/configs/routerConfig.jsx": {
@@ -1470,15 +1470,15 @@
     "semantic_hash": ""
   },
   "frontend/src/store/authContext.jsx": {
-    "mtime": 1795179653.5942254,
-    "seen": 1795179705.9505494,
-    "ast_hash": "d5f13c663c7b1fbbfbef9f7352f0e608",
+    "mtime": 1795195763.676744,
+    "seen": 1795195819.2826645,
+    "ast_hash": "1b6958590e01a221b8562332210ba6f6",
     "semantic_hash": ""
   },
   "frontend/src/store/dataContext.jsx": {
-    "mtime": 1795179618.2784965,
-    "seen": 1795179705.95055,
-    "ast_hash": "1871a67c355a5ec95678ed40eaae5dc7",
+    "mtime": 1795195786.6164203,
+    "seen": 1795195819.2826655,
+    "ast_hash": "318af3780027084cb544ad6203756059",
     "semantic_hash": ""
   },
   "frontend/src/store/homePageStore.js": {
@@ -1506,9 +1506,9 @@
     "semantic_hash": ""
   },
   "frontend/src/store/socketContext.jsx": {
-    "mtime": 1795168621.240222,
-    "seen": 1795171136.2155695,
-    "ast_hash": "6ae81f6eb73f020bfdcacb29fa727d0e",
+    "mtime": 1795195794.7075088,
+    "seen": 1795195819.2827442,
+    "ast_hash": "c4bc3e1f04d7ef0627a151980e40c7dc",
     "semantic_hash": ""
   },
   "frontend/src/store/transactionsStore.js": {
@@ -1518,9 +1518,9 @@
     "semantic_hash": ""
   },
   "frontend/src/url.js": {
-    "mtime": 1795180093.765984,
-    "seen": 1795194226.5752957,
-    "ast_hash": "a874946a4bc94d25a77096e9e593fab4",
+    "mtime": 1795195796.2404974,
+    "seen": 1795195819.282765,
+    "ast_hash": "283dc6a9ae6399604e303c69fae17777",
     "semantic_hash": ""
   },
   "frontend/src/utils/animationVariants.js": {
@@ -1596,9 +1596,9 @@
     "semantic_hash": ""
   },
   "frontend/src/utils/checkUserRole.js": {
-    "mtime": 1795179586.3537416,
-    "seen": 1795179705.950952,
-    "ast_hash": "539393f9d24bdeb0e6302a4a3b9c201b",
+    "mtime": 1795195797.9174845,
+    "seen": 1795195819.2830758,
+    "ast_hash": "31e935ad010bbf12646ddcc32a62e939",
     "semantic_hash": ""
   },
   "frontend/src/utils/countingUtils/CountDeclaredBudgetPeriod.js": {
@@ -1665,12 +1665,6 @@
     "mtime": 1795168621.2406952,
     "seen": 1795171136.2155867,
     "ast_hash": "85100a0ade945750d56c969edbab5996",
-    "semantic_hash": ""
-  },
-  "frontend/src/utils/sendWebSocketMessage.js": {
-    "mtime": 1795168621.2407084,
-    "seen": 1795171136.2155871,
-    "ast_hash": "d50a7e1e891c76d63dfa4c19f600a147",
     "semantic_hash": ""
   },
   "frontend/src/utils/storageUtils.js": {
@@ -1806,9 +1800,9 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-backend.md": {
-    "mtime": 1795179373.8053734,
-    "seen": 1795179705.9516072,
-    "ast_hash": "4022e5e3a2e5867d047e21eb8a469ded",
+    "mtime": 1795194908.540591,
+    "seen": 1795195819.2837827,
+    "ast_hash": "3f95f5a44fb9af1a9425f48838c2a816",
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
@@ -2064,9 +2058,9 @@
     "semantic_hash": ""
   },
   "frontend/src/utils/asyncUtils/parseApiEnvelope.js": {
-    "mtime": 1795168621.240475,
-    "seen": 1795171136.2155783,
-    "ast_hash": "83a99fa36bfe8e5848a363e0bb46ceac",
+    "mtime": 1795195754.1958492,
+    "seen": 1795195819.2830315,
+    "ast_hash": "08f5f70166df8e3f22b67069b94f6903",
     "semantic_hash": ""
   },
   "frontend/src/utils/asyncUtils/sendMultipart.js": {
@@ -2141,12 +2135,6 @@
     "ast_hash": "8af7e912ad5ba6b9ba3d7aa26c876720",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_backend-faza6-adaptery-cron-ws.md": {
-    "mtime": 1795194221.490658,
-    "seen": 1795194226.5762033,
-    "ast_hash": "d43e2698ce382d64f49a401f4290ffaa",
-    "semantic_hash": ""
-  },
   "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza5-role-inmate.md": {
     "mtime": 1795179342.728612,
     "seen": 1795194226.5762439,
@@ -2157,6 +2145,42 @@
     "mtime": 1795179736.478592,
     "seen": 1795194226.5762815,
     "ast_hash": "e397c4505e00175f25b61e8d4cb846bc",
+    "semantic_hash": ""
+  },
+  "frontend/public/locales/en/api.json": {
+    "mtime": 1795195748.4234848,
+    "seen": 1795195819.2801893,
+    "ast_hash": "1a8848ebae2c4c15d85c07db2eb8c09a",
+    "semantic_hash": ""
+  },
+  "frontend/public/locales/pl/api.json": {
+    "mtime": 1795195751.4676168,
+    "seen": 1795195819.2804086,
+    "ast_hash": "9df866e7ffc10d6640fdd4d5591e4947",
+    "semantic_hash": ""
+  },
+  "frontend/src/utils/asyncUtils/boardRefreshBridge.js": {
+    "mtime": 1795195784.4655864,
+    "seen": 1795195819.282983,
+    "ast_hash": "305925e14f9e67ad43fc6ab939ec6980",
+    "semantic_hash": ""
+  },
+  "frontend/src/utils/socketEventCatalog.js": {
+    "mtime": 1795195783.8508036,
+    "seen": 1795195819.2832978,
+    "ast_hash": "84785f1cbf47f2b247cc60900ff9f322",
+    "semantic_hash": ""
+  },
+  "feature-plans/home-budget-manager_feature_plan_frontend-faza6-faza8-i18n-ws-security.md": {
+    "mtime": 1795195402.93447,
+    "seen": 1795195819.2836335,
+    "ast_hash": "ea91ca8c8d9c4559c4ad331a11947fc5",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza6-adaptery-cron-ws.md": {
+    "mtime": 1795194588.4501698,
+    "seen": 1795195819.2836943,
+    "ast_hash": "26d66db4303a293c58678b52e07a6fe4",
     "semantic_hash": ""
   }
 }

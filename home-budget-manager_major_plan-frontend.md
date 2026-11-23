@@ -11,6 +11,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-23 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza6-faza8-i18n-ws-security.md` oznaczono Fazę 6 (kroki 6.1–6.3), Fazę 7 (kroki 7.1–7.2) i Fazę 8 (kroki 8.1–8.2) jako `WYKONANY` oraz milestone’y „Kontrakt message ↔ UI”, „WS bez własnych protokołów” i „Klient bez sekretów i bez udawania authz” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego).
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza5-role-inmate.md` oznaczono Fazę 5 (kroki 5.1–5.2) jako `WYKONANY` oraz milestone „Role w UI zgodne z normą” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego + bramka BE R1 już `OSIĄGNIĘTY`).
 - **2026-11-19 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza3-faza4-stan-http.md` oznaczono Fazę 3 (kroki 3.1–3.3) i Fazę 4 (kroki 4.1–4.3) jako `WYKONANY` oraz milestone’y „Stan zgodny z R5 / F-4–F-7” i „SPA woła API pod `/api/v1`” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego + bramka BE dual mount).
 - **2026-11-13 — sync statusów z feature planu:** po wycinku `feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza1-faza2-mapa-spa.md` oznaczono Fazę 1 (kroki 1.1–1.2) i Fazę 2 (kroki 2.1–2.3) jako `WYKONANY` oraz milestone’y „Frontend na zaktualizowanych zależnościach” i „Mapa SPA zgodna z normą katalogów” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”).
@@ -320,7 +321,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 6 — i18n: namespace `api` + mapowanie `message`
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Wdrożenie normy i18n dla komunikatów API: języki `pl` + `en` (`fallbackLng: en`), namespace **`api`**, mapowanie `message` z envelope przez i18n, fallback na surowy string gdy brak klucza — zgodnie z `docs/i18n_kontrakt_ui.md` i SPEC-FRONTEND F-11–F-13. Wybór **jednej** konwencji (`api:…` albo zawsze `ns: 'api'`) jest DoD kroku — major nie narzuca której. Big-bang migracji wszystkich historycznych kluczy UI **nie** jest wymagany.
 
@@ -333,7 +334,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 6.1 — Namespace `api` i wybór konwencji
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Dodanie namespace `api` do i18n oraz jawny wybór jednej konwencji prefiksu / `ns` na dalsze prace.
 
@@ -345,7 +346,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 6.2 — Mapowanie `message` + fallback
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Podpięcie konsumpcji envelope tak, by UI tłumaczyło `message` przez i18n; przy braku klucza — surowy string (docs i18n).
 
@@ -356,7 +357,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 6.3 — Stopniowa migracja istniejących kluczy
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Przenoszenie / mapowanie historycznych kluczy (np. `authMessages.*`) do `api` tam, gdzie refaktorowana powierzchnia tego wymaga — bez obowiązku jednego PR na cały katalog locales.
 
@@ -368,6 +369,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 ---
 
 ## MILESTONE — Kontrakt message ↔ UI
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 6. Klient jest właścicielem brzmienia PL/EN dla `message` z API w normie v1; wolno domknąć klienta WS.
 
@@ -381,7 +384,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 7 — Klient WebSocket wg kontraktu
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Domknięcie klienta Socket.io: handshake z sesją; obsługa wyłącznie ustalonych `type` z docs / SPEC-KOMUNIKACJA; aktualizacja store/widoku po eventach — bez własnych roomów i protokołów (SPEC-FRONTEND F-9, anty-patterny). Wiąże się z modelem stanu z Fazy 3.
 
@@ -393,7 +396,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 7.1 — Handshake i katalog `type`
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Połączenie WS z sesją oraz ograniczenie handlerów do katalogu zdarzeń z `docs/dokumentacja_komunikacji.md` / SPEC-KOMUNIKACJA.
 
@@ -404,7 +407,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 7.2 — Aktualizacja store / widoku po eventach
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Podpięcie handlerów do właścicieli store z Fazy 3 tak, by push (powiadomienie, wiadomość, saldo, …) odświeżał UX bez reimplementacji reguł biznesowych.
 
@@ -416,6 +419,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 ---
 
 ## MILESTONE — WS bez własnych protokołów
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 7. Klient realtime jest zgodny z kontraktem; wolno domknąć bramkę bezpieczeństwa klienta.
 
@@ -429,7 +434,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 8 — Bezpieczeństwo klienta i granica zaufania
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Domknięcie normy bezpieczeństwa po stronie SPA: brak sekretów serwerowych w bundlu / `VITE_*` / repo frontu; ukrycie UI nie jest autoryzacją; brak dublowania reguł host/inmate jako źródła prawdy — zgodnie z SPEC-FRONTEND F-14–F-15, `docs/bezpieczenstwo.md`, `docs/katalog_env.md` (sekcja Frontend) i anty-patternami.
 
@@ -441,7 +446,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 8.1 — Brak sekretów w bundlu / `VITE_*`
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Przegląd konfiguracji i kodu klienta pod kątem sekretów; URL API/socket pozostaje konfiguracją publiczną klienta, nie magazynem sekretów.
 
@@ -452,7 +457,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 8.2 — UI ≠ autoryzacja; bez dublowania reguł
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Potwierdzenie, że guardy i ukrywanie kontrolek nie zastępują API oraz że klient nie utrzymuje drugiej, sprzecznej kopii reguł host/inmate/superadmin.
 
@@ -464,6 +469,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 ---
 
 ## MILESTONE — Klient bez sekretów i bez udawania authz
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 8. Granica zaufania klienta jest domknięta względem normy docs/SPEC. Brak dalszej fazy w tym major — milestone zamykający całość projektu frontend **nie** jest stosowany (decyzja wywiadu).
 

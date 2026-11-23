@@ -1,0 +1,49 @@
+{
+  "auth": {
+    "verify": {
+      "success": "Session verified."
+    },
+    "sessionRequired": "Authentication required. Please sign in.",
+    "loginSuccess": "User logged in correctly.",
+    "invalidCredentials": "Incorrect login data.",
+    "authError": "Internal server error.",
+    "logoutSuccess": "Logged out correctly.",
+    "registerSuccess": "User successfully registered. Now you can sign in."
+  },
+  "authz": {
+    "roleMissing": "User has no assigned role.",
+    "denied": "You do not have permission to perform this action.",
+    "household": {
+      "denied": {
+        "user": "You don't have permission. This action is only for inmates or hosts.",
+        "superadmin": "You don't have permission. Only hosts and inmates can perform this action."
+      }
+    },
+    "host": {
+      "denied": {
+        "inmate": "This action is reserved for hosts. Contact your host.",
+        "user": "Create a household to perform this action.",
+        "superadmin": "Create a household to perform this action."
+      }
+    },
+    "inmate": {
+      "denied": {
+        "host": "This action is only for inmates. You don't have permission.",
+        "user": "You don't have enough permission. Create a household or join an existing one."
+      }
+    },
+    "user": {
+      "denied": {
+        "host": "This action is only for new users.",
+        "inmate": "This action is only for new users."
+      }
+    },
+    "superadmin": {
+      "denied": {
+        "host": "You don't have enough permission. Contact the site administrator.",
+        "inmate": "You don't have enough permission. Contact the site administrator.",
+        "user": "You don't have enough permission. Contact the site administrator."
+      }
+    }
+  }
+}

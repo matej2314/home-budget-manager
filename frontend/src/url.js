@@ -1,3 +1,4 @@
+/** Publiczny origin API/socket — nie magazyn sekretów (F-14 / docs/katalog_env). */
 export const serverUrl = 'https://budgetapi.msliwowski.net';
 export const socketPath = 'https://budgetapi.msliwowski.net';
 

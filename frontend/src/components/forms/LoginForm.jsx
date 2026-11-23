@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useAuth } from '../../store/authContext';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-import { showErrorToast } from '../../configs/toastify';
+import { showErrorToast, showInfoToast } from '../../configs/toastify';
+import { resolveApiMessage } from '../../utils/asyncUtils/parseApiEnvelope';
 import { isValidPassword, isValidEmail } from '../../utils/validation';
 import LoadingModal from '../modals/LoadingModal';
 import SubmitBtn from './internal/SubmitBtn';
@@ -37,6 +38,16 @@ export default function LoginForm() {
         await login(data);
         setSended(true);
     };
+
+    useEffect(() => {
+        if (!sended || loginStatus.isLoading) return;
+        if (loginStatus.message) {
+            showInfoToast(resolveApiMessage(loginStatus.message));
+        }
+        if (loginStatus.error) {
+            showErrorToast(resolveApiMessage(loginStatus.error));
+        }
+    }, [sended, loginStatus]);
 
     return (
         <div className='w-full h-fit flex flex-col justify-center items-center gap-2'>

@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { useAuth } from './authContext';
 import { apiBaseUrl } from "../url";
 import fetchData from '../utils/asyncUtils/fetchData';
+import { registerBoardRefresh } from '../utils/asyncUtils/boardRefreshBridge';
 
 export const DataContext = createContext({
     data: {},
@@ -52,6 +53,12 @@ export const DataProvider = ({ children }) => {
             fetchBoardData();
         };
     }, [isAuthenticated]);
+
+    useEffect(() => {
+        registerBoardRefresh((filter) => {
+            fetchBoardData(filter);
+        });
+    }, []);
 
     return (
         <DataContext.Provider

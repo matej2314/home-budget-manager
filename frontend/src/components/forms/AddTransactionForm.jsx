@@ -71,7 +71,10 @@ export default function AddTransactionForm({ onClose }) {
             handleApiResponse(saveAction, {
                 onSuccess: async (envelope) => {
                     showInfoToast(
-                        resolveApiMessage(tForms, envelope.messageKey, 'addTransaction.addTransactionCorrect')
+                        resolveApiMessage(
+                            envelope.messageKey,
+                            tForms('addTransaction.addTransactionCorrect'),
+                        ),
                     );
                     await fetchTransactions();
                     await refreshData();
@@ -79,7 +82,10 @@ export default function AddTransactionForm({ onClose }) {
                 },
                 onError: (envelope) => {
                     showErrorToast(
-                        resolveApiMessage(tForms, envelope.messageKey, 'addTransaction.addTransactionError')
+                        resolveApiMessage(
+                            envelope.messageKey,
+                            tForms('addTransaction.addTransactionError'),
+                        ),
                     );
                 }
             });

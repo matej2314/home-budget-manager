@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../store/authContext';
 import { showInfoToast, showErrorToast } from '../../configs/toastify';
+import { resolveApiMessage } from '../../utils/asyncUtils/parseApiEnvelope';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import SignUpCookiesSettings from '../SignUpCookiesSettings';
@@ -67,13 +68,16 @@ export default function SignUpForm() {
             const timer = setTimeout(() => {
                 navigate('/');
             }, 700);
-            showInfoToast(t("signUpForm.positiveMessage"));
+            showInfoToast(
+                resolveApiMessage(signUpStatus.message, t('signUpForm.positiveMessage')),
+            );
             return () => clearTimeout(timer);
         }
 
-
         if (sended && signUpStatus.error) {
-            showErrorToast(t("signUpForm.negativeMessage"))
+            showErrorToast(
+                resolveApiMessage(signUpStatus.error, t('signUpForm.negativeMessage')),
+            );
         }
     }, [signUpStatus, sended, navigate, t]);
 

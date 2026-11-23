@@ -4,7 +4,6 @@ import fetchData from "../utils/asyncUtils/fetchData";
 import { registerAuthFailureHandlers } from '../utils/asyncUtils/authFailureBridge';
 import { showErrorToast } from '../configs/toastify';
 import { apiBaseUrl } from '../url';
-import i18n from '../configs/i18n';
 import { resolveApiMessage } from '../utils/asyncUtils/parseApiEnvelope';
 
 export const AuthContext = createContext();
@@ -163,18 +162,12 @@ export const AuthProvider = ({ children }) => {
             onUnauthorized: async (messageKey) => {
                 // checkSession /auth/verify bez cookie też jest 401 — bez toasta dla gościa
                 if (!isAuthenticatedRef.current) return;
-                showErrorToast(messageKey || 'Session expired');
+                showErrorToast(resolveApiMessage(messageKey, messageKey || 'Session expired'));
                 await logoutRef.current();
             },
             onForbidden: (messageKey) => {
                 // 403 z API (np. authz.*) — widoczny toast i18n; SoT nadal middleware
-                showErrorToast(
-                    resolveApiMessage(
-                        (key, opts) => i18n.t(key, { ns: 'common', ...opts }),
-                        messageKey,
-                        messageKey || 'Forbidden',
-                    ),
-                );
+                showErrorToast(resolveApiMessage(messageKey, messageKey || 'Forbidden'));
             },
         });
     }, []);
