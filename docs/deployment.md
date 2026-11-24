@@ -1,7 +1,7 @@
 ---
-wersja: 6
+wersja: 7
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # Wdrożenie i operacje — Home Budget Manager
@@ -46,7 +46,7 @@ Wymagane kategorie env backendu (orientacyjnie): port (`SERV_PORT`), `JWT_SECRET
 ## Local — ścieżka deweloperska
 
 1. MySQL dostępny lokalnie lub przez sieć (spójne dane połączenia w `.env`, w tym URL/połączenie wymagane przez Prisma).
-2. **Backend:** w `backend/` → `npm install` → (po przejściu na ESM: `"type": "module"`) → (po R6) wygeneruj klienta i **zastosuj migracje** Prisma Migrate na bazie deweloperskiej → `npm run start` (nodemon / `server.js`).
+2. **Backend:** w `backend/` → `npm install` → wygeneruj klienta Prisma i **zastosuj migracje** Prisma Migrate na bazie deweloperskiej (`DATABASE_URL`) → `npm run start` / `npm run dev`.
 3. **Frontend:** w `frontend/` → `npm install` → `npm run dev` (Vite, typowo `:5173`; origin na whitelist CORS).
 4. Opcjonalnie: build frontu `npm run build` / podgląd jak w README.
 
@@ -60,7 +60,7 @@ Skrót z root `docker-compose.yml`:
 
 - Build kontekstów `./backend`, `./frontend` (katalogi procesów w rootcie repo — małe litery).
 - `restart: always`.
-- Backend: port 5053, volume `.env`, `DB_HOST=main_db`; logi aplikacji na **stdout** (as-is może jeszcze montować `logs/` — do usunięcia przy refaktorze loggera).
+- Backend: port 5053, volume `.env`, `DB_HOST=main_db`; logi aplikacji na **stdout** (norma observability — bez volume `logs/` jako docelowej ścieżki).
 - Frontend: port hosta 5052 → 80 w kontenerze NGINX.
 
 Obrazy:
@@ -79,7 +79,7 @@ push → main
 
 Bramka jakości przed pushem/mergem zmian backendu: testy Jest wg `testy.md`. Fail CI/Jenkins = sygnał operacyjny (`observability.md`).
 
-## Migracje przy deployu (stan docelowy po R6)
+## Migracje przy deployu (obowiązkowe — R6 wdrożone)
 
 | Krok | Norma |
 |------|--------|
@@ -87,13 +87,13 @@ Bramka jakości przed pushem/mergem zmian backendu: testy Jest wg `testy.md`. Fa
 | Źródło | Tylko migracje z repo — bez ręcznego DDL na prod jako procesu |
 | Fail migracji | Blokuje uznanie deployu za udany; diagnostyka z logów CLI / Jenkins |
 
-Do czasu domknięcia R6 checklist poniżej nadal obowiązuje; krok migracji Prisma staje się obowiązkowy wraz z wprowadzeniem ORM.
+**Sync 2026-11-24:** migracje Prisma są częścią normalnego deployu, nie „stanem po przyszłym R6”.
 
 ## Checklist po deployu (smoke)
 
 Po wdrożeniu (lub po zmianach kontraktu `/api/v1`):
 
-1. (Po R6) Migracje Prisma zastosowane na `main_db` — schemat zgodny z repo.
+1. Migracje Prisma zastosowane na `main_db` — schemat zgodny z repo.
 2. `GET /api/v1/health` → **200** / status ok.
 3. Smoke logowania: `POST /api/v1/auth/login` (konto testowe / stagingowe) → cookie `SESSID`.
 4. Opcjonalnie: otwarcie SPA na domenie frontu + wywołanie chronionego zasobu (np. verify).
@@ -113,4 +113,4 @@ Po wdrożeniu (lub po zmianach kontraktu `/api/v1`):
 - Pełna konfiguracja jobów Jenkins (krok po kroku na serwerze).
 - Hardening phpMyAdmin.
 - Staging environment.
-- Migracje schematu DB jako formalny tool (jeśli pojawią się — osobna decyzja / docs).
+- Pełny playbook cutoveru dual mount (major Faza 10) i portów I/O (Faza 11) — w major planie backendu.

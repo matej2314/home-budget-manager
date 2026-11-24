@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 4
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-23
+data_modyfikacji: 2026-11-24
 ---
 
 # Słownik — Home Budget Manager
@@ -16,9 +16,9 @@ Nie obejmuje osobnego glossariusza bibliotek (Express, Zustand, …) — to poza
 |-------|-----------|
 | **Użytkownik** (*user*) | Zarejestrowane konto. W węższym sensie roli: konto **bez** gospodarstwa. |
 | **Host** (*host*) | Twórca gospodarstwa; zarządza składem domu (m.in. usuwanie domowników). |
-| **Domownik** (*inmate*) | Członek gospodarstwa (norma docs). **Alias historyczny w kodzie:** *mate*. Preferencja docs: **inmate** / domownik. |
+| **Domownik** (*inmate*) | Członek gospodarstwa. Preferencja docs i **stan w kodzie (R1):** **inmate** / domownik. Alias historyczny *mate* — tylko w starszych notatkach. |
 | **Superadmin** (*superadmin*) | Administrator witryny; operacje panelu i części zasobów otoczki. |
-| **Grupa mates (kod)** | Historyczna grupa middleware = `host` + `mate`. W kontrakcie docs: `host \| inmate`. Do usunięcia w refaktorze R1. |
+| **Grupa household (kod)** | Middleware `verifyRole('household')` = `host` + `inmate`. Historyczna nazwa grupy `mates` usunięta w R1. |
 | **Sesja** (*SESSID*) | Cookie HTTP z JWT identyfikującym zalogowanego użytkownika. |
 
 ## Gospodarstwo i członkostwo
@@ -56,11 +56,11 @@ Nie obejmuje osobnego glossariusza bibliotek (Express, Zustand, …) — to poza
 
 | Hasło | Definicja |
 |-------|-----------|
-| **Prefiks API** (`/api/v1`) | Norma ścieżek HTTP w docs; zmiana względem kodu bez prefiksu — do wdrożenia w refaktorze. |
+| **Prefiks API** (`/api/v1`) | Norma ścieżek HTTP; SPA woła wyłącznie v1. Backend do cutoveru (major Faza 10) może jeszcze montować legacy równolegle. |
 | **Envelope** | Typowy kształt JSON: `status` (`success` \| `error`) + `message` (+ pola dodatkowe). |
 | **Powierzchnia HTTP** | REST + multipart jako główny kontrakt SPA ↔ API. |
 | **Powierzchnia WebSocket** | Socket.io: zdarzenia m.in. `connect_success`, `notification`, `newMessage`, `invitation`, `initial_budget`, `balance_update`, `error`. |
-| **Powierzchnia e-mail** | As-is: e-mail jako identyfikator konta. Kierunek: kanał wychodzący (np. zaproszenia). |
+| **Powierzchnia e-mail** | E-mail jako identyfikator konta; kanał wychodzący przy zaproszeniach (SMTP, K-14; best-effort K-13). |
 | **OAuth / Bearer** | Nie są mechanizmem v1; auth = cookie `SESSID`. |
 
 ## Rdzeń vs otoczka (produkt)
@@ -85,7 +85,7 @@ Nie obejmuje osobnego glossariusza bibliotek (Express, Zustand, …) — to poza
 | Powiadomienie | *notice*, event `notification` |
 | Kategoria transakcji | *actioncat*, *action category* |
 
-Przy sprzeczności nazwy w kodzie z tym słownikiem: **docs + plan refaktoru** wygrywają dla utrzymania; implementacja dogania (R1 i porządek API).
+Przy sprzeczności nazwy w kodzie z tym słownikiem: **docs + major/SPEC** wygrywają dla utrzymania; pozostały drift (np. dual mount do Fazy 10, kosmetyka `Mates*` w UI) jest świadomy i opisany w [architektura.md](./architektura.md).
 
 ## Powiązane
 

@@ -1,0 +1,43 @@
+# Lokalna MySQL + migracje Prisma + seed demo (target migrate w backend/Dockerfile).
+# Uruchomienie: docker compose -f docker-compose.db.yml up -d --build
+# Backend na hoście: DATABASE_URL / DB_* jak w backend/.env.example (host 127.0.0.1).
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: home-budget-mysql
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: ${DB_NAME:-home_budget}
+      MYSQL_USER: ${DB_USER:-budget_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-budget_password}
+    volumes:
+      - home_budget_mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" || exit 1",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  migrate:
+    build:
+      context: ./backend
+      target: migrate
+    container_name: home-budget-migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: mysql://${DB_USER:-budget_user}:${DB_PASSWORD:-budget_password}@db:3306/${DB_NAME:-home_budget}
+    restart: "no"
+
+volumes:
+  home_budget_mysql_data:

@@ -1,18 +1,20 @@
 ---
-wersja: 5
+wersja: 6
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-23
+data_modyfikacji: 2026-11-24
 ---
 
 # Architektura katalogów i plików — Home Budget Manager
 
 ## Cel dokumentu
 
-Propozycja i utrwalenie **układu katalogów** spójnego ze stylem z `architektura.md`: modularny monolit warstwowy, lekki porządek (bez wywracania struktury do pionowych `modules/<feature>`).
+Utrwala **układ katalogów** spójny ze stylem z `architektura.md`: modularny monolit warstwowy, lekki porządek (bez wywracania struktury do pionowych `modules/<feature>`).
 
-Dokument ma **dwa bloki**: stan obecny (as-is) oraz docelowy po lekkim uporządkowaniu. Nie zastępuje kontraktu I/O ani planu wdrożenia refaktoru plik-po-pliku.
+Dokument ma **dwa bloki**: **Blok B = stan faktyczny** (po lekkim refaktorze) oraz **Blok A = snapshot historyczny** sprzed R1–R6/ESM (dla kontekstu driftu). Nie zastępuje kontraktu I/O ani planu wdrożenia.
 
-Nazwy katalogów procesów w repo: **`backend/`** i **`frontend/`** (małe litery) — zgodne z aktualnym drzewem; historyczne zapisy `Backend/` / `Frontend/` w starszych notatkach oznaczają te same katalogi.
+**Sync 2026-11-24:** Blok B opisuje żywe drzewo; Blok A nie jest już „stanem obecnym”.
+
+Nazwy katalogów procesów w repo: **`backend/`** i **`frontend/`** (małe litery).
 
 ## Zasada: styl → katalogi
 
@@ -20,8 +22,8 @@ Nazwy katalogów procesów w repo: **`backend/`** i **`frontend/`** (małe liter
 |----------------------------|-------------------------|
 | Warstwy `routes → controllers → services → database` | **Poziomy** układ folderów w `backend/` |
 | Rdzeń vs otoczka | Nazewnictwo / grupowanie w `services/` (i odpowiadające moduły w `database/`), nie osobne repo |
-| ES modules | `backend/package.json` z `"type": "module"`; import/export w całym procesie API (stan docelowy) |
-| Prisma ORM | `prisma/schema.prisma` + `prisma/migrations/`; klient i dostęp wyłącznie przez warstwę `database/` |
+| ES modules | `backend/package.json` z `"type": "module"`; import/export w całym procesie API (**wdrożone**) |
+| Prisma ORM | `prisma/schema.prisma` + `prisma/migrations/`; klient i dostęp wyłącznie przez warstwę `database/` (**R6 wdrożone**) |
 | WS, cron, OCR = adaptery | `configs/` (websocket, tesseract), `tasks/`, `store/` (multer) — bez top-level `workers/` w v1 |
 | Frontend: Zustand + Context | Oba w **jednym** katalogu stanu (`store/`), jak dziś |
 | Uploady w backend | `public/`, `app-images/` pozostają przy API |
@@ -30,9 +32,9 @@ Nazwy katalogów procesów w repo: **`backend/`** i **`frontend/`** (małe liter
 
 ---
 
-## Blok A — as-is
+## Blok A — snapshot historyczny (przed lekkim refaktorem)
 
-Układ zbliżony do aktualnego repozytorium (uproszczony; bez `node_modules`).
+**Nie opisuje stanu repo z 2026-11-24.** Zachowany jako odniesienie do tego, co usunięto (CJS, `*Queries`, brak `prisma/` / `services/board/`).
 
 ```text
 home-budget-manager/
@@ -81,18 +83,16 @@ home-budget-manager/
 └── README.md
 ```
 
-### Uwagi do as-is
+### Uwagi do snapshotu A
 
-- Nie każdy obszar API ma osobny podfolder w `services/` (np. zaproszenia, budżet miesięczny, OCR, **board** — logika rozproszona między controller / database / utils).
-- Frontend trzyma **Context i Zustand w `store/`** — to zamierzony wzorzec do utrzymania.
-- Nazewnictwo ról w kodzie może jeszcze używać `mate`; norma docs: `inmate` (bez wymogu osobnego katalogu pod rename).
-- Backend as-is ładuje moduły w **CommonJS** — docelowo ESM (Blok B / `architektura.md`).
+- Historycznie: niepełne `services/`, CommonJS, raw SQL / `*Queries`, rola `mate`, brak `prisma/`.
+- Frontend już wtedy trzymał Context i Zustand w `store/` — wzorzec utrzymany w Bloku B.
 
 ---
 
-## Blok B — docelowe (lekki porządek)
+## Blok B — stan faktyczny (po lekkim refaktorze)
 
-Ten sam szkielet warstw i root monorepo. Zmiany: **domknięcie podfolderów usług**, czytelniejszy podział rdzeń vs otoczka, spójniejsze nazwy obszarów względem `architektura.md`, **ESM**. Bez migracji na feature-modules.
+Żywy układ katalogów w repo: warstwy, podfoldery `services/<obszar>/` (w tym `board/`, `shell/`), **ESM**, **Prisma**. Bez feature-modules.
 
 ```text
 home-budget-manager/
@@ -159,36 +159,35 @@ home-budget-manager/
 └── README.md
 ```
 
-### Co się zmienia względem Bloku A (skrót)
+### Co Blok B domknął względem snapshotu A (skrót)
 
-| Zmiana | Po co |
+| Zmiana | Status |
 |--------|--------|
-| Podfoldery `services/<obszar>/` dla całego rdzenia + `shell/` | Spójność z obszarami z `architektura.md`; łatwiejsze utrzymanie |
-| Jawne `invitations/`, `budget/`, `board/`, `notifications/`, `receipt/` | Domknięcie luk as-is (w tym dashboard `/board`) |
-| `shell/` dla homepage / reviews / gallery / cookiesTour | Oddzielenie otoczki od rdzenia bez nowego stylu architektury |
-| ESM w `backend/` | Jednolity model importów; norma z `architektura.md` |
-| `prisma/` + `database/` na Prisma | ORM zamiast pool/`*Queries`; migracje w repo; relacje FK → `include` w modułach |
-| Front: bez `contexts/` | Zgodne z decyzją: Context zostaje w `store/` |
-| Brak `workers/` | Workery cron/WS — tylko „do rozważenia później” w architekturze |
+| Podfoldery `services/<obszar>/` + `shell/` | **Wdrożone** |
+| Jawne `invitations/`, `budget/`, `board/`, `notifications/`, `receipt/` | **Wdrożone** |
+| ESM w `backend/` | **Wdrożone** |
+| `prisma/` + `database/` na Prisma | **Wdrożone** (R6) |
+| Front: Context + Zustand w `store/` | **Utrzymane** |
+| Brak `workers/` | **Świadomie** (R4 — workery odroczone) |
 
-### Czego drzewo docelowe nie robi
+### Czego drzewo v1 nadal nie robi
 
-- Nie przenosi Prisma Client ani raw SQL do services / controllers ani nie wprowadza warstwy `domain/`.
-- Nie oznacza samo w sobie „cienkich controllerów” — to osobny krok pipeline (**R2**); Blok B to **mapa katalogów i obszarów**.
+- Nie przenosi Prisma Client do services / controllers ani nie wprowadza warstwy `domain/`.
 - Nie dzieli frontu na `features/<name>/` z wymuszonym data-layer.
-- Nie wydziela uploadów poza `backend/` (volumes w deploy to temat `deployment.md`).
+- Nie wydziela uploadów poza `backend/` (volumes — `deployment.md`); port `ObjectStorage` — major Faza 11.
+- Nie usuwa dual mount HTTP (to kod routera — major Faza 10).
 
 ## Relacja do lekkiego refaktoru (R1–R6 + ESM)
 
-| ID | Wpływ na katalogi |
-|----|-------------------|
-| ESM | `package.json` + importy w `backend/`; bez nowej gałęzi folderów |
-| R1 (`inmate`) | Przede wszystkim treści plików / nazwy symboli; drzewo bez osobnej gałęzi |
-| R2 (pipeline) | Przesuwanie logiki między istniejącymi warstwami + nowe pliki w `services/<obszar>/` |
-| R3 (obszary) | Grupowanie jak w Bloku B (`shell/` vs rdzeń, w tym `board/`) |
-| R4 (WS/cron) | Bez nowych katalogów workerów w v1 |
-| R5 (frontend) | Porządek nazw/komponentów w istniejącym układzie `pages` / `components` / `store` |
-| R6 (Prisma) | `prisma/` + API w `database/` (m.in. membership `houseId` NULL + FK); usunięcie `*Queries` / pool ze ścieżek runtime |
+| ID | Wpływ na katalogi | Status |
+|----|-------------------|--------|
+| ESM | `package.json` + importy w `backend/` | Domknięte |
+| R1 (`inmate`) | Treści / symbole; bez osobnej gałęzi folderów | Domknięte |
+| R2 (pipeline) | Logika w `services/<obszar>/` | Domknięte |
+| R3 (obszary) | `shell/` vs rdzeń, w tym `board/` | Domknięte |
+| R4 (WS/cron) | Bez katalogów workerów w v1 | Domknięte (w procesie) |
+| R5 (frontend) | Układ `pages` / `components` / `store` | Domknięte |
+| R6 (Prisma) | `prisma/` + API w `database/` | Domknięte |
 
 ## Jak czytać dalej
 

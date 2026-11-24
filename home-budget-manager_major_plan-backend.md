@@ -1,8 +1,8 @@
 # Home Budget Manager — major plan (backend)
 
 **Źródła:** `docs/` oraz `spec/SPEC-*.md` (przede wszystkim SPEC-BACKEND, SPEC-KOMUNIKACJA, SPEC-BEZPIECZENSTWO, SPEC-DANE, SPEC-TESTY).  
-**Zakres tego pliku:** wyłącznie backend (`backend/`) — aktualizacja zależności, ESM, refaktor do stanu docelowego z dokumentacji i SPEC.  
-**Poza planem:** frontend (`frontend/`, w tym R5), playbook CI/Jenkins, workery poza procesem API, metryki / OTel / Sentry.
+**Zakres tego pliku:** wyłącznie backend (`backend/`) — aktualizacja zależności, ESM, refaktor do stanu docelowego z dokumentacji i SPEC, cutover legacy HTTP oraz jawne porty I/O pod późniejsze adaptery chmurowe.  
+**Poza planem:** frontend (`frontend/`, w tym R5), playbook CI/Jenkins, workery poza procesem API, metryki / OTel / Sentry, wdrożenie SDK AWS (SES/S3/…) — dopiero po Fazie 11, osobną decyzją.
 
 **Statusy (fazy / kroki):** `NIE_ROZPOCZĘTY` | `W_TRAKCIE` | `WYKONANY`  
 **Milestone:** domyślnie bez statusu; po spełnieniu DoD → wyłącznie `OSIĄGNIĘTY`  
@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-24 — dopisek Fazy 10 + Fazy 11 (`NIE_ROZPOCZĘTY`):** po audycie architektury (cutover legacy HTTP; jawne porty I/O przed AWS). Faza 10 **przejmuje** usunięcie dual mount, które w historii Fazy 4 / Kroku 4.1 zapisano jako „poza tym major” — treść `WYKONANY` Fazy 4 bez zmian; nowa faza z odniesieniem. Faza 11 wydziela porty `MailSender` / `ObjectStorage` / `OcrEngine` (adaptery lokalne SMTP + dysk + Tesseract); bez SDK AWS i bez kontenera DI.
 - **2026-11-24 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza9-piramida-testow.md` (FAZA 1, KROK 1–4) oznaczono Fazę 9 (kroki 9.1–9.2) jako `WYKONANY`. Brak milestone zamykającego po Fazie 9 (decyzja major / ślad feature planu).
 - **2026-11-23 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza7-prisma-r6.md` (FAZA 1, KROK 1–5 → `WYKONANY`) oznaczono Fazę 7 (kroki 7.1–7.3) jako `WYKONANY` oraz milestone „Dane wyłącznie przez Prisma” jako `OSIĄGNIĘTY`. Start Fazy 8 poza tym syncem.
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza6-adaptery-cron-ws.md` (FAZA 1, KROK 1–3, review zaakceptowany) oznaczono Fazę 6 (kroki 6.1–6.2) jako `WYKONANY` oraz milestone „Adaptery bez omijania warstwy aplikacji” jako `OSIĄGNIĘTY`. Start Fazy 7 poza tym syncem.
@@ -595,3 +596,143 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 - Zasada DoD testów (w tym scoped per faza przy dalszym major / zmianach) jest przyjęta i stosowana.
 
 <!-- Brak MILESTONE zamykającego po Fazie 9 — decyzja wywiadu. -->
+
+---
+
+## Faza 10 — Cutover legacy HTTP (wyłącznie `/api/v1`)
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Usunięcie równoległego montażu ścieżek legacy (bez prefiksu) tak, by powierzchnia HTTP API była dostępna **wyłącznie** pod `/api/v1/...`. Klient SPA już woła v1 (`frontend/src/url.js` — major frontend Faza 4); dual mount w `backend/routes/index.js` jest zbędnym długiem kontraktu (anty-pattern „ścieżki poza v1”, B-16 / K-1).
+
+**Refaktor względem:** Faza 4 / Krok 4.1 (WYKONANY) — dual mount v1 + legacy; oraz milestone „Kontrakt API v1 (z dual mount legacy)” (`OSIĄGNIĘTY`), którego DoD świadomie **nie** obejmowało usunięcia legacy. Cel: domknięcie cutoveru po stronie API bez przepisywania historii Fazy 4.
+
+**DoD (faza):**
+
+- `setupRoutes` montuje handlery API wyłącznie pod `/api/v1...` (oraz `/api/v1/health`); brak `app.use('/auth'|'/house'|…)` bez prefiksu.
+- Żądanie na typową ścieżkę legacy (np. `POST /auth/login`) nie obsługuje tego samego kontraktu co v1 (oczekiwane: brak trasy / 404 — bez utrzymywania aliasu).
+- Testy foundation / kontraktu nie wymagają dual mount; asercje T-5 i scoped tej fazy używają wyłącznie `/api/v1`.
+- Scoped testy cutoveru istnieją i są zielone (T-15).
+
+### Krok 10.1 — Usunięcie montażu legacy w routerze
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** W `backend/routes/index.js` zostawić wyłącznie montaż pod `/api/v1${path}` (plus health pod v1). Bez trwałego aliasu i bez feature-flag „legacy on”.
+
+**DoD (krok):**
+
+- Kod montażu nie rejestruje ścieżek legacy as-is dla zestawu routerów API.
+- Komentarz / dokumentacja w kodzie nie obiecuje dual mount jako normy.
+
+### Krok 10.2 — Testy: v1 działa, legacy nie jest kontraktem
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Aktualizacja scoped / foundation (m.in. dotychczasowy smoke dual mount) — asercja sukcesu na `/api/v1/...` oraz brak obowiązku utrzymania legacy. Bez osłabiania T-5.
+
+**DoD (krok):**
+
+- Testy nie asertują 200 na ścieżkach legacy jako normy.
+- Co najmniej jeden test potwierdza, że legacy nie jest już równoważnym kontraktem (404 lub brak trasy).
+- Komenda testów w `backend/` (zakres fazy) jest zielona.
+
+### Krok 10.3 — Spójność kontraktu z docs
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Po cutoverze w kodzie: docs komunikacji opisują wyłącznie `/api/v1` jako żywy montaż (bez „SPA jeszcze nie na v1”); anty-pattern dual mount oznaczony jako zamknięty wyjątek historyczny.
+
+**DoD (krok):**
+
+- `docs/dokumentacja_komunikacji.md` (i skróty w powiązanych docs, jeśli ruszane) nie twierdzą, że dual mount jest stanem docelowym ani że SPA wciąż zależy od legacy.
+- Brak nowych ścieżek poza `/api/v1`.
+
+---
+
+## MILESTONE — API wyłącznie pod `/api/v1`
+
+**Opis:** Bramka po Fazie 10. Legacy HTTP usunięte; kontrakt HTTP klienta i API to jeden prefiks. Wolno wejść w Fazę 11 (porty I/O).
+
+**DoD (milestone):**
+
+- Faza 10 ma status `WYKONANY`.
+- Powierzchnia HTTP API bez dual mount legacy.
+- Prowadzący prace akceptuje start Fazy 11.
+
+---
+
+## Faza 11 — Porty I/O przed adapterami chmurowymi
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Wydzielenie **jawnych portów** na brzegu infrastruktury: wysyłka e-mail, magazyn obiektów (awatary / ekrany galerii), silnik OCR — tak, by services nie zależały bezpośrednio od nodemailer / `multer.diskStorage` / Tesseract. Adaptery **v1** pozostają lokalne (SMTP, dysk, Tesseract w procesie). Bez kontenera DI (zakaz SPEC-BACKEND), bez SDK AWS, bez workerów.
+
+**Refaktor względem:** Faza 8 (WYKONANY) — `configs/mailTransport.js` + `services/invitations/sendInvitationEmail.js`; adaptery uploadu w `store/` oraz static `/screens` (`app-images`); OCR (receipt + config Tesseract) używane ze ścieżki HTTP/services. Cel: ten sam pipeline warstw, węższy kontrakt I/O pod późniejszą podmianę adapterów (np. SES / S3).
+
+**DoD (faza):**
+
+- Istnieją porty (moduł / typ / małe API) co najmniej: **MailSender**, **ObjectStorage**, **OcrEngine**.
+- Domyślne adaptery v1: SMTP (obecne zachowanie K-13/K-14), magazyn dyskowy (obecne ścieżki awatarów / screens), Tesseract (obecne zachowanie OCR) — bez zmiany semantyki produktu.
+- Services zaproszeń / uploadów / OCR wołają porty (lub cienkie fasady portów), nie importują SDK transportu „na sztywno” w regułach domenowych.
+- Brak kontenera DI / IoC; brak zależności AWS w `package.json` w tej fazie.
+- Scoped testy z fake/stub portów (unit) istnieją i są zielone (T-15).
+
+### Krok 11.1 — Port `MailSender` + adapter SMTP
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Wyodrębnić kontrakt wysyłki (np. `send({ to, subject, text|html })`) i zaimplementować adapter na obecnym `getMailTransporter` / nodemailer. `sendInvitationEmail` (lub cienka warstwa) korzysta z portu; awaria SMTP nadal ≠ rollback zaproszenia (K-13).
+
+**DoD (krok):**
+
+- Service zaproszeń nie tworzy transportu nodemailer inline.
+- Brak SMTP w env → ten sam best-effort skip co dziś.
+- Unit z fake `MailSender` przechodzi.
+
+### Krok 11.2 — Port `ObjectStorage` + adapter dyskowy
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Wyodrębnić zapis/odczyt/listowanie obiektów używanych przez awatary i galerię (`store/avatarStorage`, `store/screensStorage`, static `/screens`). Adapter dyskowy zachowuje ścieżki v1 (`public/user-photos`, `app-images`).
+
+**DoD (krok):**
+
+- Upload awatara / screena idzie przez port (multer może zostać na brzegu HTTP jako parser multipart — zapis bajtów przez storage port).
+- Brak nowego modelu URL „chmurowego”; publiczne ścieżki jak w v1.
+- Unit z fake storage przechodzi dla co najmniej jednej ścieżki zapisu.
+
+### Krok 11.3 — Port `OcrEngine` + adapter Tesseract
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Wyodrębnić `recognizeAmount(buffer|path) → value` (lub równoważne) z obecnej ścieżki receipt/OCR. Adapter woła Tesseract w procesie; auth `SESSID` na HTTP bez zmian (K-8).
+
+**DoD (krok):**
+
+- Service / handler OCR nie importuje Tesseract bezpośrednio w warstwie reguł — tylko port.
+- Zachowanie endpointu OCR (auth, multipart) bez regresji kontraktu.
+- Unit z fake OCR przechodzi.
+
+### Krok 11.4 — Granice importów i scoped regresja
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Audyt importów: controllers/routes nie znają adapterów chmurowych ani nodemailer/Tesseract; configs mogą składać adaptery domyślne. Zielona suita scoped fazy + smoke zaproszenie / upload / OCR wg T-15.
+
+**DoD (krok):**
+
+- Lista zakazanych importów w services domenowych (nodemailer, `@aws-sdk/*`, ciężki Tesseract) jest egzekwowana testem layout/import lub równoważnym.
+- Komenda testów zakresu fazy jest zielona.
+
+---
+
+## MILESTONE — Porty I/O gotowe pod późniejsze adaptery chmurowe
+
+**Opis:** Bramka po Fazie 11. Lokalne adaptery stoją za portami; wdrożenie AWS (SES/S3/…) jest **poza** tym major — osobna decyzja / plan, bez ruszania reguł domenowych.
+
+**DoD (milestone):**
+
+- Faza 11 ma status `WYKONANY`.
+- Trzy porty z DoD fazy istnieją z adapterami v1.
+- Prowadzący prace akceptuje, że SDK chmurowe nie wchodzi „przy okazji” do services.

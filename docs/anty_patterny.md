@@ -1,7 +1,7 @@
 ---
-wersja: 6
+wersja: 7
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # Anty-patterny — Home Budget Manager
@@ -23,15 +23,15 @@ Forma: hasło → dlaczego boli → co robić zamiast. Odniesienia do kierunku r
 
 ## 3. Drift ról (`mate` vs `inmate`, grupa `mates`)
 
-**Dlaczego boli:** Docs, JWT, middleware i UI mówią różnymi językami. Błędy 403, regresje przy refaktorze, mylące portfolio/code review.
+**Dlaczego boli:** Docs, JWT, middleware i UI mówią różnymi językami. Błędy 403, regresje, mylące review.
 
-**Zamiast:** Jedna norma: `inmate` + spójne grupy uprawnień (**R1**). Nie dodawać kolejnych aliasów „na chwilę”.
+**Zamiast:** Jedna norma: `inmate` + `verifyRole('household')` (**R1 — domknięte w kodzie**). Nie przywracać aliasów `mate` / `mates`.
 
 ## 4. Publiczny OCR / endpoint bez JWT „bo tak wyszło”
 
 **Dlaczego boli:** Koszt CPU (Tesseract), abuse uploadów, niespójność z resztą API chronionego sesją.
 
-**Zamiast:** OCR za `SESSID` (i sensowną rolą domu), limity multipart; traktować jako świadomy wyjątek tylko jeśli produktowo uzasadniony i opisany w kontrakcie.
+**Zamiast:** OCR za `SESSID` (norma K-8 — **wdrożone**); limity multipart. Nie cofać auth na OCR.
 
 ## 5. Mieszane PL/EN w `message` jako kontrakt dla UI
 
@@ -73,7 +73,7 @@ Forma: hasło → dlaczego boli → co robić zamiast. Odniesienia do kierunku r
 
 **Dlaczego boli:** Rozjechanie normy docs z klientem; trudniejsze wersjonowanie API; „wieczne” legacy.
 
-**Zamiast:** Norma docelowa = montaż i wołanie pod `/api/v1`. **Wyjątek przejściowy:** dual mount tych samych handlerów pod legacy as-is **oraz** `/api/v1` do cutoveru SPA — bez dodawania *nowych* ścieżek poza v1. Po cutoverze usuń legacy. Szczegóły: [dokumentacja_komunikacji.md](./dokumentacja_komunikacji.md).
+**Zamiast:** Norma = montaż i wołanie pod `/api/v1`. SPA już woła v1; dual mount w API to dług do usunięcia (major Faza 10) — bez dodawania *nowych* ścieżek legacy. Szczegóły: [dokumentacja_komunikacji.md](./dokumentacja_komunikacji.md).
 
 ---
 

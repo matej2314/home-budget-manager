@@ -1632,27 +1632,27 @@
     "semantic_hash": ""
   },
   "docs/README.md": {
-    "mtime": 1795168621.235335,
-    "seen": 1795171136.2155921,
-    "ast_hash": "14b1ba97647cb95b803f1fe19997d2a7",
+    "mtime": 1795529250.1515517,
+    "seen": 1795529263.5027266,
+    "ast_hash": "a0c8d6356f525480e969ad3e0dc4e2c6",
     "semantic_hash": ""
   },
   "docs/anty_patterny.md": {
-    "mtime": 1795168621.235373,
-    "seen": 1795171136.2155929,
-    "ast_hash": "a4f2535a2ad40336323d42b1f641da79",
+    "mtime": 1795529231.5488424,
+    "seen": 1795529263.5027277,
+    "ast_hash": "ab7eff0a040e3a38cf54255c353761c2",
     "semantic_hash": ""
   },
   "docs/architektura.md": {
-    "mtime": 1795434834.07193,
-    "seen": 1795434866.8567684,
-    "ast_hash": "a1cb9086dfb9c93e11cd85715cd47ea7",
+    "mtime": 1795529111.2234862,
+    "seen": 1795529263.5027282,
+    "ast_hash": "49f0a3579fdbe0561848a14f067c21d3",
     "semantic_hash": ""
   },
   "docs/architektura_katalogi_pliki.md": {
-    "mtime": 1795434839.3098943,
-    "seen": 1795434866.8567696,
-    "ast_hash": "201d04b36faf1ee3bf3dcbee98dd46e9",
+    "mtime": 1795529208.8108299,
+    "seen": 1795529263.502729,
+    "ast_hash": "3e55515677916e5991cb6ad590230482",
     "semantic_hash": ""
   },
   "docs/bezpieczenstwo.md": {
@@ -1668,27 +1668,27 @@
     "semantic_hash": ""
   },
   "docs/deployment.md": {
-    "mtime": 1795168621.2356272,
-    "seen": 1795171136.2155962,
-    "ast_hash": "24df77749bc0a77d06b784f063e22bf3",
+    "mtime": 1795529222.3417387,
+    "seen": 1795529263.5027628,
+    "ast_hash": "85ffc5d3f14293d972d5e84621879e71",
     "semantic_hash": ""
   },
   "docs/dictionary.md": {
-    "mtime": 1795434844.8077486,
-    "seen": 1795434866.856804,
-    "ast_hash": "b07f60ac6a6e87fb2d7e0ca9a48fa7f9",
+    "mtime": 1795529139.4092965,
+    "seen": 1795529263.5027635,
+    "ast_hash": "346942268bd47468b76de6cc973b579e",
     "semantic_hash": ""
   },
   "docs/dokumentacja_komunikacji.md": {
-    "mtime": 1795168621.2357247,
-    "seen": 1795171136.2155976,
-    "ast_hash": "b34ec923f33e8c146a05fe4b71fc1e6e",
+    "mtime": 1795529164.5731273,
+    "seen": 1795529263.502764,
+    "ast_hash": "d2c82da4023aa18de9e759c6e402a671",
     "semantic_hash": ""
   },
   "docs/dokumentacja_koncepcyjna.md": {
-    "mtime": 1795168621.2357664,
-    "seen": 1795171136.215598,
-    "ast_hash": "75a682d9f02738ada7c421997cea4cbc",
+    "mtime": 1795529129.4733634,
+    "seen": 1795529263.5027647,
+    "ast_hash": "0f1a980d9ec7d818c6329b09ac62b250",
     "semantic_hash": ""
   },
   "docs/i18n_kontrakt_ui.md": {
@@ -1698,21 +1698,21 @@
     "semantic_hash": ""
   },
   "docs/katalog_env.md": {
-    "mtime": 1795518104.1749277,
-    "seen": 1795518518.7648065,
-    "ast_hash": "f84eeb26bd04ca1295ca124530169594",
+    "mtime": 1795529236.6766424,
+    "seen": 1795529263.5027814,
+    "ast_hash": "355f4c1e8dff07a0ef2056ba8d9fd040",
     "semantic_hash": ""
   },
   "docs/model_danych.md": {
-    "mtime": 1795434804.1761322,
-    "seen": 1795434866.8568692,
-    "ast_hash": "69d8ff285f12deabe1b108f6c3cf9fce",
+    "mtime": 1795529189.2349615,
+    "seen": 1795529263.5027823,
+    "ast_hash": "6bfcd4aeb1537830fedacc38075704cd",
     "semantic_hash": ""
   },
   "docs/observability.md": {
-    "mtime": 1795168621.2358954,
-    "seen": 1795171136.2156005,
-    "ast_hash": "4ba61a44857ad6883c20306a3ed2443a",
+    "mtime": 1795529261.3394766,
+    "seen": 1795529263.502783,
+    "ast_hash": "6fc22f11e485970d387f39bebc85b33d",
     "semantic_hash": ""
   },
   "docs/testy.md": {
@@ -1734,9 +1734,9 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-backend.md": {
-    "mtime": 1795520828.9657724,
-    "seen": 1795523389.3399289,
-    "ast_hash": "c6fdacbfaead94a2f0957e250825e351",
+    "mtime": 1795529073.5457397,
+    "seen": 1795529263.5030158,
+    "ast_hash": "ac298cf2057c3d93331e036aef956784",
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
@@ -2291,12 +2291,6 @@
     "ast_hash": "eba99cb53e6aff2c8246a95d41f099b8",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_backend-faza9-piramida-testow.md": {
-    "mtime": 1795523101.436236,
-    "seen": 1795523389.3397188,
-    "ast_hash": "e638e84ece5e12d617376df70a0b2e68",
-    "semantic_hash": ""
-  },
   "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza8-email-outbound.md": {
     "mtime": 1795519910.9118338,
     "seen": 1795523389.3398209,
@@ -2355,6 +2349,24 @@
     "mtime": 1795527335.5578127,
     "seen": 1795527448.7566624,
     "ast_hash": "af07660e3ab090c32dc556ffa5a9e69f",
+    "semantic_hash": ""
+  },
+  "docker-compose.db.test.yml": {
+    "mtime": 1795524470.799671,
+    "seen": 1795529263.5027077,
+    "ast_hash": "082c651b0bb993b901b657cd9e994e46",
+    "semantic_hash": ""
+  },
+  "docker-compose.db.yml": {
+    "mtime": 1795443462.7311833,
+    "seen": 1795529263.5027094,
+    "ast_hash": "b869690d8f1fb3441693486f0fb7a461",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza9-piramida-testow.md": {
+    "mtime": 1795527668.4961076,
+    "seen": 1795529263.502911,
+    "ast_hash": "546d919aefacee9809adfe03d604eafb",
     "semantic_hash": ""
   }
 }

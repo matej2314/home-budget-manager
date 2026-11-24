@@ -1,7 +1,7 @@
 ---
-wersja: 5
+wersja: 6
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # Dokumentacja komunikacji — Home Budget Manager
@@ -26,23 +26,21 @@ Szczegóły warstw: [architektura.md](./architektura.md). Pojęcia domenowe: [di
 
 Wszystkie ścieżki HTTP w tym dokumencie mają prefiks **`/api/v1`**.
 
-To **świadoma zmiana** względem obecnego kodu (montowanie bez prefiksu, np. `/auth/login`). Wdrożenie prefiksu = obowiązkowy element późniejszego refaktoru routingu / klienta (`frontend/src/url.js` i proxy).
+**Stan faktyczny (2026-11-24):** SPA woła wyłącznie `/api/v1` (`frontend/src/url.js`). Backend montuje handlery pod `/api/v1/...` **oraz** (przejściowo) pod ścieżkami legacy bez prefiksu — do usunięcia w major backend **Faza 10**.
 
-Przykład: docs `POST /api/v1/auth/login` ↔ dziś w repo `POST /auth/login`.
+Przykład normy: `POST /api/v1/auth/login`.
 
 #### Wyjątek przejściowy: dual mount (v1 + legacy)
 
-Do czasu cutoveru klienta SPA na `/api/v1` backend **może** montować te same handlery równolegle:
-
 | Reguła | Opis |
 |--------|------|
-| Norma docelowa | Klient i nowe endpointy: wyłącznie `/api/v1/...` |
-| Dual mount | Te same handlery dostępne pod `/api/v1/...` **oraz** pod ścieżkami legacy as-is (`/auth`, `/house`, …) |
+| Norma docelowa | Klient i API: wyłącznie `/api/v1/...` |
+| Dual mount (obecny dług) | Te same handlery nadal dostępne też pod legacy (`/auth`, `/house`, …) w `backend/routes/index.js` |
 | Nowe ścieżki | **Tylko** pod `/api/v1` — zakaz poszerzania zestawu legacy |
-| Legacy | Zamknięty zbiór ścieżek istniejących w as-is; nie jest normą docelową kontraktu |
-| Koniec wyjątku | Po potwierdzeniu, że SPA woła wyłącznie v1 — usunięcie montażu legacy (poza samym zapisem tej normy; w major planach: poza DoD fazy kontraktu / osobna decyzja po cutoverze FE) |
+| Legacy | Nie jest normą kontraktu; SPA nie zależy od legacy |
+| Koniec wyjątku | Major backend **Faza 10** — usunięcie montażu legacy |
 
-Testy i dokumentacja endpointów w tym pliku opisują **ścieżki v1**. Smoke legacy jest dopuszczalny wyłącznie jako kompatybilność przejściowa, nie jako druga norma.
+Testy i dokumentacja endpointów w tym pliku opisują **ścieżki v1**. Smoke legacy nie jest drugą normą.
 
 ### Auth
 
@@ -64,9 +62,9 @@ WebSocket: ten sam cookie `SESSID` w handshake (middleware Socket.io).
 | `inmate` | Domownik |
 | `superadmin` | Panel / operacje witryny |
 
-**Drift kodu (R1):** middleware używa m.in. grupy `mates` (= host + historyczne `mate`) oraz nazwy `mate`. W tabelach poniżej **`inmate`** = docelowa nazwa domownika; `host \| inmate` odpowiada dzisiejszemu `verifyRole('mates')`.
+**Role (R1):** w kodzie obowiązuje `inmate`; grupa uprawnień domu to `verifyRole('household')` (= `host` + `inmate`). W tabelach poniżej **`inmate`** = domownik.
 
-### Envelope odpowiedzi (as-is)
+### Envelope odpowiedzi
 
 Sukces i błąd zwykle:
 
@@ -93,13 +91,13 @@ As-is: **mieszanka PL i EN** w `message` (oraz częściowo klucze i18n, np. `sen
 
 ### Swagger
 
-Backend wystawia Swagger UI jako pomoc operatorską/dev. **Źródłem normy** dla docs jest ten plik + kod; Swagger może być niekompletny lub rozjechany względem prefiksu `/api/v1` do czasu refaktoru.
+Backend wystawia Swagger UI jako pomoc operatorską/dev. **Źródłem normy** dla docs jest ten plik + kod; Swagger może być niekompletny względem pełnego katalogu ścieżek.
 
 ---
 
 ## Powierzchnia HTTP
 
-Base URL (prod, as-is host): API pod domeną backendu (np. `https://budgetapi.msliwowski.net`). Po wprowadzeniu prefiksu klient woła `…/api/v1/...`.
+Base URL (prod): API pod domeną backendu (np. `https://budgetapi.msliwowski.net`); klient woła `…/api/v1/...`.
 
 ### Grupy zasobów — operacje
 
@@ -184,9 +182,9 @@ Legenda auth: **pub** = bez JWT; **JWT** = cookie `SESSID`; rola = wymagana po w
 
 | Metoda | Ścieżka | Auth | Opis |
 |--------|---------|------|------|
-| POST | `/` | multipart `receipt` (as-is: **bez** `verifyJWT` na routerze) | Zwraca rozpoznaną kwotę (`value`) |
+| POST | `/` | JWT (`SESSID`) + multipart `receipt` | Zwraca rozpoznaną kwotę (`value`) |
 
-Uwaga utrzymaniowa: brak JWT na OCR to **ryzyko** — kandydat do domknięcia przy refaktorze (nie zmienia to normy „upload = HTTP”).
+Norma: OCR **nie** jest publiczny (K-8) — wymaga ważnej sesji.
 
 #### Awatary — `/api/v1/avatars`
 

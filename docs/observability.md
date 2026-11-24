@@ -1,7 +1,7 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # Observability — Home Budget Manager
@@ -21,18 +21,16 @@ Wdrożenie i środowiska: `deployment.md`. Kontrakt I/O: `dokumentacja_komunikac
 | **RUM / frontend observability** | Nie | Świadomie poza |
 | **APM / Sentry / vendor error-tracker** | Nie | **Nie wchodzi** do normy (ani jako kierunek w tym dokumencie) |
 
-## Narzędzia (zatwierdzony stack — stan docelowy)
+## Narzędzia (zatwierdzony stack — stan faktyczny)
 
 | Element | Rola |
 |---------|------|
-| **Winston** | Logger aplikacji backendu |
-| **Transport** | **stdout** procesu (Console / stream procesu Node) — jedyny kanał logów aplikacji w normie docelowej |
-| **Docker / runtime** | Odczyt logów kontenera / procesu (`docker logs`, agregator hosta podpięty pod stdout/stderr) — **bez** volume `backend/logs/` |
-| **Jenkins / CI** | Sygnał operacyjny: fail build / pipeline = eskalacja „coś poszło nie tak” przy zmianach |
+| **Winston** | Logger aplikacji backendu (`configs/logger.js`) |
+| **Transport** | **stdout** procesu (`transports.Console`) — jedyny kanał logów aplikacji |
+| **Docker / runtime** | Odczyt logów kontenera / procesu (`docker logs`, agregator hosta) — **bez** volume `backend/logs/` |
+| **Jenkins / CI** | Sygnał operacyjny: fail build / pipeline = eskalacja przy zmianach |
 
-| As-is (do usunięcia przy refaktorze loggera) | Uwaga |
-|-----------------------------------------------|--------|
-| `winston-daily-rotate-file`, pliki w `backend/logs/`, volume logów w compose | Historyczne; **nie** są normą docelową |
+**Sync 2026-11-24:** file rotate / volume `logs/` usunięte z normy i z runtime — nie ma już „as-is do usunięcia”.
 
 Brak centralnego ELK/Loki/Grafana w normie v1 (stdout może być zbierany przez infrastrukturę hosta poza tym dokumentem — bez wymogu nowego stacku w aplikacji).
 

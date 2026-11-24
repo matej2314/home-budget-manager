@@ -1,0 +1,31 @@
+# Efemeryczna MySQL wyłącznie pod Jest E2E (`npm run test:e2e` w backend/).
+# Nie używać do dev/demo — to docker-compose.db.yml.
+# Port hosta 3307 — bez kolizji z lokalnym / compose.db na 3306.
+
+services:
+  db-test:
+    image: mysql:8.4
+    container_name: home-budget-mysql-test
+    restart: "no"
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: home_budget_test
+      MYSQL_USER: budget_user
+      MYSQL_PASSWORD: budget_password
+    volumes:
+      - home_budget_mysql_test_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" || exit 1",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+volumes:
+  home_budget_mysql_test_data:

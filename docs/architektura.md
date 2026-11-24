@@ -1,18 +1,20 @@
 ---
-wersja: 6
+wersja: 7
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-23
+data_modyfikacji: 2026-11-24
 ---
 
 # Architektura — Home Budget Manager
 
 ## Cel dokumentu
 
-Utrwala **stan obecny** (as-is) architektury systemu oraz **kierunek lekkiego refaktoru** pod czytelność i utrzymanie. Nie jest planem wdrożenia ani kontraktem I/O (to osobne dokumenty w zestawie).
+Utrwala **stan faktyczny** architektury systemu (po lekkim refaktorze R1–R6 + ESM) oraz **kolejne kroki utrzymania** (cutover legacy HTTP, porty I/O). Nie jest planem wdrożenia ani kontraktem I/O (to osobne dokumenty w zestawie).
 
 Powiązanie produktowe: rdzeń budżetu vs otoczka operacyjna — jak w [dokumentacja_koncepcyjna.md](./dokumentacja_koncepcyjna.md).
 
-## Widok systemu (as-is)
+**Sync 2026-11-24:** docs dopasowane do kodu po major backend Fazy 1–9 i frontend 1–8; dual mount legacy HTTP nadal w API do major Fazy 10.
+
+## Widok systemu (stan faktyczny)
 
 System to **dwa deployable’e** plus zewnętrzna baza:
 
@@ -107,7 +109,7 @@ HTTP / WS / cron
 |-------|------|
 | Format | **ES modules (ESM)** — obowiązujący model ładowania modułów w procesie API (`backend/`) |
 | Manifest | `package.json` z `"type": "module"`; w kodzie `import` / `export` |
-| As-is | CommonJS (`require` / `module.exports`) — **obowiązkowe** przejście na ESM przed dalszym refaktorem struktury i warstw |
+| Stan w repo | ESM wdrożone (major Faza 1); CommonJS nie jest modelem runtime |
 | Poza normą | Mieszanie CJS i ESM „na stałe”; nowy kod w CJS |
 
 Szczegóły drzewa: [architektura_katalogi_pliki.md](./architektura_katalogi_pliki.md). Norma egzekwowalna: [SPEC-BACKEND.md](../spec/SPEC-BACKEND.md).
@@ -120,7 +122,7 @@ Szczegóły drzewa: [architektura_katalogi_pliki.md](./architektura_katalogi_pli
 | Raw SQL | **Zabroniony** w nowym kodzie i w stanie docelowym (w tym `$queryRaw` / ad-hoc SQL „na skróty”) |
 | Granica importu | Prisma Client żyje w warstwie `database/`; `services` / `utils` / configs wołają wyłącznie API tej warstwy; controllers / routes / tasks **nie** importują Prisma |
 | Relacje w `database/` | Przy FK w `schema.prisma` zapytania złożone używają `include` / filtrów relacji (bez ręcznego joinu w JS) |
-| As-is → docelowo | W repo są już `backend/prisma/` i moduły Prisma w `database/`; historyczny pool + `*Queries` usuwa domknięcie **R6** — docs są źródłem prawdy dla kierunku |
+| Stan w repo | **R6 domknięte:** `backend/prisma/` + moduły Prisma w `database/`; brak pool / `*Queries` / raw SQL w ścieżkach runtime |
 
 ### Migracje schematu (stan docelowy)
 
@@ -135,7 +137,7 @@ Szczegóły drzewa: [architektura_katalogi_pliki.md](./architektura_katalogi_pli
 
 Szczegóły logicznego modelu encji: [model_danych.md](./model_danych.md). Drzewo katalogów (w tym `prisma/`): [architektura_katalogi_pliki.md](./architektura_katalogi_pliki.md).
 
-Stan obecny w repo jest **bliski** modelowi warstw i ma już Prisma (`schema` + warstwa `database/`); domknięcie **R6** usuwa pozostały pool / `*Queries` ze ścieżek runtime — bez wprowadzania nowego stylu architektury.
+Stan w repo **spełnia** model warstw z Prisma (`schema` + warstwa `database/`, major Faza 7 / R6) — bez wprowadzania nowego stylu architektury (hexagonal „na sztywno”, CQRS itd. nadal poza v1).
 
 ## Obszary (moduły) w API
 
@@ -167,12 +169,13 @@ Stan obecny w repo jest **bliski** modelowi warstw i ma już Prisma (`schema` + 
 
 Nazewnictwo ścieżek jest **as-is** z repo; przy refaktorze ról ważniejsza jest spójność semantyczna niż kosmetyka URL w pierwszym kroku.
 
-## Frontend (as-is)
+## Frontend (stan faktyczny)
 
 - **SPA** (Vite + React Router): strony publiczne (landing, about, contact) oraz dashboard po zalogowaniu.
 - **Stan:** mieszanka **Zustand** (m.in. transakcje, wiadomości, zaproszenia, powiadomienia) oraz **Context** (auth, socket, data, theme).
-- **Komunikacja:** HTTP do API + Socket.io-client do zdarzeń realtime.
-- **i18n:** i18next (PL/EN).
+- **Komunikacja:** HTTP do API pod **`/api/v1`** (`frontend/src/url.js`) + Socket.io-client do zdarzeń realtime.
+- **i18n:** i18next (PL/EN); `message` z envelope mapowane przez namespace `api`.
+- **Role w UI:** semantyka `inmate` (R1); kosmetyczne nazwy plików/komponentów typu `Mates*` mogą pozostać bez wpływu na JWT / middleware.
 
 W dokumentowanej normie v1 **utrzymujemy ten model**. Wprowadzenie bibliotek server-state (React Query / SWR) nie jest celem architektury v1.
 
@@ -187,21 +190,23 @@ Szczegółowe drzewo katalogów: [architektura_katalogi_pliki.md](./architektura
 | CORS | Whitelist originów (prod + lokalny Vite) |
 | Granica zaufania | Przeglądarka jest niezaufana; reguły uprawnień egzekwuje API |
 
-**Uwaga na drift:** w kodzie występuje historyczna nazwa roli domownika (`mate`). Norma koncepcyjna i ten dokument: **`inmate`** — do ujednolicenia w refaktorze R1.
+**R1 w kodzie:** rola domownika w tokenie, middleware i kontraktach API to **`inmate`** (historia `mate` / grupa `mates` usunięta z refaktorowanych ścieżek).
 
-## Kierunek lekkiego refaktoru
+## Lekki refaktor — status (2026-11-24)
 
-Cel: **czytelność i spójność**, nie przebudowa systemu od zera.
+Cel był: **czytelność i spójność**, nie przebudowa systemu od zera. Poniżej status względem major planów.
 
-| ID | Kierunek | Zakres | Poza zakresem tego kroku |
-|----|----------|--------|---------------------------|
-| **R1** | Role | `mate` → `inmate` w tokenie, middleware, komunikatach, UI | Zmiana modelu uprawnień host/inmate |
-| **R2** | Pipeline warstw | Cienkie controllery; reguły i orkiestracja w `services/`; dostęp do danych wyłącznie przez warstwę `database/` (controllers / routes / tasks jej nie omijają). W tym samym przejściu co mapa Bloku B (`services/<obszar>/`, w tym `board/`, `shell/`) — jak major plan backendu Faza 2. `database/` może nadal używać historycznego pool / `*Queries` | Hexagonal, kontener DI, nowe warstwy „domain/use-case”; **pełna migracja na Prisma** (to **R6** / major Faza 7) |
-| **R3** | Obszary | Wyraźny podział rdzeń vs otoczka; spójne granice modułów (w tym jawne `services/board/`) | Wydzielanie osobnych serwisów |
-| **ESM** | Moduły Node | CommonJS → ES modules w `backend/` (przed głębokim refaktorem katalogów/warstw) | Zmiana runtime Node poza dokumentowanym stackiem v1 |
-| **R4** | WS / cron | Zostają adapterami w procesie API; **później do rozważenia** osobne workery pod wydajność | Implementacja workerów „teraz” |
-| **R5** | Frontend | Bez zmiany modelu stanu w tym dokumencie; porządek katalogów w dokumencie katalogów | React Query / SWR, BFF |
-| **R6** | Prisma + Migrate | Wprowadzenie Prisma ORM, usunięcie raw SQL / `*Queries`+pool; schemat i migracje w `prisma/` | Zmiana silnika DB; CQRS / osobny read-model |
+| ID | Kierunek | Status w repo | Uwagi / dalej |
+|----|----------|---------------|---------------|
+| **R1** | Role `inmate` | **Domknięte** (BE + FE) | Kosmetyka nazw UI `Mates*` opcjonalna |
+| **R2** | Pipeline warstw | **Domknięte** | Controllers cienkie; reguły w `services/` |
+| **R3** | Obszary (`board/` vs `shell/`) | **Domknięte** | |
+| **ESM** | ES modules w `backend/` | **Domknięte** | |
+| **R4** | WS / cron jako adaptery | **Domknięte** w procesie API | Workery nadal odroczone |
+| **R5** | Frontend — mapa SPA / stan | **Domknięte** (bez React Query) | |
+| **R6** | Prisma + Migrate | **Domknięte** | |
+| **Cutover HTTP** | Usunięcie dual mount legacy | **Otwarte** — major backend **Faza 10** | SPA już na v1; API nadal montuje legacy równolegle |
+| **Porty I/O** | Mail / storage / OCR za portami | **Otwarte** — major backend **Faza 11** | Adaptery v1 lokalne; AWS poza tą fazą |
 
 ## Decyzje świadomie odroczone
 
@@ -209,6 +214,7 @@ Cel: **czytelność i spójność**, nie przebudowa systemu od zera.
 - Współdzielony pakiet typów/kontraktów między frontem a backem.
 - Wydzielenie read-modeli pod ciężkie statystyki.
 - Zmiana mechanizmu auth (np. osobny refresh token flow) — poza zatwierdzonym v1 (`SESSID`).
+- Wdrożenie SDK AWS (SES, S3, …) — po Fazie 11, osobną decyzją.
 
 ## Jak czytać dalej
 

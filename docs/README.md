@@ -1,18 +1,20 @@
 ---
-wersja: 2
+wersja: 3
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-08
+data_modyfikacji: 2026-11-24
 ---
 
 # Dokumentacja — Home Budget Manager
 
 Indeks lokalnego zestawu w `docs/`. Odbiorcy: utrzymanie / refaktor oraz portfolio / rekruter.
 
+**Sync 2026-11-24:** docs zsynchronizowane ze stanem po lekkim refaktorze (R1–R6 + ESM); otwarte: cutover legacy HTTP (major Faza 10) i porty I/O (Faza 11).
+
 ## Jak czytać (rekomendowana kolejność)
 
 1. [dokumentacja_koncepcyjna.md](./dokumentacja_koncepcyjna.md) — cel produktu, role, core vs otoczka  
-2. [architektura.md](./architektura.md) — styl, warstwy, kierunek lekkiego refaktoru (R1–R5)  
-3. [architektura_katalogi_pliki.md](./architektura_katalogi_pliki.md) — drzewo as-is i docelowe  
+2. [architektura.md](./architektura.md) — styl, warstwy, status R1–R6 i kolejne kroki  
+3. [architektura_katalogi_pliki.md](./architektura_katalogi_pliki.md) — drzewo faktyczne (Blok B) + snapshot historyczny (A)  
 4. [dokumentacja_komunikacji.md](./dokumentacja_komunikacji.md) — HTTP `/api/v1`, WebSocket, e-mail  
 5. [data_flow.md](./data_flow.md) — przepływy end-to-end  
 
@@ -43,7 +45,7 @@ Dalej według tematu (słownik, testy, deploy, security, …).
 |---------|--------|
 | Role `user` / `host` / `inmate` / `superadmin` | koncepcja, dictionary, bezpieczeństwo |
 | Prefiks `/api/v1` | komunikacja, data_flow, testy |
-| Lekki refaktor R1–R6 (w tym Prisma) | architektura |
+| Lekki refaktor R1–R6 (domknięty); Fazy 10–11 major BE | architektura, major plan backendu |
 | DoD testów przed push/merge | testy |
 | Env bez wartości w git | katalog_env, deployment, bezpieczeństwo |
 

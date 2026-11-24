@@ -1,5 +1,5 @@
 ---
-wersja: 7
+wersja: 8
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-24
 ---
@@ -23,11 +23,13 @@ Spis konfiguracji i sekretów **bez wartości**. Uzupełnia [deployment.md](./de
 | `DB_USER` | **Tak** | Użytkownik DB |
 | `DB_PASSWORD` | **Tak** | Hasło DB |
 | `DB_NAME` | Nie* | Nazwa bazy |
-| `DATABASE_URL` | **Tak** | Connection string MySQL dla **Prisma** (Client + Migrate); stan docelowy po R6 — wymagany do runtime i migracji |
+| `DATABASE_URL` | **Tak** | Connection string MySQL dla **Prisma** (Client + Migrate) — **wymagany** w runtime i przy migracjach |
 
 \* Sam host/nazwa bazy zwykle nie są „hasłem”, ale nie publikuj schematu prod bez potrzeby.
 
-Po R6: Prisma czyta `DATABASE_URL`. Pola `DB_*` mogą zostać przejściowo (compose / legacy) albo zostać zmapowane wyłącznie do budowy URL — bez drugiego, równoległego raw-SQL poola.
+Prisma czyta `DATABASE_URL` (R6 wdrożone). Pola `DB_*` mogą zostać w compose / do składania URL — **bez** równoległego raw-SQL poola.
+
+**Sync 2026-11-24:** `DATABASE_URL` to norma bieżąca, nie „po R6 w przyszłości”.
 
 Plik typowy: `backend/.env` (local) lub montowany volume w kontenerze (prod).
 

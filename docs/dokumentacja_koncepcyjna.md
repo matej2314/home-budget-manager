@@ -1,7 +1,7 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # Dokumentacja koncepcyjna — Home Budget Manager
@@ -16,7 +16,9 @@ Najważniejsza wartość:
 - Współpraca domowników: zaproszenia, role z jasnymi uprawnieniami, chat i powiadomienia.
 - Wgląd w sytuację finansową domu (statystyki, kalendarz, OCR kwoty z paragonu jako wsparcie przy dodawaniu wydatku).
 
-Produkt opisuje **stan docelowej normy koncepcyjnej** względem obecnego kodu: tam, gdzie docs i repo się różnią (przede wszystkim nazewnictwo roli `inmate`), dokumentacja jest źródłem prawdy dla utrzymania i refaktoru.
+Produkt opisuje **normę koncepcyjną zgodną ze stanem faktycznym kodu** po lekkim refaktorze (m.in. rola `inmate`). Docs pozostają źródłem prawdy przy dalszym utrzymaniu; ewentualny drift (kosmetyka UI, dual mount HTTP do cutoveru) jest opisany w [architektura.md](./architektura.md).
+
+**Sync 2026-11-24:** usunięto twierdzenie, że kod wciąż używa `mate` jako żywej roli.
 
 ## Dla kogo jest dokumentacja
 
@@ -29,7 +31,7 @@ Aplikacja jest skierowana do osób i małych gospodarstw domowych, które chcą 
 
 ## Role użytkowników
 
-Norma koncepcyjna (obowiązuje w dokumentacji; **zmiana względem obecnego kodu**, gdzie używane jest m.in. `mate`):
+Norma koncepcyjna i **stan w kodzie** (token JWT, middleware, kontrakty API, guardy UI):
 
 | Rola | Znaczenie |
 |------|-----------|
@@ -38,7 +40,7 @@ Norma koncepcyjna (obowiązuje w dokumentacji; **zmiana względem obecnego kodu*
 | `inmate` | Domownik dołączony do gospodarstwa; korzysta z finansów, chatu i pozostałego rdzenia w granicach uprawnień innych niż zarządzanie składem domu. |
 | `superadmin` | Administrator witryny — panel operacyjny poza rdzeniem budżetowym gospodarstwa. |
 
-**Refaktor obowiązkowy (późniejszy):** w kodzie `backend/` / `frontend/` oraz kontraktach API należy ujednolicić nazwę roli domownika na `inmate` (zamiast `mate` / ewentualnych aliasów) oraz dopasować middleware, komunikaty i UI do tej normy.
+**R1 domknięte:** żywa rola domownika to `inmate`. Alias historyczny `mate` / grupa `mates` nie obowiązuje w refaktorowanym API. Kosmetyczne nazwy plików UI (`Mates*`) mogą pozostać bez zmiany semantyki roli.
 
 ## Zakres produktu
 

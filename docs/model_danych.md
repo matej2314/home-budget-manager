@@ -1,7 +1,7 @@
 ---
-wersja: 6
+wersja: 7
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-23
+data_modyfikacji: 2026-11-24
 ---
 
 # Model danych — Home Budget Manager
@@ -222,7 +222,9 @@ Pliki w storage backendu (`app-images` / multer) — **bez** osobnej tabeli jako
 | Relacje | Gdzie w MySQL jest FK, schema Prisma ma `@relation`; zapytania złożone w `database/` używają `include` / filtrów relacji zamiast ręcznego joinu w aplikacji |
 | Ręczne DDL | Zabronione jako proces utrzymania schematu (phpMyAdmin tylko diagnostyka / awaryjne odczyty — nie jako pipeline zmian) |
 
-Katalog `backend/prisma/` (schema + migracje) oraz moduły Prisma w `backend/database/` są częścią refaktoru **R6**; domknięcie R6 obejmuje też usunięcie historycznego pool / `*Queries` ze ścieżek runtime.
+Katalog `backend/prisma/` (schema + migracje) oraz moduły Prisma w `backend/database/` są **wdrożone (R6 / major Faza 7)**; historyczny pool / `*Queries` nie występuje w ścieżkach runtime.
+
+**Sync 2026-11-24:** model i migracje = stan faktyczny, nie „kierunek do R6”.
 
 ## Seed (dev / test)
 
@@ -241,5 +243,5 @@ Szczegóły uruchamiania w testach: [testy.md](./testy.md).
 
 ## Poza tym dokumentem
 
-- Pełna lista indeksów i mikro-optymalizacja typów w schema (doprecyzowanie przy R6).  
+- Pełna lista indeksów i mikro-optymalizacja typów w schema (ew. kolejne migracje).  
 - Optymalizacja zapytań dashboardu / osobne read-modele.
