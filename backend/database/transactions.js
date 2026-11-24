@@ -1,6 +1,7 @@
 import prisma from './prismaClient.js';
 
-function nextBalance(currentBalance, initBudget, type, value) {
+/** Czysta reguła salda (D-11) — eksport pod unit T-1; bez Prisma. */
+export function nextBalance(currentBalance, initBudget, type, value) {
   let balance = parseFloat(currentBalance) || parseFloat(initBudget) || 0;
   const amount = parseFloat(value);
   if (type === 'income') balance += amount;

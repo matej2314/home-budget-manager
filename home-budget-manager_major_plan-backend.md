@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-24 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza9-piramida-testow.md` (FAZA 1, KROK 1–4) oznaczono Fazę 9 (kroki 9.1–9.2) jako `WYKONANY`. Brak milestone zamykającego po Fazie 9 (decyzja major / ślad feature planu).
 - **2026-11-23 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza7-prisma-r6.md` (FAZA 1, KROK 1–5 → `WYKONANY`) oznaczono Fazę 7 (kroki 7.1–7.3) jako `WYKONANY` oraz milestone „Dane wyłącznie przez Prisma” jako `OSIĄGNIĘTY`. Start Fazy 8 poza tym syncem.
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza6-adaptery-cron-ws.md` (FAZA 1, KROK 1–3, review zaakceptowany) oznaczono Fazę 6 (kroki 6.1–6.2) jako `WYKONANY` oraz milestone „Adaptery bez omijania warstwy aplikacji” jako `OSIĄGNIĘTY`. Start Fazy 7 poza tym syncem.
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza5-role-inmate.md` (FAZA 1, KROK 1–3, review zaakceptowany) oznaczono Fazę 5 (kroki 5.1–5.3) jako `WYKONANY` oraz milestone „Role zgodne z normą po stronie backendu” jako `OSIĄGNIĘTY`.
@@ -556,7 +557,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 9 — Weryfikacja strategii testów backendu (Jest)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** **Weryfikacja i domknięcie** piramidy Jest zbudowanej równolegle w fazach 1–8: unit / integration / E2E API, minimum ścieżek krytycznych T-5, izolowana baza + seed, egzekwowanie DoD T-11–T-13. Nie jest to faza „pierwszych testów” — to audyt kompletności względem SPEC-TESTY / `docs/testy.md`. Frontend świadomie poza strategią v1.
 
@@ -570,7 +571,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.1 — Audyt piramidy i domknięcie T-5
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Przegląd luk względem T-1–T-5; uzupełnienie brakujących E2E / unit na ścieżkach krytycznych; wąski WS tylko jako skutek uboczny, gdy tanie w setupie.
 
@@ -583,7 +584,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.2 — Izolacja, seed i trwałość DoD
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Potwierdzenie osobnej bazy testowej, seed/fixtures oraz trwałego egzekwowania DoD przed merge/push (SPEC-TESTY T-8–T-13, T-15).
 
