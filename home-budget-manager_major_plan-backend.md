@@ -491,7 +491,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 8 — E-mail outbound (K-14)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Wdrożenie wychodzącego e-maila przy zaproszeniach: wysyłka po walidacji HTTP w service, treść z linkiem/instrukcją i kontekstem domu, sekrety SMTP wyłącznie w env. Mail uzupełnia HTTP/WS — nie zastępuje ich jako jedynego kanału (SPEC-KOMUNIKACJA K-13–K-14, `docs/dokumentacja_komunikacji.md`, `docs/katalog_env.md`). DoD = **podpięcie zachowania** (nawet jeśli `nodemailer` już jest w deps).
 
@@ -506,7 +506,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 8.1 — Trigger z service po walidacji HTTP
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Podpięcie wysyłki jako skutku ubocznego service zaproszeń po udanej walidacji HTTP — nie jako osobna powierzchnia produktu.
 
@@ -517,7 +517,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 8.2 — Treść i sekrety SMTP
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Treść z instrukcją/linkiem dołączenia i kontekstem domu; konfiguracja transportu z env (bez sekretów w git).
 
@@ -528,7 +528,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 8.3 — Mail nie jest jedynym kanałem
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Potwierdzenie, że zaproszenia i powiadomienia pozostają dostępne przez HTTP i WS / notice zgodnie z K-13.
 
@@ -541,6 +541,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 ---
 
 ## MILESTONE — Outbound e-mail przy zaproszeniach
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 8. Outbound przy zaproszeniach jest wdrożony zgodnie z K-14; można wejść w weryfikację pełnej piramidy testów.
 

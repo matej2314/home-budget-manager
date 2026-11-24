@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "backend/services/users/addUserToHouse.js": {
-    "mtime": 1795432008.779842,
-    "seen": 1795432016.3544774,
-    "ast_hash": "f96b367abbed8fd86e53d9a576559572",
+    "mtime": 1795518806.3315089,
+    "seen": 1795518818.0116086,
+    "ast_hash": "a095de01a7d1a556ef8d50f129e9c1d2",
     "semantic_hash": ""
   },
   "backend/services/users/changeUserEmail.js": {
@@ -1698,9 +1698,9 @@
     "semantic_hash": ""
   },
   "docs/katalog_env.md": {
-    "mtime": 1795168621.2358217,
-    "seen": 1795171136.2155993,
-    "ast_hash": "6451c559944808fc6252009d49bfd9f4",
+    "mtime": 1795518104.1749277,
+    "seen": 1795518518.7648065,
+    "ast_hash": "f84eeb26bd04ca1295ca124530169594",
     "semantic_hash": ""
   },
   "docs/model_danych.md": {
@@ -2117,12 +2117,6 @@
     "ast_hash": "ee1434137d617da7b7732ca8d8e35418",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_backend-faza7-prisma-r6.md": {
-    "mtime": 1795440741.8755372,
-    "seen": 1795443345.1201885,
-    "ast_hash": "899658d4ef4c6b2580f6ee41178656c2",
-    "semantic_hash": ""
-  },
   "feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza6-faza8-i18n-ws-security.md": {
     "mtime": 1795198524.3159516,
     "seen": 1795427410.9867425,
@@ -2229,6 +2223,36 @@
     "mtime": 1795439491.877813,
     "seen": 1795440547.2377348,
     "ast_hash": "c3e90fd8b70936fbc8525fbe1c658fa2",
+    "semantic_hash": ""
+  },
+  "backend/configs/mailTransport.js": {
+    "mtime": 1795518382.7248862,
+    "seen": 1795518518.7576187,
+    "ast_hash": "d0622b022742e2234b46fe7ad347dad6",
+    "semantic_hash": ""
+  },
+  "backend/tests/unit/mail-outbound.test.js": {
+    "mtime": 1795520336.2893763,
+    "seen": 1795520340.9362502,
+    "ast_hash": "c0d1eeb6aab4e5d455471c657b23ecb7",
+    "semantic_hash": ""
+  },
+  "feature-plans/home-budget-manager_feature_plan_backend-faza8-email-outbound.md": {
+    "mtime": 1795519910.9118338,
+    "seen": 1795520340.9404612,
+    "ast_hash": "afeec7f365ae7e379cb0660581aca280",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza7-prisma-r6.md": {
+    "mtime": 1795440741.8755372,
+    "seen": 1795517171.5315154,
+    "ast_hash": "899658d4ef4c6b2580f6ee41178656c2",
+    "semantic_hash": ""
+  },
+  "backend/services/invitations/sendInvitationEmail.js": {
+    "mtime": 1795519265.2943132,
+    "seen": 1795519318.7028215,
+    "ast_hash": "e869159a994c317075f3cfe7e5692fbf",
     "semantic_hash": ""
   }
 }

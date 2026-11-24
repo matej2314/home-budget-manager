@@ -1,7 +1,7 @@
 ---
-wersja: 6
+wersja: 7
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-19
+data_modyfikacji: 2026-11-24
 ---
 
 # Katalog zmiennych środowiskowych — Home Budget Manager
@@ -9,7 +9,7 @@ data_modyfikacji: 2026-11-19
 ## Cel
 
 Spis konfiguracji i sekretów **bez wartości**. Uzupełnia [deployment.md](./deployment.md) i [bezpieczenstwo.md](./bezpieczenstwo.md).  
-Źródła: katalog procesu `backend/` (`process.env`), `docker-compose.yml`, kierunek e-mail outbound.
+Źródła: katalog procesu `backend/` (`process.env`), `docker-compose.yml`, outbound e-mail (`configs/mailTransport.js`).
 
 **Zasada:** wartości tylko w lokalnym `.env` / na hoście prod / menedżerze sekretów — **nigdy w git**.
 
@@ -43,19 +43,22 @@ Ustawiane w `docker-compose.yml` (lub nadpisywane env hosta):
 
 Uwaga: CORS trzyma listę originów w `backend/configs/allowedOrigins.js` (HTTP Express + Socket.io) — przy zmianie domeny zaktualizuj **i** env/compose, **i** tę whitelistę.
 
-## E-mail outbound (kierunek — jeszcze nieużywane w kodzie)
+## E-mail outbound (opcjonalne)
 
-Placeholdery pod przyszłą wysyłkę (np. zaproszenia). Nazwy robocze — do ustalenia przy implementacji:
+Adapter SMTP: `backend/configs/mailTransport.js` (`getMailTransporter`).  
+Bez `SMTP_HOST` / `SMTP_USER` / `SMTP_PASSWORD` transporter = `null` (produkt działa bez skrzynki). Przykład nazw: `backend/.env.example`.
 
 | Zmienna | Sekret? | Opis |
 |---------|---------|------|
-| `SMTP_HOST` | Nie* | Host SMTP / provider |
-| `SMTP_PORT` | Nie | Port |
-| `SMTP_USER` | **Tak** | Konto SMTP |
-| `SMTP_PASSWORD` | **Tak** | Hasło / app password |
-| `MAIL_FROM` | Nie | Adres nadawcy widoczny dla odbiorcy |
+| `SMTP_HOST` | Nie* | Host SMTP / provider — wymagany, żeby utworzyć transporter |
+| `SMTP_PORT` | Nie | Port (domyślnie `587`; `465` → TLS od razu) |
+| `SMTP_USER` | **Tak** | Konto SMTP — wymagane wraz z host/hasłem |
+| `SMTP_PASSWORD` | **Tak** | Hasło / app password — nie logować |
+| `MAIL_FROM` | Nie | Adres nadawcy w wiadomości (gdy treść maila jest wysyłana) |
 
-Do czasu wdrożenia kanału e-mail zmienne mogą nie istnieć w `.env`.
+`FRONTEND_ORIGIN` (tabela Compose powyżej) — publiczny origin SPA, m.in. pod link dołączenia w treści zaproszenia; w local można ustawić też w `backend/.env`.
+
+Zmienne SMTP mogą nie istnieć w `.env` — wtedy outbound jest no-op.
 
 ## Frontend
 
@@ -72,4 +75,4 @@ Build/runtime SPA **nie** wymaga osobnego katalogu sekretów w normie v1: URL AP
 1. Uzupełnij wszystkie pozycje z sekcji Backend.  
 2. Ustaw origin front/API spójnie z CORS i `url.js`.  
 3. Potwierdź, że `.env` / sekrety **nie** trafiają do commitów.  
-4. Po wdrożeniu e-maila — dodaj SMTP_* / `MAIL_FROM` i nie loguj haseł.
+4. Jeśli chcesz outbound mail: ustaw `SMTP_*` (+ opcjonalnie `MAIL_FROM` / `FRONTEND_ORIGIN`) i nie loguj haseł SMTP.
