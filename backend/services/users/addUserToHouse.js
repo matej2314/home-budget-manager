@@ -4,6 +4,7 @@ import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
 import { addUserByInmate } from '../../utils/householdUtils/addUserByInmate.js';
 import { invitedUserData } from '../../utils/householdUtils/getInvitedUserData.js';
 import { AppError } from '../../utils/errors/AppError.js';
+import { sendInvitationEmail } from '../invitations/sendInvitationEmail.js';
 
 const addUserToHouse = async (userId, userName, invitingUserName, role) => {
   try {
@@ -21,6 +22,12 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
 
     if (role === 'host') {
       const addByHost = await addUserByHost(userName, houseId, invitedUser);
+      await sendInvitationEmail({
+        invitedUserId: invitedUser.userId,
+        houseId,
+        invitingUserName,
+        kind: 'host_added',
+      });
       return { messageKey: addByHost.messageKey };
     }
 
@@ -32,6 +39,12 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
         userName,
         invitingUserName,
       );
+      await sendInvitationEmail({
+        invitedUserId: invitedUser.userId,
+        houseId,
+        invitingUserName,
+        kind: 'inmate_pending',
+      });
       return { messageKey: addByInmate.messageKey };
     }
   } catch (error) {
