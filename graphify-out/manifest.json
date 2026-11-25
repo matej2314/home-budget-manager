@@ -348,9 +348,9 @@
     "semantic_hash": ""
   },
   "backend/services/invitations/acceptInvitation.js": {
-    "mtime": 1795432015.3147693,
-    "seen": 1795432016.3543742,
-    "ast_hash": "6235224a1af7a39a81b50cdadeec6ee4",
+    "mtime": 1795607124.990583,
+    "seen": 1795607277.510447,
+    "ast_hash": "5a4332170717e50ff1ce53d943e00fc0",
     "semantic_hash": ""
   },
   "backend/services/invitations/getInvitationsCollection.js": {
@@ -360,9 +360,9 @@
     "semantic_hash": ""
   },
   "backend/services/invitations/rejectInvitation.js": {
-    "mtime": 1795432016.2211006,
-    "seen": 1795432016.3543754,
-    "ast_hash": "96ebb12a513ed1f8f9c03206da556701",
+    "mtime": 1795607699.7982056,
+    "seen": 1795610849.4256938,
+    "ast_hash": "14bae95c4cfc2577390834c985d9bd0e",
     "semantic_hash": ""
   },
   "backend/services/messages/deleteMessage.js": {
@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "backend/services/users/addUserToHouse.js": {
-    "mtime": 1795518806.3315089,
-    "seen": 1795518818.0116086,
-    "ast_hash": "a095de01a7d1a556ef8d50f129e9c1d2",
+    "mtime": 1795607122.3822784,
+    "seen": 1795607277.510929,
+    "ast_hash": "2ee09736a3c8a02370b69ca08fc5e066",
     "semantic_hash": ""
   },
   "backend/services/users/changeUserEmail.js": {
@@ -2154,9 +2154,9 @@
     "semantic_hash": ""
   },
   "backend/database/invitations.js": {
-    "mtime": 1795605861.3681345,
-    "seen": 1795605947.2674394,
-    "ast_hash": "9cfa8dc6d1402436cbd010ac886a3705",
+    "mtime": 1795610771.4708083,
+    "seen": 1795610849.424649,
+    "ast_hash": "c2ee8d36b9083db255decc54282aaf9d",
     "semantic_hash": ""
   },
   "backend/database/messages.js": {
@@ -2226,15 +2226,15 @@
     "semantic_hash": ""
   },
   "backend/configs/mailTransport.js": {
-    "mtime": 1795518382.7248862,
-    "seen": 1795518518.7576187,
-    "ast_hash": "d0622b022742e2234b46fe7ad347dad6",
+    "mtime": 1795607119.055311,
+    "seen": 1795607277.5089953,
+    "ast_hash": "65181ef10ac82cc5d2a4c61375a7065f",
     "semantic_hash": ""
   },
   "backend/tests/unit/mail-outbound.test.js": {
-    "mtime": 1795520336.2893763,
-    "seen": 1795520340.9362502,
-    "ast_hash": "c0d1eeb6aab4e5d455471c657b23ecb7",
+    "mtime": 1795607186.5038471,
+    "seen": 1795607277.5115523,
+    "ast_hash": "49a6b4119d4b99ec36faec72f72dc748",
     "semantic_hash": ""
   },
   "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza7-prisma-r6.md": {
@@ -2244,15 +2244,15 @@
     "semantic_hash": ""
   },
   "backend/services/invitations/sendInvitationEmail.js": {
-    "mtime": 1795519265.2943132,
-    "seen": 1795519318.7028215,
-    "ast_hash": "e869159a994c317075f3cfe7e5692fbf",
+    "mtime": 1795607118.3123162,
+    "seen": 1795607277.5104716,
+    "ast_hash": "3cea3dceaabb7f422ec6be63f87e6c20",
     "semantic_hash": ""
   },
   "backend/tests/audit/scoped-phases-inventory.test.js": {
-    "mtime": 1795527446.407596,
-    "seen": 1795527448.7563906,
-    "ast_hash": "80a82167ceed0470416f8d96c29cb731",
+    "mtime": 1795610783.7152135,
+    "seen": 1795610849.426383,
+    "ast_hash": "fad595338e4a659024bd360f211b1c03",
     "semantic_hash": ""
   },
   "backend/tests/e2e/t5-critical-paths.test.js": {
@@ -2298,9 +2298,9 @@
     "semantic_hash": ""
   },
   "backend/tests/e2e/t5-business-edges.test.js": {
-    "mtime": 1795605895.4609406,
-    "seen": 1795605947.2691972,
-    "ast_hash": "656f94679e9c45929a243f38d1789c50",
+    "mtime": 1795606429.651091,
+    "seen": 1795606434.1154969,
+    "ast_hash": "1e25ace21bbcd15cd1f7c2ec4ce8151a",
     "semantic_hash": ""
   },
   "backend/tests/unit/addUserByHost-null.test.js": {
@@ -2328,9 +2328,9 @@
     "semantic_hash": ""
   },
   "backend/tests/unit/invitation-accept-reject.test.js": {
-    "mtime": 1795605881.085043,
-    "seen": 1795605947.2695148,
-    "ast_hash": "11689914aa29b3da1a79b1eb136db459",
+    "mtime": 1795610838.5966997,
+    "seen": 1795610849.4267316,
+    "ast_hash": "ed272965a242c022ed398b2a537066e1",
     "semantic_hash": ""
   },
   "backend/tests/unit/monthly-budget-windows.test.js": {
@@ -2376,9 +2376,9 @@
     "semantic_hash": ""
   },
   "feature-plans/home-budget-manager_feature_plan_backend-faza9.3-9.4-invitations-mail-templates.md": {
-    "mtime": 1795602500.3402658,
-    "seen": 1795603233.8612711,
-    "ast_hash": "d5227dc759bf5fe283de7e7e375db681",
+    "mtime": 1795607873.7589478,
+    "seen": 1795610849.4311326,
+    "ast_hash": "8df6bd243a184e9ccc0d854e8b2d149d",
     "semantic_hash": ""
   },
   "backend/tests/unit/delete-action-authz.test.js": {
@@ -2397,6 +2397,30 @@
     "mtime": 1795605158.7871706,
     "seen": 1795605947.274037,
     "ast_hash": "03abbf609264627542e378042a5f6066",
+    "semantic_hash": ""
+  },
+  "backend/services/invitations/invitationEmailTemplates.js": {
+    "mtime": 1795607114.7236552,
+    "seen": 1795607277.5104697,
+    "ast_hash": "8dcb9be60fa81361aef2014e399b597b",
+    "semantic_hash": ""
+  },
+  "backend/tests/e2e/invitation-mail-templates.test.js": {
+    "mtime": 1795607696.359454,
+    "seen": 1795610849.4263842,
+    "ast_hash": "eeeba003b66dc28ac86f2eb6c7fa7f37",
+    "semantic_hash": ""
+  },
+  "backend/tests/unit/invitation-email-templates.test.js": {
+    "mtime": 1795607134.7472227,
+    "seen": 1795607277.5115314,
+    "ast_hash": "a8afd005ec1e56885bb8f3477684148d",
+    "semantic_hash": ""
+  },
+  "backend/tests/unit/invitation-collection-db.test.js": {
+    "mtime": 1795610843.4762497,
+    "seen": 1795610849.4267328,
+    "ast_hash": "36db2df44282b7d5fab223635a533be2",
     "semantic_hash": ""
   }
 }

@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-25 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza9.3-9.4-invitations-mail-templates.md` oznaczono Fazę 9.3 (kroki 9.3.1–9.3.2) oraz Fazę 9.4 (kroki 9.4.1–9.4.2) jako `WYKONANY`. Fazy 9.1–9.2 już `WYKONANY`, więc milestone „Reguły domeny: saldo / authz tx / invite+mail” → `OSIĄGNIĘTY`. Start Fazy 10 poza tym syncem.
 - **2026-11-25 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza9.1-9.2-saldo-authz-delete.md` oznaczono Fazę 9.1 (kroki 9.1.1–9.1.2) oraz Fazę 9.2 (kroki 9.2.1–9.2.2) jako `WYKONANY`. Milestone „Reguły domeny: saldo / authz tx / invite+mail” bez `OSIĄGNIĘTY` (wymaga 9.3–9.4).
 - **2026-11-24 — dopisek Faz 9.1–9.4 (`NIE_ROZPOCZĘTY`) między Fazą 9 a 10:** poprawki i refaktor logiki biznesowej (reverse salda, walidacja kwot 2 dp, authz delete host/inmate, zaproszenia notice+log, 4 szablony e-mail) + unit/E2E zaproszeń. Fazy 10–11 bez przenumerowania.
 - **2026-11-24 — dopisek Fazy 10 + Fazy 11 (`NIE_ROZPOCZĘTY`):** po audycie architektury (cutover legacy HTTP; jawne porty I/O przed AWS). Faza 10 **przejmuje** usunięcie dual mount, które w historii Fazy 4 / Kroku 4.1 zapisano jako „poza tym major” — treść `WYKONANY` Fazy 4 bez zmian; nowa faza z odniesieniem. Faza 11 wydziela porty `MailSender` / `ObjectStorage` / `OcrEngine` (adaptery lokalne SMTP + dysk + Tesseract); bez SDK AWS i bez kontenera DI.
@@ -680,7 +681,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 9.3 — Zaproszenia: notice trwały, status-log, unit + E2E
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Host dodaje kandydata **od razu** (membership). Inmate tylko inicjuje pending; membership po accept hosta. Przy pending od inmate: WS `invitation` **oraz** trwały wpis notice dla hosta. Po accept/decline rekord zaproszenia zostaje (status = log); kolekcja UI/API hosta = tylko **pending** (bez widoku historii w tej fazie).
 
@@ -695,7 +696,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.3.1 — Notice trwały przy pending + status-log
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Po `addUserByInmate`: `emitNotification` / równoważne dla hosta + istniejący WS. Accept/decline aktualizują status bez hard-delete.
 
@@ -706,7 +707,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.3.2 — Unit + E2E API zaproszeń
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Unit: host immediate vs inmate pending; accept/decline membership; brak membership przy samym pending. E2E: `/api/v1` + cookie; role po reloginie.
 
@@ -719,7 +720,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 9.4 — Cztery szablony e-mail zaproszeń + mock w testach
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Osobne szablony treści (HTTP body / text+html) dla czterech przypadków. Best-effort SMTP (K-13) bez zmian. Testy unit/E2E z **mockiem** transportu — asercja adresata i wyboru szablonu, nie prawdziwego SMTP.
 
@@ -742,7 +743,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.4.1 — Implementacja szablonów i podpięć
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Wydzielić render szablonów; podpiąć pod host_added, inmate_pending (cand+host), accept/decline (cand).
 
@@ -753,7 +754,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.4.2 — Unit / E2E z mockiem SMTP
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Mock transportera / portu mail; asercje czterech ścieżek.
 
@@ -765,6 +766,8 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 ---
 
 ## MILESTONE — Reguły domeny: saldo / authz tx / invite+mail
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazach 9.1–9.4. Logika biznesowa salda, delete i zaproszeń (w tym maile i testy) jest domknięta według DoD. Wolno wejść w Fazę 10 (cutover legacy HTTP).
 

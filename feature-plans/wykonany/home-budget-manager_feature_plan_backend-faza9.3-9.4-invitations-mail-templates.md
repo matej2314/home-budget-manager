@@ -35,7 +35,7 @@ Kotwica major: **Faza 9.3**.
 
 ### KROK 1 — Notice trwały przy pending + scope collection po hostId
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Pending od inmate → notice w DB + WS `invitation` (już jest). Collection hosta = tylko jego pending. Status-log bez hard-delete (as-is). Major 9.3.1 + lukę collection z DoD fazy. SPEC-KOMUNIKACJA K-15, SPEC-DANE D-12a.
 
@@ -188,13 +188,13 @@ export async function getInvitationsCollectionHandler(req, res) {
 - Accept/decline **nie** usuwają wiersza `invitations` (status `accepted` / `rejected`).
 - `listInvitationsCollection('new', hostId)` nie zwraca pending innych hostów.
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 ---
 
 ### KROK 2 — Unit + E2E API zaproszeń
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Trzy ścieżki domenowe (host immediate, inmate→accept, inmate→decline) + notice + collection. Major 9.3.2. SPEC-TESTY T-1 / T-5 / T-15.
 
@@ -391,7 +391,7 @@ Po `decline` status 200:
 - E2E: notice po pending; accept → role `inmate`; decline → bez membership; collection tylko pending hosta.
 - `npm test` (scoped unit) zielone; `npm run test:e2e` zielone dla tych plików (T-15).
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 ---
 
@@ -412,7 +412,7 @@ Kotwica major: **Faza 9.4**.
 
 ### KROK 1 — Szablony + podpięcia triggerów
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Cztery rozróżnialne body (text+html); triggery po sukcesie domeny; SMTP tylko z env. Major 9.4.1. SPEC-KOMUNIKACJA K-13/K-14. Nodemailer: `sendMail({ from, to, subject, text, html })` (Context7).
 
@@ -726,13 +726,13 @@ Po udanym `emitNotification`, przed `return`:
 - Każdy trigger woła właściwy `templateId` i adresata (`recipientUserId`).
 - Sekrety SMTP tylko w env; awaria mail ≠ rollback.
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 ---
 
 ### KROK 2 — Unit / E2E z mockiem SMTP
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Cel:** Asercja adresata + wyboru szablonu (prefiks `[T-…]` w subject) dla czterech ID. Major 9.4.2. T-5 / T-15.
 
@@ -1023,7 +1023,7 @@ describe('Faza 9.4 — E2E mock SMTP (4 szablony)', () => {
 - Cztery ID pokryte unit + E2E z mockiem; brak zależności od zewnętrznego SMTP.
 - Istniejące testy Fazy 8 zaktualizowane do `templateId` — zielone.
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 ---
 
