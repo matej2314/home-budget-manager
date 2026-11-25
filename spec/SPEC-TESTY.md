@@ -1,7 +1,7 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-09
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # SPEC — Testy (backend)
@@ -42,9 +42,9 @@ T-5. Pokryć (gdy dana ścieżka jest w zakresie zmiany / jako bramka krytyczna)
 
 1. Auth: signup → login → `GET /api/v1/auth/verify` → logout.
 2. Gospodarstwo: `user` → `POST /api/v1/house/new` → sesja `host` → `GET /api/v1/house/info`.
-3. Zaproszenie → `inmate`: invite → accept (host) → dostęp rdzenia jako `inmate`.
-4. Transakcja: `POST /api/v1/action/new` → widoczność na `GET /api/v1/action/my` + spójne saldo.
-5. Wiadomość (opcjonalnie w pierwszym rzucie): `POST /api/v1/message/send` + zapis; WS jeśli tanie w setupie.
+3. Zaproszenia (**unit + E2E**): host invite → membership od razu; inmate invite → pending; host accept → `inmate`; host decline → bez membership; mock SMTP asertuje szablony T-cand-host-added / T-cand-inmate-pending / T-host-inmate-pending / T-cand-decision (adresat + wybór szablonu).
+4. Transakcja: add → widoczność + saldo; delete = reverse `type`; authz delete (inmate własna OK; inmate cudza → 403; host cudza w domu → OK).
+5. Wiadomość (opcjonalnie): `POST /api/v1/message/send` + zapis; WS jeśli tanie w setupie.
 
 ### Co asertować
 
@@ -68,7 +68,7 @@ T-12. DoD obejmuje: testy przechodzą lokalnie; pokryty zachowany/zmieniony kont
 
 T-13. Wyjątki bez wymuszania testów: czysty chore docs-only, komentarz. **Nie** dotyczy zmian w `services`, routes, auth, rolach, transakcjach, warstwie danych.
 
-T-15. Przy refaktorze według major planu backendu (`home-budget-manager_major_plan-backend.md`): **każda faza 1–8** ma scoped testy powierzchni tej fazy (pliki + zielona komenda Jest w `backend/`) jako część DoD fazy. **Faza 9** (weryfikacja / domknięcie piramidy i minimum E2E T-5) = audyt kompletności, nie pierwsze testy w projekcie. Fazy 1–8 **nie** muszą powtarzać całego T-5 — tylko zmieniany zakres. Major frontend nie wprowadza fazy testów UI (poza strategią v1).
+T-15. Przy refaktorze według major planu backendu (`home-budget-manager_major_plan-backend.md`): **każda faza 1–8** oraz **9.1–9.4** ma scoped testy powierzchni tej fazy (pliki + zielona komenda Jest) jako część DoD. **Faza 9** = audyt piramidy / minimum T-5. Fazy **9.3–9.4** wymagają unit + E2E zaproszeń (w tym mock SMTP). Fazy nie muszą powtarzać całego T-5 — tylko zmieniany zakres. Major frontend nie wprowadza piramidy testów UI (poza strategią v1); FE Faza 9 = tylko UI pod kontrakt API.
 
 ### CI
 

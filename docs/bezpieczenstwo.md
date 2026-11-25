@@ -1,7 +1,7 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-19
+data_modyfikacji: 2026-11-24
 ---
 
 # Bezpieczeństwo — Home Budget Manager
@@ -40,10 +40,14 @@ Role normatywne: `user`, `host`, `inmate`, `superadmin`.
 | Zasada | Opis |
 |--------|------|
 | Egzekucja | Middleware po JWT — **zawsze na API**, nie tylko w React |
-| Host | Zarządzanie składem domu (usuń domownika, akceptacja zaproszeń wg kontraktu) |
-| Inmate | Dostęp do rdzenia finansów / chatu bez uprawnień hosta do składu |
+| Host | Zarządzanie składem (usuń domownika; accept/decline; **dodanie kandydata od razu**); kasowanie **wszystkich** transakcji domu |
+| Inmate | Rdzeń finansów / chat; może **inicjować** zaproszenie (pending); kasuje **tylko własne** transakcje; bez accept/decline i bez usuwania członków |
 | Superadmin | Otoczka operacyjna — nie mylić z hostem gospodarstwa |
 | Publiczne | Wyłącznie świadomie (np. login/signup, health, wybrane GET otoczki) |
+
+**Authz delete transakcji (API):** brak uprawnień → **403** + klucz i18n; brak zasobu / zły dom → **404**. UI ukrywa przyciski, ale nie zastępuje API.
+
+**Pending invite:** WS `invitation` + trwały notice dla hosta; kolekcja hosta = pending; status po decyzji = log w DB.
 
 ## Nagłówki HTTP (Helmet)
 

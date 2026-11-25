@@ -1,7 +1,7 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-23
+data_modyfikacji: 2026-11-24
 ---
 
 # Przepływy danych — Home Budget Manager
@@ -76,66 +76,85 @@ sequenceDiagram
 
 ---
 
-## C. Zaproszenie → akceptacja → `inmate`
+## C. Zaproszenie → `inmate`
 
-Typowy przebieg:
+Dwa tryby (norma 2026-11-24):
 
-1. Członek domu (`host` lub `inmate`) inicjuje zaproszenie: `POST /api/v1/users/invite`.
-2. Zapis zaproszenia w DB; możliwy push WebSocket `invitation` do hosta (gdy flow tego wymaga).
-3. Host przegląda listę: `GET /api/v1/invitation/collection`.
-4. Host akceptuje: `POST /api/v1/invitation/accept` **albo** odrzuca: `POST /api/v1/invitation/decline`.
-5. Przy akceptacji: użytkownik dołączany do gospodarstwa z rolą `inmate`; powiadomienie + ewentualny broadcast `notification`.
-6. Dołączony użytkownik działa dalej z sesją w roli `inmate` (odświeżenie tokenu / ponowne wejście wg mechanizmu aplikacji).
+### C1. Host dodaje od razu
 
-Kierunek e-mail wychodzący (zaproszenie na skrzynkę) jest powierzchnią planowaną — ten przepływ opiera się na HTTP + WS + notice.
+1. Host: `POST /api/v1/users/invite`.
+2. API od razu tworzy membership z rolą `inmate` (bez pending).
+3. Skutki: notice / WS wg kontraktu + e-mail do kandydata (**T-cand-host-added**).
+
+### C2. Inmate inicjuje → host decyduje
+
+1. Inmate: `POST /api/v1/users/invite` → rekord invitation **pending** (bez membership).
+2. Push WS `invitation` do hosta **oraz** trwały wpis notice dla hosta.
+3. E-mail: **T-cand-inmate-pending** (kandydat) + **T-host-inmate-pending** (host).
+4. Host: `GET /api/v1/invitation/collection` — tylko **pending** (historia statusów zostaje w DB jako log, bez wymogu UI historii).
+5. Host: `POST /api/v1/invitation/accept` → membership `inmate` **albo** `POST .../decline` → bez membership; status na rekordzie = log.
+6. E-mail do kandydata: **T-cand-decision** (accept lub decline).
+7. Awaria SMTP ≠ rollback (K-13).
 
 ```mermaid
 sequenceDiagram
-  participant Inv as Zapraszający
+  participant Inv as Inmate
   participant SPA as SPA
   participant API as API
   participant DB as MySQL
   participant Host as Host
   participant WS as WebSocket
+  participant Mail as SMTP
 
   Inv->>SPA: Zaproś użytkownika
   SPA->>API: POST /users/invite
-  API->>DB: zapis invitation
-  API->>WS: invitation (gdy dotyczy)
-  Host->>SPA: Lista zaproszeń
+  API->>DB: invitation pending + notice host
+  API->>WS: invitation → host
+  API->>Mail: T-cand-inmate-pending + T-host-inmate-pending
+  Host->>SPA: Lista pending
   SPA->>API: GET /invitation/collection
-  Host->>SPA: Akceptuj
-  SPA->>API: POST /invitation/accept
-  API->>DB: membership + rola inmate
-  API->>WS: notification (dom)
+  Host->>SPA: Akceptuj / Odrzuć
+  SPA->>API: POST accept|decline
+  API->>DB: status log (+ membership gdy accept)
+  API->>Mail: T-cand-decision
 ```
 
 ---
 
-## D. Dodanie transakcji
+## D. Dodanie / usunięcie transakcji
 
-Warunek: `host` lub `inmate`.
+Warunek dodania: `host` lub `inmate`. Kwota: walidacja max **2** miejsca po przecinku.
+
+### Dodanie
 
 1. SPA: `POST /api/v1/action/new` (`type`, `value`, `catId`).
 2. Service zapisuje transakcję w DB.
-3. Aktualizacja salda gospodarstwa.
-4. Zapis powiadomienia + broadcast WebSocket `notification` do domu.
-5. Broadcast `balance_update` z nowym saldem do członków domu.
-6. Odpowiedź HTTP sukcesu do inicjatora; pozostali domownicy dostają skutki przez WS / odświeżenie list.
+3. Aktualizacja salda: `income` ↑, `expense` ↓ (`currentBalance`).
+4. Notice + WS `notification`; WS `balance_update`.
+5. HTTP success do inicjatora.
+
+### Usunięcie
+
+1. SPA: `DELETE /api/v1/action/` (`transactionId`).
+2. Authz: **inmate** — tylko własne; **host** — dowolna tx w domu. Brak uprawnień → **403**; brak tx / zły dom → **404**.
+3. Korekta salda = **reverse** oryginalnego `type` (delete expense ↑ saldo; delete income ↓).
+4. Notice `notifications.deletedAction` (bez osobnej semantyki „host skasował cudzą”) + `balance_update`.
 
 ```mermaid
 flowchart LR
-  SPA[SPA] -->|POST /action/new| API[Controller]
+  SPA[SPA] -->|POST/DELETE /action| API[Controller]
   API --> SVC[Transaction service]
   SVC --> DB[(MySQL)]
-  SVC --> BAL[Aktualizacja salda]
+  SVC --> BAL[Saldo add lub reverse]
   BAL --> DB
-  SVC --> N[Notice + WS notification]
+  SVC --> N[Notice + WS]
   BAL --> WSb[WS balance_update]
   N --> Dom[Domownicy online]
   WSb --> Dom
-  API -->|JSON success| SPA
+  API -->|JSON| SPA
 ```
+
+**Sync 2026-11-24:** reguły salda, authz delete i dwa tryby invite.
 
 ---
 

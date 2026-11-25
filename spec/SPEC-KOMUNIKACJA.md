@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 4
 data_utworzenia: 2026-11-09
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # SPEC — Komunikacja (I/O)
@@ -84,15 +84,25 @@ K-12. Biznesowy push jest **skutkiem ubocznym** przepływu HTTP/service (lub uzg
 
 K-13. Do czasu wdrożenia outbound: zaproszenia i powiadomienia idą HTTP + WS / notice. **Nie wolno** opierać produktu na e-mailu jako jedynym kanale zaproszenia.
 
-K-14. Gdy wdrażany outbound (norma):
+K-14. Outbound e-mail przy zaproszeniach (norma):
 
 | Element | Reguła |
 |---------|--------|
-| Trigger | Po walidacji HTTP operacji zaproszenia (service) |
-| Adresat | E-mail zaproszonego / kandydata |
-| Treść | Link lub instrukcja dołączenia + kontekst domu |
+| Trigger | Po walidacji HTTP w service (invite / accept / decline) |
 | Transport | np. nodemailer; sekrety SMTP wyłącznie w env ([docs/katalog_env.md](../docs/katalog_env.md)) |
-| Idempotencja / retry | Bez rozbudowanej normy w tym SPEC — nie blokuje pierwszego wdrożenia; szczegóły przy implementacji bez sprzeczności z docs |
+| Best-effort | Zgodnie z K-13 — awaria SMTP ≠ rollback membership / statusu |
+| Idempotencja / retry | Bez rozbudowanej normy — nie blokuje wdrożenia |
+
+**Szablony (osobne body text/html — obowiązkowe rozróżnienie):**
+
+| ID | Adresat | Trigger |
+|----|---------|---------|
+| T-cand-host-added | kandydat | host dodał od razu |
+| T-cand-inmate-pending | kandydat | inmate zaproponował (pending) |
+| T-host-inmate-pending | host | inmate zaproponował (pending) |
+| T-cand-decision | kandydat | po accept **lub** decline |
+
+K-15. Przy pending od inmate: oprócz e-maila (K-14) obowiązuje push WS `invitation` do hosta **oraz** trwały wpis notice dla hosta. Kolekcja operacyjna hosta zwraca tylko pending.
 
 ## Wzorce projektowe i struktura
 
@@ -140,7 +150,8 @@ Poza zakresem v1 tego SPEC (nie jako „zakaz na zawsze” produktu): GraphQL, g
 - [ ] `POST` OCR bez ważnego `SESSID` → 401 (lub równoważna odmowa auth).
 - [ ] Po mutacji wyzwalającej push klient otrzymuje ustalony `type` (np. `balance_update` / `newMessage`) bez custom room API.
 - [ ] Handshake WS bez cookie sesji jest odrzucany.
-- [ ] Przed wdrożeniem maila: flow zaproszenia działa bez skrzynki; po wdrożeniu — wysyłka po walidacji HTTP, sekrety tylko w env.
+- [ ] Flow zaproszenia działa bez skrzynki (K-13); po K-14 — cztery szablony (T-cand-host-added, T-cand-inmate-pending, T-host-inmate-pending, T-cand-decision), sekrety tylko w env.
+- [ ] Pending od inmate: WS `invitation` + trwały notice dla hosta (K-15).
 
 ## Poza zakresem tego SPEC
 

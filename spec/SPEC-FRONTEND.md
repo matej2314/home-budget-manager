@@ -1,7 +1,7 @@
 ---
-wersja: 2
+wersja: 3
 data_utworzenia: 2026-11-09
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # SPEC — Frontend (SPA)
@@ -67,6 +67,12 @@ F-14. Brak sekretów (JWT secret, hasła DB, SMTP, tokeny CI) w bundlu / `VITE_*
 
 F-15. Ukrycie przycisku / trasy w React **nie** jest autoryzacją — każde chronione działanie i tak idzie przez API.
 
+F-16. Usuwanie transakcji w UI: przycisk delete widoczny dla **hosta** na transakcjach gospodarstwa; dla **inmate** tylko na własnych. Odmowa API (**403**) mapowana przez i18n (`message`) — bez udawania sukcesu.
+
+F-17. Lista zaproszeń hosta pokazuje wyłącznie **pending** (bez wymogu widoku historii accept/decline w v1 tej normy).
+
+F-18. Formularze kwot (transakcje): walidacja max **2** miejsca po przecinku spójna z API (D-11b); komunikat błędu przez i18n.
+
 ## Wzorce projektowe i struktura
 
 | Wymagane / dozwolone | Sens |
@@ -111,6 +117,7 @@ F-15. Ukrycie przycisku / trasy w React **nie** jest autoryzacją — każde chr
 - [ ] `message` z API jest tłumaczone przez i18n (namespace `api` lub równoważna konwencja), nie wyświetlane na sztywno jako jedyny język kontraktu.
 - [ ] W refaktorowanym UI nie ma roli `mate` — jest `inmate`.
 - [ ] W bundlu / env frontu nie ma sekretów serwerowych.
+- [ ] Delete tx / pending invite / kwoty 2 dp zgodne z F-16–F-18.
 
 ## Poza zakresem tego SPEC
 

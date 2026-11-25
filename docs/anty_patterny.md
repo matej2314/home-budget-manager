@@ -1,5 +1,5 @@
 ---
-wersja: 7
+wersja: 8
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-24
 ---
@@ -41,9 +41,9 @@ Forma: hasło → dlaczego boli → co robić zamiast. Odniesienia do kierunku r
 
 ## 6. Logika biznesowa w komponencie React + dubel w API
 
-**Dlaczego boli:** Rozjazd reguł (np. kto może usunąć domownika). Bugi „działa w UI, pada na API” albo odwrotnie.
+**Dlaczego boli:** Rozjazd reguł (np. kto może usunąć domownika / transakcję). Bugi „działa w UI, pada na API” albo odwrotnie.
 
-**Zamiast:** Źródło prawdy = backend; front formatuje i orchestrację UI. Wspólne reguły nie żyją w dwóch miejscach na sztywno.
+**Zamiast:** Źródło prawdy = backend (m.in. delete tx: host house-wide / inmate own; invite pending). Front tylko odzwierciedla (F-16–F-18).
 
 ## 7. Cały server state w Context / Zustand bez granicy „UI vs dane”
 

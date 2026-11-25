@@ -1,5 +1,5 @@
 ---
-wersja: 7
+wersja: 8
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-24
 ---
@@ -75,7 +75,7 @@ Gospodarstwo.
 | `userName` | Nazwa hosta (denormalizacja) |
 | `houseName` | Nazwa domu |
 | `initBudget` | Budżet startowy / bazowy |
-| `currentBalance` | Bieżące saldo |
+| `currentBalance` | Bieżące saldo domu (`income` ↑, `expense` ↓; delete = reverse `type`) |
 | `createdAt` / `monthlyBalanceDate` | Daty operacyjne / bilansu |
 
 ### `householdUsers`
@@ -93,12 +93,12 @@ Relacja w schemacie Prisma: `householdUsers.households` ↔ `households.househol
 
 ### `invitations`
 
-Zaproszenia do gospodarstwa.
+Zaproszenia do gospodarstwa. Host może też dodać kandydata **bez** wiersza pending (membership od razu).
 
 | Pole (kluczowe) | Opis |
 |-----------------|------|
 | `id` | PK |
-| `status` | Stan zaproszenia |
+| `status` | Stan (pending / accepted / declined, …); po decyzji rekord **zostaje** (log); UI/API kolekcji hosta = tylko pending |
 | `invitingUserId` / `invitedUserId` | Strony zaproszenia |
 | `houseId` / `hostId` | Dom i host decyzyjny |
 | `date` | Czas utworzenia |
@@ -113,7 +113,7 @@ Transakcje (przychód / wydatek).
 | `userId` / `houseId` | Kto / w którym domu |
 | `catId` | FK → `actionCategories` |
 | `type` | `income` \| `expense` |
-| `value` | Kwota |
+| `value` | Kwota — w aplikacji max **2** miejsca po przecinku (bez migracji cents w tej decyzji) |
 | `addedAt` | Czas dodania |
 
 ### `actionCategories`

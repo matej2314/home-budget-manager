@@ -1,7 +1,7 @@
 # Home Budget Manager — major plan (backend)
 
 **Źródła:** `docs/` oraz `spec/SPEC-*.md` (przede wszystkim SPEC-BACKEND, SPEC-KOMUNIKACJA, SPEC-BEZPIECZENSTWO, SPEC-DANE, SPEC-TESTY).  
-**Zakres tego pliku:** wyłącznie backend (`backend/`) — aktualizacja zależności, ESM, refaktor do stanu docelowego z dokumentacji i SPEC, cutover legacy HTTP oraz jawne porty I/O pod późniejsze adaptery chmurowe.  
+**Zakres tego pliku:** wyłącznie backend (`backend/`) — aktualizacja zależności, ESM, refaktor do stanu docelowego z dokumentacji i SPEC, poprawki logiki biznesowej (Fazy 9.1–9.4), cutover legacy HTTP oraz jawne porty I/O pod późniejsze adaptery chmurowe.  
 **Poza planem:** frontend (`frontend/`, w tym R5), playbook CI/Jenkins, workery poza procesem API, metryki / OTel / Sentry, wdrożenie SDK AWS (SES/S3/…) — dopiero po Fazie 11, osobną decyzją.
 
 **Statusy (fazy / kroki):** `NIE_ROZPOCZĘTY` | `W_TRAKCIE` | `WYKONANY`  
@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-24 — dopisek Faz 9.1–9.4 (`NIE_ROZPOCZĘTY`) między Fazą 9 a 10:** poprawki i refaktor logiki biznesowej (reverse salda, walidacja kwot 2 dp, authz delete host/inmate, zaproszenia notice+log, 4 szablony e-mail) + unit/E2E zaproszeń. Fazy 10–11 bez przenumerowania.
 - **2026-11-24 — dopisek Fazy 10 + Fazy 11 (`NIE_ROZPOCZĘTY`):** po audycie architektury (cutover legacy HTTP; jawne porty I/O przed AWS). Faza 10 **przejmuje** usunięcie dual mount, które w historii Fazy 4 / Kroku 4.1 zapisano jako „poza tym major” — treść `WYKONANY` Fazy 4 bez zmian; nowa faza z odniesieniem. Faza 11 wydziela porty `MailSender` / `ObjectStorage` / `OcrEngine` (adaptery lokalne SMTP + dysk + Tesseract); bez SDK AWS i bez kontenera DI.
 - **2026-11-24 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza9-piramida-testow.md` (FAZA 1, KROK 1–4) oznaczono Fazę 9 (kroki 9.1–9.2) jako `WYKONANY`. Brak milestone zamykającego po Fazie 9 (decyzja major / ślad feature planu).
 - **2026-11-23 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza7-prisma-r6.md` (FAZA 1, KROK 1–5 → `WYKONANY`) oznaczono Fazę 7 (kroki 7.1–7.3) jako `WYKONANY` oraz milestone „Dane wyłącznie przez Prisma” jako `OSIĄGNIĘTY`. Start Fazy 8 poza tym syncem.
@@ -24,8 +25,8 @@
 
 ### Testy równolegle (norma planu)
 
-Zgodnie z `docs/testy.md` i SPEC-TESTY **T-15**: **każda faza 1–8** domyka **scoped** testy powierzchni tej fazy (pliki Jest + zielona komenda testów w `backend/`). Nie odkładamy pierwszej asercji na Fazę 9.  
-**Faza 9** = weryfikacja / domknięcie piramidy i minimum E2E (T-5) — nie „pierwsze testy w projekcie”.  
+Zgodnie z `docs/testy.md` i SPEC-TESTY **T-15**: **każda faza 1–8** oraz **9.1–9.4** domyka **scoped** testy powierzchni tej fazy (pliki Jest + zielona komenda w `backend/`).  
+**Faza 9** = weryfikacja / domknięcie piramidy i minimum E2E (T-5). Fazy **9.3–9.4** = unit + E2E zaproszeń (w tym mock SMTP).  
 Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ---
@@ -596,6 +597,181 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 - Zasada DoD testów (w tym scoped per faza przy dalszym major / zmianach) jest przyjęta i stosowana.
 
 <!-- Brak MILESTONE zamykającego po Fazie 9 — decyzja wywiadu. -->
+
+---
+
+## Faza 9.1 — Saldo: reverse przy delete + walidacja kwot (2 dp)
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Saldo domu = aktualny stan konta: `expense` zmniejsza, `income` zwiększa. Usunięcie transakcji **odwraca** efekt według oryginalnego `type` (nie hardkod `expense`). Kwoty: walidacja na brzegu HTTP + jeden helper salda (max **2** miejsca po przecinku, spójne zaokrąglenie) — **bez** migracji schematu na cents/`Decimal`.
+
+**Refaktor względem:** Faza 2 / pipeline transakcji oraz Faza 7 (atomowość Prisma) — reguła `deleteAction` / `deleteTransactionWithBalanceUpdate` / `nextBalance`; testy as-is utrwalające błędne `balanceType: 'expense'`.
+
+**DoD (faza):**
+
+- Delete expense przywraca saldo; delete income je obniża (reverse `type`).
+- Niepoprawna kwota (nie-liczba, >2 dp, niedozwolony znak) → 400 + klucz i18n.
+- Unit salda/kwot + aktualizacja E2E / unit, które wcześniej asertowały as-is bug — zielone (T-15).
+
+### Krok 9.1.1 — Reverse salda przy usuwaniu transakcji
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Przy delete odczytać `type` usuwanego rekordu i wywołać korektę odwrotną w tej samej transakcji Prisma.
+
+**DoD (krok):**
+
+- Brak hardkodu `balanceType: 'expense'` przy delete.
+- Unit pokrywa income i expense.
+
+### Krok 9.1.2 — Walidacja i helper kwot (2 dp)
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Wspólny helper parse/round (max 2 dp) na add i na ścieżce salda; walidacja na brzegu controller/service.
+
+**DoD (krok):**
+
+- Add i delete używają tego samego helpera kwot/salda.
+- Scoped testy walidacji 400 są zielone.
+
+---
+
+## Faza 9.2 — Authz usuwania transakcji (inmate own / host house-wide)
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Inmate kasuje wyłącznie własne transakcje; host — dowolną transakcję w swoim gospodarstwie. Egzekucja w API (`database` / service); 403 + klucz i18n przy braku uprawnień; 404 gdy brak tx / zły dom. Powiadomienie po delete bez zmian semantyki (`notifications.deletedAction`).
+
+**Refaktor względem:** `services/transactions/deleteAction.js` + `deleteTransactionWithBalanceUpdate` (filtr `userId` aktora) oraz E2E „inmate nie kasuje tx hosta”.
+
+**DoD (faza):**
+
+- Host usuwa cudzą tx w domu → 200 + reverse salda (Faza 9.1).
+- Inmate usuwa cudzą → **403** (nie mylić z „nie znaleziono”, gdy tx istnieje w domu).
+- Inmate usuwa własną → 200.
+- Unit + E2E authz delete zielone (T-15).
+
+### Krok 9.2.1 — Reguła ownership w service / database
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Lookup tx po `transactionId` + `houseId`; zezwolenie: actor = owner **lub** actor.role = `host` w tym domu. Delete nie wymaga `userId` aktora w `WHERE` dla hosta.
+
+**DoD (krok):**
+
+- Filtr delete umożliwia hostowi usunięcie tx innego członka tego samego `houseId`.
+- Unit pokrywa host/inmate/brak tx.
+
+### Krok 9.2.2 — Mapowanie 403/404 + testy E2E
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** AppError + envelope; aktualizacja E2E (inmate → 403; host kasuje cudzą → sukces + saldo).
+
+**DoD (krok):**
+
+- E2E asertuje 403 dla inmate na cudzej tx w domu.
+- E2E asertuje sukces hosta na cudzej tx.
+
+---
+
+## Faza 9.3 — Zaproszenia: notice trwały, status-log, unit + E2E
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Host dodaje kandydata **od razu** (membership). Inmate tylko inicjuje pending; membership po accept hosta. Przy pending od inmate: WS `invitation` **oraz** trwały wpis notice dla hosta. Po accept/decline rekord zaproszenia zostaje (status = log); kolekcja UI/API hosta = tylko **pending** (bez widoku historii w tej fazie).
+
+**Refaktor względem:** Faza 5 (role), Faza 8 (mail trigger — treść szablonów w 9.4), `addUserByHost` / `addUserByInmate` / accept / decline / notifications.
+
+**DoD (faza):**
+
+- Pending inmate → notice trwały dla hosta + WS.
+- Accept → membership `inmate`; decline → brak membership; rekord zostaje ze statusem.
+- `GET /invitation/collection` (lub równoważne) zwraca tylko pending dla hosta.
+- **Unit + E2E zaproszeń** (happy path host immediate, inmate→accept, inmate→decline) zielone (T-15).
+
+### Krok 9.3.1 — Notice trwały przy pending + status-log
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Po `addUserByInmate`: `emitNotification` / równoważne dla hosta + istniejący WS. Accept/decline aktualizują status bez hard-delete.
+
+**DoD (krok):**
+
+- W DB jest notice powiązany z pending dla hosta.
+- Status po decyzji ≠ `new`/pending; wiersz invitation pozostaje.
+
+### Krok 9.3.2 — Unit + E2E API zaproszeń
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Unit: host immediate vs inmate pending; accept/decline membership; brak membership przy samym pending. E2E: `/api/v1` + cookie; role po reloginie.
+
+**DoD (krok):**
+
+- Unit pokrywa trzy ścieżki (host add, accept, decline).
+- E2E pokrywa te same ścieżki na kontrakcie v1.
+
+---
+
+## Faza 9.4 — Cztery szablony e-mail zaproszeń + mock w testach
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Osobne szablony treści (HTTP body / text+html) dla czterech przypadków. Best-effort SMTP (K-13) bez zmian. Testy unit/E2E z **mockiem** transportu — asercja adresata i wyboru szablonu, nie prawdziwego SMTP.
+
+**Refaktor względem:** Faza 8 (`sendInvitationEmail` / `mailTransport`) — rozdzielenie szablonów i adresatów; Faza 9.3 (momenty triggerów).
+
+**Szablony (norma):**
+
+| ID | Adresat | Trigger |
+|----|---------|---------|
+| T-cand-host-added | kandydat | host dodał od razu |
+| T-cand-inmate-pending | kandydat | inmate zaproponował |
+| T-host-inmate-pending | host | inmate zaproponował |
+| T-cand-decision | kandydat | po accept **lub** decline |
+
+**DoD (faza):**
+
+- Cztery szablony rozróżnialne w kodzie; brak jednego „uniwersalnego” body dla wszystkich.
+- Trigger po walidacji service; awaria SMTP ≠ rollback.
+- Unit + E2E (mock SMTP) asertują wysyłkę / szablon / adresat dla każdego ID — zielone (T-15).
+
+### Krok 9.4.1 — Implementacja szablonów i podpięć
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Wydzielić render szablonów; podpiąć pod host_added, inmate_pending (cand+host), accept/decline (cand).
+
+**DoD (krok):**
+
+- Każdy trigger woła właściwy szablon i adresata.
+- Sekrety SMTP tylko w env.
+
+### Krok 9.4.2 — Unit / E2E z mockiem SMTP
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Mock transportera / portu mail; asercje czterech ścieżek.
+
+**DoD (krok):**
+
+- Cztery ścieżki pokryte testami z mockiem.
+- Brak zależności testów od zewnętrznego SMTP.
+
+---
+
+## MILESTONE — Reguły domeny: saldo / authz tx / invite+mail
+
+**Opis:** Bramka po Fazach 9.1–9.4. Logika biznesowa salda, delete i zaproszeń (w tym maile i testy) jest domknięta według DoD. Wolno wejść w Fazę 10 (cutover legacy HTTP).
+
+**DoD (milestone):**
+
+- Fazy 9.1–9.4 mają status `WYKONANY`.
+- Unit + E2E zaproszeń oraz salda/authz delete są zielone w zakresie tych faz.
+- Prowadzący prace akceptuje start Fazy 10.
 
 ---
 

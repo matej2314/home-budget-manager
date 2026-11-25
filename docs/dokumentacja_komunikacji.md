@@ -1,5 +1,5 @@
 ---
-wersja: 6
+wersja: 7
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-24
 ---
@@ -140,7 +140,7 @@ Legenda auth: **pub** = bez JWT; **JWT** = cookie `SESSID`; rola = wymagana po w
 |--------|---------|------|------|
 | POST | `/new` | JWT + `host\|inmate` | Nowa transakcja (`type`, `value`, `catId`) |
 | GET | `/my` | JWT + `host\|inmate` | Transakcje gospodarstwa |
-| DELETE | `/` | JWT + `host\|inmate` | Usunięcie transakcji |
+| DELETE | `/` | JWT + `host\|inmate` | Usunięcie transakcji (`inmate` = własne; `host` = dowolna w domu; 403 przy braku uprawnień) |
 | GET | `/collection` | `superadmin` (as-is) | Wszystkie akcje — panel admin |
 
 #### Kategorie — `/api/v1/actioncat`
@@ -303,27 +303,22 @@ Klient może emitować standardowe zdarzenia cyklu życia Socket.io (`disconnect
 
 ## Powierzchnia e-mail
 
-### As-is
+### Stan i norma
 
 - E-mail jest **identyfikatorem konta** w HTTP (`signup`, `login`, `changemail`) i w modelu użytkownika.
-- Zależność `nodemailer` jest w `package.json`, ale **brak implementacji wysyłki** (brak użycia transportera w kodzie).
-- Zaproszenia i powiadomienia idą dziś przez **HTTP + WebSocket / zapis notice**, nie przez skrzynkę mailową.
+- Outbound (K-14): po walidacji HTTP w service; SMTP z env; **best-effort** (K-13) — awaria skrzynki ≠ rollback membership / statusu zaproszenia.
+- Kanał podstawowy zaproszeń: HTTP + WS + notice; mail **uzupełnia**.
 
-### Kierunek (planowany kontrakt wychodzący)
+### Szablony (osobne treści — norma 2026-11-24)
 
-Docelowo e-mail jako kanał wychodzący, w pierwszej kolejności pod **zaproszenia do gospodarstwa** (i ewentualnie krytyczne powiadomienia — do decyzji przy implementacji).
+| ID | Adresat | Trigger |
+|----|---------|---------|
+| **T-cand-host-added** | kandydat | host dodał od razu |
+| **T-cand-inmate-pending** | kandydat | inmate zaproponował (pending) |
+| **T-host-inmate-pending** | host | inmate zaproponował (pending) |
+| **T-cand-decision** | kandydat | po accept **lub** decline hosta |
 
-Szkic kontraktu (niezaimplementowany):
-
-| Element | Propozycja normy |
-|---------|------------------|
-| Trigger | Akcja zaproszenia (po walidacji HTTP) |
-| Adresat | E-mail zaproszonego użytkownika / kandydat |
-| Treść | Link lub instrukcja dołączenia + kontekst domu |
-| Idempotencja / retry | Do ustalenia przy implementacji |
-| Sekrety | SMTP / provider wyłącznie w env backendu |
-
-Do czasu wdrożenia: klient **nie** polega na mailu jako jedynym kanale zaproszenia.
+Każdy ID = osobny szablon body (text/html). Sekrety SMTP wyłącznie w env ([katalog_env.md](./katalog_env.md)).
 
 ---
 

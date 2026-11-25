@@ -1,5 +1,5 @@
 ---
-wersja: 3
+wersja: 4
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-24
 ---
@@ -8,7 +8,7 @@ data_modyfikacji: 2026-11-24
 
 Indeks lokalnego zestawu w `docs/`. Odbiorcy: utrzymanie / refaktor oraz portfolio / rekruter.
 
-**Sync 2026-11-24:** docs zsynchronizowane ze stanem po lekkim refaktorze (R1–R6 + ESM); otwarte: cutover legacy HTTP (major Faza 10) i porty I/O (Faza 11).
+**Sync 2026-11-24:** stan po R1–R6 + ESM; norma domeny (saldo, delete, invite, 4 szablony mail, testy); otwarte w major: BE 9.1–9.4, FE 9, potem BE 10–11.
 
 ## Jak czytać (rekomendowana kolejność)
 

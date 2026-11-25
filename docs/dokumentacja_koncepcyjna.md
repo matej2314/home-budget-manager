@@ -1,5 +1,5 @@
 ---
-wersja: 5
+wersja: 6
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-24
 ---
@@ -80,10 +80,11 @@ Nie są rdzeniem budżetowym, ale wchodzą w zakres aplikacji jako warstwa preze
 
 1. **Jedno gospodarstwo na użytkownika** — w danym momencie użytkownik należy do co najwyżej jednego gospodarstwa.
 2. **Gospodarstwo przed rdzeniem** — bez domu (rola `user`) użytkownik nie korzysta z funkcji finansowych i współpracy domowników.
-3. **Host zarządza składem** — tylko `host` usuwa / zarządza domownikami; `inmate` nie przejmuje tych uprawnień.
-4. **Wspólny budżet domu** — transakcje i statystyki dotyczą gospodarstwa, nie osobnych „kont prywatnych” w obrębie produktu.
-5. **Web-first** — klient to aplikacja przeglądarkowa; API i realtime (m.in. Socket.io) służą temu klientowi.
-6. **Docs nad drift kodu przy rolach** — nazwa `inmate` jest normą dokumentacyjną; kod wymaga późniejszego ujednolicenia.
+3. **Host zarządza składem** — tylko `host` usuwa domowników i **akceptuje/odrzuca** zaproszenia; `inmate` może **zainicjować** zaproszenie (pending), ale membership powstaje dopiero po decyzji hosta **albo** gdy host doda kandydata od razu.
+4. **Wspólny budżet domu** — transakcje i saldo (`currentBalance`) dotyczą gospodarstwa: `expense` zmniejsza saldo, `income` zwiększa; **usunięcie transakcji odwraca** efekt według typu. Kwoty: max **2** miejsca po przecinku (walidacja aplikacji; bez wymogu migracji na cents w v1 tej decyzji).
+5. **Kasowanie transakcji** — `inmate` tylko własne; `host` wszystkie w gospodarstwie. Prawda w API; UI odzwierciedla.
+6. **Web-first** — klient to aplikacja przeglądarkowa; API i realtime (m.in. Socket.io) służą temu klientowi.
+7. **Rola `inmate`** — norma w docs i w kodzie (R1 domknięte).
 
 ## Słownik skrótowy
 
@@ -91,7 +92,7 @@ Nie są rdzeniem budżetowym, ale wchodzą w zakres aplikacji jako warstwa preze
 |---------|-----------|
 | Gospodarstwo / house | Jednostka współdzielonego budżetu i członkostwa |
 | Host | Twórca i administrator składu gospodarstwa |
-| Inmate | Domownik (norma docs; w kodzie historycznie m.in. `mate`) |
+| Inmate | Domownik (`inmate`) |
 | User | Konto bez gospodarstwa |
 | Superadmin | Administrator witryny (otoczka operacyjna) |
 | Action / transakcja | Przychód lub wydatek w budżecie domu |
@@ -103,11 +104,11 @@ Szczegóły pojęć: [dictionary.md](./dictionary.md).
 Obecna wersja produktu spełnia oczekiwania, gdy:
 
 - Nowy użytkownik rejestruje się, tworzy gospodarstwo (staje się `host`) albo dołącza przez zaproszenie (staje się `inmate`).
-- Domownicy dodają transakcje i kategorie; widać je w kontekście wspólnego budżetu domu.
+- Domownicy dodają transakcje i kategorie; saldo domu jest spójne z add/delete; kwoty do 2 dp.
 - Dostępne są budżet miesięczny, statystyki oraz chat / powiadomienia między członkami gospodarstwa.
-- Tylko `host` zarządza składem gospodarstwa.
+- Host zarządza składem (delete inmate, accept/decline); inmate może proponować kandydatów (pending).
+- Host może usuwać wszystkie transakcje domu; inmate tylko własne.
 - Otoczka (landing, recenzje, galeria, panel `superadmin`) działa jako warstwa operacyjna / prezentacyjna, bez mylenia jej z rdzeniem budżetowym.
-- Dokumentacja i dalszy refaktor traktują rolę domownika jako `inmate`, nawet jeśli repo jeszcze używa starszej nazwy.
 
 ## Powiązane
 

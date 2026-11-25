@@ -1,9 +1,9 @@
 # Home Budget Manager — major plan (frontend)
 
 **Źródła:** `docs/` oraz `spec/SPEC-*.md` (przede wszystkim SPEC-FRONTEND, SPEC-KOMUNIKACJA, SPEC-BEZPIECZENSTWO; uzupełniająco docs architektury, i18n, anty-patterny).  
-**Zakres tego pliku:** wyłącznie frontend (`frontend/`) — aktualizacja zależności, porządek SPA (R5), model stanu, kontrakt klienta HTTP/WS, R1 w UI, i18n `message`, granica zaufania klienta — do stanu docelowego z dokumentacji i SPEC.  
+**Zakres tego pliku:** wyłącznie frontend (`frontend/`) — aktualizacja zależności, porządek SPA (R5), model stanu, kontrakt klienta HTTP/WS, R1 w UI, i18n `message`, granica zaufania klienta oraz UI pod reguły domeny (Faza 9: delete tx, pending invite, kwoty 2 dp) — do stanu docelowego z dokumentacji i SPEC.  
 **Poza planem:** backend (`backend/`), Vitest / RTL / E2E UI, React Query / SWR, BFF, wymuszona architektura `features/<name>/`, playbook CI/Jenkins, usunięcie legacy mount HTTP po stronie API.  
-**Spójność z major backend:** ten plik zamyka stronę klienta względem `home-budget-manager_major_plan-backend.md` (m.in. przejście SPA na `/api/v1` oraz R1 w UI). Fazy 1–3 mogą iść równolegle do prac backendu; Fazy 4–5 mają bramki zewnętrzne opisane w DoD milestone’ów.
+**Spójność z major backend:** ten plik zamyka stronę klienta względem `home-budget-manager_major_plan-backend.md` (m.in. `/api/v1`, R1, oraz UI pod Fazami BE 9.1–9.4). Fazy 1–3 mogą iść równolegle do prac backendu; Fazy 4–5 mają bramki zewnętrzne w DoD milestone’ów; **Faza 9 FE** zależy od gotowych reguł API z BE 9.1–9.4 (lub równolegle z jasnym kontraktem).
 
 **Statusy (fazy / kroki):** `NIE_ROZPOCZĘTY` | `W_TRAKCIE` | `WYKONANY`  
 **Milestone:** domyślnie bez statusu; po spełnieniu DoD → wyłącznie `OSIĄGNIĘTY`  
@@ -11,6 +11,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-24 — dopisek Fazy 9 (`NIE_ROZPOCZĘTY`):** UI pod reguły domeny z major BE 9.1–9.4 (delete host/inmate, lista pending, 403, walidacja kwot 2 dp). Milestone po Fazie 8 (`OSIĄGNIĘTY`) bez zmian treści — Faza 9 to nowy zakres po wcześniejszym domknięciu Faz 1–8.
 - **2026-11-23 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza6-faza8-i18n-ws-security.md` oznaczono Fazę 6 (kroki 6.1–6.3), Fazę 7 (kroki 7.1–7.2) i Fazę 8 (kroki 8.1–8.2) jako `WYKONANY` oraz milestone’y „Kontrakt message ↔ UI”, „WS bez własnych protokołów” i „Klient bez sekretów i bez udawania authz” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego).
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza5-role-inmate.md` oznaczono Fazę 5 (kroki 5.1–5.2) jako `WYKONANY` oraz milestone „Role w UI zgodne z normą” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego + bramka BE R1 już `OSIĄGNIĘTY`).
 - **2026-11-19 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza3-faza4-stan-http.md` oznaczono Fazę 3 (kroki 3.1–3.3) i Fazę 4 (kroki 4.1–4.3) jako `WYKONANY` oraz milestone’y „Stan zgodny z R5 / F-4–F-7” i „SPA woła API pod `/api/v1`” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego + bramka BE dual mount).
@@ -480,4 +481,78 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 - F-14 / F-15 w zakresie tego major są spełnione według DoD fazy.
 - Prowadzący prace uznaje major frontend za domknięty zakresem (kolejne prace = edycja żyjącego planu albo osobne artefakty poza tą sesją).
 
-<!-- Brak MILESTONE zamykającego po Fazie 8 jako osobnej „fazy końcowej” — bramka powyżej zamyka ostatnie przejście; bez dodatkowej fazy testów UI. -->
+<!-- Milestone po Fazie 8 zamyka zakres Faz 1–8; Faza 9 poniżej = nowy zakres domenowy UI (2026-11-24). Bez fazy testów UI (poza strategią v1). -->
+
+---
+
+## Faza 9 — UI pod reguły domeny (delete tx, pending invite, kwoty 2 dp)
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Odzwierciedlenie w SPA reguł z major backend Faz 9.1–9.4 i docs/SPEC: przycisk usuwania transakcji (inmate = tylko własne; host = wszystkie w domu); obsługa **403** przy odmowie API; lista zaproszeń **pending** u hosta (bez widoku historii); walidacja kwoty max **2** miejsca po przecinku w formularzach transakcji. UI ≠ źródło prawdy authz (F-15).
+
+**Refaktor względem:** Faza 5 (role w UI), Faza 8 (granica zaufania), komponenty list transakcji / zaproszeń / formularzy kwot. Zależność zewnętrzna: kontrakt API z BE 9.1–9.4 (lub równoległa implementacja względem zatwierdzonej normy docs/SPEC).
+
+**DoD (faza):**
+
+- Host widzi akcję delete na transakcjach innych członków domu; inmate tylko na własnych.
+- Odmowa API (403) jest pokazana przez i18n (`message`), bez „udanego” UX przy błędzie.
+- Host ma UI listy pending (bez historii accept/decline w tej fazie).
+- Formularz kwoty odrzuca / ogranicza wejście >2 dp spójnie z BE.
+- Brak nowych sekretów; brak reguł authz wyłącznie w React.
+
+### Krok 9.1 — Delete transakcji w UI (host / inmate)
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Warunek widoczności przycisku delete: host → wszystkie tx domu na liście; inmate → `transaction` należąca do zalogowanego użytkownika. Wywołanie DELETE `/api/v1/action` bez zmian kontraktu ścieżki.
+
+**DoD (krok):**
+
+- Widoczność przycisku zgodna z regułą ról.
+- Sukces/błąd API odświeża listę / pokazuje toast z klucza `message`.
+
+### Krok 9.2 — Obsługa 403 przy odmowie delete
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Mapowanie envelope błędu 403 (i ewentualnie innych) przez namespace `api` / istniejący handler odpowiedzi.
+
+**DoD (krok):**
+
+- 403 nie jest mylone z „sukcesem” ani z ogólnym 500 bez klucza.
+- Użytkownik widzi przetłumaczony komunikat.
+
+### Krok 9.3 — Lista zaproszeń pending (host)
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** UI hosta pokazuje tylko pending z kolekcji API; po accept/decline pozycja znika z listy (log zostaje po stronie BE). Bez ekranu historii w tej fazie.
+
+**DoD (krok):**
+
+- Lista oparta o pending z API.
+- Accept/decline odświeżają listę; brak wymogu widoku historii.
+
+### Krok 9.4 — Walidacja kwoty 2 dp w formularzach
+
+**Status:** `NIE_ROZPOCZĘTY`
+
+**Opis:** Formularze add transaction (i pokrewne pola kwot) egzekwują max 2 miejsca po przecinku przed/wysyłką; spójnie z komunikatem błędu API przy ominięciu UI.
+
+**DoD (krok):**
+
+- Klient nie wysyła świadomie kwot z >2 dp jako „sukces lokalny”.
+- Komunikat walidacji UI lub z API jest czytelny (i18n).
+
+---
+
+## MILESTONE — UI zgodne z regułami domeny (saldo / delete / invite)
+
+**Opis:** Bramka po Fazie 9. SPA odzwierciedla reguły delete, pending i kwot bez udawania authz. Kolejne prace frontu = edycja żyjącego planu albo osobne artefakty.
+
+**DoD (milestone):**
+
+- Faza 9 ma status `WYKONANY`.
+- DoD fazy spełnione względem docs/SPEC i kontraktu BE 9.x.
+- Prowadzący prace akceptuje domknięcie tego wycinka FE.

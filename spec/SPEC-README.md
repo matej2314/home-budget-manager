@@ -1,7 +1,7 @@
 ---
-wersja: 1
+wersja: 2
 data_utworzenia: 2026-11-09
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # SPEC — jak czytać
@@ -35,3 +35,5 @@ SPEC **uszczegóławia** dokumentację; nie zastępuje jej i nie redefiniuje ust
 ## Źródło
 
 Zestaw powstał na bazie katalogu **`docs/`** projektu Home Budget Manager oraz ustaleń wywiadu SPEC (m.in. Prisma, stdout, helmet, seed). Pliki SPEC żyją wraz z projektem — przy driftcie aktualizuj najpierw docs, potem normę w `spec/`.
+
+**Sync 2026-11-24:** norma domeny (saldo reverse, authz delete, invite+4 szablony mail, kwoty 2 dp, testy zaproszeń) — spójnie z docs i major BE 9.1–9.4 / FE 9.

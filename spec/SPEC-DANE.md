@@ -1,7 +1,7 @@
 ---
-wersja: 3
+wersja: 4
 data_utworzenia: 2026-11-09
-data_modyfikacji: 2026-11-23
+data_modyfikacji: 2026-11-24
 ---
 
 # SPEC — Dane (persistencja)
@@ -58,7 +58,13 @@ D-10. Transakcja finansowa zawsze w kontekście `houseId` członka domu (members
 
 D-11. Mutacja transakcji utrzymuje spójność z saldem domu (`households.currentBalance` lub równoważne w schema): zapis w **jednej** orkiestracji service (transakcja Prisma / równoważna atomowość) — nie połowiczne zapisy rozjechane po controllerach.
 
+D-11a. Semantyka salda: `income` zwiększa `currentBalance`, `expense` zmniejsza. **Usunięcie** transakcji stosuje **reverse** według oryginalnego `type` rekordu (nie hardkod korekty jako `expense`).
+
+D-11b. Kwoty (`value` / saldo w ścieżce aplikacji): walidacja na brzegu — liczba skończona, max **2** miejsca po przecinku, spójne zaokrąglenie w jednym helperze salda. **Bez** wymogu migracji schematu na integer cents / `Decimal` w zakresie tej normy (osobna decyzja później).
+
 D-12. Role w modelu i danych: globalnie i w membership używać **`inmate`** (nie `mate`). `householdUsers.role`: `host` \| `inmate`.
+
+D-12a. Zaproszenia: po accept/decline rekord `invitations` **zostaje** (status = log). Kolekcja operacyjna hosta filtruje **pending**. Host może też dodać kandydata **bez** pending (membership od razu).
 
 D-13. Snapshoty / projekcje cron (`dailyTransactions`, `dailyBudget`, `monthly_balances`, …) zasilane przez **services** wołane z `tasks/` — nie raw SQL z tasków.
 
@@ -121,7 +127,8 @@ D-18. **Prisma Studio** dozwolone do podglądu/inspekcji na bazach **non-prod** 
 - [ ] Zmiana pola w modelu ma migrację w `prisma/migrations/`.
 - [ ] `householdUsers.houseId` jest nullable + FK do `households`; brak domu = `NULL` (brak `"0"` w kodzie i danych).
 - [ ] Listy „dom + członkowie” idą przez relację Prisma w `database/`, nie przez ręczny Map/join w JS.
-- [ ] Dodanie transakcji aktualizuje saldo domu atomowo (brak trwałego rozjazdu po sukcesie API).
+- [ ] Dodanie transakcji aktualizuje saldo domu atomowo; delete stosuje reverse `type` (D-11a).
+- [ ] Kwoty odrzucane przy >2 dp / nie-liczbie na brzegu (D-11b).
 - [ ] `npm`/`npx` seed (lub równoważne) wypełnia bazę dev/test minimalnym zestawem.
 - [ ] W danych/refaktorze rola domownika to `inmate`.
 - [ ] Task cron nie wykonuje raw SQL — woła service.

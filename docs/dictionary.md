@@ -1,5 +1,5 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-24
 ---
@@ -26,7 +26,7 @@ Nie obejmuje osobnego glossariusza bibliotek (Express, Zustand, …) — to poza
 | Hasło | Definicja |
 |-------|-----------|
 | **Gospodarstwo** (*house* / *household*) | Jednostka współdzielonego budżetu i członkostwa. Preferencja docs: **gospodarstwo**; w ścieżkach API często `house`. |
-| **Zaproszenie** (*invitation*) | Prośba o dołączenie użytkownika do gospodarstwa; akceptacja/odrzucenie po stronie hosta (as-is flow API). |
+| **Zaproszenie** (*invitation*) | Prośba o dołączenie: host może dodać od razu; inmate tworzy **pending** → host accept/decline. Po decyzji rekord zostaje (log); lista hosta = pending. |
 | **Domownik (skład)** (*inhabitant*) | Osoba w składzie domu (parametry usuwania itd.); semantycznie zbieżne z rolą *inmate*. |
 | **Jedno gospodarstwo na użytkownika** | Reguła produktowa: w danym momencie użytkownik należy do co najwyżej jednego gospodarstwa. |
 | **Membership** (*householdUsers*) | Wiersz składu użytkownika w domu; `houseId` = FK do gospodarstwa albo **`NULL`** = brak aktywnego domu (zabroniony sentinel `"0"`). |
@@ -38,7 +38,7 @@ Nie obejmuje osobnego glossariusza bibliotek (Express, Zustand, …) — to poza
 | **Transakcja** (*action*) | Przychód lub wydatek w budżecie gospodarstwa. Preferencja docs: **transakcja**; w API ścieżki `/action`. |
 | **Typ transakcji** (*type*) | Zwykle `income` (przychód) lub `expense` (wydatek). |
 | **Kategoria** (*action category* / *actioncat*) | Klasyfikacja transakcji; zarządzanie kategoriami po stronie superadmin (as-is). |
-| **Saldo** (*currentBalance* / *balance*) | Bieżące saldo gospodarstwa; aktualizowane przy transakcjach; push WS `balance_update`. |
+| **Saldo** (*currentBalance* / *balance*) | Bieżące saldo gospodarstwa; `income` ↑ / `expense` ↓; delete = reverse typu; push WS `balance_update`. |
 | **Budżet początkowy** (*initBudget*) | Kwota startowa przy tworzeniu / kontekście domu. |
 | **Budżet miesięczny** (*initial monthly budget* / *initmonthly*) | Deklaracja / init budżetu w ujęciu miesięcznym (endpoint `/initmonthly`). |
 | **OCR paragonu** (*receipt*) | Rozpoznanie kwoty z obrazu paragonu (wsparcie przy wydatku); kontrakt HTTP multipart. |

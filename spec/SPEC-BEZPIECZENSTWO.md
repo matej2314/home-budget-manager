@@ -1,7 +1,7 @@
 ---
-wersja: 1
+wersja: 2
 data_utworzenia: 2026-11-09
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # SPEC — Bezpieczeństwo
@@ -44,10 +44,12 @@ S-6. Po JWT: middleware weryfikacji **roli** na każdym chronionym endpoincie. N
 S-7. Nazwa roli domownika w tokenie, middleware, komunikatach i nowym kodzie: wyłącznie **`inmate`**. Zakaz `mate` oraz grupy `mates` w refaktorowanym kodzie — spójne grupy uprawnień pod normę docs (`host | inmate` itd.).
 
 S-8. Reguły produktowe:
-- `host` — zarządzanie składem domu (usuń domownika, akceptacja/odrzucenie zaproszeń wg kontraktu);
-- `inmate` — rdzeń finansów / chat **bez** uprawnień hosta do składu;
+- `host` — zarządzanie składem domu (usuń domownika; accept/decline; **dodanie kandydata od razu**); kasowanie **wszystkich** transakcji w swoim gospodarstwie;
+- `inmate` — rdzeń finansów / chat; może **inicjować** zaproszenie (pending); **bez** accept/decline i bez usuwania członków; kasuje **tylko własne** transakcje;
 - `superadmin` — otoczka operacyjna witryny; **≠** host gospodarstwa;
 - `user` — bez gospodarstwa; bez rdzenia budżetowego.
+
+S-8a. Delete transakcji (API): inmate — tylko `userId` właściciela = aktor; host — dowolna tx z `houseId` domu aktora. Brak uprawnień przy istniejącym zasobie w domu → **403** + klucz i18n; brak tx / zły dom → **404**. UI nie zastępuje tej egzekucji.
 
 S-9. Membership i uprawnienia do `houseId` / zasobów domu weryfikuje **serwer** (service / warstwa danych). Nie ufać samemu faktowi, że klient przesłał `houseId` w body.
 
@@ -117,6 +119,7 @@ S-18. `GET /api/v1/health` pozostaje publiczny (liveness) i **nie** zwraca sekre
 ## Kryteria akceptacji (obserwowalne)
 
 - [ ] Chroniony endpoint bez `SESSID` → 401; z złą rolą → 403.
+- [ ] Inmate delete cudzej tx w domu → 403; host delete cudzej w domu → sukces (S-8a).
 - [ ] OCR / upload bez sesji → odmowa auth.
 - [ ] W refaktorowanym kodzie brak `mate` / `mates` — jest `inmate` i spójne grupy.
 - [ ] Odpowiedzi API zawierają nagłówki ustawiane przez helmet (stan po wdrożeniu S-10).

@@ -1,7 +1,7 @@
 ---
-wersja: 4
+wersja: 5
 data_utworzenia: 2026-11-08
-data_modyfikacji: 2026-11-23
+data_modyfikacji: 2026-11-24
 ---
 
 # SPEC — Backend
@@ -74,9 +74,11 @@ B-11. Sukces HTTP pozostaje w envelope `{ status: "success", message: … }` zgo
 
 B-12. Rola domownika w kodzie backendu, tokenie i middleware: wyłącznie **`inmate`**. Nazwa `mate` i aliasy historyczne są zabronione w nowym / refaktorowanym kodzie (R1). Szczegóły grup uprawnień → SPEC-BEZPIECZENSTWO / [docs/bezpieczenstwo.md](../docs/bezpieczenstwo.md).
 
+B-20. Reguły domeny salda, delete transakcji, zaproszeń i kwot egzekwuje **service** (+ `database/` dla atomowości) — zgodnie z SPEC-DANE D-11/D-11a/D-11b/D-12a, SPEC-BEZPIECZENSTWO S-8/S-8a, SPEC-KOMUNIKACJA K-14/K-15. Major BE Fazy 9.1–9.4 wdrażają tę normę.
+
 ### Helpery
 
-B-13. Wspólne helpery (walidacja techniczna, checki, household utils) w `utils/` — **bez** przypadków użycia i orkiestracji domenowej (ta zostaje w services).
+B-13. Wspólne helpery (walidacja techniczna, checki, household utils, helper kwot/salda) w `utils/` — **bez** przypadków użycia i orkiestracji domenowej (ta zostaje w services).
 
 ### Observability
 

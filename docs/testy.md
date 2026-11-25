@@ -1,7 +1,7 @@
 ---
-wersja: 7
+wersja: 8
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-09
+data_modyfikacji: 2026-11-24
 ---
 
 # Strategia testów — Home Budget Manager
@@ -47,9 +47,12 @@ Mapowanie na `data_flow.md` — asercje przez HTTP (cookie jar), nie przez przeg
 
 1. **Auth:** signup → login → `GET /api/v1/auth/verify` → logout.
 2. **Gospodarstwo:** jako `user` → `POST /api/v1/house/new` → sesja `host` → `GET /api/v1/house/info`.
-3. **Zaproszenie → inmate:** invite → accept (host) → dołączony użytkownik ma dostęp rdzenia jako `inmate`.
-4. **Transakcja:** `POST /api/v1/action/new` → widoczność na `GET /api/v1/action/my` + spójne saldo (odczyt info domu / skutek uboczny).
-5. **Wiadomość (opcjonalnie w pierwszym rzucie E2E):** `POST /api/v1/message/send` + weryfikacja zapisu; WS — jeśli tanie w setupie.
+3. **Zaproszenia (unit + E2E):**  
+   - host invite → kandydat od razu w domu;  
+   - inmate invite → pending; host accept → `inmate`; host decline → bez membership;  
+   - mock SMTP: szablony T-cand-host-added / T-cand-inmate-pending / T-host-inmate-pending / T-cand-decision (adresat + wybór szablonu).  
+4. **Transakcja:** `POST /api/v1/action/new` → widoczność + spójne saldo; delete = reverse `type`; authz delete (inmate własna / host house-wide; 403).  
+5. **Wiadomość (opcjonalnie):** `POST /api/v1/message/send` + zapis; WS — jeśli tanie w setupie.
 
 Prefiks ścieżek: **`/api/v1`** (norma kontraktu). Środowisko testowe musi montować ten prefiks zgodnie z docs.
 
@@ -74,7 +77,7 @@ Testy są **częścią Definition of Done** kroku implementacji zmian w `backend
 
 Źródło numeracji: `home-budget-manager_major_plan-backend.md` (po scaleniu / przenumerowaniu faz).
 
-Przy pracach według major planu backendu: **każda faza 1–8** domyka **scoped** testy powierzchni tej fazy (pliki testów + zielona komenda Jest w `backend/`) — nie odkłada pierwszej asercji na fazę jakości. **Faza 9** major = **weryfikacja / domknięcie** piramidy i minimum E2E (lista wyżej), nie „pierwsze testy”. Fazy 1–8 nie muszą powtarzać całego T-5, tylko powierzchnię, którą właśnie zmieniają.
+Przy pracach według major planu backendu: **każda faza 1–8** oraz **9.1–9.4** domyka **scoped** testy powierzchni tej fazy (pliki + zielona komenda Jest). **Faza 9** = audyt piramidy / T-5. Fazy **9.3–9.4** wymagają unit + E2E zaproszeń (w tym mock SMTP). Fazy nie muszą powtarzać całego T-5 — tylko zmieniany zakres.
 
 Major frontend (`home-budget-manager_major_plan-frontend.md`) **nie** wprowadza fazy piramidy testów UI — zgodnie z zakresem v1 powyżej.
 

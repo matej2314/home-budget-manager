@@ -1,5 +1,5 @@
 ---
-wersja: 7
+wersja: 8
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-24
 ---
@@ -205,6 +205,7 @@ Cel był: **czytelność i spójność**, nie przebudowa systemu od zera. Poniż
 | **R4** | WS / cron jako adaptery | **Domknięte** w procesie API | Workery nadal odroczone |
 | **R5** | Frontend — mapa SPA / stan | **Domknięte** (bez React Query) | |
 | **R6** | Prisma + Migrate | **Domknięte** | |
+| **Domena 9.x** | Saldo reverse, authz delete, invite+mail+testy | **Otwarte** — major backend **Fazy 9.1–9.4** (+ FE Faza 9) | Norma w docs/SPEC 2026-11-24 |
 | **Cutover HTTP** | Usunięcie dual mount legacy | **Otwarte** — major backend **Faza 10** | SPA już na v1; API nadal montuje legacy równolegle |
 | **Porty I/O** | Mail / storage / OCR za portami | **Otwarte** — major backend **Faza 11** | Adaptery v1 lokalne; AWS poza tą fazą |
 
