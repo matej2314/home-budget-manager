@@ -38,14 +38,10 @@ const deleteAction = async (transactionId, userId) => {
       });
     }
 
-    const value = checkAction.value;
-
     const result = await deleteTransactionWithBalanceUpdate({
       userId,
       houseId,
       transactionId,
-      balanceType: 'expense',
-      value,
     });
 
     if (!result.deleted) {

@@ -50,4 +50,25 @@ const loginValidations = (email, password) => [
 
 const validTransactionTypes = ['income', 'expense'];
 
-export { registerValidations, loginValidations, validTransactionTypes, isNoSQL, isNoXSS, isValidNumber };
+/**
+ * Kwota aplikacji (D-11b): skończona liczba, max 2 miejsca po przecinku.
+ * @returns {number|null} zaokrąglona kwota albo null gdy niepoprawna
+ */
+function parseAmount2dp(raw) {
+	if (raw === null || raw === undefined || raw === '') return null;
+	const s = typeof raw === 'number' && Number.isFinite(raw) ? String(raw) : String(raw).trim();
+	if (!/^-?\d+(\.\d{1,2})?$/.test(s)) return null;
+	const n = Number(s);
+	if (!Number.isFinite(n)) return null;
+	return Math.round(n * 100) / 100;
+}
+
+export {
+	registerValidations,
+	loginValidations,
+	validTransactionTypes,
+	isNoSQL,
+	isNoXSS,
+	isValidNumber,
+	parseAmount2dp,
+};

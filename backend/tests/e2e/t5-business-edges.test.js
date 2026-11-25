@@ -43,7 +43,7 @@ describe('T-5 business edges (saldo / invite reject / authz)', () => {
     expect(liveBalance).toBe(1030);
   });
 
-  test('delete expense as-is: balanceType expense odejmuje ponownie (900→800)', async () => {
+  test('delete expense → reverse (900→1000)', async () => {
     const { agent } = await signupAndLogin(app, {
       userName: 'delhst',
       email: 'delhst@test.local',
@@ -65,8 +65,33 @@ describe('T-5 business edges (saldo / invite reject / authz)', () => {
     expect(delRes.status).toBe(200);
 
     const afterDel = await agent.get('/api/v1/board/data/house');
-    // as-is: delete zawsze woła nextBalance(..., 'expense', value)
-    expect(Number(afterDel.body.dashboardData?.houseData?.[0]?.liveBalance)).toBe(800);
+    expect(Number(afterDel.body.dashboardData?.houseData?.[0]?.liveBalance)).toBe(1000);
+  });
+
+  test('delete income → reverse (1050→1000)', async () => {
+    const { agent } = await signupAndLogin(app, {
+      userName: 'delinc',
+      email: 'delinc@test.local',
+    });
+    await createHouse(agent, { houseName: 'E2E Del Inc', initBudget: 1000 });
+
+    const addRes = await agent.post('/api/v1/action/new').send({
+      type: 'income',
+      value: 50,
+      catId: SEED_CAT.incomeSalary,
+    });
+    expect(addRes.status).toBe(200);
+
+    const afterAdd = await agent.get('/api/v1/board/data/house');
+    expect(Number(afterAdd.body.dashboardData?.houseData?.[0]?.liveBalance)).toBe(1050);
+
+    const delRes = await agent
+      .delete('/api/v1/action/')
+      .send({ transactionId: addRes.body.transactionId });
+    expect(delRes.status).toBe(200);
+
+    const afterDel = await agent.get('/api/v1/board/data/house');
+    expect(Number(afterDel.body.dashboardData?.houseData?.[0]?.liveBalance)).toBe(1000);
   });
 
   test('zły type transakcji → 400', async () => {
@@ -82,6 +107,22 @@ describe('T-5 business edges (saldo / invite reject / authz)', () => {
       catId: SEED_CAT.expenseEducation,
     });
     expect(res.status).toBe(400);
+  });
+
+  test('kwota >2 dp → 400 transactions.invalidAmount', async () => {
+    const { agent } = await signupAndLogin(app, {
+      userName: 'amtbad',
+      email: 'amtbad@test.local',
+    });
+    await createHouse(agent, { houseName: 'E2E Amt', initBudget: 100 });
+
+    const res = await agent.post('/api/v1/action/new').send({
+      type: 'expense',
+      value: '10.999',
+      catId: SEED_CAT.expenseEducation,
+    });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe('transactions.invalidAmount');
   });
 
   test('inmate nie kasuje tx hosta → 404', async () => {

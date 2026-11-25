@@ -1,7 +1,7 @@
 import logger from '../../configs/logger.js';
 import { v4 as uuidv4 } from 'uuid';
 import checkHouse from '../../utils/checkUtils/checkUserHouse.js';
-import { validTransactionTypes } from '../../utils/validation.js';
+import { validTransactionTypes, parseAmount2dp } from '../../utils/validation.js';
 import { createTransactionWithBalanceUpdate } from '../../database/transactions.js';
 import { liveUpdateBalance } from '../../utils/householdUtils/liveUpdateBalance.js';
 import { handleNotification } from '../../utils/handleNotification.js';
@@ -29,7 +29,14 @@ const addNewAction = async (userId, type, value, catId) => {
     }
 
     const houseId = houseData.houseId;
-    const valueToDb = (parseFloat(value) * 100) / 100;
+    const valueToDb = parseAmount2dp(value);
+    if (valueToDb === null) {
+      throw new AppError({
+        code: 'TX_AMOUNT',
+        messageKey: 'transactions.invalidAmount',
+        httpStatus: 400,
+      });
+    }
 
     const { newBalance } = await createTransactionWithBalanceUpdate({
       id,
