@@ -11,7 +11,7 @@ import LoadingModal from '../modals/LoadingModal';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
 import useOcrRecognition from '../../hooks/useOcrRecognition';
 import SubmitBtn from './internal/SubmitBtn';
-import { isValidNumber } from '../../utils/validation';
+import { isAmount2dp } from '../../utils/validation';
 
 export default function AddTransactionForm({ onClose }) {
     const { data, isLoading, dataError, refreshData } = useContext(DataContext);
@@ -44,10 +44,10 @@ export default function AddTransactionForm({ onClose }) {
     const handleSaveAction = async (e) => {
         e.preventDefault();
 
-        const rawValue = String(value).replace(',', '.');
+        const rawValue = String(value).trim().replace(',', '.');
 
-        if (!isValidNumber(rawValue)) {
-            showErrorToast(tForms("addTransaction.incorrectNumberInputValue"));
+        if (!isAmount2dp(rawValue)) {
+            showErrorToast(tForms("addTransaction.tooManyDecimalPlaces"));
             return;
         }
 
@@ -57,11 +57,9 @@ export default function AddTransactionForm({ onClose }) {
             return;
         }
 
-        const parsedValue = parseFloat(rawValue);
-
         const newActionData = {
             type,
-            value: parsedValue.toFixed(2),
+            value: rawValue,
             catId: selectedOption.dataset.id,
         };
 
@@ -89,8 +87,14 @@ export default function AddTransactionForm({ onClose }) {
                     );
                 }
             });
-        } catch {
-            showErrorToast(tForms('addTransaction.addTransactionError'));
+        } catch (error) {
+            if (error?.notified) return;
+            showErrorToast(
+                resolveApiMessage(
+                    error?.message,
+                    tForms('addTransaction.addTransactionError'),
+                ),
+            );
         }
     };
 

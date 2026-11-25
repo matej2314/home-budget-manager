@@ -9,6 +9,7 @@ import { formatDbDate } from '../../../utils/formattingUtils/formatDateToDisplay
 import { filterArray } from '../../../utils/arraysUtils/arraysFunctions';
 import { useTranslation } from 'react-i18next';
 import DeleteTransactionModal from '../../modals/DeleteTransactionModal';
+import { isHostRole } from '../../../utils/checkUserRole';
 
 export default function TransactionsList({ limit, mainSite, filterId, transactions, actionsLoading, actionsError, actionsTotalPages, currentPage = 1, getTransactions }) {
     const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -83,16 +84,18 @@ export default function TransactionsList({ limit, mainSite, filterId, transactio
                                 <td className="transactions-list-table-data">
                                     {!isMobile ? formatDbDate(transaction.addedAt) : formatDbDate(transaction.addedAt, 'split')}
                                 </td>
-                                {!mainSite && transaction.userName === user.userName && (
+                                {!mainSite && (
                                     <td>
-                                        <button
-                                            type="button"
-                                            className="w-fit h-fit p-1.5 rounded-md text-muted hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                                            onClick={() => handleDeleteAction(transaction)}
-                                            title={tInternal("transactionsList.deleteBtnTitle")}
-                                        >
-                                            <Icon icon='material-symbols:delete-outline' width={20} height={20} />
-                                        </button>
+                                        {(isHostRole(user) || transaction.userId === user?.id) && (
+                                            <button
+                                                type="button"
+                                                className="w-fit h-fit p-1.5 rounded-md text-muted hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                                                onClick={() => handleDeleteAction(transaction)}
+                                                title={tInternal("transactionsList.deleteBtnTitle")}
+                                            >
+                                                <Icon icon='material-symbols:delete-outline' width={20} height={20} />
+                                            </button>
+                                        )}
                                     </td>
                                 )}
                             </tr>

@@ -11,6 +11,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-25 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza9-ui-domena.md` oznaczono Fazę 9 (kroki 9.1–9.4) jako `WYKONANY` oraz milestone „UI zgodne z regułami domeny (saldo / delete / invite)” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego).
 - **2026-11-24 — dopisek Fazy 9 (`NIE_ROZPOCZĘTY`):** UI pod reguły domeny z major BE 9.1–9.4 (delete host/inmate, lista pending, 403, walidacja kwot 2 dp). Milestone po Fazie 8 (`OSIĄGNIĘTY`) bez zmian treści — Faza 9 to nowy zakres po wcześniejszym domknięciu Faz 1–8.
 - **2026-11-23 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza6-faza8-i18n-ws-security.md` oznaczono Fazę 6 (kroki 6.1–6.3), Fazę 7 (kroki 7.1–7.2) i Fazę 8 (kroki 8.1–8.2) jako `WYKONANY` oraz milestone’y „Kontrakt message ↔ UI”, „WS bez własnych protokołów” i „Klient bez sekretów i bez udawania authz” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego).
 - **2026-11-20 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_frontend-faza5-role-inmate.md` oznaczono Fazę 5 (kroki 5.1–5.2) jako `WYKONANY` oraz milestone „Role w UI zgodne z normą” jako `OSIĄGNIĘTY` (zgodnie ze „Ślad do major”; akceptacja prowadzącego + bramka BE R1 już `OSIĄGNIĘTY`).
@@ -487,7 +488,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ## Faza 9 — UI pod reguły domeny (delete tx, pending invite, kwoty 2 dp)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Odzwierciedlenie w SPA reguł z major backend Faz 9.1–9.4 i docs/SPEC: przycisk usuwania transakcji (inmate = tylko własne; host = wszystkie w domu); obsługa **403** przy odmowie API; lista zaproszeń **pending** u hosta (bez widoku historii); walidacja kwoty max **2** miejsca po przecinku w formularzach transakcji. UI ≠ źródło prawdy authz (F-15).
 
@@ -503,7 +504,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 9.1 — Delete transakcji w UI (host / inmate)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Warunek widoczności przycisku delete: host → wszystkie tx domu na liście; inmate → `transaction` należąca do zalogowanego użytkownika. Wywołanie DELETE `/api/v1/action` bez zmian kontraktu ścieżki.
 
@@ -514,7 +515,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 9.2 — Obsługa 403 przy odmowie delete
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Mapowanie envelope błędu 403 (i ewentualnie innych) przez namespace `api` / istniejący handler odpowiedzi.
 
@@ -525,7 +526,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 9.3 — Lista zaproszeń pending (host)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** UI hosta pokazuje tylko pending z kolekcji API; po accept/decline pozycja znika z listy (log zostaje po stronie BE). Bez ekranu historii w tej fazie.
 
@@ -536,7 +537,7 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 
 ### Krok 9.4 — Walidacja kwoty 2 dp w formularzach
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Formularze add transaction (i pokrewne pola kwot) egzekwują max 2 miejsca po przecinku przed/wysyłką; spójnie z komunikatem błędu API przy ominięciu UI.
 
@@ -548,6 +549,8 @@ Zgodnie z `docs/testy.md` i SPEC-TESTY: testy przeglądarkowe / Vitest / RTL św
 ---
 
 ## MILESTONE — UI zgodne z regułami domeny (saldo / delete / invite)
+
+**Status:** `OSIĄGNIĘTY`
 
 **Opis:** Bramka po Fazie 9. SPA odzwierciedla reguły delete, pending i kwot bez udawania authz. Kolejne prace frontu = edycja żyjącego planu albo osobne artefakty.
 

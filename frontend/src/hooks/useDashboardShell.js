@@ -23,24 +23,14 @@ export default function useDashboardShell() {
   const { t } = useTranslation('common');
 
   const liveMessages = connected && messages?.newMessages;
-  const invitationsMessages = connected && messages?.invitations;
   const isInmateOrHost = inmateOrHostRole(user);
   const isUser = isUserRole(user);
   const isHost = isHostRole(user);
 
-  const allInvitations = useMemo(() => {
-    const dbInvitations =
-      (!invitationsLoading && !invitationsLoadingError && invitationsData) || [];
-    return [
-      ...(Array.isArray(dbInvitations) ? dbInvitations : []),
-      ...(Array.isArray(invitationsMessages) ? invitationsMessages : []),
-    ];
-  }, [
-    invitationsLoading,
-    invitationsLoadingError,
-    invitationsData,
-    invitationsMessages,
-  ]);
+  const pendingInvitations = useMemo(() => {
+    const rows = Array.isArray(invitationsData) ? invitationsData : [];
+    return rows.filter((invitation) => invitation.status === 'new');
+  }, [invitationsData]);
 
   useEffect(() => {
     if (connected && liveMessages?.length > 0) {
@@ -56,13 +46,13 @@ export default function useDashboardShell() {
       !invitationsLoading &&
       !invitationsLoadingError &&
       !fetchedInvitations &&
-      allInvitations.length === 0
+      pendingInvitations.length === 0
     ) {
       fetchInvitations(user);
     }
 
-    if (allInvitations.length > 0) {
-      openModal('invitation', allInvitations);
+    if (pendingInvitations.length > 0) {
+      openModal('invitation');
     }
   }, [
     liveMessages,
@@ -75,7 +65,7 @@ export default function useDashboardShell() {
     fetchedInvitations,
     invitationsLoading,
     invitationsLoadingError,
-    allInvitations,
+    pendingInvitations,
     fetchInvitations,
     navigate,
     openModal,

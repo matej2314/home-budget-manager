@@ -744,9 +744,9 @@
     "semantic_hash": ""
   },
   "frontend/public/locales/en/forms.json": {
-    "mtime": 1795179680.45702,
-    "seen": 1795179705.9484925,
-    "ast_hash": "114c47ba4d0f7bdd833b553ed40cd8f9",
+    "mtime": 1795613470.1586094,
+    "seen": 1795614018.2579713,
+    "ast_hash": "5db0ad6e1c7565fd22d346467d561f97",
     "semantic_hash": ""
   },
   "frontend/public/locales/en/homePage.json": {
@@ -804,9 +804,9 @@
     "semantic_hash": ""
   },
   "frontend/public/locales/pl/forms.json": {
-    "mtime": 1795179681.1930144,
-    "seen": 1795179705.9485803,
-    "ast_hash": "358ddf50f67a1e6d38d2e9e928c4a528",
+    "mtime": 1795613470.1582093,
+    "seen": 1795614018.2581604,
+    "ast_hash": "f169d1378dddc99aeb0889212a0f2212",
     "semantic_hash": ""
   },
   "frontend/public/locales/pl/homePage.json": {
@@ -954,9 +954,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/dashboard/dashboard-internal-components/TransactionsList.jsx": {
-    "mtime": 1795177740.3847358,
-    "seen": 1795179006.3649168,
-    "ast_hash": "7814e2fec44e2c743cfe5f5f8b9c9cd3",
+    "mtime": 1795613429.7255938,
+    "seen": 1795614018.2586908,
+    "ast_hash": "cd199d62a0c0a10f4504f70c90d9b848",
     "semantic_hash": ""
   },
   "frontend/src/components/dashboard/dashboardComponents/DashBoardHeader.jsx": {
@@ -1050,9 +1050,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/forms/AddTransactionForm.jsx": {
-    "mtime": 1795195765.3227317,
-    "seen": 1795195819.2814271,
-    "ast_hash": "f3e70755ebd361516da5aa6859c96d94",
+    "mtime": 1795613465.308221,
+    "seen": 1795614018.259058,
+    "ast_hash": "f4ff307174460143644f99665983876b",
     "semantic_hash": ""
   },
   "frontend/src/components/forms/AddUserToHouseForm.jsx": {
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/modals/DeleteTransactionModal.jsx": {
-    "mtime": 1795177740.3858404,
-    "seen": 1795179006.365151,
-    "ast_hash": "badfb978548d403ca183f0df1b4342cd",
+    "mtime": 1795613435.76455,
+    "seen": 1795614018.259584,
+    "ast_hash": "cf2b65513804aadea438832a9a5dca74",
     "semantic_hash": ""
   },
   "frontend/src/components/modals/LoadingModal.jsx": {
@@ -1230,9 +1230,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/modals/invitationModal.jsx": {
-    "mtime": 1795440539.2539415,
-    "seen": 1795440547.2417157,
-    "ast_hash": "c3d98bd568f565211355aa7b2096a2f6",
+    "mtime": 1795614013.712374,
+    "seen": 1795614018.259714,
+    "ast_hash": "b8b2bfb4afdfb5aba64b8bcbf1601726",
     "semantic_hash": ""
   },
   "frontend/src/components/modals/messagesModals/messagesModals.jsx": {
@@ -1326,9 +1326,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/DashboardPage.jsx": {
-    "mtime": 1795179595.5746708,
-    "seen": 1795179705.9503422,
-    "ast_hash": "a2df77f593bcc9e3dec070e37323ed63",
+    "mtime": 1795613447.5452297,
+    "seen": 1795614018.260032,
+    "ast_hash": "773dcd07b5193afcd51117662482f6af",
     "semantic_hash": ""
   },
   "frontend/src/pages/ErrorPage.jsx": {
@@ -1440,9 +1440,9 @@
     "semantic_hash": ""
   },
   "frontend/src/store/socketContext.jsx": {
-    "mtime": 1795440534.869972,
-    "seen": 1795440547.2424176,
-    "ast_hash": "3323921ed84d709f16526ef68eadf518",
+    "mtime": 1795613446.6904707,
+    "seen": 1795614018.260417,
+    "ast_hash": "b20e019461eb58e2eac4b3a91cd86e99",
     "semantic_hash": ""
   },
   "frontend/src/store/transactionsStore.js": {
@@ -1524,9 +1524,9 @@
     "semantic_hash": ""
   },
   "frontend/src/utils/asyncUtils/sendRequest.js": {
-    "mtime": 1795168621.240508,
-    "seen": 1795171136.2155795,
-    "ast_hash": "1158c7e28fb13cae744fe590f243d9d4",
+    "mtime": 1795613438.50253,
+    "seen": 1795614018.2607696,
+    "ast_hash": "e206b80e937b12bf6bb08f1e9cb025f4",
     "semantic_hash": ""
   },
   "frontend/src/utils/checkUserRole.js": {
@@ -1608,9 +1608,9 @@
     "semantic_hash": ""
   },
   "frontend/src/utils/validation.js": {
-    "mtime": 1795168621.240735,
-    "seen": 1795171136.215588,
-    "ast_hash": "72af9c562d4a2c3748190eb6b8b9db23",
+    "mtime": 1795613459.1123807,
+    "seen": 1795614018.2610464,
+    "ast_hash": "26b656fdf3febd0932557fd941e9a878",
     "semantic_hash": ""
   },
   "frontend/vite.config.js": {
@@ -1734,9 +1734,9 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-backend.md": {
-    "mtime": 1795605704.871798,
-    "seen": 1795605947.274143,
-    "ast_hash": "80692359196874f4ce8b15d99910085a",
+    "mtime": 1795612140.2659318,
+    "seen": 1795614018.261615,
+    "ast_hash": "1fb8dc4dd2fd3058462ac62c9fc0923e",
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
@@ -1908,9 +1908,9 @@
     "semantic_hash": ""
   },
   "frontend/src/hooks/useDashboardShell.js": {
-    "mtime": 1795440528.1800182,
-    "seen": 1795440547.2418385,
-    "ast_hash": "6bdcd568ad9b247c9ffc96b37da284fb",
+    "mtime": 1795613445.1261125,
+    "seen": 1795614018.2598357,
+    "ast_hash": "7bc1cc9fd1fc948e1b8a1eda701cc7cf",
     "semantic_hash": ""
   },
   "frontend/src/hooks/useHouseInfoDashboard.js": {
@@ -2082,15 +2082,15 @@
     "semantic_hash": ""
   },
   "frontend/public/locales/en/api.json": {
-    "mtime": 1795195748.4234848,
-    "seen": 1795195819.2801893,
-    "ast_hash": "1a8848ebae2c4c15d85c07db2eb8c09a",
+    "mtime": 1795613470.158451,
+    "seen": 1795614018.257882,
+    "ast_hash": "10a23b5f90ebda4ebf38e977879b3976",
     "semantic_hash": ""
   },
   "frontend/public/locales/pl/api.json": {
-    "mtime": 1795195751.4676168,
-    "seen": 1795195819.2804086,
-    "ast_hash": "9df866e7ffc10d6640fdd4d5591e4947",
+    "mtime": 1795613470.1497445,
+    "seen": 1795614018.2580755,
+    "ast_hash": "238d7ca8c7cab6a2f3a46d561c123b60",
     "semantic_hash": ""
   },
   "frontend/src/utils/asyncUtils/boardRefreshBridge.js": {
@@ -2375,12 +2375,6 @@
     "ast_hash": "878a8f107ac2ec2931bee7f435598709",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_backend-faza9.3-9.4-invitations-mail-templates.md": {
-    "mtime": 1795607873.7589478,
-    "seen": 1795610849.4311326,
-    "ast_hash": "8df6bd243a184e9ccc0d854e8b2d149d",
-    "semantic_hash": ""
-  },
   "backend/tests/unit/delete-action-authz.test.js": {
     "mtime": 1795604987.2622106,
     "seen": 1795605059.5970986,
@@ -2421,6 +2415,18 @@
     "mtime": 1795610843.4762497,
     "seen": 1795610849.4267328,
     "ast_hash": "36db2df44282b7d5fab223635a533be2",
+    "semantic_hash": ""
+  },
+  "feature-plans/home-budget-manager_feature_plan_frontend-faza9-ui-domena.md": {
+    "mtime": 1795613239.1926072,
+    "seen": 1795614018.261362,
+    "ast_hash": "d935357e5a2ee7615df89b47ffb914d9",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza9.3-9.4-invitations-mail-templates.md": {
+    "mtime": 1795607873.7589478,
+    "seen": 1795614018.2615113,
+    "ast_hash": "8df6bd243a184e9ccc0d854e8b2d149d",
     "semantic_hash": ""
   }
 }

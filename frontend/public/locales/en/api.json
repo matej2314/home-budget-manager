@@ -44,6 +44,14 @@
         "inmate": "You don't have enough permission. Contact the site administrator.",
         "user": "You don't have enough permission. Contact the site administrator."
       }
+    },
+    "transactions": {
+      "delete": {
+        "denied": "You do not have permission to delete this transaction."
+      }
     }
+  },
+  "transactions": {
+    "invalidAmount": "Amount can have at most 2 decimal places."
   }
 }

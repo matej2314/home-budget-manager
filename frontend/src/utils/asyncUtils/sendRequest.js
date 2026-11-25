@@ -24,7 +24,9 @@ const sendRequest = async (method, data, url) => {
     }
     if (response.status === 403) {
       notifyForbidden(responseData?.message);
-      throw new Error(responseData?.message || 'Forbidden');
+      const notified = new Error(responseData?.message || 'Forbidden');
+      notified.notified = true;
+      throw notified;
     }
 
     if (responseData?.status === 'error') {
@@ -37,6 +39,7 @@ const sendRequest = async (method, data, url) => {
 
     return responseData;
   } catch (error) {
+    if (error?.notified) throw error;
     throw new Error(error.message || 'Błąd wysyłania danych.');
   }
 };

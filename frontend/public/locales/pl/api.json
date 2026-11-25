@@ -44,6 +44,14 @@
         "inmate": "Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny.",
         "user": "Nie masz wystarczających uprawnień. Skontaktuj się z administratorem witryny."
       }
+    },
+    "transactions": {
+      "delete": {
+        "denied": "Nie masz uprawnień do usunięcia tej transakcji."
+      }
     }
+  },
+  "transactions": {
+    "invalidAmount": "Kwota może mieć najwyżej 2 miejsca po przecinku."
   }
 }

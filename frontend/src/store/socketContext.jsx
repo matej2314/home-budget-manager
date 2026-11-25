@@ -93,11 +93,7 @@ export const SocketProvider = ({ children }) => {
                 useMessagesStore.getState().fetchMessages(page);
             });
 
-            newSocket.on("invitation", (data) => {
-                setMessages((prevMessages) => ({
-                    ...prevMessages,
-                    invitations: [...prevMessages.invitations, data],
-                }));
+            newSocket.on("invitation", () => {
                 const currentUser = userRef.current;
                 if (isHostRole(currentUser)) {
                     useInvitationsStore.getState().fetchInvitations(currentUser);

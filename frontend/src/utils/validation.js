@@ -36,3 +36,10 @@ export const isValidNumber = (value) => {
 
     return isNumber && isFloatOrInt;
 };
+
+/** F-18 / D-11b: max 2 miejsca po przecinku. Nie zaokrągla. */
+export const isAmount2dp = (value) => {
+    const s = String(value ?? '').trim().replace(',', '.');
+    if (!/^-?\d+(\.\d{1,2})?$/.test(s)) return false;
+    return Number.isFinite(Number(s));
+};

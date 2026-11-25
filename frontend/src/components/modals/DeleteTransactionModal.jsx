@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
-import { useAuth } from '../../store/authContext';
 import { DataContext } from '../../store/dataContext';
 import AppModal from './AppModal';
 import ModalHeader from './ModalHeader';
 import sendRequest from '../../utils/asyncUtils/sendRequest';
+import { resolveApiMessage } from '../../utils/asyncUtils/parseApiEnvelope';
 import { apiBaseUrl } from '../../url';
 import { useTransactionsStore } from '../../store/transactionsStore';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
@@ -16,15 +16,10 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
     const { refreshData } = useContext(DataContext);
     const handleApiResponse = useApiResponseHandler();
     const [isLoading, setIsLoading] = useState(false);
-    const { user } = useAuth();
     const { t } = useTranslation("modals");
 
     const handleDeleteAction = async (transaction) => {
-
-        if (transaction.userName !== user.userName) {
-            showErrorToast('Nie dodałeś tej transakcji!');
-            onRequestClose();
-        };
+        if (!transaction?.transactionId) return;
 
         try {
             setIsLoading(true);
@@ -38,12 +33,23 @@ export default function DeleteTransactionModal({ isOpen, onRequestClose, transac
                     await refreshData();
                     onRequestClose();
                 },
-                onError: () => {
-                    showErrorToast(t("deleteTransaction.failedMessage"));
+                onError: (envelope) => {
+                    showErrorToast(
+                        resolveApiMessage(
+                            envelope.messageKey,
+                            t("deleteTransaction.failedMessage"),
+                        ),
+                    );
                 }
-            })
+            });
         } catch (error) {
-            showErrorToast(t("deleteTransaction.errorMessage"));
+            if (error?.notified) return;
+            showErrorToast(
+                resolveApiMessage(
+                    error?.message,
+                    t("deleteTransaction.errorMessage"),
+                ),
+            );
             console.error('Delete transaction error:', error);
         } finally {
             setIsLoading(false);

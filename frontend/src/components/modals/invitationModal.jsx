@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import AppModal from './AppModal';
 import ModalHeader from './ModalHeader';
 import useApiResponseHandler from '../../hooks/useApiResponseHandler';
@@ -11,11 +11,22 @@ import { useInvitationsStore } from '../../store/invitationsStore';
 import { DataContext } from '../../store/dataContext';
 import { useAuth } from '../../store/authContext';
 
-export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => {
+export const InvitationModal = ({ isOpen, onRequestClose }) => {
     const handleApiResponse = useApiResponseHandler();
     const { refreshData } = useContext(DataContext);
     const { user } = useAuth();
     const { t } = useTranslation("modals");
+    const invitationsData = useInvitationsStore((state) => state.invitationsData);
+    const invitationsLoading = useInvitationsStore((state) => state.invitationsLoading);
+    const fetchedInvitations = useInvitationsStore((state) => state.fetchedInvitations);
+
+    const pendingInvitations = (Array.isArray(invitationsData) ? invitationsData : [])
+        .filter((invitation) => invitation.status === 'new');
+
+    useEffect(() => {
+        if (!isOpen || invitationsLoading || !fetchedInvitations) return;
+        if (pendingInvitations.length === 0) onRequestClose();
+    }, [isOpen, invitationsLoading, fetchedInvitations, pendingInvitations.length, onRequestClose]);
 
     const refreshAfterInvitation = async () => {
         await useInvitationsStore.getState().fetchInvitations(user);
@@ -32,11 +43,11 @@ export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => 
                 onSuccess: async () => {
                     showInfoToast(t("invitationModal.acceptedMessage"));
                     await refreshAfterInvitation();
-                    onRequestClose();
                 },
                 onError: () => showErrorToast(t("invitationModal.failedAccept")),
             });
-        } catch {
+        } catch (error) {
+            if (error?.notified) return;
             showErrorToast(t("invitationModal.failedAccept"));
         }
     };
@@ -48,11 +59,11 @@ export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => 
                 onSuccess: async () => {
                     showInfoToast(t("invitationModal.rejectedMessage"));
                     await refreshAfterInvitation();
-                    onRequestClose();
                 },
                 onError: () => showErrorToast(t("invitationModal.failedReject"))
             })
-        } catch {
+        } catch (error) {
+            if (error?.notified) return;
             showErrorToast(t("invitationModal.failedReject"));
         };
     };
@@ -66,7 +77,7 @@ export const InvitationModal = ({ isOpen, onRequestClose, invitationsData }) => 
         >
             <ModalHeader title={t("invitationModal.invite")} onClose={onRequestClose} />
             <ul className="flex flex-col gap-4">
-                {invitationsData && invitationsData.map(invitation => (
+                {pendingInvitations.map(invitation => (
                     <li key={invitation.id} className="rounded-lg border border-slate-200 bg-page p-4">
                         <div className="flex flex-col gap-3">
                             <p className="text-sm text-ink leading-relaxed">

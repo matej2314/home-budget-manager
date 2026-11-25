@@ -18,7 +18,7 @@ export default function DashboardPage() {
         <Outlet />
       </div>
       {isHost && modal && modal.type === 'invitation' ? (
-        <InvitationModal isOpen={modal.isOpen} onRequestClose={closeModal} invitationsData={modal.data} />
+        <InvitationModal isOpen={modal.isOpen} onRequestClose={closeModal} />
       ) : null}
     </main>
   ) : null;
