@@ -53,25 +53,20 @@ export async function createTransactionWithBalanceUpdate({
 }
 
 /**
- * Usunięcie transakcji + reverse salda wg existing.type (D-11a).
- * FAZA 1: nadal wymaga userId aktora w WHERE (własne tx).
- * FAZA 2 zdejmie filtr userId dla hosta.
+ * Usunięcie tx w domu + reverse salda (D-11a).
+ * Authz (owner|host) egzekwuje service — tu tylko houseId + transactionId.
  */
-export async function deleteTransactionWithBalanceUpdate({
-  userId,
-  houseId,
-  transactionId,
-}) {
+export async function deleteTransactionWithBalanceUpdate({ houseId, transactionId }) {
   return prisma.$transaction(async (tx) => {
     const existing = await tx.transactions.findFirst({
-      where: { transactionId, userId, houseId },
+      where: { transactionId, houseId },
     });
     if (!existing) {
       return { deleted: false };
     }
 
     await tx.transactions.deleteMany({
-      where: { transactionId, userId, houseId },
+      where: { transactionId, houseId },
     });
 
     const house = await tx.households.findUnique({ where: { houseId } });
@@ -93,6 +88,7 @@ export async function deleteTransactionWithBalanceUpdate({
       newBalance,
       value: existing.value,
       type: existing.type,
+      ownerUserId: existing.userId,
     };
   });
 }

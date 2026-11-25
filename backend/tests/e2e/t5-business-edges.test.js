@@ -125,7 +125,7 @@ describe('T-5 business edges (saldo / invite reject / authz)', () => {
     expect(res.body.message).toBe('transactions.invalidAmount');
   });
 
-  test('inmate nie kasuje tx hosta → 404', async () => {
+  test('inmate nie kasuje tx hosta → 403', async () => {
     const host = await signupAndLogin(app, {
       userName: 'txownr',
       email: 'txownr@test.local',
@@ -151,7 +151,72 @@ describe('T-5 business edges (saldo / invite reject / authz)', () => {
     const delRes = await inmate.agent
       .delete('/api/v1/action/')
       .send({ transactionId: addRes.body.transactionId });
-    expect(delRes.status).toBe(404);
+    expect(delRes.status).toBe(403);
+    expect(delRes.body.message).toBe('authz.transactions.delete.denied');
+  });
+
+  test('host kasuje tx inmate → 200 + reverse salda', async () => {
+    const host = await signupAndLogin(app, {
+      userName: 'hstdel',
+      email: 'hstdel@test.local',
+    });
+    await createHouse(host.agent, { houseName: 'E2E HostDel', initBudget: 500 });
+
+    const inmate = await signupAndLogin(app, {
+      userName: 'inmdel',
+      email: 'inmdel@test.local',
+    });
+    expect((await host.agent.post('/api/v1/users/invite').send({ userName: 'inmdel' })).status).toBe(
+      200,
+    );
+    await login(inmate.agent, { email: 'inmdel@test.local' });
+
+    const addRes = await inmate.agent.post('/api/v1/action/new').send({
+      type: 'expense',
+      value: 50,
+      catId: SEED_CAT.expenseEducation,
+    });
+    expect(addRes.status).toBe(200);
+
+    const afterAdd = await host.agent.get('/api/v1/board/data/house');
+    expect(Number(afterAdd.body.dashboardData?.houseData?.[0]?.liveBalance)).toBe(450);
+
+    const delRes = await host.agent
+      .delete('/api/v1/action/')
+      .send({ transactionId: addRes.body.transactionId });
+    expect(delRes.status).toBe(200);
+
+    const afterDel = await host.agent.get('/api/v1/board/data/house');
+    expect(Number(afterDel.body.dashboardData?.houseData?.[0]?.liveBalance)).toBe(500);
+  });
+
+  test('inmate kasuje własną tx → 200', async () => {
+    const host = await signupAndLogin(app, {
+      userName: 'hstown',
+      email: 'hstown@test.local',
+    });
+    await createHouse(host.agent, { houseName: 'E2E OwnOk', initBudget: 300 });
+
+    const inmate = await signupAndLogin(app, {
+      userName: 'inown1',
+      email: 'inown1@test.local',
+    });
+    expect((await host.agent.post('/api/v1/users/invite').send({ userName: 'inown1' })).status).toBe(
+      200,
+    );
+    await login(inmate.agent, { email: 'inown1@test.local' });
+
+    const addRes = await inmate.agent.post('/api/v1/action/new').send({
+      type: 'expense',
+      value: 30,
+      catId: SEED_CAT.expenseEducation,
+    });
+    expect(addRes.status).toBe(200);
+
+    const delRes = await inmate.agent
+      .delete('/api/v1/action/')
+      .send({ transactionId: addRes.body.transactionId });
+    expect(delRes.status).toBe(200);
   });
 
   test('reject pending invite → kandydat bez membership', async () => {

@@ -49,7 +49,6 @@ describe('deleteAction saldo (reverse type)', () => {
     await deleteAction('tx-1', 'u-1');
 
     expect(deleteTransactionWithBalanceUpdate).toHaveBeenCalledWith({
-      userId: 'u-1',
       houseId: 'h-1',
       transactionId: 'tx-1',
     });

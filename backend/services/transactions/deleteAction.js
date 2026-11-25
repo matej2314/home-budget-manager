@@ -26,20 +26,27 @@ const deleteAction = async (transactionId, userId) => {
     }
 
     const houseId = houseData.houseId;
+    const actorRole = houseData.role;
 
     const checkAction = await checkTransaction(transactionId);
 
-    if (!checkAction) {
-      logger.error(`User ${userId} tries to delete someone else's transaction.`);
+    if (!checkAction || checkAction.houseId !== houseId) {
+      logger.error(`Transaction ${transactionId} not found in house ${houseId}.`);
+      throw new AppError({ code: 'TX_4', messageKey: 'Transaction not found.', httpStatus: 404 });
+    }
+
+    const isOwner = checkAction.userId === userId;
+    const isHost = actorRole === 'host';
+    if (!isOwner && !isHost) {
+      logger.error(`User ${userId} forbidden to delete transaction ${transactionId}.`);
       throw new AppError({
         code: 'TX_3',
-        messageKey: 'You are deleting a transaction that is not yours!',
-        httpStatus: 400,
+        messageKey: 'authz.transactions.delete.denied',
+        httpStatus: 403,
       });
     }
 
     const result = await deleteTransactionWithBalanceUpdate({
-      userId,
       houseId,
       transactionId,
     });

@@ -26,7 +26,7 @@ describe('nextBalance (T-1 saldo)', () => {
     expect(nextBalance(1000, 500, 'income', -50)).toBe(950);
   });
 
-  test('value nieparowalne → NaN (brak walidacji w regule)', () => {
+  test('value nieparowalne → NaN (parseAmount2dp → null)', () => {
     expect(Number.isNaN(nextBalance(1000, 500, 'expense', 'abc'))).toBe(true);
   });
 });
