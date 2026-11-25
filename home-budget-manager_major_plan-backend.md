@@ -10,6 +10,7 @@
 
 ### Historia zmian planu (operacyjne)
 
+- **2026-11-25 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza9.1-9.2-saldo-authz-delete.md` oznaczono Fazę 9.1 (kroki 9.1.1–9.1.2) oraz Fazę 9.2 (kroki 9.2.1–9.2.2) jako `WYKONANY`. Milestone „Reguły domeny: saldo / authz tx / invite+mail” bez `OSIĄGNIĘTY` (wymaga 9.3–9.4).
 - **2026-11-24 — dopisek Faz 9.1–9.4 (`NIE_ROZPOCZĘTY`) między Fazą 9 a 10:** poprawki i refaktor logiki biznesowej (reverse salda, walidacja kwot 2 dp, authz delete host/inmate, zaproszenia notice+log, 4 szablony e-mail) + unit/E2E zaproszeń. Fazy 10–11 bez przenumerowania.
 - **2026-11-24 — dopisek Fazy 10 + Fazy 11 (`NIE_ROZPOCZĘTY`):** po audycie architektury (cutover legacy HTTP; jawne porty I/O przed AWS). Faza 10 **przejmuje** usunięcie dual mount, które w historii Fazy 4 / Kroku 4.1 zapisano jako „poza tym major” — treść `WYKONANY` Fazy 4 bez zmian; nowa faza z odniesieniem. Faza 11 wydziela porty `MailSender` / `ObjectStorage` / `OcrEngine` (adaptery lokalne SMTP + dysk + Tesseract); bez SDK AWS i bez kontenera DI.
 - **2026-11-24 — sync statusów z feature planu:** po wycinku `feature-plans/home-budget-manager_feature_plan_backend-faza9-piramida-testow.md` (FAZA 1, KROK 1–4) oznaczono Fazę 9 (kroki 9.1–9.2) jako `WYKONANY`. Brak milestone zamykającego po Fazie 9 (decyzja major / ślad feature planu).
@@ -602,7 +603,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 9.1 — Saldo: reverse przy delete + walidacja kwot (2 dp)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Saldo domu = aktualny stan konta: `expense` zmniejsza, `income` zwiększa. Usunięcie transakcji **odwraca** efekt według oryginalnego `type` (nie hardkod `expense`). Kwoty: walidacja na brzegu HTTP + jeden helper salda (max **2** miejsca po przecinku, spójne zaokrąglenie) — **bez** migracji schematu na cents/`Decimal`.
 
@@ -616,7 +617,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.1.1 — Reverse salda przy usuwaniu transakcji
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Przy delete odczytać `type` usuwanego rekordu i wywołać korektę odwrotną w tej samej transakcji Prisma.
 
@@ -627,7 +628,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.1.2 — Walidacja i helper kwot (2 dp)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Wspólny helper parse/round (max 2 dp) na add i na ścieżce salda; walidacja na brzegu controller/service.
 
@@ -640,7 +641,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ## Faza 9.2 — Authz usuwania transakcji (inmate own / host house-wide)
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Inmate kasuje wyłącznie własne transakcje; host — dowolną transakcję w swoim gospodarstwie. Egzekucja w API (`database` / service); 403 + klucz i18n przy braku uprawnień; 404 gdy brak tx / zły dom. Powiadomienie po delete bez zmian semantyki (`notifications.deletedAction`).
 
@@ -655,7 +656,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.2.1 — Reguła ownership w service / database
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** Lookup tx po `transactionId` + `houseId`; zezwolenie: actor = owner **lub** actor.role = `host` w tym domu. Delete nie wymaga `userId` aktora w `WHERE` dla hosta.
 
@@ -666,7 +667,7 @@ Scoped ≠ cały T-5 w każdej fazie: tylko zakres właśnie zmieniany.
 
 ### Krok 9.2.2 — Mapowanie 403/404 + testy E2E
 
-**Status:** `NIE_ROZPOCZĘTY`
+**Status:** `WYKONANY`
 
 **Opis:** AppError + envelope; aktualizacja E2E (inmate → 403; host kasuje cudzą → sukces + saldo).
 

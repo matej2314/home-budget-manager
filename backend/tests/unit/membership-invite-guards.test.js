@@ -36,6 +36,9 @@ describe('membership invite guards (T-1)', () => {
     jest.unstable_mockModule('../../database/invitations.js', () => ({
       createInvitation: jest.fn(),
     }));
+    jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
+      emitNotification: jest.fn(),
+    }));
 
     const { addUserByInmate } = await import('../../utils/householdUtils/addUserByInmate.js');
     // Po resetModules toBeInstanceOf(AppError) z top-level importu pada (dwa konstruktory ESM).
@@ -57,6 +60,9 @@ describe('membership invite guards (T-1)', () => {
     }));
     jest.unstable_mockModule('../../database/invitations.js', () => ({
       createInvitation,
+    }));
+    jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
+      emitNotification: jest.fn(),
     }));
 
     const { addUserByInmate } = await import('../../utils/householdUtils/addUserByInmate.js');

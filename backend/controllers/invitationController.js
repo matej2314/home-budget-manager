@@ -23,7 +23,7 @@ export async function rejectInvitationHandler(req, res) {
 }
 
 export async function getInvitationsCollectionHandler(req, res) {
-  return runController(res, () => getInvitationsCollection());
+  return runController(res, () => getInvitationsCollection(req.userId));
 }
 
 export {

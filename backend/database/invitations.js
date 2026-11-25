@@ -19,8 +19,10 @@ export async function listInvitationsByStatus(status) {
   return prisma.invitations.findMany({ where: { status } });
 }
 
-export async function listInvitationsCollection(status) {
-  const invitations = await prisma.invitations.findMany({ where: { status } });
+export async function listInvitationsCollection(status, hostId) {
+  const invitations = await prisma.invitations.findMany({
+    where: hostId ? { status, hostId } : { status },
+  });
   const result = [];
   for (const i of invitations) {
     const inviting = await prisma.householdUsers.findFirst({

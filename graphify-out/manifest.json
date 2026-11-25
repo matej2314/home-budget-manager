@@ -84,9 +84,9 @@
     "semantic_hash": ""
   },
   "backend/controllers/invitationController.js": {
-    "mtime": 1795168621.2082953,
-    "seen": 1795171136.2154157,
-    "ast_hash": "6bb8e804bde53eb064f1bf913f002f31",
+    "mtime": 1795605865.4461539,
+    "seen": 1795605947.267237,
+    "ast_hash": "dab6ddb524ef5585749711bbf5ff2240",
     "semantic_hash": ""
   },
   "backend/controllers/messagesController.js": {
@@ -354,9 +354,9 @@
     "semantic_hash": ""
   },
   "backend/services/invitations/getInvitationsCollection.js": {
-    "mtime": 1795432016.5717552,
-    "seen": 1795432026.1559575,
-    "ast_hash": "a52bd3cb96fcfea37dc740ff0d29e875",
+    "mtime": 1795605869.0341816,
+    "seen": 1795605947.2684512,
+    "ast_hash": "0e1d5bb1edc3fac7a84302060642441f",
     "semantic_hash": ""
   },
   "backend/services/invitations/rejectInvitation.js": {
@@ -1734,9 +1734,9 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-backend.md": {
-    "mtime": 1795531495.0041683,
-    "seen": 1795603233.8614876,
-    "ast_hash": "af20cf8d57f1d6f53263fb040fc17dcf",
+    "mtime": 1795605704.871798,
+    "seen": 1795605947.274143,
+    "ast_hash": "80692359196874f4ce8b15d99910085a",
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
@@ -2034,9 +2034,9 @@
     "semantic_hash": ""
   },
   "backend/utils/householdUtils/addUserByInmate.js": {
-    "mtime": 1795434336.3562517,
-    "seen": 1795434345.795858,
-    "ast_hash": "a96e6b25d1bc5af92d9c1b1e181eb940",
+    "mtime": 1795605860.3271904,
+    "seen": 1795605947.2699203,
+    "ast_hash": "7fb27f51d47ca3f777e8793d95e46f9e",
     "semantic_hash": ""
   },
   "backend/utils/householdUtils/saveNewInmate.js": {
@@ -2154,9 +2154,9 @@
     "semantic_hash": ""
   },
   "backend/database/invitations.js": {
-    "mtime": 1795430701.1259747,
-    "seen": 1795430754.898544,
-    "ast_hash": "f1149b62b6f76044e6ac643a02206aac",
+    "mtime": 1795605861.3681345,
+    "seen": 1795605947.2674394,
+    "ast_hash": "9cfa8dc6d1402436cbd010ac886a3705",
     "semantic_hash": ""
   },
   "backend/database/messages.js": {
@@ -2256,9 +2256,9 @@
     "semantic_hash": ""
   },
   "backend/tests/e2e/t5-critical-paths.test.js": {
-    "mtime": 1795523371.5517364,
-    "seen": 1795523389.3353922,
-    "ast_hash": "84c25c09b9634b3c50fb821f4c0f25b3",
+    "mtime": 1795605893.301956,
+    "seen": 1795605947.2691982,
+    "ast_hash": "e8f8507a58a34ee033af16dd7b661fd6",
     "semantic_hash": ""
   },
   "backend/tests/e2e/t5-message.test.js": {
@@ -2286,9 +2286,9 @@
     "semantic_hash": ""
   },
   "backend/tests/unit/membership-invite-guards.test.js": {
-    "mtime": 1795523280.572383,
-    "seen": 1795523389.3355455,
-    "ast_hash": "eba99cb53e6aff2c8246a95d41f099b8",
+    "mtime": 1795605887.6720488,
+    "seen": 1795605947.269537,
+    "ast_hash": "a251947410dd847722a3ee7b5f5d1bc7",
     "semantic_hash": ""
   },
   "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza8-email-outbound.md": {
@@ -2298,9 +2298,9 @@
     "semantic_hash": ""
   },
   "backend/tests/e2e/t5-business-edges.test.js": {
-    "mtime": 1795605002.411171,
-    "seen": 1795605059.59682,
-    "ast_hash": "7800ed58cebeff3dcff5edb4afa93459",
+    "mtime": 1795605895.4609406,
+    "seen": 1795605947.2691972,
+    "ast_hash": "656f94679e9c45929a243f38d1789c50",
     "semantic_hash": ""
   },
   "backend/tests/unit/addUserByHost-null.test.js": {
@@ -2328,9 +2328,9 @@
     "semantic_hash": ""
   },
   "backend/tests/unit/invitation-accept-reject.test.js": {
-    "mtime": 1795527326.2923856,
-    "seen": 1795527448.7566206,
-    "ast_hash": "71caaad30d42eafc93c3f7c0ec3a9d3a",
+    "mtime": 1795605881.085043,
+    "seen": 1795605947.2695148,
+    "ast_hash": "11689914aa29b3da1a79b1eb136db459",
     "semantic_hash": ""
   },
   "backend/tests/unit/monthly-budget-windows.test.js": {
@@ -2375,12 +2375,6 @@
     "ast_hash": "878a8f107ac2ec2931bee7f435598709",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_backend-faza9.1-9.2-saldo-authz-delete.md": {
-    "mtime": 1795605158.7871706,
-    "seen": 1795605417.6590996,
-    "ast_hash": "03abbf609264627542e378042a5f6066",
-    "semantic_hash": ""
-  },
   "feature-plans/home-budget-manager_feature_plan_backend-faza9.3-9.4-invitations-mail-templates.md": {
     "mtime": 1795602500.3402658,
     "seen": 1795603233.8612711,
@@ -2391,6 +2385,18 @@
     "mtime": 1795604987.2622106,
     "seen": 1795605059.5970986,
     "ast_hash": "820914e768b3b19dd3c2690795a79cbf",
+    "semantic_hash": ""
+  },
+  "backend/tests/unit/invitation-pending-notice.test.js": {
+    "mtime": 1795605874.7665982,
+    "seen": 1795605947.269516,
+    "ast_hash": "f37aa20b90dc617e2076549a46b5ad2d",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza9.1-9.2-saldo-authz-delete.md": {
+    "mtime": 1795605158.7871706,
+    "seen": 1795605947.274037,
+    "ast_hash": "03abbf609264627542e378042a5f6066",
     "semantic_hash": ""
   }
 }

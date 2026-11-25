@@ -111,6 +111,15 @@ describe('T-5 E2E API critical paths', () => {
       .send({ userName: 'cand01' });
     expect(pendingRes.status).toBe(200);
 
+    const notices = await host.agent.get('/api/v1/notice/collection');
+    expect(notices.status).toBe(200);
+    const pendingNotice = notices.body.notifications?.find((n) => {
+      const raw = n.noticeData;
+      const data = typeof raw === 'string' ? JSON.parse(raw) : raw;
+      return data?.message === 'notifications.pendingInvitation';
+    });
+    expect(pendingNotice).toBeTruthy();
+
     const collection = await host.agent.get('/api/v1/invitation/collection');
     expect(collection.status).toBe(200);
     const invitation = collection.body.invitations?.find(
@@ -124,6 +133,11 @@ describe('T-5 E2E API critical paths', () => {
     });
     expect(acceptRes.status).toBe(200);
     expect(acceptRes.body.status).toBe('success');
+
+    const collectionAfter = await host.agent.get('/api/v1/invitation/collection');
+    expect(
+      collectionAfter.body.invitations?.some((i) => i.id === invitation.id),
+    ).toBe(false);
 
     const candRelogin = await login(candidate.agent, { email: 'cand01@test.local' });
     expect(candRelogin.body.role).toBe('inmate');

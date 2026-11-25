@@ -8,6 +8,7 @@ import {
   signup,
 } from '../helpers/httpAgent.js';
 import { prepareE2eDatabase, SEED_CAT } from '../helpers/e2eDb.js';
+import prisma from '../../database/prismaClient.js';
 
 describe('T-5 business edges (saldo / invite reject / authz)', () => {
   const app = createTestApp();
@@ -249,10 +250,32 @@ describe('T-5 business edges (saldo / invite reject / authz)', () => {
     );
     expect(invitation).toBeTruthy();
 
+    const otherHost = await signupAndLogin(app, {
+      userName: 'rejoth',
+      email: 'rejoth@test.local',
+    });
+    await createHouse(otherHost.agent, { houseName: 'E2E Other House', initBudget: 100 });
+
+    const foreignDecline = await otherHost.agent.post('/api/v1/invitation/decline').send({
+      invitationId: invitation.id,
+    });
+    expect(foreignDecline.status).toBe(404);
+
+    const stillPending = await prisma.invitations.findUnique({ where: { id: invitation.id } });
+    expect(stillPending?.status).toBe('new');
+
     const decline = await host.agent.post('/api/v1/invitation/decline').send({
       invitationId: invitation.id,
     });
     expect(decline.status).toBe(200);
+
+    const collectionAfter = await host.agent.get('/api/v1/invitation/collection');
+    expect(
+      collectionAfter.body.invitations?.some((i) => i.id === invitation.id),
+    ).toBe(false);
+
+    const logged = await prisma.invitations.findUnique({ where: { id: invitation.id } });
+    expect(logged?.status).toBe('rejected');
 
     const candRelogin = await login(candidate.agent, { email: 'rejcan@test.local' });
     expect(candRelogin.body.role).toBe('user');

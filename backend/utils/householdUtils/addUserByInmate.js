@@ -5,6 +5,7 @@ import { invitationStatus } from '../../utils/invitationStatus.js';
 import { AppError } from '../errors/AppError.js';
 import { findHostUserId } from '../../database/households.js';
 import { createInvitation } from '../../database/invitations.js';
+import { emitNotification } from '../../services/notifications/emitNotification.js';
 
 export const addUserByInmate = async (
   invitingUserId,
@@ -52,7 +53,19 @@ export const addUserByInmate = async (
       },
     });
 
-    return { messageKey: 'addUserToHouse.correctlyAddedByInmate' };
+    await emitNotification({
+      id: uuidv4(),
+      category: 'usersActions',
+      houseId,
+      message: 'notifications.pendingInvitation',
+      extraData: {
+        invitationId,
+        invitingUserId,
+        invitedUserId,
+      },
+    });
+
+    return { messageKey: 'addUserToHouse.correctlyAddedByInmate', hostId };
   } catch (error) {
     if (error instanceof AppError) throw error;
     logger.error(`addUserByInmate error: ${error}`);
