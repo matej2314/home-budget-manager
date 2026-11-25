@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 /**
- * Audyt T-15: scoped pliki faz 1–8 muszą istnieć (nie „pierwsze testy w F9”).
+ * Audyt T-15: scoped pliki faz 1–8 oraz 9.3–9.4 muszą istnieć.
  * DoD T-11–T-13: ten plik przypomina regułę — zmiany services/routes/auth/ról/tx
  * wymagają aktualizacji testów przed push/merge (egzekwowane procesowo + CI).
  */
@@ -30,9 +30,14 @@ const SCOPED_PHASE_TESTS = [
   // świadomie: persistencja weryfikowana E2E T-5.4 + nextBalance unit (luka scoped „sam prisma” zaakceptowana tu jako pokryta równoważnie)
   // Faza 8
   'unit/mail-outbound.test.js',
+  // Faza 9.3
+  'unit/invitation-pending-notice.test.js',
+  // Faza 9.4
+  'unit/invitation-email-templates.test.js',
+  'e2e/invitation-mail-templates.test.js',
 ];
 
-describe('Audyt scoped faz 1–8 (T-15) + przypomnienie DoD T-11–T-13', () => {
+describe('Audyt scoped faz 1–8 / 9.3–9.4 (T-15) + przypomnienie DoD T-11–T-13', () => {
   test.each(SCOPED_PHASE_TESTS)('scoped file exists: %s', (rel) => {
     expect(existsSync(path.join(root, rel))).toBe(true);
   });

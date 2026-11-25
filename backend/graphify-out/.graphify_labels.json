@@ -1,9 +1,9 @@
 {
   "0": "AppError",
   "1": "index.js",
-  "2": "logger.js",
+  "2": "transactions.js",
   "3": "addNewMonthlyBudget.js",
-  "4": "households.js",
+  "4": "logger.js",
   "5": "getBoardData.js",
   "6": "registerUser.js",
   "7": "homePageDataCollection.js",
@@ -11,14 +11,17 @@
   "9": "dependencies",
   "10": "seed-demo.js",
   "11": "websocketConfig.js",
-  "12": "checkUserHouse",
+  "12": "notifications.js",
   "13": "app.js",
-  "14": "avatarController.js",
+  "14": "checkUserHouse",
   "15": "scripts",
   "16": "swaggerConfig.js",
   "17": "devDependencies",
-  "18": "mailTransport.js",
+  "18": "prismaClient.js",
   "19": "jest.config.js",
   "20": "services-layout.test.js",
-  "21": "setup-env.js"
+  "21": "setup-env.js",
+  "22": "scoped-phases-inventory.test.js",
+  "23": "engines",
+  "24": "prisma"
 }

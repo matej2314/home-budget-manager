@@ -6,6 +6,7 @@ import { emitNotification } from '../notifications/emitNotification.js';
 import checkUserHouse from '../../utils/checkUtils/checkUserHouse.js';
 import { invitationStatus } from '../../utils/invitationStatus.js';
 import { AppError } from '../../utils/errors/AppError.js';
+import { sendInvitationEmail } from './sendInvitationEmail.js';
 
 export async function acceptInvitation({ invitationId, invitedUserId, hostId }) {
   try {
@@ -39,6 +40,14 @@ export async function acceptInvitation({ invitationId, invitedUserId, hostId }) 
       category: 'usersActions',
       houseId,
       message: 'notifications.addedInmate',
+    });
+
+    await sendInvitationEmail({
+      recipientUserId: invitedUserId,
+      houseId,
+      invitingUserName: 'host',
+      templateId: 'T-cand-decision',
+      decision: 'accepted',
     });
 
     return {

@@ -23,10 +23,10 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
     if (role === 'host') {
       const addByHost = await addUserByHost(userName, houseId, invitedUser);
       await sendInvitationEmail({
-        invitedUserId: invitedUser.userId,
+        recipientUserId: invitedUser.userId,
         houseId,
         invitingUserName,
-        kind: 'host_added',
+        templateId: 'T-cand-host-added',
       });
       return { messageKey: addByHost.messageKey };
     }
@@ -40,11 +40,19 @@ const addUserToHouse = async (userId, userName, invitingUserName, role) => {
         invitingUserName,
       );
       await sendInvitationEmail({
-        invitedUserId: invitedUser.userId,
+        recipientUserId: invitedUser.userId,
         houseId,
         invitingUserName,
-        kind: 'inmate_pending',
+        templateId: 'T-cand-inmate-pending',
       });
+      if (addByInmate.hostId) {
+        await sendInvitationEmail({
+          recipientUserId: addByInmate.hostId,
+          houseId,
+          invitingUserName,
+          templateId: 'T-host-inmate-pending',
+        });
+      }
       return { messageKey: addByInmate.messageKey };
     }
   } catch (error) {

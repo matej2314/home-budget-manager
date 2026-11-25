@@ -36,3 +36,8 @@ export function getMailTransporter() {
 export function resetMailTransporterForTests() {
   transporter = undefined;
 }
+
+/** Wstrzyknięcie mocka — wyłącznie pod Jest / E2E. */
+export function setMailTransporterForTests(mockTransporter) {
+  transporter = mockTransporter;
+}

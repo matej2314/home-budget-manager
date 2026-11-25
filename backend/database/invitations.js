@@ -20,29 +20,36 @@ export async function listInvitationsByStatus(status) {
 }
 
 export async function listInvitationsCollection(status, hostId) {
-  const invitations = await prisma.invitations.findMany({
-    where: hostId ? { status, hostId } : { status },
-  });
-  const result = [];
-  for (const i of invitations) {
-    const inviting = await prisma.householdUsers.findFirst({
-      where: { userId: i.invitingUserId },
-      select: { userName: true },
-    });
-    const invited = await prisma.householdUsers.findFirst({
-      where: { userId: i.invitedUserId },
-      select: { userName: true },
-    });
-    result.push({
-      id: i.id,
-      status: i.status,
-      hostId: i.hostId,
-      invitedUser: i.invitedUserId,
-      invitingUser: i.invitingUserId,
-      date: i.date,
-      invitingUserName: inviting?.userName ?? null,
-      invitedUserName: invited?.userName ?? null,
-    });
+  if (!hostId) {
+    throw new Error('listInvitationsCollection: hostId required');
   }
-  return result;
+
+  const invitations = await prisma.invitations.findMany({
+    where: { status, hostId },
+  });
+  if (invitations.length === 0) {
+    return [];
+  }
+
+  const userIds = [
+    ...new Set(
+      invitations.flatMap((i) => [i.invitingUserId, i.invitedUserId]),
+    ),
+  ];
+  const users = await prisma.householdUsers.findMany({
+    where: { userId: { in: userIds } },
+    select: { userId: true, userName: true },
+  });
+  const nameByUserId = new Map(users.map((u) => [u.userId, u.userName]));
+
+  return invitations.map((i) => ({
+    id: i.id,
+    status: i.status,
+    hostId: i.hostId,
+    invitedUser: i.invitedUserId,
+    invitingUser: i.invitingUserId,
+    date: i.date,
+    invitingUserName: nameByUserId.get(i.invitingUserId) ?? null,
+    invitedUserName: nameByUserId.get(i.invitedUserId) ?? null,
+  }));
 }

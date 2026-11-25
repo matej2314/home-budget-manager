@@ -71,7 +71,7 @@ describe('Faza 8 — mailTransport (K-14 adapter)', () => {
   });
 });
 
-describe('Faza 8 — sendInvitationEmail treść + trigger z addUserToHouse', () => {
+describe('Faza 9.4 — sendInvitationEmail templateId + sendMail', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
@@ -84,11 +84,12 @@ describe('Faza 8 — sendInvitationEmail treść + trigger z addUserToHouse', ()
 
   // Real sendInvitationEmail — przed testami, które mockują ten moduł (Jest 29 ESM
   // nie ma unstable_unmockModule; mock zostaje w rejestrze do końca pliku).
-  test('inmate_pending: sendMail z nazwą domu, instrukcją i URL SPA', async () => {
+  test('T-cand-inmate-pending: sendMail z subject ID i to = kandydat', async () => {
     const sendMail = jest.fn(async () => ({ messageId: 'm-1' }));
     jest.unstable_mockModule('../../configs/mailTransport.js', () => ({
       getMailTransporter: () => ({ sendMail }),
       resetMailTransporterForTests: () => {},
+      setMailTransporterForTests: () => {},
     }));
     jest.unstable_mockModule('../../database/users.js', () => ({
       findUserById: async () => ({ id: 'u-inv', email: 'candidate@test.local' }),
@@ -102,19 +103,135 @@ describe('Faza 8 — sendInvitationEmail treść + trigger z addUserToHouse', ()
     );
 
     const result = await sendInvitationEmail({
-      invitedUserId: 'u-inv',
+      recipientUserId: 'u-inv',
       houseId: 'h-1',
       invitingUserName: 'alice',
-      kind: 'inmate_pending',
+      templateId: 'T-cand-inmate-pending',
     });
 
-    expect(result).toEqual({ sent: true });
+    expect(result).toEqual({ sent: true, templateId: 'T-cand-inmate-pending' });
     expect(sendMail).toHaveBeenCalledWith(
       expect.objectContaining({
         from: 'noreply@test.local',
         to: 'candidate@test.local',
-        subject: expect.stringContaining('Dom Test'),
+        subject: expect.stringContaining('[T-cand-inmate-pending]'),
         text: expect.stringMatching(/alice[\s\S]*Dom Test[\s\S]*https:\/\/app\.test\.local/i),
+      }),
+    );
+  });
+
+  test('T-cand-host-added → to kandydat, subject z ID', async () => {
+    const sendMail = jest.fn(async () => ({ messageId: 'm-host' }));
+    jest.unstable_mockModule('../../configs/mailTransport.js', () => ({
+      getMailTransporter: () => ({ sendMail }),
+      resetMailTransporterForTests: () => {},
+      setMailTransporterForTests: () => {},
+    }));
+    jest.unstable_mockModule('../../database/users.js', () => ({
+      findUserById: async () => ({ id: 'u-inv', email: 'candidate@test.local' }),
+    }));
+    jest.unstable_mockModule('../../database/households.js', () => ({
+      findHouseholdById: async () => ({ houseId: 'h-1', houseName: 'Dom Host' }),
+    }));
+
+    const { sendInvitationEmail } = await import(
+      '../../services/invitations/sendInvitationEmail.js'
+    );
+
+    await sendInvitationEmail({
+      recipientUserId: 'u-inv',
+      houseId: 'h-1',
+      invitingUserName: 'alice',
+      templateId: 'T-cand-host-added',
+    });
+
+    expect(sendMail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: 'candidate@test.local',
+        subject: expect.stringContaining('[T-cand-host-added]'),
+      }),
+    );
+  });
+
+  test('T-host-inmate-pending → to host email', async () => {
+    const sendMail = jest.fn(async () => ({ messageId: 'm-h' }));
+    jest.unstable_mockModule('../../configs/mailTransport.js', () => ({
+      getMailTransporter: () => ({ sendMail }),
+      resetMailTransporterForTests: () => {},
+      setMailTransporterForTests: () => {},
+    }));
+    jest.unstable_mockModule('../../database/users.js', () => ({
+      findUserById: async (id) =>
+        id === 'host-1'
+          ? { id: 'host-1', email: 'host@test.local' }
+          : { id, email: 'other@test.local' },
+    }));
+    jest.unstable_mockModule('../../database/households.js', () => ({
+      findHouseholdById: async () => ({ houseId: 'h-1', houseName: 'Dom' }),
+    }));
+
+    const { sendInvitationEmail } = await import(
+      '../../services/invitations/sendInvitationEmail.js'
+    );
+
+    await sendInvitationEmail({
+      recipientUserId: 'host-1',
+      houseId: 'h-1',
+      invitingUserName: 'carol',
+      templateId: 'T-host-inmate-pending',
+    });
+
+    expect(sendMail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: 'host@test.local',
+        subject: expect.stringContaining('[T-host-inmate-pending]'),
+      }),
+    );
+  });
+
+  test('T-cand-decision accepted i rejected → kandydat, różne subject', async () => {
+    const sendMail = jest.fn(async () => ({ messageId: 'm-d' }));
+    jest.unstable_mockModule('../../configs/mailTransport.js', () => ({
+      getMailTransporter: () => ({ sendMail }),
+      resetMailTransporterForTests: () => {},
+      setMailTransporterForTests: () => {},
+    }));
+    jest.unstable_mockModule('../../database/users.js', () => ({
+      findUserById: async () => ({ id: 'u-inv', email: 'candidate@test.local' }),
+    }));
+    jest.unstable_mockModule('../../database/households.js', () => ({
+      findHouseholdById: async () => ({ houseId: 'h-1', houseName: 'Dom Dec' }),
+    }));
+
+    const { sendInvitationEmail } = await import(
+      '../../services/invitations/sendInvitationEmail.js'
+    );
+
+    await sendInvitationEmail({
+      recipientUserId: 'u-inv',
+      houseId: 'h-1',
+      invitingUserName: 'host',
+      templateId: 'T-cand-decision',
+      decision: 'accepted',
+    });
+    await sendInvitationEmail({
+      recipientUserId: 'u-inv',
+      houseId: 'h-1',
+      invitingUserName: 'host',
+      templateId: 'T-cand-decision',
+      decision: 'rejected',
+    });
+
+    expect(sendMail.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        to: 'candidate@test.local',
+        subject: expect.stringMatching(/\[T-cand-decision\].*Accepted/i),
+      }),
+    );
+    expect(sendMail.mock.calls[1][0]).toEqual(
+      expect.objectContaining({
+        to: 'candidate@test.local',
+        subject: expect.stringMatching(/\[T-cand-decision\].*Declined/i),
       }),
     );
   });
@@ -124,6 +241,7 @@ describe('Faza 8 — sendInvitationEmail treść + trigger z addUserToHouse', ()
     jest.unstable_mockModule('../../configs/mailTransport.js', () => ({
       getMailTransporter: () => ({ sendMail }),
       resetMailTransporterForTests: () => {},
+      setMailTransporterForTests: () => {},
     }));
     jest.unstable_mockModule('../../database/users.js', () => ({
       findUserById: async () => ({ id: 'u-inv', email: 'candidate@test.local' }),
@@ -137,10 +255,10 @@ describe('Faza 8 — sendInvitationEmail treść + trigger z addUserToHouse', ()
     );
 
     await sendInvitationEmail({
-      invitedUserId: 'u-inv',
+      recipientUserId: 'u-inv',
       houseId: 'h-1',
       invitingUserName: 'bob<script>',
-      kind: 'inmate_pending',
+      templateId: 'T-cand-inmate-pending',
     });
 
     const { text, html } = sendMail.mock.calls[0][0];
@@ -172,6 +290,7 @@ describe('Faza 8 — K-13 mail nie blokuje zaproszenia', () => {
         }),
       }),
       resetMailTransporterForTests: () => {},
+      setMailTransporterForTests: () => {},
     }));
     jest.unstable_mockModule('../../database/users.js', () => ({
       findUserById: async () => ({ id: 'u-inv', email: 'c@test.local' }),
@@ -186,12 +305,16 @@ describe('Faza 8 — K-13 mail nie blokuje zaproszenia', () => {
 
     await expect(
       sendInvitationEmail({
-        invitedUserId: 'u-inv',
+        recipientUserId: 'u-inv',
         houseId: 'h-1',
         invitingUserName: 'alice',
-        kind: 'host_added',
+        templateId: 'T-cand-host-added',
       }),
-    ).resolves.toEqual({ sent: false, reason: 'send_failed' });
+    ).resolves.toEqual({
+      sent: false,
+      reason: 'send_failed',
+      templateId: 'T-cand-host-added',
+    });
   });
 
   test('ścieżka inmate nadal emituje WS invitation (mail ≠ jedyny kanał)', async () => {
@@ -229,7 +352,7 @@ describe('Faza 8 — K-13 mail nie blokuje zaproszenia', () => {
   });
 });
 
-describe('Faza 8 — addUserToHouse orchestration (mock sendInvitationEmail)', () => {
+describe('Faza 9.4 — addUserToHouse / accept / reject orchestration', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
@@ -240,7 +363,7 @@ describe('Faza 8 — addUserToHouse orchestration (mock sendInvitationEmail)', (
     process.env.FRONTEND_ORIGIN = 'https://app.test.local';
   });
 
-  test('addUserToHouse (host i inmate) woła sendInvitationEmail po sukcesie domeny', async () => {
+  test('addUserToHouse host woła T-cand-host-added', async () => {
     const sendInvitationEmail = jest.fn(async () => ({ sent: true }));
     jest.unstable_mockModule('../../utils/householdUtils/getInvitedUserData.js', () => ({
       invitedUserData: async () => ({ userId: 'u-inv', houseId: null }),
@@ -262,20 +385,49 @@ describe('Faza 8 — addUserToHouse orchestration (mock sendInvitationEmail)', (
 
     await addUserToHouse('host-1', 'bob', 'alice', 'host');
     expect(sendInvitationEmail).toHaveBeenCalledWith({
-      invitedUserId: 'u-inv',
+      recipientUserId: 'u-inv',
       houseId: 'h-1',
       invitingUserName: 'alice',
-      kind: 'host_added',
+      templateId: 'T-cand-host-added',
     });
+  });
 
-    sendInvitationEmail.mockClear();
+  test('addUserToHouse inmate: T-cand-inmate-pending + T-host-inmate-pending', async () => {
+    const sendInvitationEmail = jest.fn(async () => ({ sent: true }));
+    jest.unstable_mockModule('../../utils/householdUtils/getInvitedUserData.js', () => ({
+      invitedUserData: async () => ({ userId: 'u-inv', houseId: null }),
+    }));
+    jest.unstable_mockModule('../../utils/checkUtils/checkUserHouse.js', () => ({
+      default: async () => ({ houseId: 'h-1' }),
+    }));
+    jest.unstable_mockModule('../../utils/householdUtils/addUserByHost.js', () => ({
+      addUserByHost: async () => ({ messageKey: 'addUserToHouse.inviteSuccessMessage' }),
+    }));
+    jest.unstable_mockModule('../../utils/householdUtils/addUserByInmate.js', () => ({
+      addUserByInmate: async () => ({
+        messageKey: 'addUserToHouse.correctlyAddedByInmate',
+        hostId: 'host-1',
+      }),
+    }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail,
+    }));
+
+    const { addUserToHouse } = await import('../../services/users/addUserToHouse.js');
     await addUserToHouse('inmate-1', 'bob', 'carol', 'inmate');
-    expect(sendInvitationEmail).toHaveBeenCalledWith({
-      invitedUserId: 'u-inv',
-      houseId: 'h-1',
-      invitingUserName: 'carol',
-      kind: 'inmate_pending',
-    });
+
+    expect(sendInvitationEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recipientUserId: 'u-inv',
+        templateId: 'T-cand-inmate-pending',
+      }),
+    );
+    expect(sendInvitationEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recipientUserId: 'host-1',
+        templateId: 'T-host-inmate-pending',
+      }),
+    );
   });
 
   test('addUserToHouse przy AppError walidacji nie woła sendInvitationEmail', async () => {
@@ -307,5 +459,74 @@ describe('Faza 8 — addUserToHouse orchestration (mock sendInvitationEmail)', (
     );
     expect(addUserByHost).not.toHaveBeenCalled();
     expect(sendInvitationEmail).not.toHaveBeenCalled();
+  });
+
+  test('acceptInvitation woła T-cand-decision accepted', async () => {
+    const sendInvitationEmail = jest.fn(async () => ({ sent: true }));
+    jest.unstable_mockModule('../../utils/checkUtils/checkUserHouse.js', () => ({
+      default: jest.fn(async () => ({ houseId: 'house-1' })),
+    }));
+    jest.unstable_mockModule('../../utils/householdUtils/saveNewInmate.js', () => ({
+      saveNewInmate: jest.fn(async () => ({})),
+    }));
+    jest.unstable_mockModule('../../database/invitations.js', () => ({
+      updateInvitationStatus: jest.fn(async () => ({ count: 1 })),
+    }));
+    jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
+      emitNotification: jest.fn(async () => ({})),
+    }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail,
+    }));
+
+    const { acceptInvitation } = await import(
+      '../../services/invitations/acceptInvitation.js'
+    );
+    await acceptInvitation({
+      invitationId: 'i-1',
+      invitedUserId: 'u-2',
+      hostId: 'h-1',
+    });
+
+    expect(sendInvitationEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recipientUserId: 'u-2',
+        templateId: 'T-cand-decision',
+        decision: 'accepted',
+      }),
+    );
+  });
+
+  test('rejectInvitation woła T-cand-decision rejected', async () => {
+    const sendInvitationEmail = jest.fn(async () => ({ sent: true }));
+    jest.unstable_mockModule('../../database/invitations.js', () => ({
+      findInvitationById: jest.fn(async () => ({
+        id: 'i-1',
+        status: 'new',
+        houseId: 'house-1',
+        invitedUserId: 'u-cand',
+      })),
+      updateInvitationStatus: jest.fn(async () => ({ count: 1 })),
+    }));
+    jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
+      emitNotification: jest.fn(async () => ({})),
+    }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail,
+    }));
+
+    const { rejectInvitation } = await import(
+      '../../services/invitations/rejectInvitation.js'
+    );
+    await rejectInvitation({ invitationId: 'i-1', hostId: 'h-1' });
+
+    expect(sendInvitationEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recipientUserId: 'u-cand',
+        houseId: 'house-1',
+        templateId: 'T-cand-decision',
+        decision: 'rejected',
+      }),
+    );
   });
 });

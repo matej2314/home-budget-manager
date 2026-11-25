@@ -19,6 +19,9 @@ describe('acceptInvitation / rejectInvitation (P1)', () => {
     jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
       emitNotification: jest.fn(),
     }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail: jest.fn(),
+    }));
 
     const { acceptInvitation } = await import(
       '../../services/invitations/acceptInvitation.js'
@@ -44,6 +47,9 @@ describe('acceptInvitation / rejectInvitation (P1)', () => {
     jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
       emitNotification: jest.fn(),
     }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail: jest.fn(),
+    }));
 
     const { acceptInvitation } = await import(
       '../../services/invitations/acceptInvitation.js'
@@ -63,6 +69,9 @@ describe('acceptInvitation / rejectInvitation (P1)', () => {
     }));
     jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
       emitNotification: jest.fn(),
+    }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail: jest.fn(),
     }));
 
     const { rejectInvitation } = await import(
@@ -95,6 +104,9 @@ describe('acceptInvitation / rejectInvitation (P1)', () => {
     jest.unstable_mockModule('../../utils/householdUtils/saveNewInmate.js', () => ({
       saveNewInmate,
     }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail: jest.fn(async () => ({ sent: true })),
+    }));
 
     const { rejectInvitation } = await import(
       '../../services/invitations/rejectInvitation.js'
@@ -120,6 +132,9 @@ describe('acceptInvitation / rejectInvitation (P1)', () => {
     }));
     jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
       emitNotification: jest.fn(),
+    }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail: jest.fn(),
     }));
 
     const { rejectInvitation } = await import(
@@ -150,6 +165,9 @@ describe('acceptInvitation / rejectInvitation (P1)', () => {
     }));
     jest.unstable_mockModule('../../services/notifications/emitNotification.js', () => ({
       emitNotification,
+    }));
+    jest.unstable_mockModule('../../services/invitations/sendInvitationEmail.js', () => ({
+      sendInvitationEmail: jest.fn(async () => ({ sent: true })),
     }));
 
     const { acceptInvitation } = await import(
