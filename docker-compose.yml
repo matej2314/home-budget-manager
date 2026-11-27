@@ -2,7 +2,7 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: budgetApp-backend
+    container_name: budgetapp-backend
     restart: always
     networks:
       - main_network
@@ -20,7 +20,7 @@ services:
       context: ./frontend
       args:
         VITE_BACKEND_ORIGIN: ${BACKEND_ORIGIN}
-    container_name: budgetApp-frontend
+    container_name: budgetapp-frontend
     restart: always
     networks:
       - main_network
