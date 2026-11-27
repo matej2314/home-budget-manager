@@ -25,7 +25,7 @@ services:
     networks:
       - main_network
     ports:
-      - "127.0.0.1:5052:3000"
+      - "0.0.0.0:5052:3000"
 
 networks:
   main_network:
