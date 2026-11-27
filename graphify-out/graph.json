@@ -8672,7 +8672,7 @@
       "community_name": "dokumentacja_komunikacji.md",
       "file_type": "document",
       "frontmatter": {
-        "wersja": "10",
+        "wersja": "11",
         "data_utworzenia": "2026-11-07",
         "data_modyfikacji": "2026-11-27"
       },
@@ -8689,7 +8689,7 @@
       "community_name": "dokumentacja_komunikacji.md",
       "file_type": "document",
       "frontmatter": {
-        "wersja": "10",
+        "wersja": "11",
         "data_utworzenia": "2026-11-07",
         "data_modyfikacji": "2026-11-27"
       },
@@ -13601,7 +13601,7 @@
       "node_kind": "heading",
       "norm_label": "checklist po deployu (smoke)",
       "source_file": "docs/deployment.md",
-      "source_location": "L100"
+      "source_location": "L101"
     },
     {
       "id": "docs_deployment_ci_cd",
@@ -13613,7 +13613,7 @@
       "node_kind": "heading",
       "norm_label": "ci / cd",
       "source_file": "docs/deployment.md",
-      "source_location": "L79"
+      "source_location": "L80"
     },
     {
       "id": "docs_deployment_local_\u015bcie\u017cka_deweloperska",
@@ -13637,7 +13637,7 @@
       "node_kind": "heading",
       "norm_label": "migracje przy deployu (obowiazkowe \u2014 r6 wdrozone)",
       "source_file": "docs/deployment.md",
-      "source_location": "L90"
+      "source_location": "L91"
     },
     {
       "id": "docs_deployment_operacje_codzienne_skr\u00f3t",
@@ -13649,7 +13649,7 @@
       "node_kind": "heading",
       "norm_label": "operacje codzienne (skrot)",
       "source_file": "docs/deployment.md",
-      "source_location": "L110"
+      "source_location": "L111"
     },
     {
       "id": "docs_deployment_poza_zakresem_tego_dokumentu",
@@ -13661,7 +13661,7 @@
       "node_kind": "heading",
       "norm_label": "poza zakresem tego dokumentu",
       "source_file": "docs/deployment.md",
-      "source_location": "L119"
+      "source_location": "L120"
     },
     {
       "id": "docs_deployment_production_docker",
@@ -59946,7 +59946,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/deployment.md",
-      "source_location": "L100",
+      "source_location": "L101",
       "weight": 1.0
     },
     {
@@ -59957,7 +59957,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/deployment.md",
-      "source_location": "L110",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -59968,7 +59968,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/deployment.md",
-      "source_location": "L119",
+      "source_location": "L120",
       "weight": 1.0
     },
     {
@@ -60034,7 +60034,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/deployment.md",
-      "source_location": "L79",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -60056,7 +60056,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/deployment.md",
-      "source_location": "L90",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -73293,5 +73293,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3a114215a100c83860d240b6dce96c415c03eb6c"
+  "built_at_commit": "e0ea1282ed7ab3afccda4c508b5eb9e9abc5603d"
 }

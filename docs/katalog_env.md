@@ -1,5 +1,5 @@
 ---
-wersja: 10
+wersja: 11
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-27
 ---
@@ -31,7 +31,7 @@ Prisma czyta `DATABASE_URL` (R6 wdrożone). Pola `DB_*` mogą zostać w compose 
 
 **Sync 2026-11-24:** `DATABASE_URL` to norma bieżąca, nie „po R6 w przyszłości”.
 
-Plik typowy: `backend/.env` (local) lub montowany volume w kontenerze (prod).
+Plik typowy: `backend/.env` (local npm) albo root `.env` z Jenkins/Vault — w prod compose wstrzykiwany przez `env_file` (nie bind-mount do `/app/.env`).
 
 ## Origin API / SPA (runtime backend + build frontu)
 

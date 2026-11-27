@@ -1,5 +1,5 @@
 ---
-wersja: 10
+wersja: 11
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-27
 ---
@@ -37,7 +37,7 @@ Publiczne domeny (as-is): frontend `budgetapp.msliwowski.net`, API `budgetapi.ms
 | Zasada | Opis |
 |--------|------|
 | **Nigdy w git** | `.env`, tokeny Jenkins, `JWT_SECRET`, hasła DB |
-| Production / homelab | Jenkins: Vault → `.env` w rootcie repo → `docker compose up -d --build`. Backend montuje `./.env`. Front: compose `args.VITE_BACKEND_ORIGIN=${BACKEND_ORIGIN}` |
+| Production / homelab | Jenkins: Vault → `.env` (plik) w rootcie → `docker compose up -d --build`. Backend: `env_file: .env` (bez bind-mountu pliku). Front: `args.VITE_BACKEND_ORIGIN=${BACKEND_ORIGIN}` |
 | CI | `secrets.JENKINS_URL`, `secrets.JENKINS_TOKEN` w GitHub Actions |
 | Local | `backend/.env` + `frontend/.env` (`VITE_BACKEND_ORIGIN`, wzór w `.env.example`) |
 
@@ -68,8 +68,9 @@ Skrót z root `docker-compose.yml`:
 
 - Build kontekstów `./backend`, `./frontend` (katalogi procesów w rootcie repo — małe litery).
 - `restart: always`.
-- Backend: port 5053, volume `./.env` (plik z joba Jenkins/Vault), `DB_HOST=main_db`.
+- Backend: port 5053, `env_file: .env` (zmienne z Vault w `process.env`; unika pułapki „`.env` jako katalog” przy bind-mouncie), `DB_HOST=main_db`.
 - Frontend: port hosta 5052 → 3000 (`serve`); build-arg z `${BACKEND_ORIGIN}` w `.env` projektu — **job Jenkins bez zmian**.
+- Jeśli na hoście zostało `./.env` jako **katalog** z wcześniejszego mountu: `rm -rf .env`, odtwórz plik z Vault/Jenkins, dopiero `up`.
 
 Obrazy:
 
