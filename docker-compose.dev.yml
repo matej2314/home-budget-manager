@@ -1,8 +1,3 @@
-# Lokalny stack deweloperski (hot-reload).
-# Start: pnpm dev:stack:up
-# Stop:  pnpm dev:stack:down
-# Wymaga: backend/.env (wzór: backend/.env.example).
-
 services:
   db:
     image: mysql:8.4
@@ -21,7 +16,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" || exit 1",
+          'mysqladmin ping -h 127.0.0.1 -uroot -p"$$MYSQL_ROOT_PASSWORD" || exit 1',
         ]
       interval: 5s
       timeout: 5s
