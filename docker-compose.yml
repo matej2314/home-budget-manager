@@ -1,3 +1,5 @@
+# Compose czyta `.env` z katalogu projektu (Jenkins zapisuje tu sekrety z Vault).
+# FRONT: BACKEND_ORIGIN → build-arg VITE_BACKEND_ORIGIN (bez zmian w jobie Jenkins).
 services:
   backend:
     build:
@@ -9,23 +11,21 @@ services:
     ports:
       - "127.0.0.1:5053:5053"
     volumes:
-      - /root/main/budgetApp/backend/logs:/app/logs
-      - /root/main/budgetApp/backend/.env:/app/.env
+      - ./backend/logs:/app/logs
+      - ./.env:/app/.env
     environment:
       - DB_HOST=main_db
-      - BACKEND_ORIGIN=https://budgetapi.msliwowski.net
   app:
     build:
       context: ./frontend
+      args:
+        VITE_BACKEND_ORIGIN: ${BACKEND_ORIGIN}
     container_name: budgetApp-frontend
     restart: always
     networks:
       - main_network
     ports:
       - "127.0.0.1:5052:3000"
-    environment:
-      - FRONTEND_ORIGIN=https://budgetapp.msliwowski.net
-    
 
 networks:
   main_network:

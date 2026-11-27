@@ -1,10 +1,14 @@
-/** Publiczny origin API/socket — nie magazyn sekretów (F-14 / docs/katalog_env). */
-// export const serverUrl = 'https://budgetapi.msliwowski.net';
-// export const socketPath = 'https://budgetapi.msliwowski.net';
+/** Publiczny origin API/socket — build-time z VITE_BACKEND_ORIGIN (F-14 / docs/katalog_env). */
+const backendOrigin = import.meta.env.VITE_BACKEND_ORIGIN;
 
-// Lokalnie (odkomentuj przy dev przeciw dual mount BE):
-export const serverUrl = 'http://localhost:5053';
-export const socketPath = 'http://localhost:5053';
+if (typeof backendOrigin !== 'string' || backendOrigin.length === 0) {
+  throw new Error(
+    'Missing VITE_BACKEND_ORIGIN. Set it in frontend/.env (local) or pass --build-arg VITE_BACKEND_ORIGIN from Vault/Jenkins (deploy).',
+  );
+}
+
+export const serverUrl = backendOrigin;
+export const socketPath = backendOrigin;
 
 /** Prefiks normy docs / SPEC-KOMUNIKACJA K-1 — jedyny base dla JSON/multipart API SPA. */
 export const apiBaseUrl = `${serverUrl}/api/v1`;

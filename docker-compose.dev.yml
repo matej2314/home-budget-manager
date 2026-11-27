@@ -1,0 +1,91 @@
+# Lokalny stack deweloperski (hot-reload).
+# Start: pnpm dev:stack:up
+# Stop:  pnpm dev:stack:down
+# Wymaga: backend/.env (wzór: backend/.env.example).
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: home-budget-dev-db
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: ${DB_NAME:-home_budget}
+      MYSQL_USER: ${DB_USER:-budget_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-budget_password}
+    volumes:
+      - home_budget_dev_mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" || exit 1",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  migrate:
+    build:
+      context: ./backend
+      target: migrate
+    container_name: home-budget-dev-migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: mysql://${DB_USER:-budget_user}:${DB_PASSWORD:-budget_password}@db:3306/${DB_NAME:-home_budget}
+    restart: "no"
+
+  backend:
+    image: node:24.19.0-alpine
+    container_name: home-budget-dev-backend
+    working_dir: /app
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "5053:5053"
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: development
+      DB_HOST: db
+      DATABASE_URL: mysql://${DB_USER:-budget_user}:${DB_PASSWORD:-budget_password}@db:3306/${DB_NAME:-home_budget}
+      BACKEND_ORIGIN: ${BACKEND_ORIGIN:-http://localhost:5053}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:5173}
+    volumes:
+      - ./backend:/app
+      - home_budget_dev_backend_nm:/app/node_modules
+    command:
+      - sh
+      - -c
+      - apk add --no-cache openssl >/dev/null && npm ci && npx prisma generate && npm run dev
+
+  frontend:
+    image: node:24.19.0-alpine
+    container_name: home-budget-dev-frontend
+    working_dir: /app
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_BACKEND_ORIGIN: ${VITE_BACKEND_ORIGIN:-http://localhost:5053}
+    volumes:
+      - ./frontend:/app
+      - home_budget_dev_frontend_nm:/app/node_modules
+    command:
+      - sh
+      - -c
+      - npm ci && npm run dev -- --host 0.0.0.0 --port 5173
+
+volumes:
+  home_budget_dev_mysql_data:
+  home_budget_dev_backend_nm:
+  home_budget_dev_frontend_nm:

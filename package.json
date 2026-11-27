@@ -1,0 +1,9 @@
+{
+  "name": "home-budget-manager",
+  "private": true,
+  "scripts": {
+    "dev:stack:up": "docker compose -f docker-compose.dev.yml up -d --build",
+    "dev:stack:down": "docker compose -f docker-compose.dev.yml down --remove-orphans"
+  },
+  "packageManager": "pnpm@12.4.1"
+}

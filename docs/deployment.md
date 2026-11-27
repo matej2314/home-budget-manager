@@ -1,7 +1,7 @@
 ---
-wersja: 7
+wersja: 10
 data_utworzenia: 2026-11-07
-data_modyfikacji: 2026-11-24
+data_modyfikacji: 2026-11-27
 ---
 
 # Wdrożenie i operacje — Home Budget Manager
@@ -23,8 +23,8 @@ Brak osobnego staging w normie v1 docs.
 
 | Usługa | Obraz / proces | Host (compose) | Uwagi |
 |--------|----------------|----------------|--------|
-| Backend | `backend/Dockerfile` → `node server.js` | `127.0.0.1:5053:5053` | Env `DB_HOST`, `BACKEND_ORIGIN`; volume `.env`; logi → **stdout** (bez volume `logs/` w stanie docelowym) |
-| Frontend | multi-stage: build Vite → **nginx:alpine** | `127.0.0.1:5052:80` | SPA + `try_files` → `index.html` |
+| Backend | `backend/Dockerfile` → `node server.js` | `127.0.0.1:5053:5053` | Volume `.env` (m.in. `BACKEND_ORIGIN`); compose może nadpisać `DB_HOST`; logi → **stdout** |
+| Frontend | multi-stage: Vite build → `serve` `:3000` | `127.0.0.1:5052:3000` | Build-arg `VITE_BACKEND_ORIGIN` (= Vault `BACKEND_ORIGIN`); bez hardcoded URL w bundlu |
 | MySQL | Poza tym compose | `main_db` w sieci `main_network` | Aplikacja łączy się po nazwie hosta DB |
 | Sieć | `main_network` (external) | — | Współdzielona z resztą hosta |
 
@@ -37,22 +37,30 @@ Publiczne domeny (as-is): frontend `budgetapp.msliwowski.net`, API `budgetapi.ms
 | Zasada | Opis |
 |--------|------|
 | **Nigdy w git** | `.env`, tokeny Jenkins, `JWT_SECRET`, hasła DB |
-| Production | Plik `.env` montowany do kontenera backendu z hosta; zmienne w compose (`DB_HOST`, origin) |
+| Production / homelab | Jenkins: Vault → `.env` w rootcie repo → `docker compose up -d --build`. Backend montuje `./.env`. Front: compose `args.VITE_BACKEND_ORIGIN=${BACKEND_ORIGIN}` |
 | CI | `secrets.JENKINS_URL`, `secrets.JENKINS_TOKEN` w GitHub Actions |
-| Local | Własny `.env` w `backend/` (poza repo) |
+| Local | `backend/.env` + `frontend/.env` (`VITE_BACKEND_ORIGIN`, wzór w `.env.example`) |
 
-Wymagane kategorie env backendu (orientacyjnie): port (`SERV_PORT`), `JWT_SECRET`, dane MySQL, origin frontendu/API zgodnie z CORS.
+Wymagane kategorie env backendu (orientacyjnie): port (`SERV_PORT`), `JWT_SECRET`, dane MySQL, `BACKEND_ORIGIN` / `FRONTEND_ORIGIN` zgodnie z CORS.
 
 ## Local — ścieżka deweloperska
 
-1. MySQL dostępny lokalnie lub przez sieć (spójne dane połączenia w `.env`, w tym URL/połączenie wymagane przez Prisma).
-2. **Backend:** w `backend/` → `npm install` → wygeneruj klienta Prisma i **zastosuj migracje** Prisma Migrate na bazie deweloperskiej (`DATABASE_URL`) → `npm run start` / `npm run dev`.
-3. **Frontend:** w `frontend/` → `npm install` → `npm run dev` (Vite, typowo `:5173`; origin na whitelist CORS).
-4. Opcjonalnie: build frontu `npm run build` / podgląd jak w README.
+**Stack w Dockerze (zalecany):** z roota repo, po `cp backend/.env.example backend/.env`:
+
+1. `pnpm dev:stack:up` — `docker-compose.dev.yml`: MySQL + migrate/seed + backend (`nodemon`) + frontend (Vite `:5173`).
+2. SPA: `http://localhost:5173`, API: `http://localhost:5053`.
+3. `pnpm dev:stack:down` — stop bez kasowania volume DB (`home_budget_dev_mysql_data`).
+
+**Bez pełnego stacka (jak wcześniej):**
+
+1. MySQL lokalnie albo `docker-compose.db.yml`; spójne `DATABASE_URL` / `DB_*` w `backend/.env`.
+2. **Backend:** w `backend/` → `npm install` → Prisma generate + migrate → `npm run dev`.
+3. **Frontend:** w `frontend/` → `cp .env.example .env` → `npm install` → `npm run dev` (`:5173`).
+4. Opcjonalnie: `VITE_BACKEND_ORIGIN=… npm run build`.
 
 Zmiany schematu DB wyłącznie przez Prisma Migrate (`schema.prisma` + `prisma/migrations/`) — norma w [architektura.md](./architektura.md) / [model_danych.md](./model_danych.md).
 
-Socket i API w dev: lokalne URL w `frontend/src/url.js` (zakomentowane warianty localhost).
+Socket i API: `frontend/src/url.js` czyta wyłącznie `VITE_BACKEND_ORIGIN` (brak hardcoded domen).
 
 ## Production — Docker
 
@@ -60,13 +68,13 @@ Skrót z root `docker-compose.yml`:
 
 - Build kontekstów `./backend`, `./frontend` (katalogi procesów w rootcie repo — małe litery).
 - `restart: always`.
-- Backend: port 5053, volume `.env`, `DB_HOST=main_db`; logi aplikacji na **stdout** (norma observability — bez volume `logs/` jako docelowej ścieżki).
-- Frontend: port hosta 5052 → 80 w kontenerze NGINX.
+- Backend: port 5053, volume `./.env` (plik z joba Jenkins/Vault), `DB_HOST=main_db`.
+- Frontend: port hosta 5052 → 3000 (`serve`); build-arg z `${BACKEND_ORIGIN}` w `.env` projektu — **job Jenkins bez zmian**.
 
 Obrazy:
 
-- Backend: `node:22.12-slim`, `CMD node server.js`, expose 5053.
-- Frontend: build na `node:20.19.0-slim`, runtime `nginx:alpine` + `nginx.conf` (SPA).
+- Backend: `node` Alpine/runner, `CMD node server.js`, expose 5053.
+- Frontend: builder Vite z wymaganym `VITE_BACKEND_ORIGIN`, runtime `serve` na `:3000`.
 
 ## CI / CD
 

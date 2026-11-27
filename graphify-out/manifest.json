@@ -1452,9 +1452,9 @@
     "semantic_hash": ""
   },
   "frontend/src/url.js": {
-    "mtime": 1795427562.508139,
-    "seen": 1795430754.90354,
-    "ast_hash": "c3989da81a6a70f73ef077b77bad85ba",
+    "mtime": 1795775368.3249533,
+    "seen": 1795775415.3244693,
+    "ast_hash": "271f461a9d83aba4168b973f278d3a6b",
     "semantic_hash": ""
   },
   "frontend/src/utils/animationVariants.js": {
@@ -1626,9 +1626,9 @@
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1795443341.41407,
-    "seen": 1795443345.11995,
-    "ast_hash": "98f22ee1ede1e8c1cbe9977e388fe812",
+    "mtime": 1795775643.702017,
+    "seen": 1795775656.681959,
+    "ast_hash": "cee22cf551f2d96a17334e628f44118d",
     "semantic_hash": ""
   },
   "docs/README.md": {
@@ -1668,9 +1668,9 @@
     "semantic_hash": ""
   },
   "docs/deployment.md": {
-    "mtime": 1795529222.3417387,
-    "seen": 1795529263.5027628,
-    "ast_hash": "85ffc5d3f14293d972d5e84621879e71",
+    "mtime": 1795775859.077538,
+    "seen": 1795775861.0884404,
+    "ast_hash": "276795a4a885ae6e21409b1c760022d3",
     "semantic_hash": ""
   },
   "docs/dictionary.md": {
@@ -1698,9 +1698,9 @@
     "semantic_hash": ""
   },
   "docs/katalog_env.md": {
-    "mtime": 1795529236.6766424,
-    "seen": 1795529263.5027814,
-    "ast_hash": "355f4c1e8dff07a0ef2056ba8d9fd040",
+    "mtime": 1795775648.7310786,
+    "seen": 1795775656.682119,
+    "ast_hash": "e44de857238adc850bdf390fc4117e02",
     "semantic_hash": ""
   },
   "docs/model_danych.md": {
@@ -1740,9 +1740,9 @@
     "semantic_hash": ""
   },
   "home-budget-manager_major_plan-frontend.md": {
-    "mtime": 1795531319.5838332,
-    "seen": 1795531480.438717,
-    "ast_hash": "853e18737ef789e8ebc6c665675906c2",
+    "mtime": 1795614472.9590592,
+    "seen": 1795775415.325653,
+    "ast_hash": "abccb9ea5814b5f6f9e50fa72561c9b2",
     "semantic_hash": ""
   },
   "spec/SPEC-BACKEND.md": {
@@ -1944,9 +1944,9 @@
     "semantic_hash": ""
   },
   "backend/configs/allowedOrigins.js": {
-    "mtime": 1795168621.1113877,
-    "seen": 1795171136.2154026,
-    "ast_hash": "bb81ada15e52ea6720f89e4e6556d6a5",
+    "mtime": 1795771373.5147195,
+    "seen": 1795775415.3178701,
+    "ast_hash": "f95e5a28ce2f1f8abda7b076fcc3740f",
     "semantic_hash": ""
   },
   "backend/routes/healthRoutes.js": {
@@ -2417,16 +2417,28 @@
     "ast_hash": "36db2df44282b7d5fab223635a533be2",
     "semantic_hash": ""
   },
-  "feature-plans/home-budget-manager_feature_plan_frontend-faza9-ui-domena.md": {
-    "mtime": 1795613239.1926072,
-    "seen": 1795614018.261362,
-    "ast_hash": "d935357e5a2ee7615df89b47ffb914d9",
-    "semantic_hash": ""
-  },
   "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza9.3-9.4-invitations-mail-templates.md": {
     "mtime": 1795607873.7589478,
     "seen": 1795614018.2615113,
     "ast_hash": "8df6bd243a184e9ccc0d854e8b2d149d",
+    "semantic_hash": ""
+  },
+  "feature-plans/wykonany/home-budget-manager_feature_plan_frontend-faza9-ui-domena.md": {
+    "mtime": 1795614387.8848677,
+    "seen": 1795775415.325602,
+    "ast_hash": "0aee556d80af9b3c3ab40d35679ccd33",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1795775853.6146047,
+    "seen": 1795775861.0882766,
+    "ast_hash": "b39159e04150ca35255d8ef2bbdddb6a",
+    "semantic_hash": ""
+  },
+  "docker-compose.dev.yml": {
+    "mtime": 1795775852.8315947,
+    "seen": 1795775861.0883243,
+    "ast_hash": "85c7cbed1882e4e874f5eb1eb6ae29cf",
     "semantic_hash": ""
   }
 }
