@@ -8796,7 +8796,7 @@
       "community_name": "dokumentacja_komunikacji.md",
       "file_type": "document",
       "frontmatter": {
-        "wersja": "13",
+        "wersja": "14",
         "data_utworzenia": "2026-11-07",
         "data_modyfikacji": "2026-11-27"
       },
@@ -25565,7 +25565,7 @@
     },
     {
       "source": "backend_services_shell_homepage_homepagedatacollection_gethomepagecollection",
-      "target": "backend_utils_errors_apperror_apperror",
+      "target": "backend_utils_getfileslist_getfileslist",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25577,14 +25577,14 @@
     },
     {
       "source": "backend_services_shell_homepage_homepagedatacollection_gethomepagecollection",
-      "target": "backend_utils_getfileslist_getfileslist",
+      "target": "backend_utils_errors_apperror_apperror",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/services/shell/homepage/homePageDataCollection.js",
-      "source_location": "L31",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -28980,7 +28980,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/hooks/useSortedUniqueData.jsx",
-      "source_location": "L23",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -29616,7 +29616,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/socketContext.jsx",
-      "source_location": "L76",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -29628,7 +29628,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/socketContext.jsx",
-      "source_location": "L98",
+      "source_location": "L96",
       "weight": 1.0
     },
     {
@@ -73137,7 +73137,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "backend/services/shell/homepage/homePageDataCollection.js",
-      "source_location": "L30",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -73334,5 +73334,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4994b0b50eaa736fc598a8c24173f24fc53bc651"
+  "built_at_commit": "d64ec61ce6439fb6d92fdbb9a632cef999ee86ad"
 }

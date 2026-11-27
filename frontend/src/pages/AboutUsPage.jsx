@@ -10,12 +10,20 @@ import LoadingModal from '../components/modals/LoadingModal';
 
 export default function AboutUs() {
     useDocumentTitle('About us');
-    const { homePageData, homePageDataLoading } = useHomePageStore();
+    const { homePageData, homePageDataError, isHomePageDataLoading } = useHomePageStore();
     const { isMobile } = useIsMobile();
     const { t } = useTranslation('aboutUs');
 
-    if (homePageDataLoading) {
-        return <LoadingModal isOpen={homePageDataLoading} />
+    if (isHomePageDataLoading) {
+        return <LoadingModal isOpen={isHomePageDataLoading} />
+    }
+
+    if (homePageDataError) {
+        return (
+            <div className="w-full h-full flex justify-center items-center text-slate-200 px-4">
+                <p className="text-center">{homePageDataError}</p>
+            </div>
+        );
     }
 
     return (

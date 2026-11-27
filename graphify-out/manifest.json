@@ -438,9 +438,9 @@
     "semantic_hash": ""
   },
   "backend/services/shell/homepage/homePageDataCollection.js": {
-    "mtime": 1795779004.4223468,
-    "seen": 1795782514.803076,
-    "ast_hash": "db009f255df8fa7cf417844542d513cf",
+    "mtime": 1795787729.3726008,
+    "seen": 1795787741.0190089,
+    "ast_hash": "5af97cf0cfe2007e12bdf96cb9e6cf7d",
     "semantic_hash": ""
   },
   "backend/services/shell/reviews/addReview.js": {
@@ -1302,9 +1302,9 @@
     "semantic_hash": ""
   },
   "frontend/src/hooks/useSortedUniqueData.jsx": {
-    "mtime": 1795779004.4493217,
-    "seen": 1795782514.8031888,
-    "ast_hash": "32a78457c80391cea0df6e269b2b7530",
+    "mtime": 1795786774.2063773,
+    "seen": 1795787741.0228555,
+    "ast_hash": "cb32130e82a0653fd60eeae99c3fd033",
     "semantic_hash": ""
   },
   "frontend/src/main.jsx": {
@@ -1314,9 +1314,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/AboutUsPage.jsx": {
-    "mtime": 1795779004.4495404,
-    "seen": 1795782514.80319,
-    "ast_hash": "0d821d8b3ca468a24d41f3ae158280e2",
+    "mtime": 1795787736.3255424,
+    "seen": 1795787741.0228763,
+    "ast_hash": "937db86d96cea65e2fb10ab9c13cf378",
     "semantic_hash": ""
   },
   "frontend/src/pages/ContactPage.jsx": {
@@ -1440,9 +1440,9 @@
     "semantic_hash": ""
   },
   "frontend/src/store/socketContext.jsx": {
-    "mtime": 1795779004.451853,
-    "seen": 1795782514.8032026,
-    "ast_hash": "b20e019461eb58e2eac4b3a91cd86e99",
+    "mtime": 1795786471.223958,
+    "seen": 1795787741.0233452,
+    "ast_hash": "a1f13dcc734c9808fbe4c09563351aa8",
     "semantic_hash": ""
   },
   "frontend/src/store/transactionsStore.js": {
@@ -1626,9 +1626,9 @@
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1795783743.3065674,
-    "seen": 1795783753.292871,
-    "ast_hash": "9ef3a92a9aa4497be33ec11e7d318501",
+    "mtime": 1795785367.3330367,
+    "seen": 1795787741.024076,
+    "ast_hash": "4ee7325d18438b290e6f405cc2c2be4b",
     "semantic_hash": ""
   },
   "docs/README.md": {
@@ -1668,9 +1668,9 @@
     "semantic_hash": ""
   },
   "docs/deployment.md": {
-    "mtime": 1795783751.0875525,
-    "seen": 1795783753.292972,
-    "ast_hash": "1229c7fce795edf72e1a5a6ba83972d3",
+    "mtime": 1795784427.679581,
+    "seen": 1795787741.0241764,
+    "ast_hash": "4bc320867ddefbcb74c6a3323ce7452a",
     "semantic_hash": ""
   },
   "docs/dictionary.md": {
@@ -2352,15 +2352,15 @@
     "semantic_hash": ""
   },
   "docker-compose.db.test.yml": {
-    "mtime": 1795779004.43211,
-    "seen": 1795782514.8032792,
-    "ast_hash": "082c651b0bb993b901b657cd9e994e46",
+    "mtime": 1795784879.021736,
+    "seen": 1795787741.0240734,
+    "ast_hash": "1b890e1cb461b2c3b9b8bbeed3526189",
     "semantic_hash": ""
   },
   "docker-compose.db.yml": {
-    "mtime": 1795779004.4322019,
-    "seen": 1795782514.8032799,
-    "ast_hash": "b869690d8f1fb3441693486f0fb7a461",
+    "mtime": 1795784886.9461167,
+    "seen": 1795787741.0240746,
+    "ast_hash": "3b70558f12a94fa9e7c694f1c1c4b484",
     "semantic_hash": ""
   },
   "feature-plans/wykonany/home-budget-manager_feature_plan_backend-faza9-piramida-testow.md": {
@@ -2436,15 +2436,15 @@
     "semantic_hash": ""
   },
   "docker-compose.dev.yml": {
-    "mtime": 1795779004.4322019,
-    "seen": 1795782514.8032806,
-    "ast_hash": "85c7cbed1882e4e874f5eb1eb6ae29cf",
+    "mtime": 1795784893.8088994,
+    "seen": 1795787741.0240753,
+    "ast_hash": "212901233272e3ce8435a0b0b0165565",
     "semantic_hash": ""
   },
   "backend/docker-entrypoint.sh": {
-    "mtime": 1795783738.5428743,
-    "seen": 1795783753.2863817,
-    "ast_hash": "cc8f3279f77a6f665c9475801b7ab1f9",
+    "mtime": 1795784425.2331374,
+    "seen": 1795787741.0177984,
+    "ast_hash": "111a8ef5452bae74dfdc3db50e359c04",
     "semantic_hash": ""
   }
 }

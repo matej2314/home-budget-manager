@@ -20,13 +20,6 @@ export const getHomePageCollection = async () => {
     homePageData.technologies = await listTechnologies();
 
     const reviews = await listReviews();
-    if (reviews.length === 0) {
-      throw new AppError({
-        code: 'SHELL_HP_1',
-        messageKey: 'Failed to fetch reviews data.',
-        httpStatus: 500,
-      });
-    }
     homePageData.reviews = reviews.map(mapReviewRow);
     homePageData.shots = await getFilesList('../app-images');
 
