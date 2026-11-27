@@ -1,5 +1,5 @@
 ---
-wersja: 13
+wersja: 14
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-27
 ---
@@ -68,7 +68,7 @@ Skrót z root `docker-compose.yml`:
 
 - Build kontekstów `./backend`, `./frontend` (katalogi procesów w rootcie repo — małe litery).
 - `restart: always`.
-- Backend: port 5053, `env_file: .env`, `DB_HOST=main_db`; start = `docker-entrypoint.sh` → `prisma migrate deploy` (bez seed) → `node server.js`. Brak osobnego kontenera migrate (compose nie robi auto-`rm` po Exited).
+- Backend: port 5053, `env_file: .env`, `DB_HOST=main_db`; start = `docker-entrypoint.sh` → `migrate deploy` → `prisma db seed` → `prisma:seed:demo` → `node server.js`.
 - Frontend: port hosta 5052 → 3000 (`serve`); build-arg `${BACKEND_ORIGIN}`.
 - Jeśli na hoście `./.env` to katalog: `rm -rf .env`, odtwórz plik z Vault, dopiero `up`.
 - Po update z Exited `budgetApp-migrate` z poprzedniej wersji compose: `docker rm -f budgetApp-migrate`.
@@ -93,7 +93,7 @@ Bramka jakości przed pushem/mergem zmian backendu: testy Jest wg `testy.md`. Fa
 
 | Krok | Norma |
 |------|--------|
-| Przed API | `backend/docker-entrypoint.sh` → `prisma migrate deploy`, potem serwer (bez seed) |
+| Przed API | `docker-entrypoint.sh` → `migrate deploy` → `db seed` → `seed:demo` → serwer |
 | Źródło | Tylko migracje z repo — bez ręcznego DDL na prod |
 | Fail migracji | Entrypoint kończy się błędem → kontener backendu nie trzyma API (restart: always ponowi) |
 
