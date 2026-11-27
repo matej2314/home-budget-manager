@@ -41,7 +41,6 @@ export const SocketProvider = ({ children }) => {
                 pingtTimeout: 5000,
             });
 
-            // Lifecycle Socket.io (nie są biznesowymi type z katalogu K-10)
             newSocket.on("connect", () => {
                 setConnected(true);
                 console.log("Socket.IO connected");
@@ -57,7 +56,6 @@ export const SocketProvider = ({ children }) => {
                 console.error("Socket.IO Error:", err);
             });
 
-            // Katalog SERVER_SOCKET_EVENTS (K-10) — jawne on(...), bez dynamicznego on(any)
             newSocket.on('connect_success', () => {
                 setConnected(true);
                 setError(null);
@@ -114,8 +112,6 @@ export const SocketProvider = ({ children }) => {
                 }
             });
 
-            // socket.io connection handle — external system subscription (react-hooks/set-state-in-effect)
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- store client from io()
             setSocket(newSocket);
 
             return () => {
