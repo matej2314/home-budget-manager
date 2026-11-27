@@ -1,5 +1,5 @@
 ---
-wersja: 11
+wersja: 13
 data_utworzenia: 2026-11-07
 data_modyfikacji: 2026-11-27
 ---
@@ -68,9 +68,10 @@ Skrót z root `docker-compose.yml`:
 
 - Build kontekstów `./backend`, `./frontend` (katalogi procesów w rootcie repo — małe litery).
 - `restart: always`.
-- Backend: port 5053, `env_file: .env` (zmienne z Vault w `process.env`; unika pułapki „`.env` jako katalog” przy bind-mouncie), `DB_HOST=main_db`.
-- Frontend: port hosta 5052 → 3000 (`serve`); build-arg z `${BACKEND_ORIGIN}` w `.env` projektu — **job Jenkins bez zmian**.
-- Jeśli na hoście zostało `./.env` jako **katalog** z wcześniejszego mountu: `rm -rf .env`, odtwórz plik z Vault/Jenkins, dopiero `up`.
+- Backend: port 5053, `env_file: .env`, `DB_HOST=main_db`; start = `docker-entrypoint.sh` → `prisma migrate deploy` (bez seed) → `node server.js`. Brak osobnego kontenera migrate (compose nie robi auto-`rm` po Exited).
+- Frontend: port hosta 5052 → 3000 (`serve`); build-arg `${BACKEND_ORIGIN}`.
+- Jeśli na hoście `./.env` to katalog: `rm -rf .env`, odtwórz plik z Vault, dopiero `up`.
+- Po update z Exited `budgetApp-migrate` z poprzedniej wersji compose: `docker rm -f budgetApp-migrate`.
 
 Obrazy:
 
@@ -92,9 +93,9 @@ Bramka jakości przed pushem/mergem zmian backendu: testy Jest wg `testy.md`. Fa
 
 | Krok | Norma |
 |------|--------|
-| Przed / wraz z nową wersją API | Zastosować zatwierdzone migracje z `prisma/migrations/` (`prisma migrate deploy` lub równoważne w pipeline) |
-| Źródło | Tylko migracje z repo — bez ręcznego DDL na prod jako procesu |
-| Fail migracji | Blokuje uznanie deployu za udany; diagnostyka z logów CLI / Jenkins |
+| Przed API | `backend/docker-entrypoint.sh` → `prisma migrate deploy`, potem serwer (bez seed) |
+| Źródło | Tylko migracje z repo — bez ręcznego DDL na prod |
+| Fail migracji | Entrypoint kończy się błędem → kontener backendu nie trzyma API (restart: always ponowi) |
 
 **Sync 2026-11-24:** migracje Prisma są częścią normalnego deployu, nie „stanem po przyszłym R6”.
 

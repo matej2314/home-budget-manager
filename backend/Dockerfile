@@ -35,8 +35,11 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/package.json ./package.json
 COPY . .
 
+RUN chmod +x docker-entrypoint.sh
+
 USER node
 
 EXPOSE 5053
 
-CMD ["node", "server.js"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
+

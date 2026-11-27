@@ -1,3 +1,8 @@
+# Compose czyta `.env` z katalogu projektu (Jenkins: Vault → plik → up).
+# Backend: env_file + entrypoint (`prisma migrate deploy` → `node server.js`) —
+#   bez osobnego serwisu migrate (compose nie umie auto-`docker rm` po Exited;
+#   self-rm z wewnątrz też nie działa — procesy giną z kontenerem).
+# FRONT: BACKEND_ORIGIN → build-arg VITE_BACKEND_ORIGIN.
 services:
   backend:
     build:
@@ -14,6 +19,7 @@ services:
       - ./backend/logs:/app/logs
     environment:
       - DB_HOST=main_db
+
   app:
     build:
       context: ./frontend
